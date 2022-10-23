@@ -17,3 +17,5 @@ Demo app/back/obj/Debug/net6.0/PyxisKapriBack.csproj.CoreCompileInputs.cache
 Demo app/back/obj/Debug/net6.0/PyxisKapriBack.dll
 Demo app/back/obj/Debug/net6.0/PyxisKapriBack.pdb
 Demo app/back/obj/staticwebassets.pack.sentinel
+*.cache
+*.editorconfig
