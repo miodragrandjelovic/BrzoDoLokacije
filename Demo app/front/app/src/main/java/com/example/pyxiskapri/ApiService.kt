@@ -11,7 +11,7 @@ interface ApiService {
     @POST("/login")
     suspend fun postLogin(@Body requestBody: RequestBody): Response<ResponseBody>
 
-    @POST("/registration")
-    suspend fun postReg(registerDTO:RegisterDTO) : Response<ResponseBody>
+    @POST("api/Auth/register")
+    suspend fun postReg(@Body requestBody: RequestBody) : Response<ResponseBody>
 
 }

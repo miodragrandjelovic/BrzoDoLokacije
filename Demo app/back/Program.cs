@@ -33,7 +33,6 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
 builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();
 
-builder.Services.Configure<KestrelServerOptions>(builder.Configuration.GetSection("Kestrel"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -42,8 +41,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

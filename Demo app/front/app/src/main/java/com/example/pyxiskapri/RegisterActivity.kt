@@ -13,9 +13,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,8 +46,17 @@ class RegisterActivity : AppCompatActivity() {
 
 
     fun reg() {
+
+        val okHttp = OkHttpClient().newBuilder()
+            .connectTimeout(3, TimeUnit.SECONDS)
+            .readTimeout(3, TimeUnit.SECONDS)
+            .writeTimeout(3, TimeUnit.SECONDS)
+            .build()
+
         val retrofit = Retrofit.Builder()
-            .baseUrl("127:0:0:1")
+            .baseUrl("http://10.0.2.2:5231")
+            .client(okHttp)
+
             .build()
 
         // Create Service
@@ -54,28 +65,28 @@ class RegisterActivity : AppCompatActivity() {
         val regdto = RegDTO(et_email.text.toString(),et_username.text.toString(),et_password.text.toString())
 
         // Create JSON using JSONObject
-    /*    val jsonObject = JSONObject()
+        val jsonObject = JSONObject()
 
         jsonObject.put("email", et_email.text)
         jsonObject.put("username", et_username.text)
-        jsonObject.put("password", et_password.text)*//*
+        jsonObject.put("password", et_password.text)
 
         // Convert JSONObject to String
         val jsonObjectString = jsonObject.toString()
 
         // Create RequestBody ( We're not using any converter, like GsonConverter, MoshiConverter e.t.c, that's why we use RequestBody )
         val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
-*/
+
 
         //val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
 
         CoroutineScope(Dispatchers.IO).launch {
             // Do the POST request and get response
-            val response = service.postReg(regdto)
+            val response = service.postReg(requestBody)
 
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
-
+                    Log.d("","TEST -----------------------------------------------------------------------")
 //                    // Convert raw JSON to pretty JSON using GSON library
 //                    val gson = GsonBuilder().setPrettyPrinting().create()
 //                    val prettyJson = gson.toJson(

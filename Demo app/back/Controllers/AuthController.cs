@@ -26,6 +26,7 @@ namespace PyxisKapriBack.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Regitser(RegisterDTO request)
         {
+            Console.WriteLine(request.Username + " " + request.Password);
             byte[] passwordHash, passwordKey;
             if (await userService.UserAlreadyExists(request.Username))
                 return BadRequest("Vec postoji korisnik sa unetim nickom");
@@ -37,7 +38,8 @@ namespace PyxisKapriBack.Controllers
                 Username = request.Username,
                 Password = passwordHash,
                 PasswordKey = passwordKey,
-                Email = request.Email
+                Email = request.Email,
+                CountryId = 1
 
             };
             userService.AddNewUser(newUser);
