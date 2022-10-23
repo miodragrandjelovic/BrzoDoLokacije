@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".SigninActivity">
+
+    <ImageView
+        android:id="@+id/iv_backlight"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="Backlight image"
+        android:scaleType="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/backlight" />
+
+    <ImageView
+        android:id="@+id/iv_spotlightBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="550dp"
+        android:adjustViewBounds="true"
+        android:alpha="0.75"
+        android:contentDescription="Spotlight back image"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/spotlight_back"
+        tools:ignore="ImageContrastCheck" />
+
+    <ImageView
+        android:id="@+id/iv_earth"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="fill_parent"
+        android:layout_height="550dp"
+        app:srcCompat="@drawable/earth"
+        android:adjustViewBounds="true"
+        android:contentDescription="Earth image"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/iv_spotlightFront"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_backlight"
+        android:layout_width="0dp"
+        android:layout_height="700dp"
+        app:srcCompat="@drawable/spotlight_front"
+        android:adjustViewBounds="true"
+        android:alpha="0.5"
+        android:contentDescription="Spotlight front image"
+        android:scaleType="centerInside"
+        tools:ignore="ImageContrastCheck" />
+
+    <ImageView
+        android:id="@+id/iv_loginPanel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="380dp"
+        app:srcCompat="@drawable/loginpanel"
+        android:adjustViewBounds="true"
+        android:alpha="1"
+        android:scaleType="fitXY" />
+
+
+    <LinearLayout
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/iv_loginPanel"
+        app:layout_constraintTop_toTopOf="@+id/iv_loginPanel"
+        android:layout_width="fill_parent"
+        android:layout_height="380dp"
+        android:orientation="vertical"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp">
+
+        <TextView
+            android:id="@+id/tv_welcomeBack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/poppins_medium"
+            android:lineSpacingExtra="-10dp"
+            android:text="Welcome\nBack"
+            android:textAlignment="viewStart"
+            android:textColor="@color/white"
+            android:textSize="26sp"/>
+
+        <EditText
+            android:id="@+id/et_emailOrUsername"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/inputborder"
+            android:hint="Email or Username"
+            android:textColorHint="@color/gray"
+            android:fontFamily="@font/poppins"
+            android:inputType="textPersonName"
+            android:textColor="@color/gray"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/inputborder"
+            android:hint="Password"
+            android:textColorHint="@color/gray"
+            android:fontFamily="@font/poppins"
+            android:inputType="textPassword"
+            android:textColor="@color/gray"
+            android:textSize="16sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:padding="0dp"
+            android:background="@color/transparent"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Forgot password?"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            app:rippleColor="#00FFFFFF" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_signIn"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+
+            app:cornerRadius="15dp"
+
+            android:text="Sign In"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppins_medium"
+            android:textAllCaps="false" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_dontHaveAnAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:text="Don't have an account? "
+                android:textAllCaps="false"
+                android:textColor="@color/gray"
+                android:textSize="14sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_registerHere"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:fontFamily="@font/poppins_semibold"
+                android:padding="0dp"
+                android:text="Register here."
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:rippleColor="#00FFFFFF"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
