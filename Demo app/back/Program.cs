@@ -23,7 +23,11 @@ builder.Services.AddSwaggerGen();
 
 // Configure dependency injection
 
+#region 'Interface - Class Dependency Injection'
 builder.Services.AddTransient<IUserDAL, UserDAL>();
+builder.Services.AddTransient<IPostDAL, PostDAL>();
+#endregion
+
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
 builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();

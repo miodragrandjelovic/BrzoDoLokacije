@@ -17,9 +17,9 @@
 
         #endregion
 
-        #region 'City'
-        public int CityId { get; set; }
-        public City City { get; set; }
+        #region 'Location'
+        public int LocationId { get; set; }
+        public Location Location { get; set; }
 
         #endregion
     }

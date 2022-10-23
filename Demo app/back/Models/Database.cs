@@ -42,9 +42,9 @@ namespace PyxisKapriBack.Models
            .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Post>()
-            .HasOne(post => post.City)
-            .WithMany(city => city.Posts)
-            .HasForeignKey(post => post.CityId)
+            .HasOne(post => post.Location)
+            .WithMany(location => location.Posts)
+            .HasForeignKey(post => post.LocationId)
             .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
@@ -55,5 +55,6 @@ namespace PyxisKapriBack.Models
         public DbSet<City> Cities { get; set; }
 
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Location> Locations { get; set; }
     }
 }
