@@ -4,4 +4,6 @@
 *.cache
 *.cache
 *.props
-*.json
+Demo app/back/.vs/
+Demo app/back/bin/
+Demo app/back/obj/
