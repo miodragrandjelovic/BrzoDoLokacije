@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PyxisKapriBack.Models;
 
@@ -10,9 +11,10 @@ using PyxisKapriBack.Models;
 namespace PyxisKapriBack.Migrations
 {
     [DbContext(typeof(Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [Migration("20221023174808_AddedCityAndCountry")]
+    partial class AddedCityAndCountry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,10 +65,6 @@ namespace PyxisKapriBack.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("CountryId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -86,8 +84,6 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
-
                     b.ToTable("Users");
                 });
 
@@ -102,22 +98,9 @@ namespace PyxisKapriBack.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("PyxisKapriBack.Models.User", b =>
-                {
-                    b.HasOne("PyxisKapriBack.Models.Country", "Country")
-                        .WithMany("Users")
-                        .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Country");
-                });
-
             modelBuilder.Entity("PyxisKapriBack.Models.Country", b =>
                 {
                     b.Navigation("Cities");
-
-                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

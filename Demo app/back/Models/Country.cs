@@ -3,9 +3,12 @@
     public class Country
     {
         [Key]
-        public long Id { get; set; }
-        [MaxLength(Constants.ModelConstants.LENGTH_SHORT_NAME)]
-        public string Name { get; set; }
+        public int Id { get; set; }
 
+        [MaxLength(Constants.ModelConstants.LENGTH_SHORT_NAME)]
+        public string Name { get; set; }  
+  
+        public List<City> Cities { get; set; }
+        public List<User> Users { get; set; }
     }
 }
