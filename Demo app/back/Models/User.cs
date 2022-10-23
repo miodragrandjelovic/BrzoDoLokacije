@@ -11,11 +11,16 @@
         public byte[] PasswordKey { get; set; }
 
         public string Email { get; set; } = string.Empty;
+    
+        public List<Post> Posts { get; set; }
+
+        #region 'Country'
 
         [ForeignKey("Country")]
-        public int? CountryId { get; set; }
+        public int? CountryId { get; set; } = Constants.ModelConstants.NULL_REFERENCE;
 
         public Country Country { get; set; }
 
+        #endregion
     }
 }
