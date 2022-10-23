@@ -1,21 +1,4 @@
 
-*.v2
-*.vsidx
-*.cache
-*.cache
-*.props
 Demo app/back/.vs/
 Demo app/back/bin/
 Demo app/back/obj/
-Demo app/back/.vs/ProjectEvaluation/pyxiskapriback.metadata.v2
-Demo app/back/.vs/ProjectEvaluation/pyxiskapriback.projects.v2
-Demo app/back/.vs/PyxisKapriBack/DesignTimeBuild/.dtbcache.v2
-Demo app/back/.vs/PyxisKapriBack/v17/.suo
-Demo app/back/bin/Debug/net6.0/PyxisKapriBack.dll
-Demo app/back/bin/Debug/net6.0/PyxisKapriBack.pdb
-Demo app/back/obj/Debug/net6.0/PyxisKapriBack.csproj.CoreCompileInputs.cache
-Demo app/back/obj/Debug/net6.0/PyxisKapriBack.dll
-Demo app/back/obj/Debug/net6.0/PyxisKapriBack.pdb
-Demo app/back/obj/staticwebassets.pack.sentinel
-*.cache
-*.editorconfig
