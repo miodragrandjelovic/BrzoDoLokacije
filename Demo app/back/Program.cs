@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using PyxisKapriBack.DAL;
 using PyxisKapriBack.DAL.Interfaces;
 using PyxisKapriBack.JWTManager;
@@ -32,6 +33,7 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
 builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();
 
+builder.Services.Configure<KestrelServerOptions>(builder.Configuration.GetSection("Kestrel"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
