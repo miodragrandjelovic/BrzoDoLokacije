@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Tekalo\\Desktop\\BrzoDoLokacije\\brzodolokacije\\Demo app\\back\\PyxisKapriBack.csproj": {}
+    "D:\\Fakultet\\IV GODINA\\2. PROGRAMIRANJE MOBILNIH UREDJAJA\\BrzoDoLokacije\\Demo app\\back\\PyxisKapriBack.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Tekalo\\Desktop\\BrzoDoLokacije\\brzodolokacije\\Demo app\\back\\PyxisKapriBack.csproj": {
+    "D:\\Fakultet\\IV GODINA\\2. PROGRAMIRANJE MOBILNIH UREDJAJA\\BrzoDoLokacije\\Demo app\\back\\PyxisKapriBack.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tekalo\\Desktop\\BrzoDoLokacije\\brzodolokacije\\Demo app\\back\\PyxisKapriBack.csproj",
+        "projectUniqueName": "D:\\Fakultet\\IV GODINA\\2. PROGRAMIRANJE MOBILNIH UREDJAJA\\BrzoDoLokacije\\Demo app\\back\\PyxisKapriBack.csproj",
         "projectName": "PyxisKapriBack",
-        "projectPath": "C:\\Users\\Tekalo\\Desktop\\BrzoDoLokacije\\brzodolokacije\\Demo app\\back\\PyxisKapriBack.csproj",
-        "packagesPath": "C:\\Users\\Tekalo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Tekalo\\Desktop\\BrzoDoLokacije\\brzodolokacije\\Demo app\\back\\obj\\",
+        "projectPath": "D:\\Fakultet\\IV GODINA\\2. PROGRAMIRANJE MOBILNIH UREDJAJA\\BrzoDoLokacije\\Demo app\\back\\PyxisKapriBack.csproj",
+        "packagesPath": "C:\\Users\\Mija\\.nuget\\packages\\",
+        "outputPath": "D:\\Fakultet\\IV GODINA\\2. PROGRAMIRANJE MOBILNIH UREDJAJA\\BrzoDoLokacije\\Demo app\\back\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Tekalo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Mija\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -79,7 +83,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     }
