@@ -1,5 +1,6 @@
 using PyxisKapriBack.DAL;
 using PyxisKapriBack.DAL.Interfaces;
+using PyxisKapriBack.Models.Interfaces;
 using PyxisKapriBack.Services;
 using PyxisKapriBack.Services.Interfaces;
 
@@ -22,6 +23,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IUserDAL, UserDAL>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
 
 var app = builder.Build();
 

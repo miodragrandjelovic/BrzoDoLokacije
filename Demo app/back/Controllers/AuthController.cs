@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PyxisKapriBack.Models.Interfaces;
 using PyxisKapriBack.Services.Interfaces;
 
 namespace PyxisKapriBack.Controllers
@@ -9,30 +10,34 @@ namespace PyxisKapriBack.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IUserService userService;
+        private readonly IEncryptionManager encryptionManager;
 
-        public AuthController(IUserService userService)
+        public AuthController(IUserService userService, IEncryptionManager encryptionManager)
         {
-            _userService = userService;
+            this.userService = userService;
+            this.encryptionManager = encryptionManager;
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Regitser(RegisterDTO request)
         {
-            if (await _userService.UserAlreadyExists(request.Username))
+            byte[] passwordHash, passwordKey;
+            if (await userService.UserAlreadyExists(request.Username))
                 return BadRequest("Vec postoji korisnik sa unetim nickom");
 
-            
+            encryptionManager.EncryptPassword(request.Password, out passwordHash, out passwordKey);
 
             User newUser = new User
             {
                 Username = request.Username,
-                Password = request.Password,
+                Password = passwordHash,
+                PasswordKey = passwordKey,
                 Email = request.Email
 
             };
-            _userService.AddNewUser(newUser);
+            userService.AddNewUser(newUser);
 
             return Ok("uspesno registrovan korisnik " + newUser.Username);
         }
@@ -43,15 +48,15 @@ namespace PyxisKapriBack.Controllers
         public async Task<ActionResult<string>> Login(LoginDTO request)
         {
 
-            var user = _userService.GetUser(request.Username);
+            var user = userService.GetUser(request.Username);
             if (user == null)
                 return Unauthorized("Korisnik ne postoji");
 
-            if (!user.Password.Equals(request.Password))
+            if (!encryptionManager.DecryptPassword(request.Password, user.Password, user.PasswordKey))
                 return Unauthorized("Pogresna lozinka");
 
 
-            
+
             return Ok("Uspesno logovan korisnik");
         }
     }

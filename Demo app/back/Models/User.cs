@@ -7,9 +7,12 @@
 
         [MaxLength(50)]
         public string Username { get; set; } = string.Empty;
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
+        public byte[] PasswordKey { get; set; }
 
         public string Email { get; set; } = string.Empty;
+
+
 
     }
 }
