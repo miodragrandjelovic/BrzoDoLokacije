@@ -70,3 +70,39 @@ D:\Fakultet\IV GODINA\2. PROGRAMIRANJE MOBILNIH UREDJAJA\PyxisKapriBack - Demo\o
 D:\Fakultet\IV GODINA\2. PROGRAMIRANJE MOBILNIH UREDJAJA\PyxisKapriBack - Demo\obj\Debug\net6.0\PyxisKapriBack.pdb
 D:\Fakultet\IV GODINA\2. PROGRAMIRANJE MOBILNIH UREDJAJA\PyxisKapriBack - Demo\obj\Debug\net6.0\PyxisKapriBack.genruntimeconfig.cache
 D:\Fakultet\IV GODINA\2. PROGRAMIRANJE MOBILNIH UREDJAJA\PyxisKapriBack - Demo\obj\Debug\net6.0\ref\PyxisKapriBack.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\appsettings.json
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\PyxisKapriBack.exe
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\PyxisKapriBack.deps.json
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\PyxisKapriBack.runtimeconfig.json
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\PyxisKapriBack.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\PyxisKapriBack.pdb
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\Humanizer.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\MySqlConnector.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\PyxisKapriBack.csproj.AssemblyReference.cache
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\PyxisKapriBack.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\PyxisKapriBack.AssemblyInfoInputs.cache
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\PyxisKapriBack.AssemblyInfo.cs
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\PyxisKapriBack.csproj.CoreCompileInputs.cache
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\PyxisKapriBack.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\PyxisKapriBack.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\scopedcss\bundle\PyxisKapriBack.styles.css
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\PyxisKapriBack.csproj.CopyComplete
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\PyxisKapriBack.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\refint\PyxisKapriBack.dll
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\PyxisKapriBack.pdb
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\PyxisKapriBack.genruntimeconfig.cache
+C:\Users\Tekalo\Desktop\BrzoDoLokacije\brzodolokacije\Demo app\back\obj\Debug\net6.0\ref\PyxisKapriBack.dll
