@@ -1,5 +1,7 @@
 using PyxisKapriBack.DAL;
 using PyxisKapriBack.DAL.Interfaces;
+using PyxisKapriBack.JWTManager;
+using PyxisKapriBack.JWTManager.Interfaces;
 using PyxisKapriBack.Models.Interfaces;
 using PyxisKapriBack.Services;
 using PyxisKapriBack.Services.Interfaces;
@@ -24,6 +26,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IUserDAL, UserDAL>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
+builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();
 
 var app = builder.Build();
 

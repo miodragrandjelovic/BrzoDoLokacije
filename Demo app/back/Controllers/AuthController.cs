@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PyxisKapriBack.JWTManager.Interfaces;
 using PyxisKapriBack.Models.Interfaces;
 using PyxisKapriBack.Services.Interfaces;
 
@@ -12,11 +13,13 @@ namespace PyxisKapriBack.Controllers
     {
         private readonly IUserService userService;
         private readonly IEncryptionManager encryptionManager;
+        private readonly IJWTManagerRepository jwtManager;
 
-        public AuthController(IUserService userService, IEncryptionManager encryptionManager)
+        public AuthController(IUserService userService, IEncryptionManager encryptionManager, IJWTManagerRepository jWTManager)
         {
             this.userService = userService;
             this.encryptionManager = encryptionManager;
+            this.jwtManager = jWTManager;
         }
 
         [AllowAnonymous]
@@ -56,8 +59,8 @@ namespace PyxisKapriBack.Controllers
                 return Unauthorized("Pogresna lozinka");
 
 
-
-            return Ok("Uspesno logovan korisnik");
+            var token = jwtManager.GenerateToken(user);
+            return Ok(token);
         }
     }
 }
