@@ -1,13 +1,14 @@
-package com.example.pyxiskapri
+package com.example.pyxiskapri.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import com.example.pyxiskapri.ApiService
+import com.example.pyxiskapri.R
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.et_password
-import kotlinx.android.synthetic.main.activity_signin.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

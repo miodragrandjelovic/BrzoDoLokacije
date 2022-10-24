@@ -9,7 +9,7 @@
 
     android:background="@color/black"
 
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <ImageView
         android:id="@+id/iv_backlight"

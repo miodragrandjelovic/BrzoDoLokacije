@@ -1,17 +1,16 @@
-package com.example.pyxiskapri
+package com.example.pyxiskapri.activities
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.internal.ContextUtils.getActivity
+import com.example.pyxiskapri.ApiService
+import com.example.pyxiskapri.R
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
-import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_signin.*
 import kotlinx.android.synthetic.main.activity_signin.et_password
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +20,6 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit

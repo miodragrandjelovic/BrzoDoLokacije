@@ -1,11 +1,11 @@
-package com.example.pyxiskapri
+package com.example.pyxiskapri.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class LoggedActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_logged)
+        setContentView(R.layout.activity_home)
     }
 }
