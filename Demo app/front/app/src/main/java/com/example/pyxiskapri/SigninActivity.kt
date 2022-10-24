@@ -41,7 +41,17 @@ class SigninActivity : AppCompatActivity() {
             if(et_emailOrUsername.text.toString() != "" && et_password.text.toString() != "")
                 if(et_emailOrUsername.length()>5 && et_password.length()>5)
                     if(et_password.text.contains(patern))
-                        login()
+                    {
+                        var login=login()
+                        if(login)
+                        {
+                            val intent = Intent (this, LoggedActivity::class.java);
+                            startActivity(intent);
+                        }
+                        else
+                            Toast.makeText(this, "Neupesno prijavljivanje!", Toast.LENGTH_SHORT).show()
+                    }
+
                     else
                             Toast.makeText(this, "Sifra ne moze zapoceti karakterom!", Toast.LENGTH_SHORT).show()
                 else
@@ -62,7 +72,9 @@ class SigninActivity : AppCompatActivity() {
     }
 
     @SuppressLint("RestrictedApi")
-    fun login() {
+    fun login():Boolean {
+
+        var bool:Boolean=false
 
         val okHttp = OkHttpClient().newBuilder()
             .connectTimeout(3, TimeUnit.SECONDS)
@@ -101,6 +113,10 @@ class SigninActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
 
+
+                    bool=true
+                    Log.d("", bool.toString())
+
                     val gson = GsonBuilder().setPrettyPrinting().create()
                     //val company = gson.fromJson(response.body().toString(), Data::class.java)
                     val prettyJson = gson.toJson(
@@ -121,12 +137,17 @@ class SigninActivity : AppCompatActivity() {
 
 
 
+
                 } else {
 
                     Log.d("","pogresna lozinka")
+                    bool=false
                 }
             }
         }
+        Log.d("","POSLEDNJI RETURN")
+        Log.d("",bool.toString())
+        return bool
     }
 
 
