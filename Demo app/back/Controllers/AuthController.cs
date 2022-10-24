@@ -64,5 +64,18 @@ namespace PyxisKapriBack.Controllers
             var token = jwtManager.GenerateToken(user);
             return Ok(token);
         }
+
+        [Authorize]
+        [HttpGet("test")]
+        public async Task<ActionResult<string>> Test()
+        {
+            var loggedUser = userService.GetLoggedUser();
+            if (string.IsNullOrEmpty(loggedUser))
+                return Unauthorized("Korisnik nije prijavljen na sistem");
+
+            return Ok(loggedUser);
+        }
+
+
     }
 }

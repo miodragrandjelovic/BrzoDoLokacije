@@ -5,25 +5,34 @@ namespace PyxisKapriBack.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserDAL _userDAL;
+        private readonly IUserDAL userDAL;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public UserService(IUserDAL userDAL)
+        public UserService(IUserDAL userDAL, IHttpContextAccessor httpContextAccessor)
         {
-            _userDAL = userDAL;
+            this.userDAL = userDAL;
+            this.httpContextAccessor = httpContextAccessor;
         }
         public void AddNewUser(User user)
         {
-            _userDAL.AddNewUser(user);
+            userDAL.AddNewUser(user);
+        }
+
+        public string? GetLoggedUser()
+        {
+            var loggedUser = httpContextAccessor?.HttpContext?.User?.Identity?.Name;
+
+            return loggedUser;
         }
 
         public User? GetUser(string username)
         {
-            return _userDAL.GetUser(username);
+            return userDAL.GetUser(username);
         }
 
         public Task<bool> UserAlreadyExists(string username)
         {
-            return _userDAL.UserAlreadyExists(username);
+            return userDAL.UserAlreadyExists(username);
         }
     }
 }

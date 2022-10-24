@@ -5,6 +5,8 @@
         void AddNewUser(User user);
         Task<bool> UserAlreadyExists(string username);
 
-        User? GetUser(string username); 
+        User? GetUser(string username);
+
+        string? GetLoggedUser();
     }
 }
