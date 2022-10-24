@@ -27,8 +27,19 @@ class RegisterActivity : AppCompatActivity() {
         setupGoToLoginButton();
 
         btn_goToRegister.setOnClickListener {
-            if(et_email.text != null && et_password != null && et_username != null)
-                reg()
+            val patern= Regex("^[^0-9][a-zA-Z0-9_]+\$")
+            if(et_email.text.toString() != "" && et_password.text.toString() != "" && et_username.text.toString() != "")
+                if(android.util.Patterns.EMAIL_ADDRESS.matcher(et_email.text.toString()).matches())
+                    if(et_email.length()>5 && et_password.length()>5)
+                        if(et_password.text.contains(patern))
+                            reg()
+                        else
+                            Toast.makeText(this, "Sifra ne moze zapoceti karakterom!", Toast.LENGTH_SHORT).show()
+                    else
+                        Toast.makeText(this, "Username i sifra moraju imati vise od 6 karaktera!", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(this, "Unesite ispravan email!", Toast.LENGTH_SHORT).show()
+
             else
                 Toast.makeText(this, "Morate popuniti sva polja!", Toast.LENGTH_SHORT).show()
         }
@@ -62,7 +73,6 @@ class RegisterActivity : AppCompatActivity() {
         // Create Service
         val service = retrofit.create(ApiService::class.java)
 
-        val regdto = RegDTO(et_email.text.toString(),et_username.text.toString(),et_password.text.toString())
 
         // Create JSON using JSONObject
         val jsonObject = JSONObject()

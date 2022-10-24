@@ -7,15 +7,19 @@ import android.util.Log
 import android.widget.Toast
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
+import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_signin.*
+import kotlinx.android.synthetic.main.activity_signin.et_password
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 
 class SigninActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,10 +29,20 @@ class SigninActivity : AppCompatActivity() {
         setupGoToRegisterButton();
 
         btn_signIn.setOnClickListener(){
-            if(et_emailOrUsername.text != null && et_password != null)
-                login()
+            //if(et_emailOrUsername.text.toString() != "" && et_password.text.toString() != "")
+            val patern= Regex("^[^0-9][a-zA-Z0-9_]+\$")
+            if(et_emailOrUsername.text.toString() != "" && et_password.text.toString() != "")
+                if(et_emailOrUsername.length()>5 && et_password.length()>5)
+                    if(et_password.text.contains(patern))
+                        login()
+                    else
+                            Toast.makeText(this, "Sifra ne moze zapoceti karakterom!", Toast.LENGTH_SHORT).show()
+                else
+                        Toast.makeText(this, "Username i sifra moraju imati vise od 6 karaktera!", Toast.LENGTH_SHORT).show()
             else
                 Toast.makeText(this, "Morate popuniti sva polja!", Toast.LENGTH_SHORT).show()
+
+
         }
 
     }
@@ -41,8 +55,17 @@ class SigninActivity : AppCompatActivity() {
     }
 
     fun login() {
+
+        val okHttp = OkHttpClient().newBuilder()
+            .connectTimeout(3, TimeUnit.SECONDS)
+            .readTimeout(3, TimeUnit.SECONDS)
+            .writeTimeout(3, TimeUnit.SECONDS)
+            .build()
+
         val retrofit = Retrofit.Builder()
-            .baseUrl("127:0:0:1")
+            .baseUrl("http://10.0.2.2:5231")
+            .client(okHttp)
+
             .build()
 
         // Create Service
@@ -66,17 +89,6 @@ class SigninActivity : AppCompatActivity() {
 
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
-
-//                    // Convert raw JSON to pretty JSON using GSON library
-//                    val gson = GsonBuilder().setPrettyPrinting().create()
-//                    val prettyJson = gson.toJson(
-//                        JsonParser.parseString(
-//                            response.body()
-//                                ?.string() // About this thread blocking annotation : https://github.com/square/retrofit/issues/3255
-//                        )
-//                    )
-
-                   // Log.d("Pretty Printed JSON :", prettyJson)
 
 
                 } else {
