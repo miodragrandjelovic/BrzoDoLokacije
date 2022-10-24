@@ -1,4 +1,5 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
+using PyxisKapriBack.Models.DTO_Components;
 using PyxisKapriBack.Services.Interfaces;
 
 namespace PyxisKapriBack.Services
@@ -25,9 +26,14 @@ namespace PyxisKapriBack.Services
             return loggedUser;
         }
 
-        public User? GetUser(string username)
+        public User? GetUser(string usernameOrEmail)
         {
-            return userDAL.GetUser(username);
+            return userDAL.GetUser(usernameOrEmail);
+        }
+
+        public UserDTO? GetUserDTO(string usernameOrEmail)
+        {
+            return userDAL.GetUserDTO(usernameOrEmail);
         }
 
         public Task<bool> UserAlreadyExists(string username)

@@ -1,4 +1,5 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
+using PyxisKapriBack.Models.DTO_Components;
 
 namespace PyxisKapriBack.DAL
 {
@@ -15,9 +16,15 @@ namespace PyxisKapriBack.DAL
             _context.SaveChanges();
         }
 
-        public User? GetUser(string username)
+        public User? GetUser(string usernameOrEmail)
         {
-            return _context.Users.Where(x => x.Username.Equals(username)).FirstOrDefault();
+            return _context.Users.Where(x => x.Username.Equals(usernameOrEmail) || x.Email.Equals(usernameOrEmail)).FirstOrDefault();
+        }
+
+        public UserDTO? GetUserDTO(string usernameOrEmail)
+        {
+            var user = _context.Users.Where(x => x.Username.Equals(usernameOrEmail) || x.Email.Equals(usernameOrEmail)).FirstOrDefault();
+            return new UserDTO(user);
         }
 
         public async Task<bool> UserAlreadyExists(string username)

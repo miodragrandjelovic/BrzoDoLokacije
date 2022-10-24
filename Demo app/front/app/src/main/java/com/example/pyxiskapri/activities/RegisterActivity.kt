@@ -1,5 +1,6 @@
 package com.example.pyxiskapri.activities
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -33,7 +34,7 @@ class RegisterActivity : AppCompatActivity() {
                 if(android.util.Patterns.EMAIL_ADDRESS.matcher(et_email.text.toString()).matches())
                     if(et_email.length()>5 && et_password.length()>5)
                         if(et_password.text.contains(patern))
-                            reg()
+                            reg(this)
                         else
                             Toast.makeText(this, "Sifra ne moze zapoceti karakterom!", Toast.LENGTH_SHORT).show()
                     else
@@ -57,7 +58,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
 
-    fun reg() {
+    fun reg(context: Context) {
 
         val okHttp = OkHttpClient().newBuilder()
             .connectTimeout(3, TimeUnit.SECONDS)
@@ -98,14 +99,21 @@ class RegisterActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
                     Log.d("","TEST -----------------------------------------------------------------------")
-//                    // Convert raw JSON to pretty JSON using GSON library
-//                    val gson = GsonBuilder().setPrettyPrinting().create()
-//                    val prettyJson = gson.toJson(
-//                        JsonParser.parseString(
-//                            response.body()
-//                                ?.string() // About this thread blocking annotation : https://github.com/square/retrofit/issues/3255
-//                        )
-//                    )
+
+                    val intent = Intent (context, SigninActivity::class.java);
+                    startActivity(intent);
+
+                    /*
+                    // Convert raw JSON to pretty JSON using GSON library
+                    val gson = GsonBuilder().setPrettyPrinting().create()
+                    val prettyJson = gson.toJson(
+                        JsonParser.parseString(
+                            response.body()
+                                ?.string() // About this thread blocking annotation : https://github.com/square/retrofit/issues/3255
+                        )
+                    )
+                    */
+
 
                 //    Log.d("Pretty Printed JSON :", prettyJson)
 

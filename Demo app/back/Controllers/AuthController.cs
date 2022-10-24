@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PyxisKapriBack.JWTManager.Interfaces;
+using PyxisKapriBack.Models.DTO_Components;
 using PyxisKapriBack.Models.Interfaces;
 using PyxisKapriBack.Services.Interfaces;
 
@@ -50,10 +51,10 @@ namespace PyxisKapriBack.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(LoginDTO request)
+        public async Task<ActionResult<UserDTO>> Login(LoginDTO request)
         {
 
-            var user = userService.GetUser(request.Username);
+            var user = userService.GetUser(request.UsernameOrEmail);
             if (user == null)
                 return Unauthorized("Korisnik ne postoji");
 
@@ -61,8 +62,11 @@ namespace PyxisKapriBack.Controllers
                 return Unauthorized("Pogresna lozinka");
 
 
+            var userReturnInfo = userService.GetUserDTO(request.UsernameOrEmail);
             var token = jwtManager.GenerateToken(user);
-            return Ok(token);
+            userReturnInfo.Token = token;
+
+            return Ok(userReturnInfo);
         }
 
         [Authorize]
