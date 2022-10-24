@@ -1,10 +1,14 @@
 package com.example.pyxiskapri
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_register.*
@@ -17,9 +21,11 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
+
 
 class SigninActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +33,7 @@ class SigninActivity : AppCompatActivity() {
         setContentView(R.layout.activity_signin);
 
         setupGoToRegisterButton();
+
 
         btn_signIn.setOnClickListener(){
             //if(et_emailOrUsername.text.toString() != "" && et_password.text.toString() != "")
@@ -54,6 +61,7 @@ class SigninActivity : AppCompatActivity() {
         };
     }
 
+    @SuppressLint("RestrictedApi")
     fun login() {
 
         val okHttp = OkHttpClient().newBuilder()
@@ -85,16 +93,37 @@ class SigninActivity : AppCompatActivity() {
 
         CoroutineScope(Dispatchers.IO).launch {
             // Do the POST request and get response
+
+            Log.d("", "Pre slanja")
             val response = service.postLogin(requestBody)
 
+            Log.d("", "Posle slanja")
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
+
+                    val gson = GsonBuilder().setPrettyPrinting().create()
+                    //val company = gson.fromJson(response.body().toString(), Data::class.java)
+                    val prettyJson = gson.toJson(
+                        JsonParser.parseString(
+                            response.body()
+                                ?.string()
+                        )
+                    )
+
+                    Log.d("", prettyJson)
+
+
+                    val prefs= getSharedPreferences("MySharedPrefs",Context.MODE_PRIVATE)
+
+                    val edit= prefs.edit()
+                    edit.putString("token",prettyJson)
+                    edit.commit()
+
 
 
                 } else {
 
-                    Log.e("RETROFIT_ERROR", response.code().toString())
-
+                    Log.d("","pogresna lozinka")
                 }
             }
         }
