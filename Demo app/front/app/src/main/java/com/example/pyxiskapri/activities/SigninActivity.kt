@@ -143,7 +143,7 @@ class SigninActivity : AppCompatActivity() {
 
                 } else {
 
-                    Log.d("","pogresna lozinka")
+                    Toast.makeText(context, "Neuspesno prijavljivanje!", Toast.LENGTH_SHORT).show()
                 }
             }
         }
