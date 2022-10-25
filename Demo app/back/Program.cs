@@ -63,6 +63,13 @@ builder.Services.AddTransient<IHttpContextAccessor,HttpContextAccessor>();
 
 var app = builder.Build();
 
+/* prilikom pokretanja programa, automatski ce se update-ovati baza*/
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<Database>();
+    context.Database.Migrate();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
