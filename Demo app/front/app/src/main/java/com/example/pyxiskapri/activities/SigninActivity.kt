@@ -1,11 +1,13 @@
 package com.example.pyxiskapri.activities
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pyxiskapri.ApiService
 import com.example.pyxiskapri.R
@@ -13,17 +15,18 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.activity_signin.*
-import kotlinx.android.synthetic.main.activity_signin.et_password
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.Retrofit
+import java.nio.charset.StandardCharsets
 import java.util.concurrent.TimeUnit
 
 
 class SigninActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
@@ -39,6 +42,7 @@ class SigninActivity : AppCompatActivity() {
             startActivity(intent);
         };
     }
+
 
     private fun setupSignInButton(){
         btn_signIn.setOnClickListener(){
@@ -74,7 +78,6 @@ class SigninActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("RestrictedApi")
     fun login() {
 
         val okHttp = OkHttpClient().newBuilder()
@@ -120,15 +123,23 @@ class SigninActivity : AppCompatActivity() {
                     // NAPRAVITI KLASU KOJA CE SADRZATI PODATKE DOBIJENE SA SERVERA ( DTO )
                     val obj: JsonObject = JsonParser.parseString(response.body()?.string()) as JsonObject
 
-                    /*
-                    val tokenJson = gson.toJson(
 
-                        JsonParser.parseString(
-                            response.body()?.string()
-                        )
-                    )
-                    Log.d("", tokenJson)
-                    */
+                    Log.d("",obj.toString())
+                    Log.d("","RAZMAK")
+                    Log.d("",obj.get("token").asString)
+
+
+                    //DEKODIRANJE JWTA -----------------------------------------------------------
+
+                    var split= obj.get("token").toString().split(".")
+
+                    var header= String(Base64.decode(split[0],Base64.URL_SAFE))
+                    var payload= String(Base64.decode(split[1],Base64.URL_SAFE))
+                    var signature= String(Base64.decode(split[2],Base64.URL_SAFE))
+                    Log.d("",header)
+                    Log.d("",payload)
+                    Log.d("",signature)
+                    // ---------------------------------------------------------------------------
 
                     val prefs = getSharedPreferences("MySharedPrefs",Context.MODE_PRIVATE)
 
