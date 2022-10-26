@@ -8,6 +8,5 @@ namespace PyxisKapriBack.DAL.Interfaces
         Task<bool> UserAlreadyExists(string username);
 
         User? GetUser(string username);
-        UserDTO? GetUserDTO(string usernameOrEmail);
     }
 }

@@ -9,8 +9,6 @@ namespace PyxisKapriBack.Services.Interfaces
 
         User? GetUser(string usernameOrEmail);
 
-        UserDTO? GetUserDTO(string usernameOrEmail);
-
         string? GetLoggedUser();
     }
 }

@@ -62,11 +62,9 @@ namespace PyxisKapriBack.Controllers
                 return Unauthorized("Pogresna lozinka");
 
 
-            var userReturnInfo = userService.GetUserDTO(request.UsernameOrEmail);
             var token = jwtManager.GenerateToken(user);
-            userReturnInfo.Token = token;
 
-            return Ok(userReturnInfo);
+            return Ok(token);
         }
 
         [Authorize]

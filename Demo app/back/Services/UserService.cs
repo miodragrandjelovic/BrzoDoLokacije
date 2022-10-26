@@ -30,12 +30,6 @@ namespace PyxisKapriBack.Services
         {
             return userDAL.GetUser(usernameOrEmail);
         }
-
-        public UserDTO? GetUserDTO(string usernameOrEmail)
-        {
-            return userDAL.GetUserDTO(usernameOrEmail);
-        }
-
         public Task<bool> UserAlreadyExists(string username)
         {
             return userDAL.UserAlreadyExists(username);
