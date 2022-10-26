@@ -1,4 +1,4 @@
-﻿namespace PyxisKapriBack.Models
+﻿namespace PyxisKapriBack.DTOComponents
 {
     public class RegisterDTO
     {

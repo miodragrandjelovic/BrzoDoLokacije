@@ -1,4 +1,4 @@
-﻿using PyxisKapriBack.Models.DTO_Components;
+﻿using PyxisKapriBack.DTOComponents;
 
 namespace PyxisKapriBack.Services.Interfaces
 {

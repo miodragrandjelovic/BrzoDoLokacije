@@ -2,10 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PyxisKapriBack.JWTManager.Interfaces;
-using PyxisKapriBack.Models.DTO_Components;
 using PyxisKapriBack.Models.Interfaces;
 using PyxisKapriBack.Services.Interfaces;
-
+using PyxisKapriBack.DTOComponents; 
 namespace PyxisKapriBack.Controllers
 {
     [Route("api/[controller]")]

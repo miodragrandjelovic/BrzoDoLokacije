@@ -1,5 +1,5 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
-using PyxisKapriBack.Models.DTO_Components;
+using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.Services.Interfaces;
 
 namespace PyxisKapriBack.Services
