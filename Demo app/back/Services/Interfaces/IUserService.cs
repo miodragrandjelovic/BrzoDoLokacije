@@ -10,5 +10,7 @@ namespace PyxisKapriBack.Services.Interfaces
         User? GetUser(string usernameOrEmail);
 
         string? GetLoggedUser();
+        
+        string? GetUserEmail();
     }
 }

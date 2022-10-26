@@ -21,15 +21,23 @@ namespace PyxisKapriBack.Services
 
         public string? GetLoggedUser()
         {
-            var loggedUser = httpContextAccessor?.HttpContext?.User?.Identity?.Name;
+            var loggedUser = httpContextAccessor?.HttpContext?.User?.Claims.Where(c => c.Type == Constants.Constants.USERNAME).FirstOrDefault();
 
-            return loggedUser;
+            return loggedUser.Value;
         }
 
         public User? GetUser(string usernameOrEmail)
         {
             return userDAL.GetUser(usernameOrEmail);
         }
+
+        public string? GetUserEmail()
+        {
+            var userEmail = httpContextAccessor?.HttpContext?.User?.Claims.Where(c => c.Type == Constants.Constants.EMAIL).FirstOrDefault();
+
+            return userEmail.Value;
+        }
+
         public Task<bool> UserAlreadyExists(string username)
         {
             return userDAL.UserAlreadyExists(username);
