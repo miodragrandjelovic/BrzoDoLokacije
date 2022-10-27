@@ -69,8 +69,8 @@ namespace PyxisKapriBack.Models
 
         public void InsertDefaultValues()
         {
-            Role administrator = Roles.Where(x => x.Name.Contains("admin")).FirstOrDefault();
-            if (administrator == null)
+            Role role = Roles.Where(x => x.Name.Contains("admin")).FirstOrDefault();
+            if (role == null)
             {
                 Roles.Add(new Role
                 {
@@ -79,12 +79,22 @@ namespace PyxisKapriBack.Models
                 SaveChanges();
             }
 
-            Role user = Roles.Where(x => x.Name.Contains("user")).FirstOrDefault();
-            if (administrator == null)
+            role = Roles.Where(x => x.Name.Contains("user")).FirstOrDefault();
+            if (role == null)
             {
                 Roles.Add(new Role
                 {
                     Name = "user"
+                });
+                SaveChanges();
+            }
+
+            role = Roles.Where(x => x.Name.Contains("moderator")).FirstOrDefault();
+            if (role == null)
+            {
+                Roles.Add(new Role
+                {
+                    Name = "moderator"
                 });
                 SaveChanges();
             }

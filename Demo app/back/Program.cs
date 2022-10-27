@@ -62,6 +62,7 @@ builder.Services.AddSwaggerGen(options => {
 #region 'Interface - Class Dependency Injection'
 builder.Services.AddTransient<IUserDAL, UserDAL>();
 builder.Services.AddTransient<IPostDAL, PostDAL>();
+builder.Services.AddTransient<IRoleDAL, RoleDAL>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
 builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();

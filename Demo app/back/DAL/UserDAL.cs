@@ -19,8 +19,6 @@ namespace PyxisKapriBack.DAL
         {
             return _context.Users.Where(x => x.Username.Equals(usernameOrEmail) || x.Email.Equals(usernameOrEmail)).FirstOrDefault();
         }
-
-
         public async Task<bool> UserAlreadyExists(string username)
         {
             return await _context.Users.AnyAsync(user => user.Username.Equals(username));
