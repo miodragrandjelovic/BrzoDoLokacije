@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using PyxisKapriBack.JWTManager.Interfaces;
 using PyxisKapriBack.Models.Interfaces;
 using PyxisKapriBack.Services.Interfaces;
-using PyxisKapriBack.DTOComponents; 
+using PyxisKapriBack.DTOComponents;
+using System.Text.Json.Serialization;
+
 namespace PyxisKapriBack.Controllers
 {
     [Route("api/[controller]")]
@@ -44,37 +46,47 @@ namespace PyxisKapriBack.Controllers
             };
             userService.AddNewUser(newUser);
 
-            return Ok("uspesno registrovan korisnik " + newUser.Username);
+            return Ok(new {
+                message = "Uspesno registrovan korisnik " + newUser.Username
+            });
         }
+
+        
 
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<UserDTO>> Login(LoginDTO request)
+        public async Task<IActionResult> Login(LoginDTO request)
         {
 
             var user = userService.GetUser(request.UsernameOrEmail);
             if (user == null)
-                return Unauthorized("Korisnik ne postoji");
+                return NotFound("Korisnik ne postoji");
 
             if (!encryptionManager.DecryptPassword(request.Password, user.Password, user.PasswordKey))
-                return Unauthorized("Pogresna lozinka");
+                return BadRequest("Pogresna lozinka");
 
 
-            var token = jwtManager.GenerateToken(user);
-
-            return Ok(token);
+            var tokenString = jwtManager.GenerateToken(user);
+            
+            return Ok(
+                new{
+                    token = tokenString
+            });
         }
 
         [Authorize]
         [HttpGet("test")]
-        public async Task<ActionResult<string>> Test()
+        public async Task<IActionResult> Test()
         {
             var loggedUser = userService.GetLoggedUser();
             if (string.IsNullOrEmpty(loggedUser))
                 return Unauthorized("Korisnik nije prijavljen na sistem");
 
-            return Ok(loggedUser);
+            return Ok(new
+            {
+                message = loggedUser
+            });
         }
 
 

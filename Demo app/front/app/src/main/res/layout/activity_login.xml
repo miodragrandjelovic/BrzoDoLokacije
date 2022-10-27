@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".activities.SigninActivity">
+    tools:context=".activities.LoginActivity">
 
     <ImageView
         android:id="@+id/iv_backlight"
@@ -99,7 +99,7 @@
             android:textSize="26sp"/>
 
         <EditText
-            android:id="@+id/et_emailOrUsername"
+            android:id="@+id/et_usernameOrEmail"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
@@ -146,7 +146,7 @@
             app:rippleColor="#00FFFFFF" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_signIn"
+            android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="65dp"
 

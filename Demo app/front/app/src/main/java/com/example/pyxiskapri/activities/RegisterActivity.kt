@@ -6,8 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.example.pyxiskapri.ApiService
+import androidx.lifecycle.viewmodel.CreationExtras
+import com.example.pyxiskapri.services.UserService
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.dtos.request.RegisterRequest
+import com.example.pyxiskapri.dtos.response.LoginResponse
+import com.example.pyxiskapri.dtos.response.MessageResponse
+import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.Constants
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.et_password
 import kotlinx.coroutines.CoroutineScope
@@ -18,113 +24,81 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
 class RegisterActivity : AppCompatActivity() {
+    private lateinit var apiClient: ApiClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_register)
 
-        setupGoToLoginButton();
+        apiClient = ApiClient()
 
-        btn_goToRegister.setOnClickListener {
-            val patern= Regex("^[^0-9][a-zA-Z0-9_]+\$")
-            if(et_email.text.toString() != "" && et_password.text.toString() != "" && et_username.text.toString() != "")
-                if(android.util.Patterns.EMAIL_ADDRESS.matcher(et_email.text.toString()).matches())
-                    if(et_email.length()>5 && et_password.length()>5)
-                        if(et_password.text.contains(patern))
-                            reg(this)
-                        else
-                            Toast.makeText(this, "Sifra ne moze zapoceti karakterom!", Toast.LENGTH_SHORT).show()
-                    else
-                        Toast.makeText(this, "Username i sifra moraju imati vise od 6 karaktera!", Toast.LENGTH_SHORT).show()
-                else
-                    Toast.makeText(this, "Unesite ispravan email!", Toast.LENGTH_SHORT).show()
-
-            else
-                Toast.makeText(this, "Morate popuniti sva polja!", Toast.LENGTH_SHORT).show()
-        }
-
+        setupGoToLoginButton()
+        setupRegisterButton()
     }
 
 
     private fun setupGoToLoginButton(){
         btn_signInHere.setOnClickListener{
-            val intent = Intent (this, SigninActivity::class.java);
+            val intent = Intent (this, LoginActivity::class.java);
             startActivity(intent);
         };
     }
 
-
-
-    fun reg(context: Context) {
-
-        val okHttp = OkHttpClient().newBuilder()
-            .connectTimeout(3, TimeUnit.SECONDS)
-            .readTimeout(3, TimeUnit.SECONDS)
-            .writeTimeout(3, TimeUnit.SECONDS)
-            .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:5231")
-            .client(okHttp)
-
-            .build()
-
-        // Create Service
-        val service = retrofit.create(ApiService::class.java)
-
-
-        // Create JSON using JSONObject
-        val jsonObject = JSONObject()
-
-        jsonObject.put("email", et_email.text)
-        jsonObject.put("username", et_username.text)
-        jsonObject.put("password", et_password.text)
-
-        // Convert JSONObject to String
-        val jsonObjectString = jsonObject.toString()
-
-        // Create RequestBody ( We're not using any converter, like GsonConverter, MoshiConverter e.t.c, that's why we use RequestBody )
-        val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
-
-
-        //val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
-
-        CoroutineScope(Dispatchers.IO).launch {
-            // Do the POST request and get response
-            val response = service.postReg(requestBody)
-
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    Log.d("","TEST -----------------------------------------------------------------------")
-
-                    val intent = Intent (context, SigninActivity::class.java);
-                    startActivity(intent);
-
-                    /*
-                    // Convert raw JSON to pretty JSON using GSON library
-                    val gson = GsonBuilder().setPrettyPrinting().create()
-                    val prettyJson = gson.toJson(
-                        JsonParser.parseString(
-                            response.body()
-                                ?.string() // About this thread blocking annotation : https://github.com/square/retrofit/issues/3255
-                        )
-                    )
-                    */
-
-
-                //    Log.d("Pretty Printed JSON :", prettyJson)
-
-
-                } else {
-
-                    Log.e("RETROFIT_ERROR", response.code().toString())
-
-                }
-            }
+    private fun setupRegisterButton(){
+        btn_goToRegister.setOnClickListener {
+            val patern= Regex("^[^0-9][a-zA-Z0-9_]+\$")
+            if(et_email.text.toString() != "" && et_password.text.toString() != "" && et_username.text.toString() != "")
+                if(android.util.Patterns.EMAIL_ADDRESS.matcher(et_email.text.toString()).matches())
+                    if(et_username.length()>5)
+                        if(et_password.length()>5)
+                            if(et_password.text.contains(patern))
+                                register()
+                            else
+                                Toast.makeText(this, "Password can't begin with a digit!", Toast.LENGTH_SHORT).show()
+                        else
+                            Toast.makeText(this, "Password must contain at least 6 characters!", Toast.LENGTH_SHORT).show()
+                    else
+                        Toast.makeText(this, "Username must contain at least 6 characters!", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(this, "Incorrect e-mail format!", Toast.LENGTH_SHORT).show()
+            else
+                Toast.makeText(this, "All fields must be filled!!", Toast.LENGTH_SHORT).show()
         }
     }
 
+    fun register() {
+
+        val registerRequest: RegisterRequest = RegisterRequest(
+            email = et_email.text.toString(),
+            username = et_username.text.toString(),
+            password = et_password.text.toString()
+        )
+
+        val context: Context = this
+        apiClient.getUserService(context).register(registerRequest)
+            .enqueue(object : Callback<MessageResponse> {
+                override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
+                    if(response.isSuccessful) {
+                        val intent = Intent(context, LoginActivity::class.java)
+                        startActivity(intent)
+                    }
+
+                    if(response.code() == Constants.CODE_BAD_REQUEST)
+                        Toast.makeText(context, "Username is taken!", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                    Toast.makeText(context, "Registration failed!", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
 }
+

@@ -26,7 +26,7 @@ class  MainActivity : AppCompatActivity() {
 
     private fun setupGoToSignInButton(){
         btn_goToSignIn.setOnClickListener{
-            val intent = Intent (this, SigninActivity::class.java);
+            val intent = Intent (this, LoginActivity::class.java);
             startActivity(intent);
         };
     }

@@ -97,4 +97,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_headerBackground" />
 
+    <Button
+        android:id="@+id/btn_testRequest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test request"
+        app:layout_constraintBottom_toTopOf="@+id/btn_logoutTEMP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_headerBackground" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
