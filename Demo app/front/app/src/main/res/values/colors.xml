@@ -7,5 +7,6 @@
     <color name="black">#161E25</color>
     <color name="gray">#4D5C6B</color>
     <color name="white">#FFFFFF</color>
+    <color name="lavender">#D9DEEF</color>
     <color name="transparent">#00000000</color>
 </resources>
