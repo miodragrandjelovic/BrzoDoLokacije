@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+
+    android:background="@color/black"
+
+    tools:context=".activities.MainActivity">
+
+    <ImageView
+        android:id="@+id/iv_backlight"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="Backlight image"
+        android:scaleType="center"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/backlight"/>
+
+    <ImageView
+        android:id="@+id/iv_spotlightBack"
+
+        android:layout_width="0dp"
+        android:layout_height="550dp"
+
+        android:adjustViewBounds="true"
+        android:alpha="0.75"
+
+        android:contentDescription="Spotlight back image"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/spotlight_back"
+        tools:ignore="ImageContrastCheck" />
+
+    <ImageView
+        android:id="@+id/iv_earth"
+
+        android:layout_width="fill_parent"
+        android:layout_height="550dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="Earth image"
+
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_backlight"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/earth" />
+
+    <ImageView
+        android:id="@+id/iv_spotlightFront"
+        android:layout_width="0dp"
+        android:layout_height="700dp"
+
+        android:adjustViewBounds="true"
+        android:alpha="0.5"
+        android:contentDescription="Spotlight front image"
+        android:scaleType="centerInside"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_backlight"
+        app:srcCompat="@drawable/spotlight_front"
+        tools:ignore="ImageContrastCheck" />
+
+    <TextView
+        android:id="@+id/tv_title"
+
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+
+        android:fontFamily="@font/poppins_medium"
+
+        android:text="Lorem ipsum dolor sit."
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="26sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_info"
+
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+
+        android:fontFamily="@font/poppins"
+        android:text="Cursus tortor, consectetur viverra, lacus habitant nullam facilisi."
+        android:textAlignment="center"
+
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_goToRegister"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_goToRegister"
+
+        android:layout_width="350dp"
+        android:layout_height="70dp"
+        android:backgroundTint="@color/violet"
+
+        android:fontFamily="@font/poppins_medium"
+        android:text="Get Started"
+
+        android:textAlignment="center"
+        android:textAllCaps="false"
+
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_goToSignIn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextContrastCheck" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_goToSignIn"
+
+        android:layout_width="350dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="30dp"
+
+        android:backgroundTint="@color/white"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Sign In"
+
+        android:textAlignment="center"
+        android:textAllCaps="false"
+
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_backlight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="@color/red_l" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
