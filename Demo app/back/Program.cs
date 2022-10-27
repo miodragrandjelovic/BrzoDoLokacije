@@ -19,6 +19,15 @@ builder.Services.AddDbContext<Database>(options =>
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
+// CORS Configuration 
+builder.Services.AddCors(options =>
+    options.AddDefaultPolicy(builder =>
+    {
+        builder.WithOrigins("https://localhost:7231")
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    }
+));
 
 // Configure Authentication
 
@@ -79,6 +88,8 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseCors();
 
 app.MapControllers();
 
