@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/headerbackground" />
 
     <ImageView
-        android:id="@+id/iv_userAvatar"
+        android:id="@+id/iv_ownerAvatar"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="25dp"
@@ -30,41 +30,43 @@
         app:srcCompat="@drawable/avatarplaceholder" />
 
     <TextView
-        android:id="@+id/tv_username"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_ownerUsername"
+        android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_marginStart="10dp"
         android:fontFamily="@font/poppins_medium"
         android:text="Username"
         android:textColor="@color/white"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/iv_userStatus"
-        app:layout_constraintStart_toEndOf="@+id/iv_userAvatar"
+        app:layout_constraintBottom_toTopOf="@+id/iv_ownerStatus"
+        app:layout_constraintEnd_toStartOf="@+id/iv_settingsTEMP"
+        app:layout_constraintStart_toEndOf="@+id/iv_ownerAvatar"
         app:layout_constraintTop_toBottomOf="@+id/iv_headerBackground" />
 
     <TextView
         android:id="@+id/tv_userStatus"
-        android:layout_width="40dp"
+        android:layout_width="0dp"
         android:layout_height="17dp"
         android:layout_marginStart="2dp"
         android:fontFamily="@font/poppins_medium"
         android:text="Online"
         android:textColor="@color/white"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_userStatus"
-        app:layout_constraintStart_toEndOf="@+id/iv_userStatus"
-        app:layout_constraintTop_toTopOf="@+id/iv_userStatus" />
+        app:layout_constraintBottom_toBottomOf="@+id/iv_ownerStatus"
+        app:layout_constraintEnd_toStartOf="@+id/iv_settingsTEMP"
+        app:layout_constraintStart_toEndOf="@+id/iv_ownerStatus"
+        app:layout_constraintTop_toTopOf="@+id/iv_ownerStatus" />
 
     <ImageView
-        android:id="@+id/iv_userStatus"
+        android:id="@+id/iv_ownerStatus"
         android:layout_width="10dp"
         android:layout_height="10dp"
         android:layout_marginTop="4dp"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toTopOf="@+id/iv_headerBackground"
-        app:layout_constraintStart_toStartOf="@+id/tv_username"
-        app:layout_constraintTop_toBottomOf="@+id/tv_username"
+        app:layout_constraintStart_toStartOf="@+id/tv_ownerUsername"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ownerUsername"
         app:srcCompat="@drawable/userstatusonline" />
 
     <ImageView
@@ -92,19 +94,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Logout TEMP"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_navBarBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_navBarBackground" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_posts"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
         app:layout_constraintBottom_toTopOf="@+id/iv_navBarBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_headerBackground" />
 
     <Button
-        android:id="@+id/btn_testRequest"
+        android:id="@+id/btn_testAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Test request"
-        app:layout_constraintBottom_toTopOf="@+id/btn_logoutTEMP"
+        android:text="TEST ADD"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_headerBackground" />
+        app:layout_constraintStart_toEndOf="@+id/btn_logoutTEMP"
+        app:layout_constraintTop_toTopOf="@+id/iv_navBarBackground" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
