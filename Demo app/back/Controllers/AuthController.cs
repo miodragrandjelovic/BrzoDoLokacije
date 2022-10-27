@@ -41,6 +41,7 @@ namespace PyxisKapriBack.Controllers
                 Password = passwordHash,
                 PasswordKey = passwordKey,
                 Email = request.Email,
+                Role = userService.GetUserRole(),
                 CountryId = 1
 
             };
@@ -74,21 +75,6 @@ namespace PyxisKapriBack.Controllers
                     token = tokenString
             });
         }
-
-        [Authorize]
-        [HttpGet("test")]
-        public async Task<IActionResult> Test()
-        {
-            var loggedUser = userService.GetLoggedUser();
-            if (string.IsNullOrEmpty(loggedUser))
-                return Unauthorized("Korisnik nije prijavljen na sistem");
-
-            return Ok(new
-            {
-                message = loggedUser
-            });
-        }
-
 
     }
 }

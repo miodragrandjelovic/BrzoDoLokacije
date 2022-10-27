@@ -12,5 +12,9 @@ namespace PyxisKapriBack.Services.Interfaces
         string? GetLoggedUser();
         
         string? GetUserEmail();
+
+        string? GetRoleFromLoggedUser();
+        Role GetUserRole();
+
     }
 }

@@ -7,12 +7,15 @@ namespace PyxisKapriBack.Services
     public class UserService : IUserService
     {
         private readonly IUserDAL userDAL;
-        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public UserService(IUserDAL userDAL, IHttpContextAccessor httpContextAccessor)
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IRoleDAL roleDAL;
+
+        public UserService(IUserDAL userDAL, IHttpContextAccessor httpContextAccessor, IRoleDAL roleDAL)
         {
             this.userDAL = userDAL;
             this.httpContextAccessor = httpContextAccessor;
+            this.roleDAL = roleDAL;
         }
         public void AddNewUser(User user)
         {
@@ -26,6 +29,13 @@ namespace PyxisKapriBack.Services
             return loggedUser.Value;
         }
 
+        public string? GetRoleFromLoggedUser()
+        {
+            var role = httpContextAccessor.HttpContext.User.Claims.Where(c => c.Type == Constants.Constants.ROLE).FirstOrDefault();
+
+            return role.Value;
+        }
+
         public User? GetUser(string usernameOrEmail)
         {
             return userDAL.GetUser(usernameOrEmail);
@@ -36,6 +46,11 @@ namespace PyxisKapriBack.Services
             var userEmail = httpContextAccessor?.HttpContext?.User?.Claims.Where(c => c.Type == Constants.Constants.EMAIL).FirstOrDefault();
 
             return userEmail.Value;
+        }
+
+        public Role GetUserRole()
+        {
+            return roleDAL.GetUserRole();
         }
 
         public Task<bool> UserAlreadyExists(string username)

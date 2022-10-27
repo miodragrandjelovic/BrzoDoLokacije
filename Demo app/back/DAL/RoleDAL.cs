@@ -9,11 +9,11 @@ namespace PyxisKapriBack.DAL
         {
             _context = context;
         }
-        public string GetUserRole()
+        public Role GetUserRole()
         {
             var role = _context.Roles.Where(x => x.Name.Contains("user")).FirstOrDefault();
 
-            return role.Name; 
+            return role; 
         }
     }
 }

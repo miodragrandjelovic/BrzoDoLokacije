@@ -4,7 +4,7 @@ namespace PyxisKapriBack.DAL.Interfaces
 {
     public interface IRoleDAL
     {
-        public string GetUserRole(); 
+        public Role GetUserRole(); 
 
     }
 }
