@@ -22,5 +22,14 @@
         public Country Country { get; set; }
 
         #endregion
+
+        #region 'Role'
+
+        [ForeignKey("Role")]
+        public int? RoleId { get; set; } = Constants.ModelConstants.NULL_REFERENCE;
+
+        public Role Role { get; set; }
+
+        #endregion
     }
 }

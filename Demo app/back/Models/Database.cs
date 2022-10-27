@@ -31,6 +31,11 @@ namespace PyxisKapriBack.Models
             .HasForeignKey(user => user.CountryId)
             .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<User>()
+            .HasOne(user => user.Role)
+            .WithMany(role => role.Users)
+            .HasForeignKey(user => user.RoleId)
+            .OnDelete(DeleteBehavior.Cascade);
             #endregion
 
             #region 'Post Relationships'
@@ -50,11 +55,16 @@ namespace PyxisKapriBack.Models
             #endregion
         }
 
+        #region 'Database Datasets'
         public DbSet<User> Users { get; set; }
         public DbSet<Country> Countries{ get; set; }
         public DbSet<City> Cities { get; set; }
 
         public DbSet<Post> Posts { get; set; }
         public DbSet<Location> Locations { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
+
+        #endregion
     }
 }
