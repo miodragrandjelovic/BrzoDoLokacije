@@ -1,5 +1,5 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
-
+using PyxisKapriBack.DTOComponents; 
 namespace PyxisKapriBack.DAL
 {
     public class RoleDAL : IRoleDAL 
@@ -9,9 +9,11 @@ namespace PyxisKapriBack.DAL
         {
             _context = context;
         }
-        public Role GetUserRole()
+        public string GetUserRole()
         {
-            return _context.Roles.Where(x => x.Name.Contains("user")).FirstOrDefault(); 
+            var role = _context.Roles.Where(x => x.Name.Contains("user")).FirstOrDefault();
+
+            return role.Name; 
         }
     }
 }
