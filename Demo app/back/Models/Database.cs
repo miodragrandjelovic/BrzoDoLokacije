@@ -66,5 +66,28 @@ namespace PyxisKapriBack.Models
         public DbSet<Role> Roles { get; set; }
 
         #endregion
+
+        public void InsertDefaultValues()
+        {
+            Role administrator = Roles.Where(x => x.Name.Contains("admin")).FirstOrDefault();
+            if (administrator == null)
+            {
+                Roles.Add(new Role
+                {
+                    Name = "admin"
+                });
+                SaveChanges();
+            }
+
+            Role user = Roles.Where(x => x.Name.Contains("user")).FirstOrDefault();
+            if (administrator == null)
+            {
+                Roles.Add(new Role
+                {
+                    Name = "user"
+                });
+                SaveChanges();
+            }
+        }
     }
 }

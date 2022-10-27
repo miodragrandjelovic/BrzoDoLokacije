@@ -77,6 +77,7 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<Database>();
     context.Database.Migrate();
+    context.InsertDefaultValues(); 
 }
 
 // Configure the HTTP request pipeline.
