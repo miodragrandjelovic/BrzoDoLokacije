@@ -3,16 +3,16 @@ package com.example.pyxiskapri.activities
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.example.pyxiskapri.R
 import kotlinx.android.synthetic.main.activity_new_post.*
-import android.widget.ImageView
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.LayoutInflaterCompat.setFactory
-import androidx.core.view.size
+
 
 class NewPostActivity : AppCompatActivity() {
 
@@ -25,15 +25,12 @@ class NewPostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_post)
 
-        //text.text="Nesto"
-
-
         images = ArrayList()
 
         imageSwitcher.setFactory { ImageView(applicationContext) }
 
-     //   previousBtn.isEnabled=false
-      //  nextBtn.isEnabled=false
+        val animation: Animation = AnimationUtils.loadAnimation(this, android.R.anim.fade_in)
+        imageSwitcher.inAnimation = animation
 
         pickImagesBtn.setOnClickListener(){
             pickImagesIntent()
@@ -44,15 +41,12 @@ class NewPostActivity : AppCompatActivity() {
             {
                 position--
                 imageSwitcher.setImageURI(images!![position])
-              /*  if(position==0)
-                    previousBtn.isEnabled=false
+
+                if(position==0)
+                    previousBtn.isVisible=false
+
                 if(position<images!!.size-1)
-                    nextBtn.isEnabled=true
-*/
-            }
-            else
-            {
-                Toast.makeText(this,"No previous photos!",Toast.LENGTH_SHORT).show()
+                    nextBtn.isVisible=true
             }
         }
 
@@ -61,18 +55,36 @@ class NewPostActivity : AppCompatActivity() {
             {
                 position++
                 imageSwitcher.setImageURI(images!![position])
-               // previousBtn.isEnabled=true
-               /* if(position>0)
-                    previousBtn.isEnabled=true
-                if(position==images!!.size-1)
-                    nextBtn.isEnabled=false*/
 
-            }
-            else
-            {
-                Toast.makeText(this,"No following photos!",Toast.LENGTH_SHORT).show()
+                if(position>0)
+                    previousBtn.isVisible=true
+
+                if(position==images!!.size-1)
+                    nextBtn.isVisible=false
             }
         }
+
+        deleteBtn.setOnClickListener(){
+
+            images!!.removeAt(position)
+
+            if(position>0)
+            {
+                position--
+            }
+            if(images!!.size>0)
+                imageSwitcher.setImageURI(images!![position])
+            else
+            {
+                imageSwitcher.setImageURI(null)
+                deleteBtn.isVisible=false
+                previousBtn.isVisible=false
+                nextBtn.isVisible=false
+            }
+
+
+        }
+
 
     }
 
@@ -91,20 +103,28 @@ class NewPostActivity : AppCompatActivity() {
             val data: Intent? = result.data
 
             if (data!!.clipData != null) {
-                images!!.clear()
+                //images!!.clear()
                 val count = data.clipData!!.itemCount
                 for (i in 0 until count) {
                     val imageUri = data.clipData!!.getItemAt(i).uri
-                    images!!.add(imageUri)
+                    images!!.add(images!!.size,imageUri)
                 }
-
-                imageSwitcher.setImageURI(images!![0])
-                position = 0
             } else {
                 val imageUri = data.data
-                imageSwitcher.setImageURI(imageUri)
-                position = 0
+                images!!.add(images!!.size,imageUri)
+
             }
+
+            imageSwitcher.setImageURI(images!![0])
+            position = 0
+
+            deleteBtn.isVisible=true
+
+            previousBtn.isVisible=false
+            if(images!!.size<2)
+                nextBtn.isVisible=false
+            else
+                nextBtn.isVisible=true
 
 
         }
