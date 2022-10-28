@@ -14,6 +14,7 @@ class  MainActivity : AppCompatActivity() {
 
         setupGoToRegisterButton();
         setupGoToSignInButton();
+        setupGoToAddPostButton()
     }
 
 
@@ -27,6 +28,13 @@ class  MainActivity : AppCompatActivity() {
     private fun setupGoToSignInButton(){
         btn_goToSignIn.setOnClickListener{
             val intent = Intent (this, LoginActivity::class.java);
+            startActivity(intent);
+        };
+
+    }
+    private fun setupGoToAddPostButton() {
+        btn_goToAddPost.setOnClickListener {
+            val intent = Intent(this, NewPostActivity::class.java);
             startActivity(intent);
         };
     }
