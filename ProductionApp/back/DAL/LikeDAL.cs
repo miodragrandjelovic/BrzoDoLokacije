@@ -9,7 +9,7 @@ namespace PyxisKapriBack.DAL
         {
             _context = context;
         }
-        public void AddLike(Post PostID, User username)
+        public void AddLike(Post post, User user)
         {
             Like like = new Like();
         }

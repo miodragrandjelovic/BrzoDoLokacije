@@ -16,14 +16,14 @@ namespace PyxisKapriBack.Services
             postDAL.AddPost(post);
         }
 
-        public void DeletePost(Post post)
+        public void DeletePost(int postID)
         {
-            postDAL.DeletePost(post);
+            postDAL.DeletePost(postID);
         }
 
-        public Post GetPost(int PostID)
+        public Post GetPost(string username)
         {
-            return postDAL.GetPost(PostID);
+            return postDAL.GetPost(username);
         }
 
         public List<Post> GetPostsForLocation(int LocationID)
@@ -31,9 +31,9 @@ namespace PyxisKapriBack.Services
             return postDAL.GetPostsForLocation(LocationID);
         }
 
-        public List<Post> GetUserPosts(int UserID)
+        public List<Post> GetUserPosts(string username)
         {
-            return postDAL.GetUserPosts(UserID);
+            return postDAL.GetUserPosts(username);
         }
     }
 }

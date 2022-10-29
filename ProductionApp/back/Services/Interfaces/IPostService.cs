@@ -2,10 +2,10 @@
 {
     public interface IPostService
     {
-        List<Post> GetUserPosts(int UserID);
+        List<Post> GetUserPosts(string username);
         List<Post> GetPostsForLocation(int LocationID);
         void AddPost(Post post);
-        void DeletePost(Post post);
-        Post GetPost(int PostID);
+        void DeletePost(int postID);
+        Post GetPost(string username);
     }
 }
