@@ -6,49 +6,21 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="20dp"
     android:background="@drawable/background_panel"
+    android:backgroundTint="#A4A4A4"
     android:paddingLeft="20dp"
     android:paddingTop="10dp"
     android:paddingRight="20dp"
     android:paddingBottom="20dp">
 
-    <TextView
-        android:id="@+id/tv_postDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/poppins"
-        android:text="Nibh pellentesque accumsan sapien aliquet tortor. Nullam tisali u eleifend mi nunc bibendum malesuada volutpat et non. Quisque faucibus ullamcorper id non. Diam id mauris morbi sollicitudin er tortor adipiscing mi. Amet aliquam est quis interdum odio."
-        android:textColor="@color/black"
-        android:textSize="11sp"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ImageView
+        android:id="@+id/iv_ownerAvatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_ownerAvatar" />
-
-    <TextView
-        android:id="@+id/tv_postCreationDate"
-        android:layout_width="150dp"
-        android:layout_height="15dp"
-        android:fontFamily="@font/poppins_medium"
-        android:text="March 25th 2022"
-        android:textAlignment="textEnd"
-        android:textColor="@color/gray"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_userStatus"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_userStatus"
-        android:layout_width="0dp"
-        android:layout_height="17dp"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Online"
-        android:textAlignment="textStart"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_ownerStatus"
-        app:layout_constraintEnd_toStartOf="@+id/tv_postCreationDate"
-        app:layout_constraintStart_toEndOf="@+id/iv_ownerStatus"
-        app:layout_constraintTop_toTopOf="@+id/iv_ownerStatus" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/avatarplaceholder" />
 
     <TextView
         android:id="@+id/tv_ownerUsername"
@@ -64,7 +36,7 @@
         app:layout_constraintBottom_toTopOf="@+id/iv_ownerStatus"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_ownerAvatar"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/iv_ownerAvatar" />
 
     <ImageView
         android:id="@+id/iv_ownerStatus"
@@ -79,15 +51,44 @@
         app:srcCompat="@drawable/userstatusonline"
         tools:ignore="ImageContrastCheck" />
 
-    <ImageView
-        android:id="@+id/iv_ownerAvatar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_weight="1"
-        android:adjustViewBounds="true"
+    <TextView
+        android:id="@+id/tv_ownerStatus"
+        android:layout_width="0dp"
+        android:layout_height="17dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Online"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_ownerStatus"
+        app:layout_constraintEnd_toStartOf="@+id/tv_postCreationDate"
+        app:layout_constraintStart_toEndOf="@+id/iv_ownerStatus"
+        app:layout_constraintTop_toTopOf="@+id/iv_ownerStatus" />
+
+    <TextView
+        android:id="@+id/tv_postCreationDate"
+        android:layout_width="150dp"
+        android:layout_height="15dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="March 25th 2022"
+        android:textAlignment="textEnd"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_ownerStatus"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_postDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/poppins"
+        android:text="Nibh pellentesque accumsan sapien aliquet tortor. Nullam tisali u eleifend mi nunc bibendum malesuada volutpat et non. Quisque faucibus ullamcorper id non. Diam id mauris morbi sollicitudin er tortor adipiscing mi. Amet aliquam est quis interdum odio."
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/avatarplaceholder" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_ownerAvatar" />
 
     <ImageView
         android:id="@+id/iv_postImage"
@@ -116,19 +117,33 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_postImage"
         app:srcCompat="@drawable/like" />
 
+    <TextView
+        android:id="@+id/tv_like"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Like"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/tv_dislike"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_like" />
+
     <ImageView
-        android:id="@+id/iv_report"
+        android:id="@+id/iv_dislike"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_weight="1"
         android:adjustViewBounds="true"
         android:clickable="true"
         android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_follow"
-        app:layout_constraintEnd_toEndOf="@+id/tv_report"
-        app:layout_constraintStart_toStartOf="@+id/tv_report"
-        app:layout_constraintTop_toTopOf="@+id/iv_follow"
-        app:srcCompat="@drawable/report" />
+        app:layout_constraintBottom_toBottomOf="@+id/iv_like"
+        app:layout_constraintEnd_toEndOf="@+id/tv_dislike"
+        app:layout_constraintStart_toStartOf="@+id/tv_dislike"
+        app:layout_constraintTop_toTopOf="@+id/iv_like"
+        app:srcCompat="@drawable/dislike" />
 
     <TextView
         android:id="@+id/tv_dislike"
@@ -144,48 +159,6 @@
         app:layout_constraintStart_toEndOf="@+id/tv_like"
         app:layout_constraintTop_toTopOf="@+id/tv_like" />
 
-    <TextView
-        android:id="@+id/tv_follow"
-        android:layout_width="50dp"
-        android:layout_height="20dp"
-        android:layout_weight="1"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Follow"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_dislike"
-        app:layout_constraintEnd_toStartOf="@+id/tv_report"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tv_dislike"
-        app:layout_constraintTop_toTopOf="@+id/tv_dislike" />
-
-    <TextView
-        android:id="@+id/tv_like"
-        android:layout_width="50dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="4dp"
-        android:layout_weight="1"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Like"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toStartOf="@+id/tv_dislike"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_like" />
-
-    <TextView
-        android:id="@+id/tv_report"
-        android:layout_width="50dp"
-        android:layout_height="20dp"
-        android:layout_weight="1"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Report"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_follow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tv_follow"
-        app:layout_constraintTop_toTopOf="@+id/tv_follow" />
-
     <ImageView
         android:id="@+id/iv_follow"
         android:layout_width="30dp"
@@ -200,18 +173,46 @@
         app:layout_constraintTop_toTopOf="@+id/iv_dislike"
         app:srcCompat="@drawable/follow" />
 
+    <TextView
+        android:id="@+id/tv_follow"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Follow"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_dislike"
+        app:layout_constraintEnd_toStartOf="@+id/tv_report"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_dislike"
+        app:layout_constraintTop_toTopOf="@+id/tv_dislike" />
+
     <ImageView
-        android:id="@+id/iv_dislike"
+        android:id="@+id/iv_report"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_weight="1"
         android:adjustViewBounds="true"
         android:clickable="true"
         android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_like"
-        app:layout_constraintEnd_toEndOf="@+id/tv_dislike"
-        app:layout_constraintStart_toStartOf="@+id/tv_dislike"
-        app:layout_constraintTop_toTopOf="@+id/iv_like"
-        app:srcCompat="@drawable/dislike" />
+        app:layout_constraintBottom_toBottomOf="@+id/iv_follow"
+        app:layout_constraintEnd_toEndOf="@+id/tv_report"
+        app:layout_constraintStart_toStartOf="@+id/tv_report"
+        app:layout_constraintTop_toTopOf="@+id/iv_follow"
+        app:srcCompat="@drawable/report" />
+
+    <TextView
+        android:id="@+id/tv_report"
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Report"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_follow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_follow"
+        app:layout_constraintTop_toTopOf="@+id/tv_follow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
