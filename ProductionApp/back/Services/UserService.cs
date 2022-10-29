@@ -1,6 +1,7 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
 using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.Services.Interfaces;
+using System.Security.Claims;
 
 namespace PyxisKapriBack.Services
 {
@@ -24,16 +25,16 @@ namespace PyxisKapriBack.Services
 
         public string? GetLoggedUser()
         {
-            var loggedUser = httpContextAccessor?.HttpContext?.User?.Claims.Where(c => c.Type == Constants.Constants.USERNAME).FirstOrDefault();
+            var loggedUser = httpContextAccessor?.HttpContext?.User?.Identity?.Name;
 
-            return loggedUser.Value;
+            return loggedUser;
         }
 
         public string? GetRoleFromLoggedUser()
         {
-            var role = httpContextAccessor.HttpContext.User.Claims.Where(c => c.Type == Constants.Constants.ROLE).FirstOrDefault();
+            var role = httpContextAccessor.HttpContext?.User?.Claims?.Where(c => c.Type == ClaimTypes.Role).FirstOrDefault().Value;
 
-            return role.Value;
+            return role;
         }
 
         public User? GetUser(string usernameOrEmail)
@@ -43,9 +44,9 @@ namespace PyxisKapriBack.Services
 
         public string? GetUserEmail()
         {
-            var userEmail = httpContextAccessor?.HttpContext?.User?.Claims.Where(c => c.Type == Constants.Constants.EMAIL).FirstOrDefault();
+            var userEmail = httpContextAccessor?.HttpContext?.User?.Claims.Where(c => c.Type == ClaimTypes.Email).FirstOrDefault().Value;
 
-            return userEmail.Value;
+            return userEmail;
         }
 
         public Role GetUserRole()
