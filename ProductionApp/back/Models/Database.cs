@@ -96,6 +96,8 @@ namespace PyxisKapriBack.Models
         {
             InsertRoles();
             InsertCountries();
+            InsertCities();
+            InsertLocations(); 
         }
         #endregion
     }
