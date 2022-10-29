@@ -32,36 +32,16 @@ class HomeActivity : AppCompatActivity() {
         apiClient = ApiClient()
 
         setPostsRV()
-        setUserData()
-        setLogoutTEMPButton()
-        setTestAddButton()
 
+        postListAdapter.addPost()
+        postListAdapter.addPost()
+        postListAdapter.addPost()
     }
 
     private fun setPostsRV(){
         postListAdapter = PostListAdapter(mutableListOf())
         rv_posts.adapter = postListAdapter
         rv_posts.layoutManager = LinearLayoutManager(this)
-    }
-
-    private fun setTestAddButton(){
-        btn_testAdd.setOnClickListener {
-            postListAdapter.addPost()
-        }
-    }
-
-
-    private fun setUserData(){
-        val userData: UserData = sessionManager.fetchUserData() ?: return
-        tv_ownerUsername.text = userData.username
-    }
-
-    private fun setLogoutTEMPButton(){
-        btn_logoutTEMP.setOnClickListener{
-            sessionManager.clearToken()
-            val intent = Intent (this, MainActivity::class.java);
-            startActivity(intent);
-        }
     }
 
 }
