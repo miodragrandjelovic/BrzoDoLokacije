@@ -6,6 +6,6 @@
         List<Post> GetPostsForLocation(int LocationID);
         void AddPost(Post post);
         void DeletePost(int postID);
-        Post GetPost(string username);
+        Post GetPost(int PostID);
     }
 }

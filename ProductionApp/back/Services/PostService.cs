@@ -21,9 +21,9 @@ namespace PyxisKapriBack.Services
             postDAL.DeletePost(postID);
         }
 
-        public Post GetPost(string username)
+        public Post GetPost(int PostID)
         {
-            return postDAL.GetPost(username);
+            return postDAL.GetPost(PostID);
         }
 
         public List<Post> GetPostsForLocation(int LocationID)
