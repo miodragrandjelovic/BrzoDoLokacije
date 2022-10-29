@@ -7,5 +7,6 @@
         void AddPost(Post post);
         void DeletePost(int postID);
         Post GetPost(int PostID);
+        public void SetLikeOnPost(int postID);
     }
 }

@@ -6,10 +6,14 @@ namespace PyxisKapriBack.Services
     public class PostService : IPostService
     {
         private readonly IPostDAL postDAL;
+        private readonly ILikeService likeService;
+        private readonly IUserService userService;
 
-        public PostService(IPostDAL postDAL)
+        public PostService(IPostDAL postDAL, ILikeService likeService, IUserService userService)
         {
             this.postDAL = postDAL;
+            this.likeService = likeService;
+            this.userService = userService;
         }
         public void AddPost(Post post)
         {
@@ -34,6 +38,14 @@ namespace PyxisKapriBack.Services
         public List<Post> GetUserPosts(string username)
         {
             return postDAL.GetUserPosts(username);
+        }
+
+
+        public void SetLikeOnPost(int postID)
+        {
+            Post post = GetPost(postID);
+            likeService.AddLike(post, userService.GetLoggedUser());
+
         }
     }
 }

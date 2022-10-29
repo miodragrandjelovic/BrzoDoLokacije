@@ -13,7 +13,8 @@ namespace PyxisKapriBack.Services
             this.likeDAL = likeDAL;
             this.userService = userService;
         }
-        public void AddLike(Post post)
+
+        public void AddLike(Post post, string username)
         {
             likeDAL.AddLike(post, userService.GetLoggedUser());
         }
@@ -36,11 +37,6 @@ namespace PyxisKapriBack.Services
 
 
             return numberOfLikes;
-        }
-
-        public void UpdateLike(Like like)
-        {
-            likeDAL.UpdateLike(like);
         }
     }
 }
