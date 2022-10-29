@@ -5,7 +5,17 @@ namespace PyxisKapriBack.Models
     {
         private void InsertCountries()
         {
-            Country country = Countries.Where(x => x.Name.Contains("Srbija")).FirstOrDefault();
+            Country country = Countries.Where(x => x.Name.Contains(Constants.Constants.UNKNWOWN)).FirstOrDefault();
+            if (country == null)
+            {
+                Countries.Add(new Country
+                {
+                    Name = Constants.Constants.UNKNWOWN
+                });
+                SaveChanges();
+            }
+
+            country = Countries.Where(x => x.Name.Contains("Srbija")).FirstOrDefault();
             if (country == null)
             {
                 Countries.Add(new Country

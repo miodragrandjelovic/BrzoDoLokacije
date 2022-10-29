@@ -4,7 +4,18 @@
     {
         private void InsertRoles()
         {
-            Role role = Roles.Where(x => x.Name.Contains(Constants.Constants.ADMIN)).FirstOrDefault();
+            Role role = Roles.Where(x => x.Name.Contains(Constants.Constants.UNKNWOWN)).FirstOrDefault();
+            
+            if (role == null)
+            {
+                Roles.Add(new Role
+                {
+                    Name = Constants.Constants.UNKNWOWN
+                });
+                SaveChanges();
+            }
+
+            role = Roles.Where(x => x.Name.Contains(Constants.Constants.ADMIN)).FirstOrDefault();
             if (role == null)
             {
                 Roles.Add(new Role
