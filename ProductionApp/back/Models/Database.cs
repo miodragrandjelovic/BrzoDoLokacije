@@ -53,6 +53,21 @@ namespace PyxisKapriBack.Models
             .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
+
+            #region 'Like Relationships'
+
+            modelBuilder.Entity<Like>()
+           .HasOne(like => like.Post)
+           .WithMany(post => post.Likes)
+           .HasForeignKey(like => like.PostId)
+           .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Like>()
+            .HasOne(like => like.User)
+            .WithMany(user => user.Likes)
+            .HasForeignKey(like => like.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+            #endregion
         }
 
         #region 'Database Datasets'
@@ -65,6 +80,7 @@ namespace PyxisKapriBack.Models
 
         public DbSet<Role> Roles { get; set; }
 
+        public DbSet<Like> Likes { get; set; }
         #endregion
 
         #region 'Insert Data'

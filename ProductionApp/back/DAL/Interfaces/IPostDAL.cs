@@ -2,10 +2,11 @@
 {
     public interface IPostDAL
     {
-        List<Post> GetUserPosts(int UserID); 
-        List<Post> GetPostsForLocation(int LocationID);
         void AddPost(Post post);
-        void DeletePost(Post post);
-        Post GetPost(int PostID); 
+        void DeletePost(int PostID);
+        void UpdatePost(Post post);
+        Post GetPost(int PostID);
+        List<Post> GetUserPosts(String username);
+        List<Post> GetPostsForLocation(int LocationID);
     }
 }

@@ -13,6 +13,7 @@
         public string Email { get; set; } = string.Empty;
     
         public List<Post> Posts { get; set; }
+        public List<Like> Likes { get; set; }
 
         #region 'Country'
 

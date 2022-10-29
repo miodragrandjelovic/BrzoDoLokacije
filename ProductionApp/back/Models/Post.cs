@@ -11,6 +11,8 @@
 
         public string ImagePath { get; set; }
 
+        public List<Like> Likes { get; set; }
+
         #region 'User'
         public int UserId { get; set; }
         public User User { get; set; }

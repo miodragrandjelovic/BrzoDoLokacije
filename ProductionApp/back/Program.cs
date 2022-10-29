@@ -63,6 +63,7 @@ builder.Services.AddSwaggerGen(options => {
 builder.Services.AddTransient<IUserDAL, UserDAL>();
 builder.Services.AddTransient<IPostDAL, PostDAL>();
 builder.Services.AddTransient<IRoleDAL, RoleDAL>();
+builder.Services.AddTransient<ILikeDAL, LikeDAL>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
 builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();

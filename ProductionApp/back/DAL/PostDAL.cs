@@ -9,38 +9,39 @@ namespace PyxisKapriBack.DAL
         {
             _context = context;
         }
-
-        public List<Post> GetPostsForLocation(int LocationID)
-        {
-            return _context.Locations.Where(location => location.Id == LocationID).First().Posts.ToList();
-        }
-
-        public List<Post> GetUserPosts(int UserID)
-        {
-            return _context.Users.Where(user => user.Id == UserID).First().Posts.ToList();
-        }
-
         public void AddPost(Post post)
         {
             _context.Posts.Add(post);
-            _context.SaveChanges();
+            _context.SaveChanges(); 
+        }
+
+        public void DeletePost(int PostID)
+        {
+            Post post = _context.Posts.Find(PostID);
+            _context.Posts.Remove(post);
+            _context.SaveChanges(); 
+        }
+
+        public Post GetPost(int PostID)
+        {
+            return _context.Posts.Where(post => post.Id == PostID).FirstOrDefault(); 
         }
 
         public void UpdatePost(Post post)
         {
-            _context.Update(post);
-            _context.SaveChanges(); 
+            _context.Posts.Update(post);
+            _context.SaveChanges();
         }
 
-        public void DeletePost(Post post)
+        public List<Post> GetPostsForLocation(int LocationID)
         {
-            _context.Remove(post);
-            _context.SaveChanges(); 
+            return _context.Posts.Where(post => post.LocationId == LocationID).ToList(); 
         }
 
-        Post IPostDAL.GetPost(int PostID)
+        public List<Post> GetUserPosts(string username)
         {
-            return _context.Posts.Where(post => post.Id == PostID).First(); 
+            User user = _context.Users.Where(user => user.Username.Equals(username)).FirstOrDefault();
+            return _context.Posts.Where(post => post.UserId == user.Id).ToList(); 
         }
     }
 }
