@@ -54,6 +54,12 @@ namespace PyxisKapriBack.Services
             return roleDAL.GetUserRole();
         }
 
+        public bool UpdateUserRole(string userName)
+        {
+            //return userDAL.UpdateUserRole(userName);
+            return false;
+        }
+
         public Task<bool> UserAlreadyExists(string username)
         {
             return userDAL.UserAlreadyExists(username);

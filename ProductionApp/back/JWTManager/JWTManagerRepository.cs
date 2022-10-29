@@ -19,6 +19,8 @@ namespace PyxisKapriBack.JWTManager
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Username),
+                new Claim(Constants.Constants.FIRST_NAME, user.FirstName),  
+                new Claim(Constants.Constants.LAST_NAME, user.LastName),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Role.Name)
                 

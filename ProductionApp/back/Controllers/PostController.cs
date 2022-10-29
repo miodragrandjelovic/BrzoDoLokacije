@@ -37,10 +37,11 @@ namespace PyxisKapriBack.Controllers
         [HttpDelete("DeleteUserPost/{postId}")]
         public async Task<IActionResult> DeleteUserPost(int postId, string userName)
         {
-            bool success = postService.DeleteUserPost(postId, userName);
+            bool succeed = postService.DeleteUserPost(postId, userName);
 
-            var answer = new { message = success ? "Uspesno obrisan post!" : "Greska pri brisanju posta!" };
-
+            var answer = new { message = succeed ? "Uspesno obrisan post!" : "Greska pri brisanju posta!" };
+            if(!succeed)
+                return BadRequest(answer);
             return Ok(answer);
         }
         
