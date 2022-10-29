@@ -5,7 +5,7 @@ using PyxisKapriBack.Services.Interfaces;
 
 namespace PyxisKapriBack.Controllers
 {
-    [Authorize(Roles = "user,admin")]
+    [Authorize(Roles = "User,Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -17,7 +17,7 @@ namespace PyxisKapriBack.Controllers
             this.userService = userService;
         }
 
-        [Authorize(Roles ="admin")]
+        [Authorize(Roles ="Admin")]
         [HttpGet("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers()
         { 

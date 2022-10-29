@@ -42,7 +42,7 @@ namespace PyxisKapriBack.Controllers
                 PasswordKey = passwordKey,
                 Email = request.Email,
                 Role = userService.GetUserRole(),
-                CountryId = 1
+                CountryId = Constants.ModelConstants.DEFAULT
 
             };
             userService.AddNewUser(newUser);

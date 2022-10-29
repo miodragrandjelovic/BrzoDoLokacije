@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.Services.Interfaces;
 
 namespace PyxisKapriBack.Controllers
 {
-    [Authorize(Roles = "user,admin")]
+    [Authorize(Roles = "User,Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class PostController : ControllerBase
@@ -18,7 +19,12 @@ namespace PyxisKapriBack.Controllers
             this.userService = userService;
             this.postService = postService;
         }
-
+        [HttpPost("NewPost")]
+        public async Task<IActionResult> CreatePost(PostDTO post)
+        {
+            //postService.AddPost()
+            return Ok();
+        }
         [HttpGet("SetLike/{id}")]
         public async Task<IActionResult> SetLikeOnPost(int id)
         {
@@ -26,6 +32,12 @@ namespace PyxisKapriBack.Controllers
 
             return Ok();
 
+        }
+        [Authorize(Roles ="Admin")]
+        [HttpDelete("DeleteUserPost/{postId}")]
+        public async Task<IActionResult> DeleteUserPost(int postId, int userName)
+        {
+            return Ok();
         }
 
     }
