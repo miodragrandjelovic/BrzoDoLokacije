@@ -1,10 +1,13 @@
 ﻿using PyxisKapriBack.Models;
+
 namespace PyxisKapriBack.DTOComponents
 {
     public class UserDTO
     {
         public string Token { get; set; }
         public string Username { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Email { get; set; }
 
         // public string Country { get; set }
@@ -16,7 +19,10 @@ namespace PyxisKapriBack.DTOComponents
         public UserDTO(User user)
         {
             Username = user.Username;
+            FirstName = user.FirstName;
+            LastName = user.LastName;   
             Email = user.Email;
+            
         }
     }
 }

@@ -39,6 +39,8 @@ namespace PyxisKapriBack.Controllers
             User newUser = new User
             {
                 Username = request.Username,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
                 Password = passwordHash,
                 PasswordKey = passwordKey,
                 Email = request.Email,
