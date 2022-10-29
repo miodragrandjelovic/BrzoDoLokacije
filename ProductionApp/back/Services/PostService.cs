@@ -1,6 +1,9 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
 using PyxisKapriBack.Services.Interfaces;
 using PyxisKapriBack.Models;
+using PyxisKapriBack.DTOComponents;
+using System.Text;
+
 namespace PyxisKapriBack.Services
 {
     public class PostService : IPostService
@@ -15,9 +18,26 @@ namespace PyxisKapriBack.Services
             this.likeService = likeService;
             this.userService = userService;
         }
-        public void AddPost(Post post)
+
+        public void AddPost(PostDTO post)
         {
-            postDAL.AddPost(post);
+
+            var newPost = new Post();
+
+            newPost.CreatedDate = DateTime.Now;
+            newPost.User = userService.GetUser(userService.GetLoggedUser());
+            newPost.Description = post.Description;
+            newPost.LocationId = post.LocationId;   
+            
+            foreach(string image in post.Images)
+            {
+                Image newImage = new Image();
+                newImage.ImageData = Encoding.ASCII.GetBytes(image);
+                newPost.Images.Add(newImage);
+            }
+
+
+            postDAL.AddPost(newPost);
         }
 
         public void DeletePost(int postID)

@@ -22,8 +22,8 @@ namespace PyxisKapriBack.Controllers
         [HttpPost("NewPost")]
         public async Task<IActionResult> CreatePost(PostDTO post)
         {
-            //postService.AddPost()
-            return Ok();
+            postService.AddPost(post);
+            return Ok(); 
         }
         [HttpGet("SetLike/{id}")]
         public async Task<IActionResult> SetLikeOnPost(int id)
