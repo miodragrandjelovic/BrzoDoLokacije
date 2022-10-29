@@ -39,11 +39,5 @@ namespace PyxisKapriBack.DAL
             NumberOfLikes = likes.Count;
             return likes; 
         }
-
-        public void UpdateLike(Like Like)
-        {
-            _context.Likes.Update(Like);
-            _context.SaveChanges();
-        }
     }
 }
