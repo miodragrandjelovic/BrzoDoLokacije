@@ -5,13 +5,25 @@ namespace PyxisKapriBack.DAL
     public class LikeDAL : ILikeDAL
     {
         private Database _context; 
-        public LikeDAL(Database context)
+        private IUserDAL _iUserDAL;
+        public LikeDAL(Database context, IUserDAL iUserDAL)
         {
             _context = context;
+            _iUserDAL = iUserDAL;
         }
-        public void AddLike(Post post, User user)
+        public void AddLike(Post post, string username)
         {
-            Like like = new Like();
+            int userID = _iUserDAL.GetUser(username).Id;
+            int postID = post.Id; 
+
+            Like like = new Like()
+            {
+                PostId = postID,
+                UserId = userID 
+            };
+
+            _context.Likes.Add(like);
+            _context.SaveChanges(); 
         }
 
         public void DeleteLike(int LikeID)

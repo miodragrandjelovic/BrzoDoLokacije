@@ -5,9 +5,11 @@ namespace PyxisKapriBack.DAL
     public class PostDAL : IPostDAL
     {
         private readonly Database _context;
-        public PostDAL(Database context)
+        private readonly IUserDAL _iUserDAL; 
+        public PostDAL(Database context, IUserDAL iUserDAL)
         {
             _context = context;
+            _iUserDAL = iUserDAL;
         }
         public void AddPost(Post post)
         {
@@ -40,7 +42,7 @@ namespace PyxisKapriBack.DAL
 
         public List<Post> GetUserPosts(string username)
         {
-            User user = _context.Users.Where(user => user.Username.Equals(username)).FirstOrDefault();
+            User user = _iUserDAL.GetUser(username); 
             return _context.Posts.Where(post => post.UserId == user.Id).ToList(); 
         }
     }
