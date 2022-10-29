@@ -45,14 +45,23 @@ namespace PyxisKapriBack.Services
             postDAL.DeletePost(postID);
         }
 
-        public void DeletePostById(int postID)
+        public bool DeleteUserPost(int postID, string userName)
         {
-            throw new NotImplementedException();
-        }
+            var user = userService.GetUser(userName);
+            if(user == null)
+                return false;
+            
+            var post = postDAL.GetPost(postID);
+            if (post == null)
+                return false;
 
-        public void DeleteUserPost(int postID, int userName)
-        {
-            throw new NotImplementedException();
+            if (!user.Id.Equals(post.UserId))
+                return false;
+
+            postDAL.DeletePost(postID);
+
+            return true;
+
         }
 
         public Post GetPost(int PostID)
