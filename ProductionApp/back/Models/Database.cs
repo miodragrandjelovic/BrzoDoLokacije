@@ -68,19 +68,27 @@ namespace PyxisKapriBack.Models
             .HasForeignKey(like => like.UserId)
             .OnDelete(DeleteBehavior.Cascade);
             #endregion
+
+            #region 'Image Relationships'
+
+            modelBuilder.Entity<Image>()
+            .HasOne(image => image.Post)
+            .WithMany(post => post.Images)
+            .HasForeignKey(image => image.PostId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+            #endregion
         }
 
         #region 'Database Datasets'
         public DbSet<User> Users { get; set; }
         public DbSet<Country> Countries{ get; set; }
         public DbSet<City> Cities { get; set; }
-
         public DbSet<Post> Posts { get; set; }
         public DbSet<Location> Locations { get; set; }
-
         public DbSet<Role> Roles { get; set; }
-
         public DbSet<Like> Likes { get; set; }
+        public DbSet<Image> Images { get; set; }
         #endregion
 
         #region 'Insert Data'
