@@ -5,9 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.dtos.response.Post
+import com.example.pyxiskapri.models.Post
 import kotlinx.android.synthetic.main.item_post.view.*
-import java.time.LocalDate
 import java.util.*
 
 class PostListAdapter(private val postList: MutableList<Post>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
@@ -21,13 +20,13 @@ class PostListAdapter(private val postList: MutableList<Post>) : RecyclerView.Ad
         var currentPost = postList[position]
         holder.itemView.apply{
             tv_ownerUsername.text = currentPost.ownerUsername
-            tv_postCreationDate.text = currentPost.creationDate.toString()
-            tv_postDescription.text = currentPost.description
+            tv_likeCount.text = currentPost.likeCount.toString()
+            tv_viewCount.text = currentPost.viewCount.toString()
             // IMPLEMENT IMAGE
             // ===========================================================
-            iv_like.setColorFilter(R.color.gray)
-            iv_dislike.setColorFilter(R.color.gray)
-            iv_follow.setColorFilter(R.color.gray)
+            iv_like.setColorFilter(R.color.white)
+            iv_dislike.setColorFilter(R.color.white)
+            iv_follow.setColorFilter(R.color.white)
             iv_report.setColorFilter(R.color.red)
             // CLICK REDO
             // ==========================================================
@@ -39,16 +38,18 @@ class PostListAdapter(private val postList: MutableList<Post>) : RecyclerView.Ad
     }
 
     public fun addPost(){
-        postList.add(Post(
-            "TestOwnerUsername",
-            Calendar.getInstance().time,
-            "Nibh pellentesque TEST accumsan sapien aliquet tortor. TEST tisali u eleifend mi nunc bibendum malesuada volutpat et TEST non.",
-            "",
-            false,
-            false,
-            false,
-            false
-        ))
+        postList.add(
+            Post(
+                "TestOwnerUsername",
+                "img",
+                1234567,
+                1234567,
+                false,
+                false,
+                false,
+                false
+            )
+        )
         notifyItemInserted(postList.size - 1)
     }
 
