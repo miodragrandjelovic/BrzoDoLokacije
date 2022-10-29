@@ -1,5 +1,5 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
-using PyxisKapriBack.DTOComponents;
+using PyxisKapriBack.Models;
 using PyxisKapriBack.Services.Interfaces;
 using System.Security.Claims;
 

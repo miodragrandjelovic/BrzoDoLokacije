@@ -1,4 +1,5 @@
-﻿namespace PyxisKapriBack.Services.Interfaces
+﻿using PyxisKapriBack.Models;
+namespace PyxisKapriBack.Services.Interfaces
 {
     public interface ILikeService
     {

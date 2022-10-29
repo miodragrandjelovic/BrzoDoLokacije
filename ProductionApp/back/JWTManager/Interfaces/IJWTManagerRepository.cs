@@ -1,4 +1,5 @@
-﻿namespace PyxisKapriBack.JWTManager.Interfaces
+﻿using PyxisKapriBack.Models;
+namespace PyxisKapriBack.JWTManager.Interfaces
 {
     public interface IJWTManagerRepository
     {

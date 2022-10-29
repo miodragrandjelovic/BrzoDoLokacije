@@ -1,5 +1,5 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
-
+using PyxisKapriBack.Models;
 namespace PyxisKapriBack.DAL
 {
     public class UserDAL : IUserDAL

@@ -6,6 +6,7 @@ using PyxisKapriBack.Models.Interfaces;
 using PyxisKapriBack.Services.Interfaces;
 using PyxisKapriBack.DTOComponents;
 using System.Text.Json.Serialization;
+using PyxisKapriBack.Models;
 
 namespace PyxisKapriBack.Controllers
 {

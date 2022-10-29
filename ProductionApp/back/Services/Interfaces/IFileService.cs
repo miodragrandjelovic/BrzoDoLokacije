@@ -1,7 +1,8 @@
-﻿namespace PyxisKapriBack.Services.Interfaces
+﻿using System.Drawing; 
+namespace PyxisKapriBack.Services.Interfaces
 {
     public interface IFileService
     {
-        String GetUserFolderPath(String username); 
+        public byte[] ImageToByteArray(Image imageIn); 
     }
 }

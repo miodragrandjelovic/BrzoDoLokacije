@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
+using PyxisKapriBack.Models;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PyxisKapriBack.DAL;

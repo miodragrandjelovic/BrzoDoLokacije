@@ -3,6 +3,7 @@ using PyxisKapriBack.JWTManager.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using PyxisKapriBack.Models;
 
 namespace PyxisKapriBack.JWTManager
 {
