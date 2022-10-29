@@ -1,4 +1,5 @@
-﻿namespace PyxisKapriBack.DTOComponents
+﻿using PyxisKapriBack.Models;
+namespace PyxisKapriBack.DTOComponents
 {
     public class UserDTO
     {

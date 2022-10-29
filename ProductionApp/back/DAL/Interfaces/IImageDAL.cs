@@ -1,4 +1,5 @@
-﻿namespace PyxisKapriBack.DAL.Interfaces
+﻿using PyxisKapriBack.Models;
+namespace PyxisKapriBack.DAL.Interfaces
 {
     public interface IImageDAL
     {

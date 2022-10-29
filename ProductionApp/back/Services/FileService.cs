@@ -4,9 +4,13 @@ namespace PyxisKapriBack.Services
 {
     public class FileService : IFileService
     {
-        public string GetUserFolderPath(string username)
+        public byte[] ImageToByteArray(System.Drawing.Image imageIn)
         {
-            throw new NotImplementedException();
+            using (var ms = new MemoryStream())
+            {
+                imageIn.Save(ms, imageIn.RawFormat);
+                return ms.ToArray();
+            }
         }
     }
 }

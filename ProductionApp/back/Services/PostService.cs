@@ -1,6 +1,6 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
 using PyxisKapriBack.Services.Interfaces;
-
+using PyxisKapriBack.Models;
 namespace PyxisKapriBack.Services
 {
     public class PostService : IPostService
