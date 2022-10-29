@@ -18,7 +18,9 @@ namespace PyxisKapriBack.DAL
         public User? GetUser(string usernameOrEmail)
         {
             
-            User user = _context.Users.Where(x => x.Username.Equals(usernameOrEmail) || x.Email.Equals(usernameOrEmail)).Include(x => x.Role).FirstOrDefault();
+            User user = _context.Users.Where(x => x.Username.Equals(usernameOrEmail) || x.Email.Equals(usernameOrEmail)).Include(x => x.Role)
+                                                                                                                        .Include(x => x.Country).FirstOrDefault();
+   
            // user.Role = _context.Roles.Where(x => x.Id == user.RoleId).FirstOrDefault();
             return user; 
         }

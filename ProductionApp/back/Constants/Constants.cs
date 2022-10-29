@@ -10,5 +10,10 @@
         public const string EMAIL = "Email";
         public const string ROLE = "Role";
 
+        // Roles Constants 
+        public const string ADMIN     = "Admin"; 
+        public const string USER      = "User";
+        public const string MODERATOR = "Moderator"; 
+
     }
 }

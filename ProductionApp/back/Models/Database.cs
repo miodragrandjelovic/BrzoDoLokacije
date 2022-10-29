@@ -1,7 +1,7 @@
 ﻿using PyxisKapriBack.Constants; 
 namespace PyxisKapriBack.Models
 {
-    public class Database : DbContext
+    public partial class Database : DbContext
     {
         public Database(DbContextOptions<Database> options) : base(options) {
         }
@@ -67,37 +67,12 @@ namespace PyxisKapriBack.Models
 
         #endregion
 
+        #region 'Insert Data'
         public void InsertDefaultValues()
         {
-            Role role = Roles.Where(x => x.Name.Contains("admin")).FirstOrDefault();
-            if (role == null)
-            {
-                Roles.Add(new Role
-                {
-                    Name = "admin"
-                });
-                SaveChanges();
-            }
-
-            role = Roles.Where(x => x.Name.Contains("user")).FirstOrDefault();
-            if (role == null)
-            {
-                Roles.Add(new Role
-                {
-                    Name = "user"
-                });
-                SaveChanges();
-            }
-
-            role = Roles.Where(x => x.Name.Contains("moderator")).FirstOrDefault();
-            if (role == null)
-            {
-                Roles.Add(new Role
-                {
-                    Name = "moderator"
-                });
-                SaveChanges();
-            }
+            InsertRoles();
+            InsertCountries();
         }
+        #endregion
     }
 }
