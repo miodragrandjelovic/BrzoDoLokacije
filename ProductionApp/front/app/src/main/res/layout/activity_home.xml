@@ -4,121 +4,109 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#DADEEC"
+    android:background="#1F2125"
     tools:context=".activities.HomeActivity">
 
-    <ImageView
-        android:id="@+id/iv_headerBackground"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
+        android:layout_height="70dp"
+        android:layout_scrollFlags="scroll|enterAlways"
+        android:background="@drawable/headerbackground"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/headerbackground" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/iv_ownerAvatar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="25dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_headerBackground"
-        app:layout_constraintStart_toStartOf="@+id/iv_headerBackground"
-        app:layout_constraintTop_toTopOf="@+id/iv_headerBackground"
-        app:srcCompat="@drawable/avatarplaceholder" />
-
-    <TextView
-        android:id="@+id/tv_ownerUsername"
-        android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="10dp"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Username"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/iv_ownerStatus"
-        app:layout_constraintEnd_toStartOf="@+id/iv_settingsTEMP"
-        app:layout_constraintStart_toEndOf="@+id/iv_ownerAvatar"
-        app:layout_constraintTop_toBottomOf="@+id/iv_headerBackground" />
-
-    <TextView
-        android:id="@+id/tv_userStatus"
-        android:layout_width="0dp"
-        android:layout_height="17dp"
-        android:layout_marginStart="2dp"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Online"
-        android:textColor="@color/white"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_ownerStatus"
-        app:layout_constraintEnd_toStartOf="@+id/iv_settingsTEMP"
-        app:layout_constraintStart_toEndOf="@+id/iv_ownerStatus"
-        app:layout_constraintTop_toTopOf="@+id/iv_ownerStatus" />
-
-    <ImageView
-        android:id="@+id/iv_ownerStatus"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginTop="4dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerInside"
-        app:layout_constraintBottom_toTopOf="@+id/iv_headerBackground"
-        app:layout_constraintStart_toStartOf="@+id/tv_ownerUsername"
-        app:layout_constraintTop_toBottomOf="@+id/tv_ownerUsername"
-        app:srcCompat="@drawable/userstatusonline" />
-
-    <ImageView
-        android:id="@+id/iv_settingsTEMP"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginEnd="25dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_headerBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/iv_headerBackground"
-        app:srcCompat="@drawable/settingsbuttonround" />
+        <include layout="@layout/toolbar" />
+    </androidx.appcompat.widget.Toolbar>
 
     <ImageView
         android:id="@+id/iv_navBarBackground"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/navbarbackground" />
+        app:srcCompat="@drawable/navmenubackground" />
 
-    <Button
-        android:id="@+id/btn_logoutTEMP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logout TEMP"
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingEnd="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/iv_navBarBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/iv_navBarBackground" />
+        app:layout_constraintEnd_toEndOf="@+id/iv_navBarBackground"
+        app:layout_constraintStart_toStartOf="@+id/iv_navBarBackground"
+        app:layout_constraintTop_toTopOf="@+id/iv_navBarBackground">
+
+        <ImageView
+            android:id="@+id/btn_user"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/user" />
+
+        <ImageView
+            android:id="@+id/btn_discover"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/map" />
+
+        <ImageView
+            android:id="@+id/btn_home"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/home" />
+
+        <ImageView
+            android:id="@+id/btn_messages"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/messages" />
+
+        <ImageView
+            android:id="@+id/btn_notifications"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/notifications" />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_posts"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toTopOf="@+id/iv_navBarBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_headerBackground" />
-
-    <Button
-        android:id="@+id/btn_testAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TEST ADD"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_logoutTEMP"
-        app:layout_constraintTop_toTopOf="@+id/iv_navBarBackground" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
