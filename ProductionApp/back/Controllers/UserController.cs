@@ -26,9 +26,9 @@ namespace PyxisKapriBack.Controllers
 
         [Authorize(Roles ="Admin")]
         [HttpPut("UpdateUserRole/{username}")]
-        public async Task<IActionResult> UpdateRole(string username)
+        public async Task<IActionResult> UpdateRole(string username,string role)
         {
-            var succeed = userService.UpdateUserRole(username);
+            var succeed = userService.UpdateUserRole(username,role);
             var answer = new { message = succeed ? "Uspesno azurirani podaci!" : "Greska pri azuriranju podataka!" };
             if (!succeed)
                 return BadRequest(answer);

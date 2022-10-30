@@ -26,7 +26,7 @@ namespace PyxisKapriBack.DAL
 
         public bool UpdateUserRole(string username, string roleName)
         {
-            Role role = _roleDAL.GetRole(username);
+            Role role = _roleDAL.GetRole(roleName);
             User user = GetUser(username);
             user.RoleId = role.Id;
             if (_context.SaveChanges() == 1)

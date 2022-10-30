@@ -26,13 +26,13 @@ namespace PyxisKapriBack.DAL
 
         public Role GetUserRole()
         {
-            var role = _context.Roles.Where(x => x.Name.Contains(Constants.Constants.USER)).FirstOrDefault();
+            var role = _context.Roles.Where(x => x.Name.Equals(Constants.Constants.USER)).FirstOrDefault();
 
             return role; 
         }
         public Role GetRole(string roleName)
         {
-            var role = _context.Roles.Where(x => x.Name.Contains(roleName)).FirstOrDefault();
+            var role = _context.Roles.Where(x => x.Name.Equals(roleName)).FirstOrDefault();
 
             return role;
         }

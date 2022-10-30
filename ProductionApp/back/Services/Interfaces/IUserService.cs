@@ -16,7 +16,7 @@ namespace PyxisKapriBack.Services.Interfaces
         string? GetRoleFromLoggedUser();
         Role GetUserRole();
 
-        bool UpdateUserRole(string userName);
+        bool UpdateUserRole(string userName,string roleName);
 
     }
 }
