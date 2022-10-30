@@ -17,13 +17,18 @@ namespace PyxisKapriBack.DAL
 
         public User? GetUser(string usernameOrEmail)
         {
-            
             User user = _context.Users.Where(x => x.Username.Equals(usernameOrEmail) || x.Email.Equals(usernameOrEmail)).Include(x => x.Role)
                                                                                                                         .Include(x => x.Country).FirstOrDefault();
-   
-           // user.Role = _context.Roles.Where(x => x.Id == user.RoleId).FirstOrDefault();
             return user; 
         }
+
+        public void UpdateUserRole(string username, Role role)
+        {
+            User user = GetUser(username);
+            user.RoleId = role.Id;
+            _context.SaveChanges(); 
+        }
+
         public async Task<bool> UserAlreadyExists(string username)
         {
             return await _context.Users.AnyAsync(user => user.Username.Equals(username));
