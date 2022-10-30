@@ -5,9 +5,11 @@ namespace PyxisKapriBack.DAL
     public class UserDAL : IUserDAL
     {
         private readonly Database _context;
-        public UserDAL(Database context)
+        private IRoleDAL _roleDAL;
+        public UserDAL(Database context, IRoleDAL roleDAL)
         {
             _context = context; 
+            _roleDAL = roleDAL;
         }
         public void AddNewUser(User user)
         {
@@ -22,11 +24,14 @@ namespace PyxisKapriBack.DAL
             return user; 
         }
 
-        public void UpdateUserRole(string username, Role role)
+        public bool UpdateUserRole(string username, string roleName)
         {
+            Role role = _roleDAL.GetRole(username);
             User user = GetUser(username);
             user.RoleId = role.Id;
-            _context.SaveChanges(); 
+            if (_context.SaveChanges() == 1)
+                return true;
+            return false;
         }
 
         public async Task<bool> UserAlreadyExists(string username)

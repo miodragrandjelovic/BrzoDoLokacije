@@ -30,6 +30,11 @@ namespace PyxisKapriBack.DAL
 
             return role; 
         }
+        public Role GetRole(string roleName)
+        {
+            var role = _context.Roles.Where(x => x.Name.Contains(roleName)).FirstOrDefault();
 
+            return role;
+        }
     }
 }
