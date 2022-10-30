@@ -151,5 +151,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:rippleColor="@color/red_l" />
 
+    <Button
+        android:id="@+id/btn_goToAddPost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Post"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="100dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
