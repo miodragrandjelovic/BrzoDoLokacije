@@ -17,7 +17,4 @@ interface UserService {
 
     @POST("api/Auth/register")
     fun register(@Body requestBody: RegisterRequest) : Call<MessageResponse>
-
-    @GET("api/Auth/test")
-    fun test() : Call<MessageResponse>
 }

@@ -73,134 +73,173 @@
         app:srcCompat="@drawable/loginpanel" />
 
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="450dp"
-        android:orientation="vertical"
-        android:paddingStart="30dp"
-        android:paddingTop="20dp"
-        android:paddingEnd="30dp"
-        android:paddingBottom="20dp"
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/iv_loginPanel"
-        app:layout_constraintTop_toTopOf="@+id/iv_loginPanel">
-
-        <TextView
-            android:id="@+id/tv_newAccount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/poppins_medium"
-            android:lineSpacingExtra="-10dp"
-            android:text="New\nAccount"
-            android:textAlignment="viewStart"
-            android:textColor="@color/white"
-            android:textSize="26sp" />
-
-        <EditText
-            android:id="@+id/et_email"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/inputborder"
-            android:fontFamily="@font/poppins"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:paddingStart="10dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="5dp"
-            android:textColor="@color/gray"
-            android:textColorHint="@color/gray"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/et_username"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/inputborder"
-            android:fontFamily="@font/poppins"
-            android:hint="Username"
-            android:inputType="textPersonName"
-            android:paddingStart="10dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="5dp"
-            android:textColor="@color/gray"
-            android:textColorHint="@color/gray"
-            android:textSize="16sp" />
-
-        <EditText
-            android:id="@+id/et_password"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/inputborder"
-            android:fontFamily="@font/poppins"
-            android:hint="Password*"
-            android:inputType="textPassword"
-            android:paddingStart="10dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="5dp"
-            android:textColor="@color/gray"
-            android:textColorHint="@color/gray"
-            android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/poppins_medium"
-            android:text="*Password must be at least 8 characters long and contain at least one number and one capital letter."
-            android:textAllCaps="false"
-            android:textColor="@color/gray"
-            android:textSize="12sp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_goToRegister"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Register"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:cornerRadius="15dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/iv_loginPanel" >
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="30dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="20dp">
 
             <TextView
-                android:id="@+id/tv_alreadyHaveAnAccount"
+                android:id="@+id/tv_newAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/poppins_medium"
+                android:lineSpacingExtra="-10dp"
+                android:text="New\nAccount"
+                android:textAlignment="viewStart"
+                android:textColor="@color/white"
+                android:textSize="26sp" />
+
+            <EditText
+                android:id="@+id/et_firstName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/inputborder"
+                android:fontFamily="@font/poppins"
+                android:hint="First name"
+                android:inputType="textEmailAddress"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_lastName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/inputborder"
+                android:fontFamily="@font/poppins"
+                android:hint="Last name"
+                android:inputType="textEmailAddress"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_username"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/inputborder"
+                android:fontFamily="@font/poppins"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/inputborder"
+                android:fontFamily="@font/poppins"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_password"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/inputborder"
+                android:fontFamily="@font/poppins"
+                android:hint="Password*"
+                android:inputType="textPassword"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/gray"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:text="Already have an account? "
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="*Password must be at least 8 characters long and contain at least one number and one capital letter."
                 android:textAllCaps="false"
                 android:textColor="@color/gray"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_signInHere"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:fontFamily="@font/poppins_semibold"
-                android:padding="0dp"
-                android:text="SignIn here."
+                android:id="@+id/btn_goToRegister"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Register"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="14sp"
-                app:rippleColor="#00FFFFFF"
-                tools:ignore="TouchTargetSizeCheck" />
-        </LinearLayout>
+                android:textSize="16sp"
+                app:cornerRadius="15dp" />
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_alreadyHaveAnAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="Already have an account? "
+                    android:textAllCaps="false"
+                    android:textColor="@color/gray"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_signInHere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:padding="0dp"
+                    android:text="SignIn here."
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:rippleColor="#00FFFFFF"
+                    tools:ignore="TouchTargetSizeCheck" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
