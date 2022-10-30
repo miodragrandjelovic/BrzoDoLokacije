@@ -1,5 +1,6 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
 using PyxisKapriBack.Models;
+
 namespace PyxisKapriBack.DAL
 {
     public class RoleDAL : IRoleDAL 
@@ -35,6 +36,12 @@ namespace PyxisKapriBack.DAL
             var role = _context.Roles.Where(x => x.Name.Equals(roleName)).FirstOrDefault();
 
             return role;
+        }
+
+        public List<Role> GetAvailableRolesForUser(User user)
+        {
+            var roles = _context.Roles.Where(r => !r.Id.Equals(user.RoleId) && !r.Name.Equals(Constants.Constants.UNKNWOWN)).ToList();
+            return roles;
         }
     }
 }

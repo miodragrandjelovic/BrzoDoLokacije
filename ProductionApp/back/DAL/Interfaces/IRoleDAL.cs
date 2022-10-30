@@ -8,5 +8,7 @@ namespace PyxisKapriBack.DAL.Interfaces
         public Role GetAdministratorRole();
         public Role GetModeratorRole();
         public Role GetRole(string roleName);
+
+        List<Role> GetAvailableRolesForUser(User user);
     }
 }

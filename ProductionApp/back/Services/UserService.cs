@@ -23,6 +23,12 @@ namespace PyxisKapriBack.Services
             userDAL.AddNewUser(user);
         }
 
+        public List<Role> GetAvailableRolesForUser(string user)
+        {
+            var loggedUser = userDAL.GetUser(user);
+            return roleDAL.GetAvailableRolesForUser(loggedUser);
+        }
+
         public string? GetLoggedUser()
         {
             var loggedUser = httpContextAccessor?.HttpContext?.User?.Identity?.Name;

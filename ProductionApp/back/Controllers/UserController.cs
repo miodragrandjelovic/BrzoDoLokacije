@@ -34,6 +34,13 @@ namespace PyxisKapriBack.Controllers
                 return BadRequest(answer);
             return Ok(answer);
         }
+        [Authorize(Roles = "Admin")]
+        [HttpGet("GetaAvailableRoles/{username}")]
+        public async Task<IActionResult> GetaAvailableRoles(string username)
+        {
+            var availableRoles = userService.GetAvailableRolesForUser(username);
+            return Ok(availableRoles);
+        }
 
 
         [HttpGet("test")]

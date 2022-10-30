@@ -8,6 +8,7 @@ namespace PyxisKapriBack.DAL.Interfaces
         Task<bool> UserAlreadyExists(string username);
 
         User? GetUser(string username);
-        bool UpdateUserRole(string username, string roleName); 
+        bool UpdateUserRole(string username, string roleName);
+
     }
 }

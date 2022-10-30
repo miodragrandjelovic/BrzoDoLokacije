@@ -18,5 +18,7 @@ namespace PyxisKapriBack.Services.Interfaces
 
         bool UpdateUserRole(string userName,string roleName);
 
+        List<Role> GetAvailableRolesForUser(string user);
+
     }
 }
