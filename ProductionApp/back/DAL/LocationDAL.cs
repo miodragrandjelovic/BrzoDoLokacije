@@ -39,13 +39,7 @@ namespace PyxisKapriBack.DAL
         {
             locations.Clear();
             locations = _context.Locations.Where(location => location.Name.ToLower().Contains(filter.ToLower())).ToList();
-            if(locations.Count > 0)
-            {
-                if (locations.Count > Constants.Constants.TAKE_ELEMENT)
-                    return locations.Take(Constants.Constants.TAKE_ELEMENT).ToList();
-                return locations; 
-            }
-            return null; 
+            return locations.Take(Constants.Constants.TAKE_ELEMENT).ToList(); 
         }
 
         public List<Location> FilterLocationsByCity(string filter)
@@ -66,9 +60,9 @@ namespace PyxisKapriBack.DAL
         public List<Location> GetNextSetOfLocations(int take = Constants.Constants.TAKE_ELEMENT)
         {
             List<Location> subLocations = new List<Location>();
-            page++;
             for (int i = page*take; i < (page+1) * take; i++)
                 subLocations.Add(locations[i]);
+            page++;
             return subLocations; 
         }
 
