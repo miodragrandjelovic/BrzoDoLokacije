@@ -13,7 +13,12 @@
         // Roles Constants 
         public const string ADMIN     = "Admin"; 
         public const string USER      = "User";
-        public const string MODERATOR = "Moderator"; 
-        
+        public const string MODERATOR = "Moderator";
+
+        #region 'Error Messages'
+        public const string resNoFoundCountry = "Država nije pronađena";
+        public const string resDeleteFailed   = "Neuspešno brisanje {0}"; 
+        #endregion
+
     }
 }

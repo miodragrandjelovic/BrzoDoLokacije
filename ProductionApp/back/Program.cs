@@ -73,6 +73,11 @@ builder.Services.AddTransient<IPostDAL, PostDAL>();
 builder.Services.AddTransient<IRoleDAL, RoleDAL>();
 builder.Services.AddTransient<ILikeDAL, LikeDAL>();
 builder.Services.AddTransient<IImageDAL, ImageDAL>();
+
+builder.Services.AddTransient<ICountryDAL, CountryDAL>();
+builder.Services.AddTransient<ICityDAL, CityDAL>();
+builder.Services.AddTransient<ILocationDAL, LocationDAL>();
+
 builder.Services.AddTransient<IFileService, FileService>(); 
 
 builder.Services.AddTransient<IUserService, UserService>();

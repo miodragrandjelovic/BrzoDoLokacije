@@ -3,19 +3,19 @@ namespace PyxisKapriBack.Models
 {
     public partial class Database
     {
-        public Country InsertCountry(string CountryName)
+        public Country InsertCountry(string countryName)
         {
-            Country country = GetCountry(CountryName);
+            Country country = GetCountry(countryName);
             if (country == null)
             {
                 Countries.Add(new Country
                 {
-                    Name = CountryName
+                    Name = countryName
                 });
                 SaveChanges();
             }
 
-            return Countries.Where(x => x.Name.Equals(CountryName)).FirstOrDefault(); 
+            return GetCountry(countryName); 
         }
         public Country GetCountry(string name)
         {

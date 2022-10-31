@@ -5,6 +5,50 @@ namespace PyxisKapriBack.DAL
 {
     public class CountryDAL : ICountryDAL
     {
-        private Database _context; 
+        private Database _context;
+        public CountryDAL(Database context)
+        {
+            _context = context;
+        }
+        public bool AddCountry(string countryName)
+        {
+            if(_context.InsertCountry(countryName) != null)
+                return true;
+            return false;
+        }
+
+        public bool DeleteCountry(string countryName)
+        {
+            if (GetCountry(countryName) != null)
+            {
+                if (_context.Countries.Remove(GetCountry(countryName)) != null)
+                {
+                    _context.SaveChanges(); 
+                    return true;
+                }
+                throw new Exception(String.Format(Constants.Constants.resDeleteFailed, countryName));
+            }
+            else
+                throw new Exception(Constants.Constants.resNoFoundCountry);  
+        }
+
+        public List<Country> FilterCountries(string filter)
+        {
+            return _context.Countries.Where(country => country.Name.ToLower().Contains(filter.ToLower())).ToList(); 
+        }
+
+        public Country GetCountry(string countryName)
+        {
+            return _context.GetCountry(countryName);
+        }
+
+        public bool UpdateCountry(Country country)
+        {
+           if(_context.Countries.Update(country) != null){
+                _context.SaveChanges();
+                return true; 
+           }
+            return false; 
+        }
     }
 }
