@@ -4,27 +4,44 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.ImageGridAdapter
+import com.example.pyxiskapri.adapters.LocationListAdapter
 import com.example.pyxiskapri.models.ImageGridItem
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_new_post.*
 
 class NewPostActivity : AppCompatActivity() {
 
     private val PICK_IMAGES_CODE = 0
 
-    // Svi URI-jevi slika su u ovom adapteru unutar imageItems
+    lateinit var locationListAdapter: LocationListAdapter
     lateinit var imageGridAdapter: ImageGridAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_post)
 
+        setupLocationListAdapter()
+
         setupImageGridAdapter()
 
         setupPickImagesButton()
 
+        button2.setOnClickListener {
+            locationListAdapter.removeLocation()
+        }
+        button3.setOnClickListener {
+            locationListAdapter.addLocation()
+        }
+
+    }
+
+    private fun setupLocationListAdapter(){
+        locationListAdapter = LocationListAdapter(mutableListOf())
+        rv_locations.adapter = locationListAdapter
+        rv_locations.layoutManager = LinearLayoutManager(this)
     }
 
     private fun setupImageGridAdapter(){
