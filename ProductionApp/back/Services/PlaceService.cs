@@ -18,7 +18,7 @@ namespace PyxisKapriBack.Services
             return _iLocationDAL.FilterLocations(filter);
         }
 
-        public List<Location> GetNextSetOfLocations(int take = 5)
+        public List<Location> GetNextSetOfLocations(int take = Constants.Constants.TAKE_ELEMENT)
         {
             return _iLocationDAL.GetNextSetOfLocations(take);
         }
