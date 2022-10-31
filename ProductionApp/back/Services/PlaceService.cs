@@ -1,4 +1,5 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
+using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.Models;
 using PyxisKapriBack.Services.Interfaces;
 
@@ -13,9 +14,17 @@ namespace PyxisKapriBack.Services
             _iLocationDAL = iLocationDAL;
         }
 
-        public List<Location> FilterLocations(string filter)
+        public List<LocationDTO> FilterLocations(string filter)
         {
-            return _iLocationDAL.FilterLocations(filter);
+            var locationsDTO = new List<LocationDTO>();
+            var locations = _iLocationDAL.FilterLocations(filter);
+
+            foreach (var location  in locations)
+            {
+                locationsDTO.Add(new LocationDTO { Id = location.Id, Name = location.Name });
+            }
+
+            return locationsDTO;
         }
 
         public List<Location> GetNextSetOfLocations(int take = Constants.Constants.TAKE_ELEMENT)
