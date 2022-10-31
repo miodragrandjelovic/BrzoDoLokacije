@@ -6,8 +6,13 @@ namespace PyxisKapriBack.DAL
     public class LocationDAL : ILocationDAL
     {
         private Database _context;
-        private int page = 0; 
-        private List<Location> locations = new List<Location>();
+        private int page = 0;
+        private List<Location> locations;
+        public LocationDAL(Database context)
+        {
+            _context = context;
+        }
+
         public bool AddLocation(string locationName, string cityName, string countryName = Constants.Constants.UNKNWOWN)
         {
             var country = _context.GetCountry(countryName);
@@ -37,7 +42,6 @@ namespace PyxisKapriBack.DAL
 
         public List<Location> FilterLocations(string filter)
         {
-            locations.Clear();
             locations = _context.Locations.Where(location => location.Name.ToLower().Contains(filter.ToLower())).ToList();
             return locations.Take(Constants.Constants.TAKE_ELEMENT).ToList(); 
         }
