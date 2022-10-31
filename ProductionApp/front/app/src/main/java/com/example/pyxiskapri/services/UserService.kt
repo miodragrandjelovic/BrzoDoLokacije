@@ -1,6 +1,7 @@
 package com.example.pyxiskapri.services
 
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.example.pyxiskapri.dtos.request.NewPostRequest
 import com.example.pyxiskapri.dtos.request.RegisterRequest
 import com.example.pyxiskapri.dtos.request.response.LoginRequest
 import com.example.pyxiskapri.dtos.response.LoginResponse
@@ -17,4 +18,9 @@ interface UserService {
 
     @POST("api/Auth/register")
     fun register(@Body requestBody: RegisterRequest) : Call<MessageResponse>
+
+    //AddPost PROMENITI API
+    @POST("api/NewPost")
+    fun addPost(@Body requestBody: NewPostRequest) : Call<MessageResponse>
+
 }

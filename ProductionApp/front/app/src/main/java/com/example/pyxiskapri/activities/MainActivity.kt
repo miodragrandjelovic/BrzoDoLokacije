@@ -14,6 +14,12 @@ class  MainActivity : AppCompatActivity() {
 
         setupGoToRegisterButton();
         setupGoToSignInButton();
+
+        button.setOnClickListener{
+            val intent = Intent (this, NewPostActivity::class.java);
+            startActivity(intent);
+        };
+
     }
 
 
