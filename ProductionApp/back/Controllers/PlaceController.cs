@@ -17,13 +17,13 @@ namespace PyxisKapriBack.Controllers
             this.placeService = placeService;
         }
 
-        [HttpGet("FilterLocations")]
-        public async Task<IActionResult> FilterLocations(string location)
+        [HttpPost("FilterLocations")]
+        public async Task<IActionResult> FilterLocations([FromBody] string location)
         {
             var locations = placeService.FilterLocations(location);
             return Ok(locations);
         }
-        [HttpGet("GetNextLocations")]
+        [HttpPost("GetNextLocations")]
         public async Task<IActionResult> GetNextLocations(int amountOfLocations)
         {
             var locations = placeService.GetNextSetOfLocations(amountOfLocations);

@@ -19,8 +19,4 @@ interface UserService {
     @POST("api/Auth/register")
     fun register(@Body requestBody: RegisterRequest) : Call<MessageResponse>
 
-    //AddPost PROMENITI API
-    @POST("api/NewPost")
-    fun addPost(@Body requestBody: NewPostRequest) : Call<MessageResponse>
-
 }

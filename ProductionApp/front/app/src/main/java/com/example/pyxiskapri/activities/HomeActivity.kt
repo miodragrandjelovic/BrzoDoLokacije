@@ -35,9 +35,14 @@ class HomeActivity : AppCompatActivity() {
 
         setPostsRV()
 
-        postListAdapter.addPost()
-        postListAdapter.addPost()
-        postListAdapter.addPost()
+        setupButtonHome()
+    }
+
+    private fun setupButtonHome(){
+        btn_home.setOnClickListener {
+            val intent = Intent (this, NewPostActivity::class.java);
+            startActivity(intent);
+        }
     }
 
     private fun setPostsRV(){

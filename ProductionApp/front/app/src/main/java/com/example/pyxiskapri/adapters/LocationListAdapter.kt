@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.dtos.response.LocationResponse
 import com.example.pyxiskapri.models.LocationListItem
 import com.example.pyxiskapri.models.Post
 import kotlinx.android.synthetic.main.item_location.view.*
@@ -27,19 +28,11 @@ class LocationListAdapter(private val locationList: MutableList<LocationListItem
         return locationList.size
     }
 
-    public fun addLocation(){
-        locationList.add(
-            LocationListItem(
-                1234567,
-                "LocationSample"
-            )
-        )
-        notifyItemInserted(locationList.size - 1)
-    }
-
-    public fun removeLocation(){
-        locationList.removeLastOrNull()
-        notifyItemRemoved(locationList.size - 1)
+    public fun setLocations(locationResponseList: MutableList<LocationResponse>){
+        locationList.clear()
+        for(response: LocationResponse in locationResponseList)
+            locationList.add(LocationListItem(response))
+        notifyDataSetChanged()
     }
 
 }

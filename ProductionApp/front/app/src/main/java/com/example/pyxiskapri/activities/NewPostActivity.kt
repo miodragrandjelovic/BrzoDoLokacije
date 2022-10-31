@@ -20,15 +20,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 
 import com.example.pyxiskapri.dtos.request.NewPostRequest
+import com.example.pyxiskapri.dtos.response.LocationResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 
 import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
 import kotlinx.android.synthetic.main.activity_new_post.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 import java.util.*
@@ -39,37 +40,80 @@ class NewPostActivity : AppCompatActivity() {
     private val PICK_IMAGES_CODE = 0
     private val PICK_COVER_IMAGE_CODE = 1
 
+    private lateinit var sessionManager: SessionManager
+    private lateinit var apiClient: ApiClient
+
     lateinit var locationListAdapter: LocationListAdapter
     lateinit var imageGridAdapter: ImageGridAdapter
 
     lateinit var coverImage:Uri
     lateinit var images:ArrayList<ByteArray>
 
-    private lateinit var sessionManager: SessionManager
-    private lateinit var apiClient: ApiClient
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_post)
 
-
-        setupLocationListAdapter()
-
         sessionManager = SessionManager(this)
         apiClient = ApiClient()
 
-
         setupImageGridAdapter()
+        setupLocationListAdapter()
 
-        setupPickImagesButton()
-
+        setupSearchLocationButton()
         setupPickCoverImage()
+        setupPickImagesButton()
 
         setupAddPost()
 
-
     }
+
+    private fun setupSearchLocationButton() {
+        var context: Context = this
+        btn_searchLocation.setOnClickListener {
+            apiClient.getPlaceService(context)
+                .getLocationsByString(et_location.text.toString().trim())
+                .enqueue(object : Callback<MutableList<LocationResponse>> {
+
+                    override fun onResponse(
+                        call: Call<MutableList<LocationResponse>>,
+                        response: Response<MutableList<LocationResponse>>
+                    ) {
+                        if(response.isSuccessful)
+                            locationListAdapter.setLocations(response.body()!!)
+                    }
+
+                    override fun onFailure(
+                        call: Call<MutableList<LocationResponse>>,
+                        t: Throwable
+                    ) {
+                        TODO("Not yet implemented")
+                    }
+
+                })
+        }
+    }
+
+            /*apiClient.getUserService(context).login(loginRequest)
+                .enqueue(object : Callback<LoginResponse> {
+                    override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                        if(response.isSuccessful) {
+                            sessionManager.saveToken(response.body()?.token.toString())
+                            val intent = Intent(context, HomeActivity::class.java)
+                            startActivity(intent)
+                        }
+
+                        if(response.code() == Constants.CODE_NOT_FOUND)
+                            Toast.makeText(context, "User not found!", Toast.LENGTH_SHORT).show()
+                        if(response.code() == Constants.CODE_BAD_REQUEST)
+                            Toast.makeText(context, "Wrong password!", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                        Toast.makeText(context, "Login failed!", Toast.LENGTH_SHORT).show()
+                    }
+                })*/
+
 
     private fun setupLocationListAdapter(){
         locationListAdapter = LocationListAdapter(mutableListOf())
@@ -126,8 +170,7 @@ class NewPostActivity : AppCompatActivity() {
         )
 
         val context: Context = this
-
-        apiClient.getUserService(context).addPost(newPostRequest).enqueue(object :
+        apiClient.getPostService(context).addPost(newPostRequest).enqueue(object :
             Callback<MessageResponse> {
             override fun onResponse(
                 call: Call<MessageResponse>,

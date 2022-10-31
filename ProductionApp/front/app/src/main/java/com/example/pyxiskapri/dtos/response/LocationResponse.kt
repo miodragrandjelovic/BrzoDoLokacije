@@ -1,8 +1,8 @@
-package com.example.pyxiskapri.dtos.request
+package com.example.pyxiskapri.dtos.response
 
 import com.google.gson.annotations.SerializedName
 
-data class LocationRequest(
+data class LocationResponse(
     @SerializedName("Id")
     var id: Int,
     @SerializedName("Name")
