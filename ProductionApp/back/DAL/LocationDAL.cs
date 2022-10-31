@@ -60,9 +60,9 @@ namespace PyxisKapriBack.DAL
         public List<Location> GetNextSetOfLocations(int take = Constants.Constants.TAKE_ELEMENT)
         {
             List<Location> subLocations = new List<Location>();
+            page++;
             for (int i = page*take; i < (page+1) * take; i++)
                 subLocations.Add(locations[i]);
-            page++;
             return subLocations; 
         }
 
