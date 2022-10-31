@@ -13,8 +13,13 @@ namespace PyxisKapriBack.DAL
         public bool AddCity(string cityName, string countryName)
         {
             var country = _context.GetCountry(countryName);
+
             if (country == null)
                 country = _context.InsertCountry(countryName);
+
+            if (country == null)
+                throw new Exception(Constants.Constants.resNoFoundCountry); 
+
             if (_context.InsertCity(cityName, countryName) != null)
                 return true;
             return false;

@@ -16,9 +16,10 @@
         public const string MODERATOR = "Moderator";
 
         #region 'Error Messages'
-        public const string resNoFoundCountry = "Država nije pronađena";
-        public const string resNoFoundCity    = "Grad nije pronađen";
-        public const string resDeleteFailed   = "Neuspešno brisanje {0}"; 
+        public const string resNoFoundCountry  = "Država nije pronađena";
+        public const string resNoFoundCity     = "Grad nije pronađen";
+        public const string resNoFoundLocation = "Lokacija nije pronađena";
+        public const string resDeleteFailed    = "Neuspešno brisanje {0}"; 
         #endregion
 
     }
