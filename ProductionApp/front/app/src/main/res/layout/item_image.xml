@@ -34,6 +34,8 @@
                 android:layout_height="20dp"
                 android:layout_margin="5dp"
                 android:background="@drawable/ib_rounded"
+                android:clickable="true"
+                android:focusable="true"
                 android:scaleType="centerInside"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
