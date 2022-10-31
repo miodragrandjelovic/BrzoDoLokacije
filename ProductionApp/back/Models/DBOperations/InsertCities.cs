@@ -22,7 +22,7 @@
 
             return GetCity(CityName); 
         }
-        City GetCity(string CityName)
+        public City GetCity(string CityName)
         {
             return Cities.Where(x => x.Name.Equals(CityName)).FirstOrDefault();
         }

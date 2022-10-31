@@ -17,6 +17,7 @@
 
         #region 'Error Messages'
         public const string resNoFoundCountry = "Država nije pronađena";
+        public const string resNoFoundCity    = "Grad nije pronađen";
         public const string resDeleteFailed   = "Neuspešno brisanje {0}"; 
         #endregion
 

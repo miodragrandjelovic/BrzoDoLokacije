@@ -19,17 +19,16 @@ namespace PyxisKapriBack.DAL
 
         public bool DeleteCountry(string countryName)
         {
-            if (GetCountry(countryName) != null)
-            {
-                if (_context.Countries.Remove(GetCountry(countryName)) != null)
+            Country country = GetCountry(countryName); 
+            if (country != null)
+                if (_context.Countries.Remove(country) != null)
                 {
                     _context.SaveChanges(); 
                     return true;
                 }
                 throw new Exception(String.Format(Constants.Constants.resDeleteFailed, countryName));
-            }
-            else
-                throw new Exception(Constants.Constants.resNoFoundCountry);  
+
+            throw new Exception(Constants.Constants.resNoFoundCountry);  
         }
 
         public List<Country> FilterCountries(string filter)
