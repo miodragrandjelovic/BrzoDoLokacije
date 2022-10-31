@@ -40,20 +40,37 @@ namespace PyxisKapriBack.DAL
             throw new Exception(Constants.Constants.resNoFoundLocation);
         }
 
-        public List<Location> FilterLocations(string filter)
+        public List<Location> FilterLocationsByName(string filter)
         {
-            locations = _context.Locations.Where(location => location.Name.ToLower().Contains(filter.ToLower())).ToList();
+            List<Location> locations;
+            if (String.IsNullOrEmpty(filter))
+                locations = _context.Locations.Where(location => (!location.Name.Equals(Constants.Constants.UNKNWOWN))).ToList(); 
+            else
+                locations = _context.Locations.Where(location => (location.Name.ToLower().Contains(filter.ToLower())) &&
+                                                             (!location.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
             return locations.Take(Constants.Constants.TAKE_ELEMENT).ToList(); 
         }
 
         public List<Location> FilterLocationsByCity(string filter)
         {
-            return _context.Locations.Where(location => location.City.Name.ToLower().Contains(filter.ToLower())).ToList();
+            List<Location> locations;
+            if (String.IsNullOrEmpty(filter))
+                locations = _context.Locations.Where(location => (!location.City.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
+            else 
+                locations = _context.Locations.Where(location => location.City.Name.ToLower().Contains(filter.ToLower()) &&
+                                                             (!location.City.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
+            return locations;
         }
 
         public List<Location> FilterLocationsByCountry(string filter)
         {
-            return _context.Locations.Where(location => location.City.Country.Name.ToLower().Contains(filter.ToLower())).ToList();
+            List<Location> locations;
+            if (String.IsNullOrEmpty(filter))
+                locations = _context.Locations.Where(location => (!location.City.Country.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
+            else 
+                locations = _context.Locations.Where(location => location.City.Country.Name.ToLower().Contains(filter.ToLower()) &&
+                                                             (!location.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
+            return locations; 
         }
 
         public Location GetLocation(string locationName)
@@ -78,6 +95,23 @@ namespace PyxisKapriBack.DAL
                 return true;
             }
             return false;
+        }
+
+        public List<Location> FilterLocations(string filter)
+        {
+            var locationsByCountry = FilterLocationsByCountry(filter);
+            var locationsByCity = FilterLocationsByCity(filter);
+            var locationsByName = FilterLocationsByName(filter);
+            
+            var allLocations = new List<Location>(); 
+            foreach (var item in locationsByCountry)
+                allLocations.Add(item);
+            foreach (var item in locationsByCity)
+                allLocations.Add(item);
+            foreach (var item in locationsByName)
+                allLocations.Add(item);
+            locations = allLocations.Distinct().ToList();
+            return locations; 
         }
     }
 }
