@@ -6,7 +6,8 @@ namespace PyxisKapriBack.DAL
     public class LocationDAL : ILocationDAL
     {
         private Database _context;
-
+        private int page = 0; 
+        private List<Location> locations = new List<Location>();
         public bool AddLocation(string locationName, string cityName, string countryName = Constants.Constants.UNKNWOWN)
         {
             var country = _context.GetCountry(countryName);
@@ -36,7 +37,9 @@ namespace PyxisKapriBack.DAL
 
         public List<Location> FilterLocations(string filter)
         {
-            return _context.Locations.Where(location => location.Name.ToLower().Contains(filter.ToLower())).ToList(); 
+            locations.Clear();
+            locations = _context.Locations.Where(location => location.Name.ToLower().Contains(filter.ToLower())).ToList();
+            return locations.Take(Constants.Constants.TAKE_ELEMENT).ToList(); 
         }
 
         public List<Location> FilterLocationsByCity(string filter)
@@ -44,7 +47,7 @@ namespace PyxisKapriBack.DAL
             return _context.Locations.Where(location => location.City.Name.ToLower().Contains(filter.ToLower())).ToList();
         }
 
-        public List<Location> FIlterLocationsByCountry(string filter)
+        public List<Location> FilterLocationsByCountry(string filter)
         {
             return _context.Locations.Where(location => location.City.Country.Name.ToLower().Contains(filter.ToLower())).ToList();
         }
@@ -52,6 +55,15 @@ namespace PyxisKapriBack.DAL
         public Location GetLocation(string locationName)
         {
             return _context.GetLocation(locationName);
+        }
+
+        public List<Location> GetNextSetOfLocations(int take = Constants.Constants.TAKE_ELEMENT)
+        {
+            List<Location> subLocations = new List<Location>();
+            for (int i = page*take; i < (page+1) * take; i++)
+                subLocations.Add(locations[i]);
+            page++;
+            return subLocations; 
         }
 
         public bool UpdateLocation(Location location)

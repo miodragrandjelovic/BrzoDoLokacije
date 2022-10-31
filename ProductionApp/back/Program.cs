@@ -83,7 +83,7 @@ builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<ILikeService, LikeService>();
-
+builder.Services.AddTransient<IPlaceService, PlaceService>(); 
 builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
 builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();
 builder.Services.AddTransient<IHttpContextAccessor,HttpContextAccessor>();
