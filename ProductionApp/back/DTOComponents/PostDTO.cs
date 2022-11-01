@@ -1,11 +1,9 @@
-﻿namespace PyxisKapriBack.DTOComponents
+﻿namespace PyxisKapriBack.Models
 {
-    public class NewPostDTO
+    public class PostDTO
     {
         public string CoverImage { get; set; }
-        public List<string> Images { get;set; }
-        public int LocationId { get; set; }
-        public string Description { get; set; }
-
+        public int NumberOfLikes { get; set; } = 0;
+        public int NumberOfViews { get; set; } = 0;
     }
 }
