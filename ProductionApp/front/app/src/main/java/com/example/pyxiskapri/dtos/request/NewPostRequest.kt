@@ -6,16 +6,12 @@ import com.example.pyxiskapri.models.UserData
 import com.google.gson.annotations.SerializedName
 
 data class NewPostRequest (
-    @SerializedName("location")
-    var location: String,
-    @SerializedName("description")
-    var description: String,
     @SerializedName("coverImage")
-    var coverImage: ByteArray,
+    var coverImage: String,
     @SerializedName("images")
-    var images: ArrayList<ByteArray>,
-    @SerializedName("user")
-    var user: UserData
-
-
+    var images: ArrayList<String>,
+    @SerializedName("locationId")
+    var location: Int,
+    @SerializedName("description")
+    var description: String
 )

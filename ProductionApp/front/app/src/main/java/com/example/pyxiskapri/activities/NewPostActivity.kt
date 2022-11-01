@@ -35,8 +35,7 @@ import java.io.IOException
 import java.util.*
 
 
-class NewPostActivity : AppCompatActivity() {
-
+class NewPostActivity : AppCompatActivity(){
     private val PICK_IMAGES_CODE = 0
     private val PICK_COVER_IMAGE_CODE = 1
 
@@ -46,8 +45,9 @@ class NewPostActivity : AppCompatActivity() {
     lateinit var locationListAdapter: LocationListAdapter
     lateinit var imageGridAdapter: ImageGridAdapter
 
+    private var selectedLocationID: Int = -1
     lateinit var coverImage:Uri
-    lateinit var images:ArrayList<ByteArray>
+    var images:ArrayList<String> = arrayListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +66,11 @@ class NewPostActivity : AppCompatActivity() {
 
         setupAddPost()
 
+    }
+
+    private fun onLocationListItemClick(id: Int, name: String){
+        selectedLocationID = id
+        tv_selectedLocation.text = name
     }
 
     private fun setupSearchLocationButton() {
@@ -116,7 +121,7 @@ class NewPostActivity : AppCompatActivity() {
 
 
     private fun setupLocationListAdapter(){
-        locationListAdapter = LocationListAdapter(mutableListOf())
+        locationListAdapter = LocationListAdapter(mutableListOf()) { id, name -> onLocationListItemClick(id, name) }
         rv_locations.adapter = locationListAdapter
         rv_locations.layoutManager = LinearLayoutManager(this)
 
@@ -140,7 +145,7 @@ class NewPostActivity : AppCompatActivity() {
     private fun setupAddPost() {
          btn_addPost.setOnClickListener()
         {
-            if(et_location.text.toString()!="" && et_description.text.toString()!="" && iv_coverImage.drawable!=null)
+            if(tv_selectedLocation.text.toString().trim() != "" && selectedLocationID >= 0 && et_description.text.toString().trim() !="" && iv_coverImage.drawable!=null)
                 addPost()
             else
                 Toast.makeText(this, "You have to fill all the fields!", Toast.LENGTH_SHORT).show()
@@ -148,13 +153,11 @@ class NewPostActivity : AppCompatActivity() {
     }
 
     private fun addPost() {
-        val user=sessionManager.fetchUserData()
-
 
         for(imageGridItem in imageGridAdapter.imageItems)
         {
             var byteArray=readBytes(this,imageGridItem.uri)
-            images.add(byteArray!!)
+            images.add(byteArray!!.toString())
         }
 
 
@@ -162,11 +165,10 @@ class NewPostActivity : AppCompatActivity() {
 
 
         var newPostRequest= NewPostRequest(
-            location = et_location.text.toString(),
+            location = selectedLocationID,
             description = et_description.text.toString(),
-            coverImage= byteCoverImage!!,
+            coverImage= byteCoverImage!!.toString(),
             images=images,
-            user=user!!
         )
 
         val context: Context = this

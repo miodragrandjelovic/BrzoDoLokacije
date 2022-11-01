@@ -87,8 +87,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="Locations"
+                    android:text="Location"
                     android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_selectedLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/et_rounded"
+                    android:fontFamily="@font/poppins"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="5dp"
+                    android:textColor="#9AFFFFFF"
                     android:textSize="16sp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -200,18 +212,6 @@
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <Button
-                    android:id="@+id/button3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Add location" />
-
-                <Button
-                    android:id="@+id/button2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="RemoveLocation" />
 
 
             </LinearLayout>
