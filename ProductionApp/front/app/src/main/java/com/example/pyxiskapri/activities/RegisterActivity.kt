@@ -12,8 +12,10 @@ import com.example.pyxiskapri.R
 import com.example.pyxiskapri.dtos.request.RegisterRequest
 import com.example.pyxiskapri.dtos.response.LoginResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
+import com.example.pyxiskapri.utility.ActivityControl
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.Constants
+import com.example.pyxiskapri.utility.SessionManager
 import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_register.et_password
 import kotlinx.coroutines.CoroutineScope
@@ -31,11 +33,16 @@ import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
 class RegisterActivity : AppCompatActivity() {
+    private lateinit var sessionManager: SessionManager
     private lateinit var apiClient: ApiClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        sessionManager = SessionManager(this)
+
+        ActivityControl.handleUserSignedIn(this, sessionManager, null)
 
         apiClient = ApiClient()
 
@@ -43,6 +50,10 @@ class RegisterActivity : AppCompatActivity() {
         setupRegisterButton()
     }
 
+    override fun onRestart() {
+        super.onRestart();
+        ActivityControl.handleUserSignedIn(this, sessionManager, null)
+    }
 
     private fun setupGoToLoginButton(){
         btn_signInHere.setOnClickListener{

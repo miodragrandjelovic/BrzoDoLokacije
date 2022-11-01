@@ -13,6 +13,7 @@ import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import kotlinx.android.synthetic.main.activity_home.*
 import com.example.pyxiskapri.models.UserData
+import com.example.pyxiskapri.utility.ActivityControl
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import retrofit2.Call
@@ -30,6 +31,9 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         sessionManager = SessionManager(this)
+
+
+
         apiClient = ApiClient()
 
         setPostsRV()
@@ -37,11 +41,20 @@ class HomeActivity : AppCompatActivity() {
         fillPostsRV()
 
         setupButtonHome()
+        setupButtonNotifications()
     }
 
     override fun onRestart() {
         super.onRestart();
         fillPostsRV()
+    }
+
+    private fun setupButtonNotifications(){
+        btn_notifications.setOnClickListener {
+            sessionManager.clearToken()
+            val intent = Intent (this, MainActivity::class.java);
+            startActivity(intent);
+        }
     }
 
     private fun setupButtonHome(){

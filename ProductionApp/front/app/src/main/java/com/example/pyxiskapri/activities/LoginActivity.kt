@@ -3,12 +3,12 @@ package com.example.pyxiskapri.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.dtos.request.response.LoginRequest
 import com.example.pyxiskapri.dtos.response.LoginResponse
+import com.example.pyxiskapri.utility.ActivityControl
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
@@ -27,14 +27,19 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login);
 
         sessionManager = SessionManager(this)
+
+        ActivityControl.handleUserSignedIn(this, sessionManager, savedInstanceState)
+
         apiClient = ApiClient()
 
         setupGoToRegisterButton();
         setupSignInButton();
     }
 
-
-
+    override fun onRestart() {
+        super.onRestart();
+        ActivityControl.handleUserSignedIn(this, sessionManager, null)
+    }
 
 
     private fun setupGoToRegisterButton(){
