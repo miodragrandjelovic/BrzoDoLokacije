@@ -9,9 +9,8 @@
 
         public DateTime CreatedDate { get; set; }
 
-        public string ImagePath { get; set; } = string.Empty;
-
         public List<Like> Likes { get; set; } = new List<Like>();
+        public string CoverImage { get; set; } = string.Empty;
         public List<Image> Images { get; set; } = new List<Image>();
         #region 'User'
         public int UserId { get; set; }

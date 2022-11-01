@@ -19,7 +19,7 @@ namespace PyxisKapriBack.Services
             this.userService = userService;
         }
 
-        public void AddPost(PostDTO post)
+        public void AddPost(NewPostDTO post)
         {
 
             var newPost = new Post();
@@ -28,7 +28,7 @@ namespace PyxisKapriBack.Services
             newPost.User = userService.GetUser(userService.GetLoggedUser());
             newPost.Description = post.Description;
             newPost.LocationId = post.LocationId;   
-            
+            newPost.CoverImage = post.CoverImage;
             foreach(string image in post.Images)
             {
                 Image newImage = new Image();
@@ -74,9 +74,22 @@ namespace PyxisKapriBack.Services
             return postDAL.GetPostsForLocation(LocationID);
         }
 
-        public List<Post> GetUserPosts(string username)
+        public List<PostDTO> GetUserPosts(string username)
         {
-            return postDAL.GetUserPosts(username);
+            var posts = postDAL.GetUserPosts(username);
+            var postsDTO = new List<PostDTO>();
+
+            foreach (var post in posts)
+            {
+                postsDTO.Add(new PostDTO
+                {
+                    CoverImage = post.CoverImage,
+                    NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
+                    NumberOfViews = 0
+                });
+            }
+
+            return postsDTO;
         }
 
 

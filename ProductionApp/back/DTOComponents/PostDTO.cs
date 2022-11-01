@@ -1,6 +1,6 @@
 ﻿namespace PyxisKapriBack.DTOComponents
 {
-    public class PostDTO
+    public class NewPostDTO
     {
         public string CoverImage { get; set; }
         public List<string> Images { get;set; }

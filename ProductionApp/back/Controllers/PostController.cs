@@ -20,7 +20,7 @@ namespace PyxisKapriBack.Controllers
             this.postService = postService;
         }
         [HttpPost("NewPost")]
-        public async Task<IActionResult> CreatePost(PostDTO post)
+        public async Task<IActionResult> CreatePost(NewPostDTO post)
         {
             postService.AddPost(post);
             return Ok(); 
@@ -51,6 +51,11 @@ namespace PyxisKapriBack.Controllers
             postService.DeletePost(postId);
             return Ok();
         }
-
+        [HttpGet("GetUserPosts/{username}")]
+        public async Task<IActionResult> GetUserPosts(string username)
+        {
+            var posts = postService.GetUserPosts(username);
+            return Ok(posts);
+        }
     }
 }

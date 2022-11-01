@@ -29,11 +29,11 @@ namespace PyxisKapriBack.Services
             return likeDAL.GetLikes(postID, out numberOfLikes);
         }
 
-        public int GetNumberOfLikesByLikeID(int likeID)
+        public int GetNumberOfLikesByPostID(int postID)
         {
             int numberOfLikes = 0;
 
-            likeDAL.GetLikes(likeID, out numberOfLikes);
+            likeDAL.GetLikes(postID, out numberOfLikes);
 
 
             return numberOfLikes;
