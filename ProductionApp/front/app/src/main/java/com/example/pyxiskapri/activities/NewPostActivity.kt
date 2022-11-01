@@ -23,6 +23,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toFile
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 
 import com.example.pyxiskapri.dtos.request.NewPostRequest
 import com.example.pyxiskapri.dtos.response.LocationResponse
@@ -83,7 +84,7 @@ class NewPostActivity : AppCompatActivity(){
 
     private fun setupSearchLocationButton() {
         var context: Context = this
-        btn_searchLocation.setOnClickListener {
+        et_location.addTextChangedListener {
             apiClient.getPlaceService(context)
                 .getLocationsByString(et_location.text.toString().trim())
                 .enqueue(object : Callback<MutableList<LocationResponse>> {
