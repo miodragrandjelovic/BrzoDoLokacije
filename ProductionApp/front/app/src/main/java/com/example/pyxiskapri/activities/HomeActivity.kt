@@ -33,9 +33,15 @@ class HomeActivity : AppCompatActivity() {
         apiClient = ApiClient()
 
         setPostsRV()
+
         fillPostsRV()
 
         setupButtonHome()
+    }
+
+    override fun onRestart() {
+        super.onRestart();
+        fillPostsRV()
     }
 
     private fun setupButtonHome(){

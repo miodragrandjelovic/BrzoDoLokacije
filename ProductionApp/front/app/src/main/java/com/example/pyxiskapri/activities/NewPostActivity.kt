@@ -107,27 +107,6 @@ class NewPostActivity : AppCompatActivity(){
         }
     }
 
-            /*apiClient.getUserService(context).login(loginRequest)
-                .enqueue(object : Callback<LoginResponse> {
-                    override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                        if(response.isSuccessful) {
-                            sessionManager.saveToken(response.body()?.token.toString())
-                            val intent = Intent(context, HomeActivity::class.java)
-                            startActivity(intent)
-                        }
-
-                        if(response.code() == Constants.CODE_NOT_FOUND)
-                            Toast.makeText(context, "User not found!", Toast.LENGTH_SHORT).show()
-                        if(response.code() == Constants.CODE_BAD_REQUEST)
-                            Toast.makeText(context, "Wrong password!", Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                        Toast.makeText(context, "Login failed!", Toast.LENGTH_SHORT).show()
-                    }
-                })*/
-
-
     private fun setupLocationListAdapter(){
         locationListAdapter = LocationListAdapter(mutableListOf()) { id, name -> onLocationListItemClick(id, name) }
         rv_locations.adapter = locationListAdapter
@@ -138,17 +117,6 @@ class NewPostActivity : AppCompatActivity(){
     @Throws(IOException::class)
     private fun readBytes(context: Context, uri: Uri): ByteArray? =
         context.contentResolver.openInputStream(uri)?.buffered()?.use { it.readBytes() }
-
-    /*
-    private fun drawableToByteArray(d:Drawable):ByteArray{
-        val bitmap = (d as BitmapDrawable).bitmap
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-        return stream.toByteArray()
-    }
-
-
-     */
 
     private fun setupAddPost() {
          btn_addPost.setOnClickListener()
@@ -168,22 +136,11 @@ class NewPostActivity : AppCompatActivity(){
             images.add(byteArray!!.toString())
         }
 
-        //var byteCoverImage=readBytes(this,coverImage)
-
-        //var inputStream: InputStream = contentResolver.openInputStream(coverImage)!!
-        //var coverData: ByteArray = readBytes(this, inputStream)
-
         var bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), coverImage);
-
         var outputStream = ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         var byteArray = outputStream.toByteArray();
-
-        //Use your Base64 String as you wish
         var encodedString = android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
-
-
-        Log.d("CAVER IMAGE:", encodedString)
 
         var newPostRequest= NewPostRequest(
             location = selectedLocationID,
@@ -230,6 +187,7 @@ class NewPostActivity : AppCompatActivity(){
     }
 
     private fun setupPickCoverImage() {
+
         btn_coverImage.setOnClickListener(){
                 val intent: Intent = Intent()
                 intent.type = "image/*"
@@ -238,6 +196,13 @@ class NewPostActivity : AppCompatActivity(){
                 startActivityForResult(Intent.createChooser(intent, "Select Cover Images"), PICK_COVER_IMAGE_CODE)
             }
 
+        cl_coverImage.setOnClickListener(){
+            val intent: Intent = Intent()
+            intent.type = "image/*"
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select Cover Images"), PICK_COVER_IMAGE_CODE)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -170,9 +170,12 @@
                     android:textSize="16sp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_coverImage"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
-                    android:background="@drawable/et_rounded">
+                    android:background="@drawable/et_rounded"
+                    android:clickable="true"
+                    android:focusable="true">
 
 
                     <ImageView

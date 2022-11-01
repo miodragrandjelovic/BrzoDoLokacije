@@ -23,14 +23,23 @@ namespace PyxisKapriBack.Controllers
         public async Task<IActionResult> CreatePost(NewPostDTO post)
         {
             postService.AddPost(post);
-            return Ok(); 
+            return Ok(
+                new{
+                    message = "Uspesno dodat novi post"
+                }
+            );
         }
         [HttpGet("SetLike/{id}")]
         public async Task<IActionResult> SetLikeOnPost(int id)
         {
             postService.SetLikeOnPost(id);
 
-            return Ok();
+            return Ok(
+                new
+                {
+                    message = "Uspesno postavljen like"
+                }
+            );
 
         }
         [Authorize(Roles ="Admin")]
@@ -49,7 +58,12 @@ namespace PyxisKapriBack.Controllers
         public async Task<IActionResult> DeletePost(int postId)
         {
             postService.DeletePost(postId);
-            return Ok();
+            return Ok(
+                new
+                {
+                    message = "Uspesno obrisan post"
+                }
+            );
         }
         [HttpGet("GetUserPosts/{username}")]
         public async Task<IActionResult> GetUserPosts(string username)
