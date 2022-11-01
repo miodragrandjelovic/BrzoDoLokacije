@@ -3,9 +3,12 @@ package com.example.pyxiskapri.activities
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pyxiskapri.R
@@ -16,7 +19,9 @@ import com.example.pyxiskapri.models.ImageGridItem
 
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toFile
 import androidx.core.view.isVisible
 
 import com.example.pyxiskapri.dtos.request.NewPostRequest
@@ -26,11 +31,15 @@ import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
+import com.google.android.material.internal.ContextUtils.getActivity
 import kotlinx.android.synthetic.main.activity_new_post.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
+import java.io.InputStream
 
 import java.util.*
 
@@ -48,7 +57,6 @@ class NewPostActivity : AppCompatActivity(){
     private var selectedLocationID: Int = -1
     lateinit var coverImage:Uri
     var images:ArrayList<String> = arrayListOf()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,18 +168,32 @@ class NewPostActivity : AppCompatActivity(){
             images.add(byteArray!!.toString())
         }
 
+        //var byteCoverImage=readBytes(this,coverImage)
 
-        var byteCoverImage=readBytes(this,coverImage)
+        //var inputStream: InputStream = contentResolver.openInputStream(coverImage)!!
+        //var coverData: ByteArray = readBytes(this, inputStream)
 
+        var bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), coverImage);
+
+        var outputStream = ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        var byteArray = outputStream.toByteArray();
+
+        //Use your Base64 String as you wish
+        var encodedString = android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
+
+
+        Log.d("CAVER IMAGE:", encodedString)
 
         var newPostRequest= NewPostRequest(
             location = selectedLocationID,
             description = et_description.text.toString(),
-            coverImage= byteCoverImage!!.toString(),
+            coverImage= encodedString,
             images=images,
         )
 
         val context: Context = this
+
         apiClient.getPostService(context).addPost(newPostRequest).enqueue(object :
             Callback<MessageResponse> {
             override fun onResponse(
@@ -245,29 +267,22 @@ class NewPostActivity : AppCompatActivity(){
                 }
 
             }
-
+            imageGridAdapter.notifyDataSetChanged()
         }
-            else  {
+        if(requestCode == PICK_COVER_IMAGE_CODE)  {
 
-                    if (data!!.clipData != null) {
-                        //     val count = data.clipData!!.itemCount
-                        //      for(index in 0 until count){
-                        iv_coverImage.setImageURI(data.clipData!!.getItemAt(0).uri)
+                if (data!!.clipData != null) {
+                    iv_coverImage.setImageURI(data.clipData!!.getItemAt(0).uri)
+                    coverImage=data.clipData!!.getItemAt(0).uri
+                }
 
-                        coverImage=data.clipData!!.getItemAt(0).uri
-
-                        //    }
+                else {
+                    val imageUri = data.data
+                    if (imageUri != null) {
+                        iv_coverImage.setImageURI(imageUri)
+                        coverImage=imageUri
                     }
-
-                    // Single image chosen
-                    else {
-                        val imageUri = data.data
-                        if (imageUri != null) {
-                            iv_coverImage.setImageURI(imageUri)
-                            coverImage=imageUri
-                        }
-                    }
-
+                }
 
                 Log.d("",iv_coverImage.drawable.toString())
 
@@ -275,9 +290,6 @@ class NewPostActivity : AppCompatActivity(){
                 btn_coverImage.isVisible = false
 
             }
-
-
-        imageGridAdapter.notifyDataSetChanged()
     }
 
 }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.PostListAdapter
 import com.example.pyxiskapri.dtos.response.MessageResponse
+import com.example.pyxiskapri.dtos.response.PostResponse
 import kotlinx.android.synthetic.main.activity_home.*
 import com.example.pyxiskapri.models.UserData
 import com.example.pyxiskapri.utility.ApiClient
@@ -28,12 +29,11 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-
-
         sessionManager = SessionManager(this)
         apiClient = ApiClient()
 
         setPostsRV()
+        fillPostsRV()
 
         setupButtonHome()
     }
@@ -49,6 +49,23 @@ class HomeActivity : AppCompatActivity() {
         postListAdapter = PostListAdapter(mutableListOf())
         rv_posts.adapter = postListAdapter
         rv_posts.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun fillPostsRV(){
+
+        apiClient.getPostService(this).getUserPosts(sessionManager.fetchUserData()!!.username)
+            .enqueue(object : Callback<ArrayList<PostResponse>> {
+                override fun onResponse( call: Call<ArrayList<PostResponse>>, response: Response<ArrayList<PostResponse>>) {
+                    if(response.isSuccessful)
+                        postListAdapter.setPostList(sessionManager.fetchUserData()!!.username, response.body()!!)
+
+                }
+
+                override fun onFailure(call: Call<ArrayList<PostResponse>>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+
+            })
     }
 
 }
