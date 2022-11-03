@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.Services.Interfaces;
 
 namespace PyxisKapriBack.Controllers
@@ -43,18 +44,27 @@ namespace PyxisKapriBack.Controllers
         }
 
 
-        [HttpGet("test")]
-        public async Task<IActionResult> Test()
+        [HttpGet("GetUser")]
+        public async Task<IActionResult> GetUser()
         {
-            var loggedUser = userService.GetLoggedUser();
-            if (string.IsNullOrEmpty(loggedUser))
-                return Unauthorized("Korisnik nije prijavljen na sistem");
-
-            return Ok(new
-            {
-                message = loggedUser
-            });
+            var user = userService.GetUser();
+            if(user == null)
+                return NotFound();
+            return Ok(user);
         }
+
+        [HttpPut("UpdateUser")]
+        public async Task<IActionResult> UpdateUserCredentials(UserDTO user)
+        {
+            var succeed = userService.UpdateUser(user);
+
+            var message = new { message = succeed ? "Uspesno azurirani podaci!" : "Greska pri azuriranju podataka!" };
+            if(!succeed)
+                return BadRequest(message);
+            return Ok(message);
+        }
+
+
 
     }
 }

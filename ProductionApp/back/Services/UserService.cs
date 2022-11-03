@@ -1,4 +1,5 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
+using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.Models;
 using PyxisKapriBack.Services.Interfaces;
 using System.Security.Claims;
@@ -48,6 +49,24 @@ namespace PyxisKapriBack.Services
             return userDAL.GetUser(usernameOrEmail);
         }
 
+        public UserDTO? GetUser()
+        {
+            var user = GetUser(GetLoggedUser());
+            if(user == null)
+                return null;
+
+            var userDTO = new UserDTO
+            {
+                ProfileImage = null,
+                Username = user.Username,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+            };
+
+            return userDTO;
+        }
+
         public string? GetUserEmail()
         {
             var userEmail = httpContextAccessor?.HttpContext?.User?.Claims.Where(c => c.Type == ClaimTypes.Email).FirstOrDefault().Value;
@@ -58,6 +77,12 @@ namespace PyxisKapriBack.Services
         public Role GetUserRole()
         {
             return roleDAL.GetUserRole();
+        }
+
+        public bool UpdateUser(UserDTO user)
+        {
+            //return userDAL.UpdateUser(user);
+            return false;
         }
 
         public bool UpdateUserRole(string userName,string roleName)
