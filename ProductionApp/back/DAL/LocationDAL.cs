@@ -1,4 +1,5 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
+using PyxisKapriBack.LocationManager.Interfaces;
 using PyxisKapriBack.Models;
 
 namespace PyxisKapriBack.DAL
@@ -6,6 +7,7 @@ namespace PyxisKapriBack.DAL
     public class LocationDAL : ILocationDAL
     {
         private Database _context;
+        private ILocationManager _locationManagaer; 
         private int page = 0;
         private List<Location> locations;
         public LocationDAL(Database context)
@@ -112,6 +114,11 @@ namespace PyxisKapriBack.DAL
                 allLocations.Add(item);
             locations = allLocations.Distinct().ToList();
             return locations; 
+        }
+
+        public List<Location> GetAllAroundLocations(Location location)
+        {
+            return null; 
         }
     }
 }

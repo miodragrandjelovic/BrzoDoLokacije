@@ -11,6 +11,8 @@ using PyxisKapriBack.Services;
 using PyxisKapriBack.Services.Interfaces;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
+using PyxisKapriBack.LocationManager;
+using PyxisKapriBack.LocationManager.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,8 +80,8 @@ builder.Services.AddTransient<ICountryDAL, CountryDAL>();
 builder.Services.AddTransient<ICityDAL, CityDAL>();
 builder.Services.AddTransient<ILocationDAL, LocationDAL>();
 
-builder.Services.AddTransient<IFileService, FileService>(); 
-
+builder.Services.AddTransient<IFileService, FileService>();
+builder.Services.AddTransient<ILocationManager, LocationManager>(); 
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<ILikeService, LikeService>();

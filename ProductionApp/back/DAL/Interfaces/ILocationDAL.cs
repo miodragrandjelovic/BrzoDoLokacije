@@ -12,6 +12,7 @@ namespace PyxisKapriBack.DAL.Interfaces
         public List<Location> FilterLocationsByCity(string filter);
         public List<Location> FilterLocationsByCountry(string filter);
         public List<Location> FilterLocationsByName(string filter); 
-        public List<Location> GetNextSetOfLocations(int take = Constants.Constants.TAKE_ELEMENT); 
+        public List<Location> GetNextSetOfLocations(int take = Constants.Constants.TAKE_ELEMENT);
+        public List<Location> GetAllAroundLocations(Location location); 
     }
 }
