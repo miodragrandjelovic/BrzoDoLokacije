@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
-    android:background="#23262B"
+    android:background="@color/gray"
     tools:context=".activities.HomeActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -12,6 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:background="@drawable/headerbackground"
+        android:elevation="100dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,6 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
+        android:elevation="100dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,6 +37,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:elevation="100dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="20dp"
@@ -45,14 +48,15 @@
         app:layout_constraintTop_toTopOf="@+id/iv_navBarBackground">
 
         <ImageView
-            android:id="@+id/btn_user"
+            android:id="@+id/btn_newPost"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:clickable="true"
             android:focusable="true"
-            app:srcCompat="@drawable/user" />
+            app:srcCompat="@drawable/addimage"
+            app:tint="@color/gray" />
 
         <ImageView
             android:id="@+id/btn_discover"
@@ -62,7 +66,8 @@
             android:adjustViewBounds="true"
             android:clickable="true"
             android:focusable="true"
-            app:srcCompat="@drawable/map" />
+            app:srcCompat="@drawable/map"
+            app:tint="@color/gray" />
 
         <ImageView
             android:id="@+id/btn_home"
@@ -72,7 +77,8 @@
             android:adjustViewBounds="true"
             android:clickable="true"
             android:focusable="true"
-            app:srcCompat="@drawable/home" />
+            app:srcCompat="@drawable/home"
+            app:tint="@color/red" />
 
         <ImageView
             android:id="@+id/btn_messages"
@@ -82,7 +88,8 @@
             android:adjustViewBounds="true"
             android:clickable="true"
             android:focusable="true"
-            app:srcCompat="@drawable/messages" />
+            app:srcCompat="@drawable/messages"
+            app:tint="@color/gray" />
 
         <ImageView
             android:id="@+id/btn_notifications"
@@ -92,16 +99,15 @@
             android:adjustViewBounds="true"
             android:clickable="true"
             android:focusable="true"
-            app:srcCompat="@drawable/notifications" />
+            app:srcCompat="@drawable/notifications"
+            app:tint="@color/gray" />
 
     </LinearLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
         app:layout_constraintBottom_toTopOf="@+id/iv_navBarBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +116,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#00000000">
+            android:background="@color/transparent">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
@@ -123,27 +129,124 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tv_peopleYouFollow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
-                        android:text="People you follow"
-                        android:textColor="@color/white"
-                        android:textSize="20sp" />
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@drawable/followedusersbackground"
                         android:orientation="horizontal">
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:orientation="horizontal"></LinearLayout>
+                        android:layout_height="30dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        >
+
+                        <LinearLayout
+                            android:id="@+id/btn_categoryPopular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/ib_rounded"
+                            android:backgroundTint="@color/red"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:layout_marginEnd="5dp">
+
+                            <ImageView
+                                android:id="@+id/iv_categoryPopular"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="3dp"
+                                android:adjustViewBounds="true"
+                                app:srcCompat="@drawable/popular" />
+
+                            <TextView
+                                android:id="@+id/tv_categoryPopular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:layout_gravity="left|center_vertical"
+                                android:fontFamily="@font/poppins"
+                                android:gravity="center_vertical"
+                                android:text="Popular"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/btn_categoryTrending"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/ib_rounded"
+                            android:backgroundTint="@color/dark_gray"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:layout_marginEnd="5dp">
+
+                            <ImageView
+                                android:id="@+id/iv_categoryTrending"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginEnd="3dp"
+                                android:adjustViewBounds="true"
+                                app:srcCompat="@drawable/star"/>
+
+                            <TextView
+                                android:id="@+id/tv_categoryTrending"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:layout_gravity="left|center_vertical"
+                                android:fontFamily="@font/poppins"
+                                android:gravity="center_vertical"
+                                android:text="Trending"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/btn_categoryFollowing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/ib_rounded"
+                            android:backgroundTint="@color/dark_gray"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:layout_marginEnd="5dp">
+
+                            <ImageView
+                                android:id="@+id/iv_categoryFollowing"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:layout_marginEnd="3dp"
+                                android:adjustViewBounds="true"
+                                app:srcCompat="@drawable/following"/>
+
+                            <TextView
+                                android:id="@+id/tv_categoryFollowing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:layout_gravity="left|center_vertical"
+                                android:fontFamily="@font/poppins"
+                                android:gravity="center_vertical"
+                                android:text="Trending"
+                                android:textColor="@color/white" />
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -155,13 +258,14 @@
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:fillViewport="true"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_posts"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:layout_marginTop="10dp"
                 app:layout_constraintBottom_toTopOf="@+id/iv_navBarBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
