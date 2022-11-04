@@ -93,6 +93,27 @@ namespace PyxisKapriBack.Models
             .HasForeignKey(dislike => dislike.UserId)
             .OnDelete(DeleteBehavior.Cascade);
             #endregion
+
+            #region 'Comment Relationships'
+
+            modelBuilder.Entity<Comment>()
+           .HasOne(comment => comment.Post)
+           .WithMany(post => post.Comments)
+           .HasForeignKey(comment => comment.PostId)
+           .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Comment>()
+            .HasOne(comment => comment.User)
+            .WithMany(user => user.Comments)
+            .HasForeignKey(comment => comment.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Comment>()
+            .HasOne(comment => comment.CommentParent)
+            .WithMany(parent => parent.Replies)
+            .HasForeignKey(comment => comment.CommentParentId)
+            .OnDelete(DeleteBehavior.Cascade);
+            #endregion
         }
 
         #region 'Database Datasets'
@@ -105,6 +126,7 @@ namespace PyxisKapriBack.Models
         public DbSet<Like> Likes { get; set; }
         public DbSet<Dislike> Dislikes { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         #endregion
 
         #region 'Insert Data'
