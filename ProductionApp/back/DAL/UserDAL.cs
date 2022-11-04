@@ -1,5 +1,6 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
 using PyxisKapriBack.Models;
+
 namespace PyxisKapriBack.DAL
 {
     public class UserDAL : IUserDAL
@@ -20,10 +21,24 @@ namespace PyxisKapriBack.DAL
         public User? GetUser(string usernameOrEmail)
         {
             User user = _context.Users.Where(x => x.Username.Equals(usernameOrEmail) || x.Email.Equals(usernameOrEmail)).Include(x => x.Role)
-                                                                                                                        .Include(x => x.Country).FirstOrDefault();
+                                                                                                                        .Include(x => x.Country)
+                                                                                                                        .FirstOrDefault();
             return user; 
         }
 
+        public bool UpdateUser(User user)
+        {
+            _context.Users.Update(user);
+            if (_context.SaveChanges() == 1)
+                return true;
+            return false; 
+        }
+
+        public void DeleteUser(int userID)
+        {
+            _context.Users.Remove(_context.Users.Where(x => x.Id == userID).FirstOrDefault());
+            _context.SaveChanges(); 
+        }
         public bool UpdateUserRole(string username, string roleName)
         {
             Role role = _roleDAL.GetRole(roleName);
@@ -38,5 +53,6 @@ namespace PyxisKapriBack.DAL
         {
             return await _context.Users.AnyAsync(user => user.Username.Equals(username));
         }
+
     }
 }
