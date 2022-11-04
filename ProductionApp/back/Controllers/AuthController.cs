@@ -14,45 +14,23 @@ namespace PyxisKapriBack.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserService userService;
-        private readonly IEncryptionManager encryptionManager;
-        private readonly IJWTManagerRepository jwtManager;
+        private readonly IAuthService authService;
 
-        public AuthController(IUserService userService, IEncryptionManager encryptionManager, IJWTManagerRepository jWTManager)
+        public AuthController(IAuthService authService)
         {
-            this.userService = userService;
-            this.encryptionManager = encryptionManager;
-            this.jwtManager = jWTManager;
+            this.authService = authService;
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Regitser(RegisterDTO request)
         {
-            Console.WriteLine(request.Username + " " + request.Password);
-            byte[] passwordHash, passwordKey;
-            if (await userService.UserAlreadyExists(request.Username))
-                return BadRequest("Vec postoji korisnik sa unetim nickom");
+            var answer = authService.Register(request).Result;
+            var message = new {message = answer.Message};
+            if (answer.StatusCode.Equals(StatusCodes.Status400BadRequest))
+                return BadRequest(message);
 
-            encryptionManager.EncryptPassword(request.Password, out passwordHash, out passwordKey);
-
-            User newUser = new User
-            {
-                Username = request.Username,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Password = passwordHash,
-                PasswordKey = passwordKey,
-                Email = request.Email,
-                Role = userService.GetUserRole(),
-                CountryId = Constants.ModelConstants.DEFAULT
-
-            };
-            userService.AddNewUser(newUser);
-
-            return Ok(new {
-                message = "Uspesno registrovan korisnik " + newUser.Username
-            });
+            return Ok(message);
         }
 
         
@@ -62,21 +40,16 @@ namespace PyxisKapriBack.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO request)
         {
+            var answer = authService.Login(request).Result;
+            var message = new { message = answer.Message };
 
-            var user = userService.GetUser(request.UsernameOrEmail);
-            if (user == null)
-                return NotFound("Korisnik ne postoji");
+            if (answer.StatusCode.Equals(StatusCodes.Status404NotFound))
+                return NotFound(message);
+            if (answer.StatusCode.Equals(StatusCodes.Status403Forbidden))
+                return BadRequest(message);
 
-            if (!encryptionManager.DecryptPassword(request.Password, user.Password, user.PasswordKey))
-                return BadRequest("Pogresna lozinka");
+            return Ok(message);
 
-
-            var tokenString = jwtManager.GenerateToken(user);
-            
-            return Ok(
-                new{
-                    token = tokenString
-            });
         }
 
     }

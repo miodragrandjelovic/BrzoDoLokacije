@@ -80,6 +80,7 @@ builder.Services.AddTransient<ICountryDAL, CountryDAL>();
 builder.Services.AddTransient<ICityDAL, CityDAL>();
 builder.Services.AddTransient<ILocationDAL, LocationDAL>();
 
+builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddTransient<ILocationManager, LocationManager>(); 
 builder.Services.AddTransient<IUserService, UserService>();
