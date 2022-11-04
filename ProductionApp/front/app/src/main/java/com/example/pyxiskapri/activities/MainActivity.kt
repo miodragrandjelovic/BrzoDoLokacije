@@ -21,6 +21,17 @@ class  MainActivity : AppCompatActivity() {
 
         setupGoToRegisterButton();
         setupGoToSignInButton();
+
+
+        setupGoToUserProfileButton();
+
+    }
+
+    private fun setupGoToUserProfileButton() {
+        button11.setOnClickListener{
+            val intent = Intent (this, UserProfileActivity::class.java);
+            startActivity(intent);
+        };
     }
 
 

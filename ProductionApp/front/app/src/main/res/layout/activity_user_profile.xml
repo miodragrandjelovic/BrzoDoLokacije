@@ -37,15 +37,38 @@
             >
 
 
-            <ImageView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/imageView"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="30dp"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/avatarplaceholder" />
+                app:cardCornerRadius="5000dp"
+                >
+
+                <ImageView
+                    android:id="@+id/imageViewReal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/avatarplaceholder" />
+
+
+            </androidx.cardview.widget.CardView>
+
+
+            <ImageButton
+                android:id="@+id/ib_change_photo"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:src="@android:drawable/ic_menu_edit"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="@+id/imageView" />
 
 
             <TextView
@@ -137,8 +160,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="7dp"
+                        android:layout_height="40dp"
                         android:orientation="horizontal"
                         >
                         <!--android:gravity="center"-->
@@ -158,6 +180,7 @@
 
                             />
                         <TextView
+
                             android:id="@+id/tv_first_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -167,7 +190,23 @@
                             android:textColor="@color/white"
                             android:text="Petar"
 
+
+
                             />
+
+                        <EditText
+                            android:id="@+id/et_first_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textSize="16dp"
+                            android:textColor="@color/white"
+                            android:hint="Write your first name here"
+                            android:paddingBottom="7.5dp"
+                            android:visibility="gone"
+                            />
+
 
                         <View
                             android:layout_width="0dp"
@@ -182,12 +221,23 @@
                             android:scaleType="centerInside"
                             android:src="@android:drawable/ic_menu_edit" />
 
+
+                        <ImageButton
+                            android:id="@+id/ib_first_name_confirm"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:background="@null"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/checkmark_24"
+                            android:visibility="gone"
+                            />
+
+
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="7dp"
+                        android:layout_height="40dp"
                         android:orientation="horizontal"
                         >
                         <!--android:gravity="center"-->
@@ -214,6 +264,18 @@
 
                             />
 
+                        <EditText
+                            android:id="@+id/et_last_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textSize="16dp"
+                            android:textColor="@color/white"
+                            android:hint="Write your last name here"
+                            android:paddingBottom="7.5dp"
+                            android:visibility="gone"/>
+
                         <View
                             android:layout_width="0dp"
                             android:layout_height="0dp"
@@ -227,13 +289,23 @@
                             android:scaleType="centerInside"
                             android:src="@android:drawable/ic_menu_edit" />
 
+                        <ImageButton
+                            android:id="@+id/ib_last_name_confirm"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:background="@null"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/checkmark_24"
+                            android:visibility="gone"
+                            />
+
                     </LinearLayout>
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="7dp">
+                        android:layout_height="40dp"
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -258,6 +330,20 @@
 
                             />
 
+
+                        <EditText
+                            android:id="@+id/et_username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textSize="16dp"
+                            android:textColor="@color/white"
+                            android:hint="Write your username here"
+                            android:paddingBottom="7.5dp"
+                            android:visibility="gone"/>
+
+
                         <View
                             android:layout_width="0dp"
                             android:layout_height="0dp"
@@ -271,12 +357,23 @@
                             android:scaleType="centerInside"
                             android:src="@android:drawable/ic_menu_edit" />
 
+
+                        <ImageButton
+                            android:id="@+id/ib_username_confirm"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:background="@null"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/checkmark_24"
+                            android:visibility="gone"
+                            />
+
+
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="7dp"
+                        android:layout_height="40dp"
                         >
 
                         <TextView
@@ -302,6 +399,21 @@
 
                             />
 
+
+                        <EditText
+                            android:id="@+id/et_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textSize="16dp"
+                            android:textColor="@color/white"
+                            android:hint="Write your new email here"
+                            android:paddingBottom="7.5dp"
+                            android:visibility="gone"/>
+
+
+
                         <View
                             android:layout_width="0dp"
                             android:layout_height="0dp"
@@ -314,6 +426,17 @@
                             android:background="@null"
                             android:scaleType="centerInside"
                             android:src="@android:drawable/ic_menu_edit" />
+
+                        <ImageButton
+                            android:id="@+id/ib_email_confirm"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:background="@null"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/checkmark_24"
+                            android:visibility="gone"
+                            />
+
 
                     </LinearLayout>
 
