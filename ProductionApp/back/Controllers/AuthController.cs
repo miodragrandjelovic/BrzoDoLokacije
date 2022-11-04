@@ -48,7 +48,7 @@ namespace PyxisKapriBack.Controllers
             if (answer.StatusCode.Equals(StatusCodes.Status403Forbidden))
                 return BadRequest(message);
 
-            return Ok(message);
+            return Ok(new {token = message.message});
 
         }
 

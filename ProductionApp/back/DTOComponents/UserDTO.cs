@@ -4,7 +4,7 @@ namespace PyxisKapriBack.DTOComponents
 {
     public class UserDTO
     {
-        public IFormFile ProfileImage { get; set; }
+        public string ProfileImage { get; set; }
         public string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string FirstName { get; set; } = string.Empty;

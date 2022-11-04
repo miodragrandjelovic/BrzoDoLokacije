@@ -1,6 +1,7 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
 using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.Models;
+using PyxisKapriBack.Models.Interfaces;
 using PyxisKapriBack.Services.Interfaces;
 using System.Security.Claims;
 
@@ -12,12 +13,14 @@ namespace PyxisKapriBack.Services
 
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IRoleDAL roleDAL;
+        private readonly IEncryptionManager manager;
 
-        public UserService(IUserDAL userDAL, IHttpContextAccessor httpContextAccessor, IRoleDAL roleDAL)
+        public UserService(IUserDAL userDAL, IHttpContextAccessor httpContextAccessor, IRoleDAL roleDAL,IEncryptionManager manager)
         {
             this.userDAL = userDAL;
             this.httpContextAccessor = httpContextAccessor;
             this.roleDAL = roleDAL;
+            this.manager = manager;
         }
         public void AddNewUser(User user)
         {
@@ -49,23 +52,7 @@ namespace PyxisKapriBack.Services
             return userDAL.GetUser(usernameOrEmail);
         }
 
-        public UserDTO? GetUser()
-        {
-            var user = GetUser(GetLoggedUser());
-            if(user == null)
-                return null;
-
-            var userDTO = new UserDTO
-            {
-                ProfileImage = null,
-                Username = user.Username,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-            };
-
-            return userDTO;
-        }
+        
 
         public string? GetUserEmail()
         {
@@ -81,8 +68,20 @@ namespace PyxisKapriBack.Services
 
         public bool UpdateUser(UserDTO user)
         {
-            //return userDAL.UpdateUser(user);
-            return false;
+            
+            var loggedUser = userDAL.GetUser(GetLoggedUser());
+
+            if (!manager.DecryptPassword(user.Password, loggedUser.Password, loggedUser.PasswordKey))
+                return false;
+
+            //loggedUser.ProfileImage = user.ProfileImage
+            loggedUser.Username = user.Username;
+            loggedUser.FirstName = user.FirstName;
+            loggedUser.LastName = user.LastName;
+            loggedUser.Email = user.Email;
+
+            var response = userDAL.UpdateUser(loggedUser);
+            return response;
         }
 
         public bool UpdateUserRole(string userName,string roleName)

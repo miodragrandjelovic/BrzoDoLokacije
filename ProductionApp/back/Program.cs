@@ -13,6 +13,8 @@ using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 using PyxisKapriBack.LocationManager;
 using PyxisKapriBack.LocationManager.Interfaces;
+using PyxisKapriBack.UI.Interfaces;
+using PyxisKapriBack.UI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +82,10 @@ builder.Services.AddTransient<ICountryDAL, CountryDAL>();
 builder.Services.AddTransient<ICityDAL, CityDAL>();
 builder.Services.AddTransient<ILocationDAL, LocationDAL>();
 
+builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
+builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();
+builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IFileService, FileService>();
 builder.Services.AddTransient<ILocationManager, LocationManager>(); 
@@ -87,9 +93,10 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<ILikeService, LikeService>();
 builder.Services.AddTransient<IPlaceService, PlaceService>(); 
-builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
-builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();
-builder.Services.AddTransient<IHttpContextAccessor,HttpContextAccessor>();
+
+
+// UI
+builder.Services.AddTransient<IUserUI, UserUI>();
 #endregion
 
 
@@ -117,5 +124,7 @@ app.UseAuthorization();
 app.UseCors();
 
 app.MapControllers();
+
+app.UseStaticFiles();
 
 app.Run();
