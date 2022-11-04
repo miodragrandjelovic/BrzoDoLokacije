@@ -78,6 +78,21 @@ namespace PyxisKapriBack.Models
             .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
+
+            #region 'Dislike Relationships'
+
+            modelBuilder.Entity<Dislike>()
+           .HasOne(dislike => dislike.Post)
+           .WithMany(post => post.Dislikes)
+           .HasForeignKey(dislikes => dislikes.PostId)
+           .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Dislike>()
+            .HasOne(dislike => dislike.User)
+            .WithMany(user => user.Dislikes)
+            .HasForeignKey(dislike => dislike.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+            #endregion
         }
 
         #region 'Database Datasets'
@@ -88,6 +103,7 @@ namespace PyxisKapriBack.Models
         public DbSet<Location> Locations { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Like> Likes { get; set; }
+        public DbSet<Dislike> Dislikes { get; set; }
         public DbSet<Image> Images { get; set; }
         #endregion
 
