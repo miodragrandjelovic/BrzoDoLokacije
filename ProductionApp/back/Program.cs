@@ -92,8 +92,10 @@ builder.Services.AddTransient<ILocationManager, LocationManager>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<ILikeService, LikeService>();
-builder.Services.AddTransient<IPlaceService, PlaceService>(); 
+builder.Services.AddTransient<IPlaceService, PlaceService>();
 
+builder.Services.AddTransient<ICommentDAL, CommentDAL>();
+builder.Services.AddTransient<IDislikeDALcs, DislikeDAL>();
 
 // UI
 builder.Services.AddTransient<IUserUI, UserUI>();

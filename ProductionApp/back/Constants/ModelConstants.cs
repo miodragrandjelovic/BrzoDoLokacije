@@ -8,7 +8,6 @@
         public const int NULL_REFERENCE     = 0;
         public const int LENGTH_DESCRIPTION = 300;
 
-
         public const int DEFAULT = 1; 
     }
 }
