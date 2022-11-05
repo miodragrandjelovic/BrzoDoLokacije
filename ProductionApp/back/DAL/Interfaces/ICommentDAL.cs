@@ -8,7 +8,7 @@ namespace PyxisKapriBack.DAL.Interfaces
         public bool DeleteComment(Comment Comment);
 
         public Comment GetComment(int CommentID); 
-        public List<Comment> GetCommentsPost();
+        public List<Comment> GetCommentsPost(int PostID);
 
     }
 }

@@ -19,12 +19,14 @@ namespace PyxisKapriBack.DAL
             return false;
         }   
 
-        public bool DeleteDislike(Dislike Dislike)
+        public bool DeleteDislike(int DislikeID)
         {
-            _context.Dislikes.Remove(Dislike);
-            if (_context.SaveChanges() == 1)
-                return true;
-            return false;
+            Dislike dislike = GetDislike(DislikeID); 
+            if(dislike == null) 
+                return false;
+            _context.Dislikes.Remove(dislike);
+            _context.SaveChanges();
+            return true; 
         }
 
         public Dislike GetDislike(int DislikeID)

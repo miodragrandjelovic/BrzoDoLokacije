@@ -5,24 +5,39 @@ namespace PyxisKapriBack.DAL
 {
     public class CommentDAL : ICommentDAL
     {
+        private Database _context; 
+
+        public CommentDAL(Database context)
+        {
+            _context = context;
+        }
+
         public bool AddComment(Comment Comment)
         {
-            throw new NotImplementedException();
+            if (Comment == null)
+                return false; 
+            _context.Comments.Update(Comment);
+            _context.SaveChanges(); 
+            return true;
         }
 
         public bool DeleteComment(Comment Comment)
         {
-            throw new NotImplementedException();
+            if (Comment == null)
+                return false;
+            _context.Comments.Remove(Comment);
+            _context.SaveChanges();
+            return true; 
         }
 
         public Comment GetComment(int CommentID)
         {
-            throw new NotImplementedException();
+            return _context.Comments.Where(comment => comment.Id == CommentID).FirstOrDefault(); 
         }
 
-        public List<Comment> GetCommentsPost()
+        public List<Comment> GetCommentsPost(int PostID)
         {
-            throw new NotImplementedException();
+            return _context.Comments.Where(comment => comment.PostId == PostID).ToList(); 
         }
     }
 }
