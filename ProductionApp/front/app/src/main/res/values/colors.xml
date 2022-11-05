@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="violet">#444DC3</color>
-    <color name="violet_l">#4F75FF</color>
+
+    <color name="blue">#444DC3</color>
     <color name="red">#CC2045</color>
-    <color name="red_l">#D23A71</color>
-    <color name="black">#161E25</color>
-    <color name="gray">#4D5C6B</color>
+    <color name="black">#000000</color>
+    <color name="dark_gray">#151419</color>
+    <color name="gray">#202023</color>
+    <color name="light_gray">#6A7D8F</color>
     <color name="white">#FFFFFF</color>
-    <color name="lavender">#D9DEEF</color>
     <color name="transparent">#00000000</color>
-    <color name="light_blue_400">#FF29B6F6</color>
-    <color name="light_blue_600">#FF039BE5</color>
-    <color name="gray_400">#FFBDBDBD</color>
-    <color name="gray_600">#FF757575</color>
 </resources>

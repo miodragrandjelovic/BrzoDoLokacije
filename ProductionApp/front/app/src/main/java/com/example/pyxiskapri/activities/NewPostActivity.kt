@@ -74,7 +74,14 @@ class NewPostActivity : AppCompatActivity(){
         setupPickImagesButton()
 
         setupAddPost()
+        setupGoHomeButton()
+    }
 
+    private fun setupGoHomeButton(){
+        btn_home.setOnClickListener {
+            val intent = Intent (this, HomeActivity::class.java);
+            startActivity(intent);
+        }
     }
 
     private fun onLocationListItemClick(id: Int, name: String){
