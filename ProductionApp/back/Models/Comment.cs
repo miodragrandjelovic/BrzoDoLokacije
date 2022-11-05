@@ -5,6 +5,8 @@
         [Key]
         public int Id { get; set; }
 
+        [MaxLength(Constants.ModelConstants.LENGTH_DESCRIPTION)]
+        public string Text { get; set; }
         public List<Comment>? Replies { get; set; } = null; 
 
         #region 'Post'
