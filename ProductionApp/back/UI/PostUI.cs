@@ -20,9 +20,9 @@ namespace PyxisKapriBack.UI
             postService.AddPost(post); 
         }
 
-        public void DeletePost(int postID)
+        public Response DeletePost(int postID)
         {
-            postService.DeletePost(postID);
+            return postService.DeletePost(postID);
         }
 
         public Response DeleteUserPost(int postID)

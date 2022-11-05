@@ -4,7 +4,7 @@ namespace PyxisKapriBack.Services.Interfaces
 {
     public interface IUserService
     {
-        void AddNewUser(User user);
+        Response AddNewUser(User user);
         Task<bool> UserAlreadyExists(string username);
 
         User? GetUser(string usernameOrEmail);
@@ -16,11 +16,11 @@ namespace PyxisKapriBack.Services.Interfaces
         string? GetRoleFromLoggedUser();
         Role GetUserRole();
 
-        bool UpdateUserRole(string userName,string roleName);
+        Response UpdateUserRole(string userName,string roleName);
 
         List<Role> GetAvailableRolesForUser(string user);
 
-        bool UpdateUser(UserDTO user);
+        Response UpdateUser(UserDTO user);
 
     }
 }
