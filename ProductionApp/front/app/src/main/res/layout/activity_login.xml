@@ -99,32 +99,32 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
             android:background="@drawable/inputborder"
-            android:hint="Email or Username"
-            android:textColorHint="@color/gray"
             android:fontFamily="@font/poppins"
+            android:hint="Email or Username"
             android:inputType="textPersonName"
-            android:textColor="@color/gray"
-            android:textSize="16sp"/>
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/light_gray"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
             android:background="@drawable/inputborder"
-            android:hint="Password"
-            android:textColorHint="@color/gray"
             android:fontFamily="@font/poppins"
+            android:hint="Password"
             android:inputType="textPassword"
-            android:textColor="@color/gray"
+            android:paddingStart="10dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/light_gray"
             android:textSize="16sp" />
 
         <com.google.android.material.button.MaterialButton
@@ -167,7 +167,7 @@
                 android:fontFamily="@font/poppins"
                 android:text="Don't have an account? "
                 android:textAllCaps="false"
-                android:textColor="@color/gray"
+                android:textColor="@color/white"
                 android:textSize="14sp" />
 
             <com.google.android.material.button.MaterialButton

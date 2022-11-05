@@ -7,6 +7,18 @@
     android:background="@color/gray"
     tools:context=".activities.HomeActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcv_drawerNav"
+        android:name="com.example.pyxiskapri.fragments.DrawerNav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="200dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_drawer_nav" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -15,11 +27,15 @@
         android:elevation="100dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <include layout="@layout/toolbar" />
+        <include
+            android:id="@+id/include_toolbar"
+            layout="@layout/toolbar"
+            tools:layout_editor_absoluteX="16dp" />
     </androidx.appcompat.widget.Toolbar>
 
     <ImageView
@@ -29,6 +45,7 @@
         android:adjustViewBounds="true"
         android:elevation="100dp"
         android:scaleType="fitXY"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,6 +59,7 @@
         android:orientation="horizontal"
         android:paddingLeft="20dp"
         android:paddingEnd="20dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/iv_navBarBackground"
         app:layout_constraintEnd_toEndOf="@+id/iv_navBarBackground"
         app:layout_constraintStart_toStartOf="@+id/iv_navBarBackground"
@@ -108,6 +126,7 @@
         android:id="@+id/coordinatorLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/iv_navBarBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -144,13 +163,13 @@
                         android:layout_marginBottom="10dp"
                         android:orientation="horizontal"
                         android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        >
+                        android:paddingEnd="10dp">
 
                         <LinearLayout
                             android:id="@+id/btn_categoryPopular"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_marginEnd="5dp"
                             android:background="@drawable/ib_rounded"
                             android:backgroundTint="@color/red"
                             android:clickable="true"
@@ -158,8 +177,7 @@
                             android:gravity="center"
                             android:orientation="horizontal"
                             android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:layout_marginEnd="5dp">
+                            android:paddingRight="10dp">
 
                             <ImageView
                                 android:id="@+id/iv_categoryPopular"
@@ -184,6 +202,7 @@
                             android:id="@+id/btn_categoryTrending"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_marginEnd="5dp"
                             android:background="@drawable/ib_rounded"
                             android:backgroundTint="@color/dark_gray"
                             android:clickable="true"
@@ -191,8 +210,7 @@
                             android:gravity="center"
                             android:orientation="horizontal"
                             android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:layout_marginEnd="5dp">
+                            android:paddingRight="10dp">
 
                             <ImageView
                                 android:id="@+id/iv_categoryTrending"
@@ -200,7 +218,7 @@
                                 android:layout_height="18dp"
                                 android:layout_marginEnd="3dp"
                                 android:adjustViewBounds="true"
-                                app:srcCompat="@drawable/star"/>
+                                app:srcCompat="@drawable/star" />
 
                             <TextView
                                 android:id="@+id/tv_categoryTrending"
@@ -217,6 +235,7 @@
                             android:id="@+id/btn_categoryFollowing"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_marginEnd="5dp"
                             android:background="@drawable/ib_rounded"
                             android:backgroundTint="@color/dark_gray"
                             android:clickable="true"
@@ -224,8 +243,7 @@
                             android:gravity="center"
                             android:orientation="horizontal"
                             android:paddingLeft="10dp"
-                            android:paddingRight="10dp"
-                            android:layout_marginEnd="5dp">
+                            android:paddingRight="10dp">
 
                             <ImageView
                                 android:id="@+id/iv_categoryFollowing"
@@ -233,7 +251,7 @@
                                 android:layout_height="18dp"
                                 android:layout_marginEnd="3dp"
                                 android:adjustViewBounds="true"
-                                app:srcCompat="@drawable/following"/>
+                                app:srcCompat="@drawable/following" />
 
                             <TextView
                                 android:id="@+id/tv_categoryFollowing"

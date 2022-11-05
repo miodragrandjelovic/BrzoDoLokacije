@@ -3,10 +3,15 @@ package com.example.pyxiskapri.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.GestureDetector
+import android.view.MotionEvent
+import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.PostListAdapter
 import com.example.pyxiskapri.dtos.response.PostResponse
+import com.example.pyxiskapri.fragments.DrawerNav
 import kotlinx.android.synthetic.main.activity_home.*
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
@@ -35,21 +40,20 @@ class HomeActivity : AppCompatActivity() {
         fillPostsRV()
 
         setupButtonNewPost()
-        setupButtonLogout()
     }
+
+    public fun showDrawerMenu(view: View){
+        if(view.id == R.id.btn_menu)
+            fcv_drawerNav.getFragment<DrawerNav>().showDrawer()
+    }
+
 
     override fun onRestart() {
         super.onRestart();
         fillPostsRV()
     }
 
-    private fun setupButtonLogout(){
-//        btn_notifications.setOnClickListener {
-//            sessionManager.clearToken()
-//            val intent = Intent (this, MainActivity::class.java);
-//            startActivity(intent);
-//        }
-    }
+
 
     private fun setupButtonNewPost(){
         btn_newPost .setOnClickListener {
@@ -75,7 +79,7 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ArrayList<PostResponse>>, t: Throwable) {
-                    TODO("Not yet implemented")
+
                 }
 
             })
