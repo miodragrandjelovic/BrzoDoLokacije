@@ -1,6 +1,7 @@
 package com.example.pyxiskapri.services
 
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.example.pyxiskapri.dtos.request.EditUserRequest
 import com.example.pyxiskapri.dtos.request.NewPostRequest
 import com.example.pyxiskapri.dtos.request.RegisterRequest
 import com.example.pyxiskapri.dtos.request.response.LoginRequest
@@ -18,5 +19,9 @@ interface UserService {
 
     @POST("api/Auth/register")
     fun register(@Body requestBody: RegisterRequest) : Call<MessageResponse>
+
+    @POST("api/User/UpdateUser")
+    fun editUser(@Body requestBody: EditUserRequest) : Call<MessageResponse>
+
 
 }

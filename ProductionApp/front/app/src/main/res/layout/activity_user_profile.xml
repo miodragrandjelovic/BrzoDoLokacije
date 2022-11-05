@@ -130,26 +130,63 @@
 
 
             <LinearLayout
+
                 android:id="@+id/ll_user_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/ll_border"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_buttons">
 
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
-                    android:text="User information"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="User information"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <ImageButton
+                        android:id="@+id/ib_update"
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
+                        android:background="@null"
+                        android:scaleType="centerInside"
+                        android:src="@android:drawable/ic_menu_edit" />
+
+
+                    <ImageButton
+                        android:id="@+id/ib_confirm"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/checkmark_24"
+                        android:visibility="gone"
+                        />
+
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -176,8 +213,6 @@
                             />
 
 
-
-
                             />
                         <TextView
 
@@ -189,7 +224,6 @@
                             android:textSize="16dp"
                             android:textColor="@color/white"
                             android:text="Petar"
-
 
 
                             />
@@ -204,31 +238,6 @@
                             android:textColor="@color/white"
                             android:hint="Write your first name here"
                             android:paddingBottom="7.5dp"
-                            android:visibility="gone"
-                            />
-
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
-
-                        <ImageButton
-                            android:id="@+id/ib_first_name_edit"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:background="@null"
-                            android:scaleType="centerInside"
-                            android:src="@android:drawable/ic_menu_edit" />
-
-
-                        <ImageButton
-                            android:id="@+id/ib_first_name_confirm"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:background="@null"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/checkmark_24"
                             android:visibility="gone"
                             />
 
@@ -276,28 +285,6 @@
                             android:paddingBottom="7.5dp"
                             android:visibility="gone"/>
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
-
-                        <ImageButton
-                            android:id="@+id/ib_last_name_edit"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:background="@null"
-                            android:scaleType="centerInside"
-                            android:src="@android:drawable/ic_menu_edit" />
-
-                        <ImageButton
-                            android:id="@+id/ib_last_name_confirm"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:background="@null"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/checkmark_24"
-                            android:visibility="gone"
-                            />
 
                     </LinearLayout>
 
@@ -344,30 +331,6 @@
                             android:visibility="gone"/>
 
 
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
-
-                        <ImageButton
-                            android:id="@+id/ib_username_edit"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:background="@null"
-                            android:scaleType="centerInside"
-                            android:src="@android:drawable/ic_menu_edit" />
-
-
-                        <ImageButton
-                            android:id="@+id/ib_username_confirm"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:background="@null"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/checkmark_24"
-                            android:visibility="gone"
-                            />
-
 
                     </LinearLayout>
 
@@ -411,31 +374,6 @@
                             android:hint="Write your new email here"
                             android:paddingBottom="7.5dp"
                             android:visibility="gone"/>
-
-
-
-                        <View
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:layout_weight="1" />
-
-                        <ImageButton
-                            android:id="@+id/ib_email_edit"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:background="@null"
-                            android:scaleType="centerInside"
-                            android:src="@android:drawable/ic_menu_edit" />
-
-                        <ImageButton
-                            android:id="@+id/ib_email_confirm"
-                            android:layout_width="22dp"
-                            android:layout_height="22dp"
-                            android:background="@null"
-                            android:scaleType="centerInside"
-                            android:src="@drawable/checkmark_24"
-                            android:visibility="gone"
-                            />
 
 
                     </LinearLayout>

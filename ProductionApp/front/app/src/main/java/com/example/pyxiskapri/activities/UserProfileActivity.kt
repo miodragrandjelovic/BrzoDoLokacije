@@ -1,19 +1,32 @@
 package com.example.pyxiskapri.activities
 
 import android.app.Activity
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
+import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.dtos.request.EditUserRequest
+import com.example.pyxiskapri.dtos.response.MessageResponse
+import com.example.pyxiskapri.utility.ApiClient
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
+import kotlinx.android.synthetic.main.modal_confirm_password.*
+import retrofit2.Call
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 class UserProfileActivity : AppCompatActivity() {
 
+
+    lateinit var apiClient: ApiClient
 
     private val PICK_IMAGE_CODE=1
     lateinit var profileImage: Uri
@@ -22,138 +35,132 @@ class UserProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_profile)
 
+        apiClient=ApiClient()
+
+
+
+
+
+
         setupChangePhoto()
-        setupChangeFirstName()
-        setupChangeLastName()
-        setupChangeUsername()
-        setupChangeEmail()
+        setupUpdateUser()
 
     }
 
-    private fun setupChangeEmail() {
+    private fun setupUpdateUser() {
+        ib_update.setOnClickListener()
+        {
 
-        ib_email_edit.setOnClickListener(){
-            //var currentName= tv_first_name.text.toString()
+            et_first_name.setText(tv_first_name.text)
+            et_last_name.setText(tv_last_name.text)
+            et_username.setText(tv_username.text)
+            et_email.setText(tv_email.text)
 
-            et_email.text.clear()
-
-            tv_email.isGone=true
-
-            et_email.isGone=false
-
-            ib_email_edit.isGone=true
-
-            ib_email_confirm.isGone=false
-
-
-            ib_email_confirm.setOnClickListener(){
-                var newName = et_email.text.toString()
-                tv_email.text=newName
-
-                tv_email.isGone=false
-                et_email.isGone=true
-                ib_email_edit.isGone=false
-                ib_email_confirm.isGone=true
-            }
-
-
-        }
-
-
-    }
-
-    private fun setupChangeUsername() {
-        ib_username_edit.setOnClickListener(){
-            //var currentName= tv_first_name.text.toString()
-
-            et_username.text.clear()
-
-            tv_username.isGone=true
-
-            et_username.isGone=false
-
-            ib_username_edit.isGone=true
-
-            ib_username_confirm.isGone=false
-
-
-            ib_username_confirm.setOnClickListener(){
-                var newName = et_username.text.toString()
-                tv_username.text=newName
-
-                tv_username.isGone=false
-                et_username.isGone=true
-                ib_username_edit.isGone=false
-                ib_username_confirm.isGone=true
-            }
-
-
-        }
-    }
-
-    private fun setupChangeLastName() {
-        ib_last_name_edit.setOnClickListener(){
-            //var currentName= tv_first_name.text.toString()
-
-            et_last_name.text.clear()
-
-            tv_last_name.isGone=true
-
-            et_last_name.isGone=false
-
-            ib_last_name_edit.isGone=true
-
-            ib_last_name_confirm.isGone=false
-
-
-            ib_last_name_confirm.setOnClickListener(){
-                var newName = et_last_name.text.toString()
-                tv_last_name.text=newName
-
-                tv_last_name.isGone=false
-                et_last_name.isGone=true
-                ib_last_name_edit.isGone=false
-                ib_last_name_confirm.isGone=true
-            }
-
-
-        }
-    }
-
-    private fun setupChangeFirstName() {
-
-        ib_first_name_edit.setOnClickListener(){
-            //var currentName= tv_first_name.text.toString()
-
-            et_first_name.text.clear()
 
             tv_first_name.isGone=true
+            tv_last_name.isGone=true
+            tv_username.isGone=true
+            tv_email.isGone=true
 
             et_first_name.isGone=false
+            et_last_name.isGone=false
+            et_username.isGone=false
+            et_email.isGone=false
 
-            ib_first_name_edit.isGone=true
+            ib_update.isGone=true
+            ib_confirm.isGone=false
 
-            ib_first_name_confirm.isGone=false
+            ib_confirm.setOnClickListener()
+            {
+
+                showModalDialog()
 
 
-            ib_first_name_confirm.setOnClickListener(){
-                var newName = et_first_name.text.toString()
-                tv_first_name.text=newName
+                tv_first_name.text=et_first_name.text.toString()
+                tv_last_name.text=et_last_name.text.toString()
+                tv_username.text=et_username.text.toString()
+                tv_email.text=et_email.text.toString()
 
                 tv_first_name.isGone=false
+                tv_last_name.isGone=false
+                tv_username.isGone=false
+                tv_email.isGone=false
+
                 et_first_name.isGone=true
-                ib_first_name_edit.isGone=false
-                ib_first_name_confirm.isGone=true
+                et_last_name.isGone=true
+                et_username.isGone=true
+                et_email.isGone=true
+
+                ib_update.isGone=false
+                ib_confirm.isGone=true
+
             }
 
 
         }
     }
 
+    private fun showModalDialog() {
+
+        Log.d("","ovde sam")
+        val dialog= Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.modal_confirm_password)
+
+        Log.d("","I ovde sam")
+
+        dialog.btn_confirm_password.setOnClickListener(){
+
+            Log.d("","I I ovde sam")
+
+            EditUser()
+
+            Log.d("","I I I ovde sam")
+            dialog.dismiss()
+        }
+        dialog.show()
+
+    }
+
+    private fun EditUser() {
+
+        var editUserRequest= EditUserRequest(
+
+            firstName = et_first_name.text.toString(),
+            lastName = et_last_name.text.toString(),
+            username = et_username.text.toString(),
+            email = et_email.text.toString(),
+            password = et_modul_password.text.toString()
+        )
+
+        val context: Context = this
+        apiClient.getUserService(context).editUser(editUserRequest).enqueue(object :
+            retrofit2.Callback<MessageResponse>{
+            override fun onResponse(
+                call: Call<MessageResponse>,
+                response: Response<MessageResponse>
+            ) {
+                if(response.isSuccessful){
+
+                    Toast.makeText(context, "User informations successfully updated", Toast.LENGTH_SHORT).show()
+
+                }
+            }
+
+            override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                Toast.makeText(context, "Incorrect password, try again!", Toast.LENGTH_SHORT).show()
+            }
+
+
+        })
+
+        }
 
 
 
     private fun setupChangePhoto() {
+
 
         ib_change_photo.setOnClickListener(){
 
