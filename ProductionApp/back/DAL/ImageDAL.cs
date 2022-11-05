@@ -9,20 +9,24 @@ namespace PyxisKapriBack.DAL
         {
             _context = context;
         }
-        public void AddImage(Image image)
+        public bool AddImage(Image image)
         {
+            if (image == null)
+                return false; 
             _context.Images.Add(image);
             _context.SaveChanges();
+            return true;
         }
 
-        public void DeleteImage(int ImageID)
+        public bool DeleteImage(int ImageID)
         {
             Image image = GetImage(ImageID);
-            if (image != null)
-            {
-                _context.Remove(image);
-                _context.SaveChanges();
-            }
+            if (image == null)
+                return false; 
+
+             _context.Remove(image);
+             _context.SaveChanges();
+            return true; 
         }
 
         public Image GetImage(int ImageID)
