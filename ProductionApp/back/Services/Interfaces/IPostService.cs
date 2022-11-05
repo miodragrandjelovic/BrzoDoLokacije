@@ -11,7 +11,7 @@ namespace PyxisKapriBack.Services.Interfaces
         Post GetPost(int PostID);
         void SetLikeOnPost(int postID);
 
-        bool DeleteUserPost(int postID, string userName);
+        Response DeleteUserPost(int postID);
 
     }
 }

@@ -43,18 +43,19 @@ namespace PyxisKapriBack.Controllers
             );
 
         }
-        [Authorize(Roles ="Admin")]
-        [HttpDelete("DeleteUserPost/{postId}")]
-        public async Task<IActionResult> DeleteUserPost(int postId, string userName)
-        {
-            bool succeed = postUI.DeleteUserPost(postId, userName);
-
-            var answer = new { message = succeed ? "Uspesno obrisan post!" : "Greska pri brisanju posta!" };
-            if(!succeed)
-                return BadRequest(answer);
-            return Ok(answer);
-        }
         
+        [HttpDelete("DeleteUserPost/{postId}")]
+        public async Task<IActionResult> DeleteUserPost(int postId)
+        {
+            var response = postUI.DeleteUserPost(postId);
+
+            if(response.StatusCode.Equals(StatusCodes.Status404NotFound))
+                return NotFound(response);
+            if (response.StatusCode.Equals(StatusCodes.Status403Forbidden))
+                return BadRequest(response.Message);
+            return Ok(response);
+        }
+        [Authorize(Roles = "Admin")]
         [HttpDelete("DeletePost/{postId}")]
         public async Task<IActionResult> DeletePost(int postId)
         {
