@@ -18,6 +18,15 @@ namespace PyxisKapriBack.DAL
             return true;
         }
 
+        public bool AddImages(List<Image> images)
+        {
+            foreach (Image image in images)
+                if (!AddImage(image))
+                    return false; 
+
+            return true; 
+        }
+
         public bool DeleteImage(int ImageID)
         {
             Image image = GetImage(ImageID);

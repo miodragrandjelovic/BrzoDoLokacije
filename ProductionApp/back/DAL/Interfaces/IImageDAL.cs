@@ -8,5 +8,6 @@ namespace PyxisKapriBack.DAL.Interfaces
         public bool AddImage(Image image);
         public bool DeleteImage(int ImageID);
 
+        public bool AddImages(List<Image> images);
     }
 }
