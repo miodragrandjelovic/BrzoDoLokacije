@@ -1,17 +1,17 @@
 ﻿using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.Models;
-namespace PyxisKapriBack.Services.Interfaces
+
+namespace PyxisKapriBack.UI.Interfaces
 {
-    public interface IPostService
+    public interface IPostUI
     {
-        List<Post> GetUserPosts(string username);
-        List<Post> GetPostsForLocation(int LocationID);
+        List<PostDTO> GetUserPosts(string username);
+        List<PostDTO> GetPostsForLocation(int LocationID);
         void AddPost(NewPostDTO post);
         void DeletePost(int postID);
         Post GetPost(int PostID);
         void SetLikeOnPost(int postID);
 
         bool DeleteUserPost(int postID, string userName);
-
     }
 }

@@ -97,6 +97,7 @@ builder.Services.AddTransient<IPlaceService, PlaceService>();
 
 // UI
 builder.Services.AddTransient<IUserUI, UserUI>();
+builder.Services.AddTransient<IPostUI, PostUI>();
 #endregion
 
 

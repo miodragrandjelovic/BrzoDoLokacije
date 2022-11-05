@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.Services.Interfaces;
+using PyxisKapriBack.UI.Interfaces;
 
 namespace PyxisKapriBack.Controllers
 {
@@ -11,18 +12,18 @@ namespace PyxisKapriBack.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private readonly IUserService userService;
-        private readonly IPostService postService;
+        private readonly IUserUI userUI;
+        private readonly IPostUI postUI;
 
-        public PostController(IUserService userService, IPostService postService)
+        public PostController(IUserUI userUI, IPostUI postUI)
         {
-            this.userService = userService;
-            this.postService = postService;
+            this.userUI = userUI;
+            this.postUI = postUI;
         }
         [HttpPost("NewPost")]
         public async Task<IActionResult> CreatePost(NewPostDTO post)
         {
-            postService.AddPost(post);
+            postUI.AddPost(post);
             return Ok(
                 new{
                     message = "Uspesno dodat novi post"
@@ -32,7 +33,7 @@ namespace PyxisKapriBack.Controllers
         [HttpGet("SetLike/{id}")]
         public async Task<IActionResult> SetLikeOnPost(int id)
         {
-            postService.SetLikeOnPost(id);
+            postUI.SetLikeOnPost(id);
 
             return Ok(
                 new
@@ -46,7 +47,7 @@ namespace PyxisKapriBack.Controllers
         [HttpDelete("DeleteUserPost/{postId}")]
         public async Task<IActionResult> DeleteUserPost(int postId, string userName)
         {
-            bool succeed = postService.DeleteUserPost(postId, userName);
+            bool succeed = postUI.DeleteUserPost(postId, userName);
 
             var answer = new { message = succeed ? "Uspesno obrisan post!" : "Greska pri brisanju posta!" };
             if(!succeed)
@@ -57,7 +58,7 @@ namespace PyxisKapriBack.Controllers
         [HttpDelete("DeletePost/{postId}")]
         public async Task<IActionResult> DeletePost(int postId)
         {
-            postService.DeletePost(postId);
+            postUI.DeletePost(postId);
             return Ok(
                 new
                 {
@@ -68,7 +69,7 @@ namespace PyxisKapriBack.Controllers
         [HttpGet("GetUserPosts/{username}")]
         public async Task<IActionResult> GetUserPosts(string username)
         {
-            var posts = postService.GetUserPosts(username);
+            var posts = postUI.GetUserPosts(username);
             return Ok(posts);
         }
     }
