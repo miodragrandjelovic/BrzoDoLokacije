@@ -12,10 +12,13 @@ namespace PyxisKapriBack.DAL
             _context = context; 
             _roleDAL = roleDAL;
         }
-        public void AddNewUser(User user)
+        public bool AddNewUser(User user)
         {
+            if (user == null)
+                return false; 
             _context.Users.Add(user);
             _context.SaveChanges();
+            return true;
         }
 
         public User? GetUser(string usernameOrEmail)
@@ -28,25 +31,32 @@ namespace PyxisKapriBack.DAL
 
         public bool UpdateUser(User user)
         {
+            if (user == null)
+                return false; 
             _context.Users.Update(user);
-            if (_context.SaveChanges() == 1)
-                return true;
+            _context.SaveChanges(); 
             return false; 
         }
 
-        public void DeleteUser(int userID)
+        public bool DeleteUser(int userID)
         {
-            _context.Users.Remove(_context.Users.Where(x => x.Id == userID).FirstOrDefault());
-            _context.SaveChanges(); 
+            User user = GetUser(userID);
+            if (user != null)
+                return false; 
+
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+            return true; 
         }
         public bool UpdateUserRole(string username, string roleName)
         {
             Role role = _roleDAL.GetRole(roleName);
             User user = GetUser(username);
+
+            if((user == null) || (role == null))
+                return false; 
             user.RoleId = role.Id;
-            if (_context.SaveChanges() == 1)
-                return true;
-            return false;
+            return UpdateUser(user); 
         }
 
         public async Task<bool> UserAlreadyExists(string username)
@@ -54,5 +64,9 @@ namespace PyxisKapriBack.DAL
             return await _context.Users.AnyAsync(user => user.Username.Equals(username));
         }
 
+        public User GetUser(int userID)
+        {
+            return _context.Users.Where(user => user.Id == userID).FirstOrDefault(); 
+        }
     }
 }
