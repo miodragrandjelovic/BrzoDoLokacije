@@ -18,24 +18,21 @@ namespace PyxisKapriBack.DAL
                 country = _context.InsertCountry(countryName);
 
             if (country == null)
-                throw new Exception(Constants.Constants.resNoFoundCountry); 
+                return false;
 
-            if (_context.InsertCity(cityName, countryName) != null)
-                return true;
-            return false;
+            if (_context.InsertCity(cityName, countryName) == null) 
+                return false;
+            return true; 
         }
 
         public bool DeleteCity(string cityName)
         {
-            City city = GetCity(cityName); 
-            if (city != null)
-                if (_context.Cities.Remove(city) != null)
-                {
-                    _context.SaveChanges();
-                    return true;
-                }
-                throw new Exception(String.Format(Constants.Constants.resDeleteFailed, cityName));
-            throw new Exception(Constants.Constants.resNoFoundCity);
+            City city = GetCity(cityName);
+            if (city == null)
+                return false;
+            _context.Cities.Remove(city);
+            _context.SaveChanges();
+            return true;
         }
 
         public List<City> FilterCities(string filter)
@@ -50,13 +47,11 @@ namespace PyxisKapriBack.DAL
 
         public bool UpdateCity(City city)
         {
-            if (_context.Cities.Update(city) != null)
-            {
-                _context.SaveChanges();
-                return true;
-            }
-            return false;
+            if (city == null)
+                return false;
+            _context.Cities.Update(city); 
+            _context.SaveChanges();
+            return true;
         }
-
     }
 }

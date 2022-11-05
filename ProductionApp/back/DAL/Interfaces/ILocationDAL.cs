@@ -4,9 +4,9 @@ namespace PyxisKapriBack.DAL.Interfaces
 {
     public interface ILocationDAL
     {
-        public Boolean AddLocation(string locationName, string cityName, string countryName = Constants.Constants.UNKNWOWN);
-        public Boolean UpdateLocation(Location location);
-        public Boolean DeleteLocation(string locationName);
+        public bool AddLocation(string locationName, string cityName, string countryName = Constants.Constants.UNKNWOWN);
+        public bool UpdateLocation(Location location);
+        public bool DeleteLocation(string locationName);
         public Location GetLocation(string locationName);
         public List<Location> FilterLocations(string filter);
         public List<Location> FilterLocationsByCity(string filter);
