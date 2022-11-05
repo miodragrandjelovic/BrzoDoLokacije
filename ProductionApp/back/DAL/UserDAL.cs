@@ -35,7 +35,7 @@ namespace PyxisKapriBack.DAL
                 return false; 
             _context.Users.Update(user);
             _context.SaveChanges(); 
-            return false; 
+            return true; 
         }
 
         public bool DeleteUser(int userID)
