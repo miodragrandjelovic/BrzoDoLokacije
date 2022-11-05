@@ -22,9 +22,20 @@ namespace PyxisKapriBack.Services
             this.roleDAL = roleDAL;
             this.manager = manager;
         }
-        public void AddNewUser(User user)
+        public Response AddNewUser(User user)
         {
-            userDAL.AddNewUser(user);
+            var succeed = userDAL.AddNewUser(user);
+            if (!succeed)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Error while creating user!"
+                };
+            return new Response
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = "User added succesffuly!"
+            };
         }
 
         public List<Role> GetAvailableRolesForUser(string user)
@@ -66,13 +77,21 @@ namespace PyxisKapriBack.Services
             return roleDAL.GetUserRole();
         }
 
-        public bool UpdateUser(UserDTO user)
+        public Response UpdateUser(UserDTO user)
         {
-            
             var loggedUser = userDAL.GetUser(GetLoggedUser());
-
+            if (loggedUser == null)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status404NotFound,
+                    Message = "User not found!"
+                };
             if (!manager.DecryptPassword(user.Password, loggedUser.Password, loggedUser.PasswordKey))
-                return false;
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status403Forbidden,
+                    Message = "Wrong password!"
+                };
 
             //loggedUser.ProfileImage = user.ProfileImage
             loggedUser.Username = user.Username;
@@ -81,12 +100,39 @@ namespace PyxisKapriBack.Services
             loggedUser.Email = user.Email;
 
             var response = userDAL.UpdateUser(loggedUser);
-            return response;
+            if (!response)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Error while updating user!"
+                };
+            return new Response
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = "User updated succesffuly!"
+            };
         }
 
-        public bool UpdateUserRole(string userName,string roleName)
-        {   
-            return userDAL.UpdateUserRole(userName, roleName);
+        public Response UpdateUserRole(string userName,string roleName)
+        {
+            if (GetLoggedUser().Equals(userName))
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Cannot change your own role!"
+                };
+            var succeed = userDAL.UpdateUserRole(userName, roleName);
+            if (!succeed)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Error while updating user role!"
+                };
+            return new Response
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = "User role updated succesffuly!"
+            };
         }
 
         public Task<bool> UserAlreadyExists(string username)

@@ -40,9 +40,21 @@ namespace PyxisKapriBack.Services
             postDAL.AddPost(newPost);
         }
 
-        public void DeletePost(int postID)
+        public Response DeletePost(int postID)
         {
-            postDAL.DeletePost(postID);
+            bool succeed = postDAL.DeletePost(postID);
+            if (!succeed)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status404NotFound,
+                    Message = "Post doesn't exist!"
+                };
+
+            return new Response
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = "Post deleted succesffuly!"
+            };
         }
 
         public Response DeleteUserPost(int postID)
@@ -53,12 +65,7 @@ namespace PyxisKapriBack.Services
             var user = userService.GetUser(userService.GetLoggedUser());
             var post = GetPost(postID);
 
-            if(!user.Id.Equals(post.UserId))
-            {
-                response.StatusCode=StatusCodes.Status403Forbidden;
-                response.Message = "Permission denied!";
-                return response;
-            }
+            
             if (user == null)
             {
                 response.Message = "User not found!";
@@ -68,6 +75,12 @@ namespace PyxisKapriBack.Services
             if (post == null)
             {
                 response.Message = "Post not found";
+                return response;
+            }
+            if(!user.Id.Equals(post.UserId))
+            {
+                response.StatusCode=StatusCodes.Status403Forbidden;
+                response.Message = "Permission denied!";
                 return response;
             }
 

@@ -22,7 +22,7 @@ namespace PyxisKapriBack.Controllers
         }
         [HttpPost("NewPost")]
         public async Task<IActionResult> CreatePost(NewPostDTO post)
-        {
+        {   //izmena da vraca response
             postUI.AddPost(post);
             return Ok(
                 new{
@@ -32,7 +32,7 @@ namespace PyxisKapriBack.Controllers
         }
         [HttpGet("SetLike/{id}")]
         public async Task<IActionResult> SetLikeOnPost(int id)
-        {
+        {   //izmena ovde da vraca response
             postUI.SetLikeOnPost(id);
 
             return Ok(
@@ -48,24 +48,22 @@ namespace PyxisKapriBack.Controllers
         public async Task<IActionResult> DeleteUserPost(int postId)
         {
             var response = postUI.DeleteUserPost(postId);
-
-            if(response.StatusCode.Equals(StatusCodes.Status404NotFound))
-                return NotFound(response);
+            var message = new { message = response.Message };
+            if (response.StatusCode.Equals(StatusCodes.Status404NotFound))
+                return NotFound(message);
             if (response.StatusCode.Equals(StatusCodes.Status403Forbidden))
-                return BadRequest(response.Message);
-            return Ok(response);
+                return BadRequest(message);
+            return Ok(message);
         }
         [Authorize(Roles = "Admin")]
         [HttpDelete("DeletePost/{postId}")]
         public async Task<IActionResult> DeletePost(int postId)
         {
-            postUI.DeletePost(postId);
-            return Ok(
-                new
-                {
-                    message = "Uspesno obrisan post"
-                }
-            );
+            var response = postUI.DeletePost(postId);
+            var message = new { message = response.Message };
+            if (response.StatusCode.Equals(StatusCodes.Status404NotFound))
+                return BadRequest(message);
+            return Ok(message);
         }
         [HttpGet("GetUserPosts/{username}")]
         public async Task<IActionResult> GetUserPosts(string username)

@@ -32,8 +32,8 @@ namespace PyxisKapriBack.Controllers
         {
             var answer = userUI.UpdateUserRole(username,role);
             if (answer.StatusCode.Equals(StatusCodes.Status400BadRequest))
-                return BadRequest(answer.Message);
-            return Ok(answer.Message);
+                return BadRequest(new { message = answer.Message });
+            return Ok(new { message = answer.Message });
         }
         [Authorize(Roles = "Admin")]
         [HttpGet("GetaAvailableRoles/{username}")]
@@ -53,15 +53,15 @@ namespace PyxisKapriBack.Controllers
             return Ok(user);
         }
 
-        [HttpPost("UpdateUser")]
+        [HttpPut("UpdateUser")]
         public async Task<IActionResult> UpdateUserCredentials(UserDTO user)
         {
             var answer = userUI.UpdateUser(user);
 
            
             if(answer.StatusCode.Equals(StatusCodes.Status400BadRequest))
-                return BadRequest(answer.Message);
-            return Ok(answer.Message);
+                return BadRequest(new { message = answer.Message });
+            return Ok(new { message = answer.Message });
         }
 
 

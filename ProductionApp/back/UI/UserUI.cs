@@ -58,40 +58,12 @@ namespace PyxisKapriBack.UI
 
         public Response UpdateUser(UserDTO user)
         {
-            var response = new Response();
-            var succeed = userService.UpdateUser(user);
-
-            if (!succeed)
-            {
-                response.StatusCode = StatusCodes.Status400BadRequest;
-                response.Message = "Error updating user!";
-            }
-            else
-            {
-                response.StatusCode = StatusCodes.Status200OK;
-                response.Message = "User update succesffuly!";
-            }
-
-            return response;
-
+            return userService.UpdateUser(user);
         }
 
         public Response UpdateUserRole(string userName, string roleName)
         {
-            var response = new Response();
-            var succeed = userService.UpdateUserRole(userName,roleName);
-            if (!succeed)
-            {
-                response.StatusCode = StatusCodes.Status400BadRequest;
-                response.Message = "Cannot update user role!";
-            }
-            else
-            {
-                response.StatusCode = StatusCodes.Status200OK;
-                response.Message = "User role update succesffuly!";
-            }
-
-            return response;
+            return userService.UpdateUserRole(userName, roleName); 
         }
 
         public Task<bool> UserAlreadyExists(string username)
