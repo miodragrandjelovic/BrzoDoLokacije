@@ -5,24 +5,36 @@ namespace PyxisKapriBack.DAL
 {
     public class DislikeDAL : IDislikeDALcs
     {
+        private Database _context; 
+        public DislikeDAL(Database context)
+        {
+            _context = context;
+        }
+
         public bool AddDislike(Dislike Dislike)
         {
-            throw new NotImplementedException();
-        }
+            _context.Dislikes.Add(Dislike);
+            if (_context.SaveChanges() == 1) 
+                return true; 
+            return false;
+        }   
 
         public bool DeleteDislike(Dislike Dislike)
         {
-            throw new NotImplementedException();
+            _context.Dislikes.Remove(Dislike);
+            if (_context.SaveChanges() == 1)
+                return true;
+            return false;
         }
 
         public Dislike GetDislike(int DislikeID)
         {
-            throw new NotImplementedException();
+            return _context.Dislikes.Where(dislike => dislike.Id == DislikeID).FirstOrDefault(); 
         }
 
         public List<Dislike> GetDislikesPost(Post Post)
         {
-            throw new NotImplementedException();
+            return _context.Dislikes.Where(dislike => dislike.PostId == Post.Id).ToList();
         }
     }
 }

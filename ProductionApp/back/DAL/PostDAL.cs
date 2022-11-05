@@ -17,16 +17,24 @@ namespace PyxisKapriBack.DAL
             _context.SaveChanges(); 
         }
 
-        public void DeletePost(int PostID)
+        public bool DeletePost(int PostID)
         {
-            Post post = _context.Posts.Find(PostID);
+            Post post = GetPost(PostID);
+
+            if (post == null)
+                return false; 
+
             _context.Posts.Remove(post);
-            _context.SaveChanges(); 
+            _context.SaveChanges();
+            return true; 
         }
 
         public Post GetPost(int PostID)
         {
-            return _context.Posts.Where(post => post.Id == PostID).Include(post => post.User).FirstOrDefault(); 
+            return _context.Posts.Where(post => post.Id == PostID).Include(post => post.User)
+                                                                  .Include(post => post.Dislikes)
+                                                                  .Include(post => post.Likes)
+                                                                  .Include(post => post.Comments).FirstOrDefault(); 
         }
 
         public void UpdatePost(Post post)
