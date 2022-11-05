@@ -26,7 +26,7 @@ namespace PyxisKapriBack.DAL
 
         public Post GetPost(int PostID)
         {
-            return _context.Posts.Where(post => post.Id == PostID).FirstOrDefault(); 
+            return _context.Posts.Where(post => post.Id == PostID).Include(post => post.User).FirstOrDefault(); 
         }
 
         public void UpdatePost(Post post)
