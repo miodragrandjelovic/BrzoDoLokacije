@@ -58,11 +58,9 @@ namespace PyxisKapriBack.Controllers
         public async Task<IActionResult> UpdateUserCredentials(UserDTO user)
         {
             var answer = userUI.UpdateUser(user);
-
-           
-            if(answer.StatusCode.Equals(StatusCodes.Status400BadRequest))
-                return BadRequest(new { message = answer.Message });
-            return Ok(new { message = answer.Message });
+            if(answer.StatusCode.Equals(StatusCodes.Status200OK))
+                return Ok(new { token = answer.Message });
+            return BadRequest(new { message = answer.Message });
         }
 
 

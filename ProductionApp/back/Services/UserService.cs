@@ -1,5 +1,6 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
 using PyxisKapriBack.DTOComponents;
+using PyxisKapriBack.JWTManager.Interfaces;
 using PyxisKapriBack.Models;
 using PyxisKapriBack.Models.Interfaces;
 using PyxisKapriBack.Services.Interfaces;
@@ -14,13 +15,15 @@ namespace PyxisKapriBack.Services
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IRoleDAL roleDAL;
         private readonly IEncryptionManager manager;
+        private readonly IJWTManagerRepository jwtManager;
 
-        public UserService(IUserDAL userDAL, IHttpContextAccessor httpContextAccessor, IRoleDAL roleDAL,IEncryptionManager manager)
+        public UserService(IUserDAL userDAL, IHttpContextAccessor httpContextAccessor, IRoleDAL roleDAL,IEncryptionManager manager,IJWTManagerRepository jwtManager)
         {
             this.userDAL = userDAL;
             this.httpContextAccessor = httpContextAccessor;
             this.roleDAL = roleDAL;
             this.manager = manager;
+            this.jwtManager = jwtManager;
         }
         public Response AddNewUser(User user)
         {
@@ -114,7 +117,7 @@ namespace PyxisKapriBack.Services
             return new Response
             {
                 StatusCode = StatusCodes.Status200OK,
-                Message = "User updated succesffuly!"
+                Message = jwtManager.GenerateToken(loggedUser)
             };
         }
 
