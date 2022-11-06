@@ -73,7 +73,7 @@ namespace PyxisKapriBack.DAL
 
         public List<User> GetAllUsers(User user)
         {
-            return _context.Users.Where(user => user.Id != user.Id).ToList(); 
+            return _context.Users.Where(u => u.Id != user.Id).ToList(); 
         }
     }
 }
