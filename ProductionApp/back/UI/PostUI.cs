@@ -64,7 +64,7 @@ namespace PyxisKapriBack.UI
             {
                 postsDTO.Add(new PostDTO
                 {
-                  //  CoverImage = post.CoverImage,
+                    CoverImage = Convert.ToBase64String( post.CoverImage),
                     NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
                     NumberOfViews = 0
                 });
