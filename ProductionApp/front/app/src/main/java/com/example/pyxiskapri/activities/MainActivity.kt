@@ -21,6 +21,8 @@ class  MainActivity : AppCompatActivity() {
 
         setupGoToRegisterButton();
         setupGoToSignInButton();
+
+
     }
 
 
