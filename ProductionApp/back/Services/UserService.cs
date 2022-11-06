@@ -98,7 +98,7 @@ namespace PyxisKapriBack.Services
                     Message = "Wrong password!"
                 };
 
-            //loggedUser.ProfileImage = user.ProfileImage
+            loggedUser.ProfileImage = Convert.FromBase64String(user.ProfileImage);
             loggedUser.Username = user.Username;
             loggedUser.FirstName = user.FirstName;
             loggedUser.LastName = user.LastName;

@@ -36,7 +36,7 @@ namespace PyxisKapriBack.UI
 
             var userDTO = new UserDTO
             {
-                ProfileImage = null,
+                ProfileImage = user.ProfileImage == null ? string.Empty : Convert.ToBase64String(user.ProfileImage),
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -68,7 +68,7 @@ namespace PyxisKapriBack.UI
                     Username = user.Username,
                     FirstName= user.FirstName,
                     LastName = user.LastName,
-                    //ProfileImage = Convert.ToBase64String(user.ProfileImage),
+                    ProfileImage = Convert.ToBase64String(user.ProfileImage),
                     Email = user.Email
                 });
             }
