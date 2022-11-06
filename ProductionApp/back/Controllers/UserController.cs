@@ -23,7 +23,8 @@ namespace PyxisKapriBack.Controllers
         [HttpGet("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers()
         { 
-           return null;
+           var allUsers = userUI.GetAllUsers();
+           return Ok(allUsers);
         }
 
         [Authorize(Roles ="Admin")]

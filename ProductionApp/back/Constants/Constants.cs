@@ -14,6 +14,7 @@
         public const string ADMIN     = "Admin"; 
         public const string USER      = "User";
         public const string MODERATOR = "Moderator";
+        public const int ALL_ROLES = 0;
 
         #region 'Error Messages'
         public const string resNoFoundCountry  = "Država nije pronađena";

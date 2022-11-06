@@ -14,6 +14,8 @@ namespace PyxisKapriBack.DAL
         }
         public bool AddNewUser(User user)
         {
+            if (GetUser(user.Username) != null)
+                return false; 
             if (user == null)
                 return false; 
             _context.Users.Add(user);
@@ -67,6 +69,11 @@ namespace PyxisKapriBack.DAL
         public User GetUser(int userID)
         {
             return _context.Users.Where(user => user.Id == userID).FirstOrDefault(); 
+        }
+
+        public List<User> GetAllUsers(User user)
+        {
+            return _context.Users.Where(u => u.Id != user.Id).ToList(); 
         }
     }
 }

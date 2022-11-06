@@ -38,6 +38,11 @@ namespace PyxisKapriBack.Services
             };
         }
 
+        public List<User> GetAllUsers()
+        {
+            return userDAL.GetAllUsers(GetUser(GetLoggedUser()));
+        }
+
         public List<Role> GetAvailableRolesForUser(string user)
         {
             var loggedUser = userDAL.GetUser(user);
