@@ -56,6 +56,26 @@ namespace PyxisKapriBack.UI
             return userService.GetUserRole();
         }
 
+        public List<UserDTO> GetAllUsers()
+        {
+            var users = userService.GetAllUsers();
+
+            var allUsers = new List<UserDTO>();
+            foreach (var user in users)
+            {
+                allUsers.Add(new UserDTO
+                {
+                    Username = user.Username,
+                    FirstName= user.FirstName,
+                    LastName = user.LastName,
+                    //ProfileImage = Convert.ToBase64String(user.ProfileImage),
+                    Email = user.Email
+                });
+            }
+
+            return allUsers;
+        }
+
         public Response UpdateUser(UserDTO user)
         {
             return userService.UpdateUser(user);

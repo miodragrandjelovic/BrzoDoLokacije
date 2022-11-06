@@ -22,5 +22,7 @@ namespace PyxisKapriBack.Services.Interfaces
 
         Response UpdateUser(UserDTO user);
 
+        List<User> GetAllUsers();
+
     }
 }
