@@ -5,8 +5,9 @@ namespace PyxisKapriBack.DAL.Interfaces
     {
         public List<Image> GetImages(int PostID); 
         public Image GetImage(int ImageID);
-        public void AddImage(Image image);
-        public void DeleteImage(int ImageID);
+        public bool AddImage(Image image);
+        public bool DeleteImage(int ImageID);
 
+        public bool AddImages(List<Image> images);
     }
 }

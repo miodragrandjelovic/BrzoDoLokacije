@@ -24,7 +24,7 @@
         }
         public City GetCity(string CityName)
         {
-            return Cities.Where(x => x.Name.Equals(CityName)).FirstOrDefault();
+            return Cities.Where(city => city.Name.Equals(CityName)).Include(city => city.Country).FirstOrDefault();
         }
         private void InsertCities()
         {

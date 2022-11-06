@@ -28,7 +28,7 @@ namespace PyxisKapriBack.Services
             newPost.User = userService.GetUser(userService.GetLoggedUser());
             newPost.Description = post.Description;
             newPost.LocationId = post.LocationId;   
-            newPost.CoverImage = post.CoverImage;
+            newPost.CoverImage = Encoding.ASCII.GetBytes(post.CoverImage).ToString();//izmeniti u Post modelu CoverImage type string --> byte[] i skloniti toString metod
             foreach(string image in post.Images)
             {
                 Image newImage = new Image();
@@ -40,27 +40,55 @@ namespace PyxisKapriBack.Services
             postDAL.AddPost(newPost);
         }
 
-        public void DeletePost(int postID)
+        public Response DeletePost(int postID)
         {
-            postDAL.DeletePost(postID);
+            bool succeed = postDAL.DeletePost(postID);
+            if (!succeed)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status404NotFound,
+                    Message = "Post doesn't exist!"
+                };
+
+            return new Response
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = "Post deleted succesffuly!"
+            };
         }
 
-        public bool DeleteUserPost(int postID, string userName)
+        public Response DeleteUserPost(int postID)
         {
-            var user = userService.GetUser(userName);
-            if(user == null)
-                return false;
-            
-            var post = postDAL.GetPost(postID);
-            if (post == null)
-                return false;
+            var response = new Response();
+            response.StatusCode = StatusCodes.Status404NotFound;
 
-            if (!user.Id.Equals(post.UserId))
-                return false;
+            var user = userService.GetUser(userService.GetLoggedUser());
+            var post = GetPost(postID);
+
+            
+            if (user == null)
+            {
+                response.Message = "User not found!";
+                return response;
+            }
+
+            if (post == null)
+            {
+                response.Message = "Post not found";
+                return response;
+            }
+            if(!user.Id.Equals(post.UserId))
+            {
+                response.StatusCode=StatusCodes.Status403Forbidden;
+                response.Message = "Permission denied!";
+                return response;
+            }
 
             postDAL.DeletePost(postID);
 
-            return true;
+            response.StatusCode = StatusCodes.Status200OK;
+            response.Message = "Post deleted succesffuly!";
+            return response;
 
         }
 
@@ -74,22 +102,9 @@ namespace PyxisKapriBack.Services
             return postDAL.GetPostsForLocation(LocationID);
         }
 
-        public List<PostDTO> GetUserPosts(string username)
+        public List<Post> GetUserPosts(string username)
         {
-            var posts = postDAL.GetUserPosts(username);
-            var postsDTO = new List<PostDTO>();
-
-            foreach (var post in posts)
-            {
-                postsDTO.Add(new PostDTO
-                {
-                    CoverImage = post.CoverImage,
-                    NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
-                    NumberOfViews = 0
-                });
-            }
-
-            return postsDTO;
+            return postDAL.GetUserPosts(username);
         }
 
 

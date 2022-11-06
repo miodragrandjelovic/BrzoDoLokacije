@@ -113,7 +113,7 @@
 
         android:layout_width="350dp"
         android:layout_height="70dp"
-        android:backgroundTint="@color/violet"
+        android:backgroundTint="@color/blue"
 
         android:fontFamily="@font/poppins_medium"
         android:text="Get Started"
@@ -149,7 +149,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/iv_backlight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:rippleColor="@color/red_l" />
+        app:rippleColor="@color/red" />
 
     <Button
         android:id="@+id/button11"

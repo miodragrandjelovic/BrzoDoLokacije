@@ -20,26 +20,30 @@ namespace PyxisKapriBack.DAL
             var country = _context.GetCountry(countryName);
             if (country == null)
                 country = _context.InsertCountry(countryName); 
+            if(country == null)
+                return false;
+
+
             var city = _context.GetCity(cityName);
             if (city == null)
-                city = _context.InsertCity(cityName, countryName); 
-            
-            if(_context.InsertLocation(locationName, cityName) != null)
-                return true;    
-            return false;
+                city = _context.InsertCity(cityName, countryName);
+            if (city == null)
+                return false;
+
+            if (_context.InsertLocation(locationName, cityName) == null)
+                return false;    
+            return true;
         }
 
         public bool DeleteLocation(string locationName)
         {
             Location location = GetLocation(locationName);
-            if (location != null)
-                if (_context.Locations.Remove(location) != null)
-                {
-                    _context.SaveChanges();
-                    return true;
-                }
-                throw new Exception(String.Format(Constants.Constants.resDeleteFailed, locationName));
-            throw new Exception(Constants.Constants.resNoFoundLocation);
+            if (location == null)
+                return false;
+
+            _context.Locations.Remove(location);
+            _context.SaveChanges();
+            return true;
         }
 
         public List<Location> FilterLocationsByName(string filter)
@@ -91,12 +95,12 @@ namespace PyxisKapriBack.DAL
 
         public bool UpdateLocation(Location location)
         {
-            if (_context.Locations.Update(location) != null)
-            {
-                _context.SaveChanges();
-                return true;
-            }
-            return false;
+            if (location == null)
+                return false; 
+
+            _context.Locations.Update(location);
+            _context.SaveChanges();
+            return true; 
         }
 
         public List<Location> FilterLocations(string filter)

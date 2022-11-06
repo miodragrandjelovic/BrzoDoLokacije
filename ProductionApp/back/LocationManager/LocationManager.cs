@@ -8,7 +8,7 @@ namespace PyxisKapriBack.LocationManager
         {
             var coordinate1 = new GeoCoordinate(Latitude1, Longitude1); 
             var coordinate2 = new GeoCoordinate(Latitude2, Longitude2);
-
+            
             return coordinate1.GetDistanceTo(coordinate2);
         } 
     }

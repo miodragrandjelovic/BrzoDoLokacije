@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.Services.Interfaces;
+using PyxisKapriBack.UI.Interfaces;
 
 namespace PyxisKapriBack.Controllers
 {
@@ -11,18 +12,18 @@ namespace PyxisKapriBack.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private readonly IUserService userService;
-        private readonly IPostService postService;
+        private readonly IUserUI userUI;
+        private readonly IPostUI postUI;
 
-        public PostController(IUserService userService, IPostService postService)
+        public PostController(IUserUI userUI, IPostUI postUI)
         {
-            this.userService = userService;
-            this.postService = postService;
+            this.userUI = userUI;
+            this.postUI = postUI;
         }
         [HttpPost("NewPost")]
         public async Task<IActionResult> CreatePost(NewPostDTO post)
-        {
-            postService.AddPost(post);
+        {   //izmena da vraca response
+            postUI.AddPost(post);
             return Ok(
                 new{
                     message = "Uspesno dodat novi post"
@@ -31,8 +32,8 @@ namespace PyxisKapriBack.Controllers
         }
         [HttpGet("SetLike/{id}")]
         public async Task<IActionResult> SetLikeOnPost(int id)
-        {
-            postService.SetLikeOnPost(id);
+        {   //izmena ovde da vraca response
+            postUI.SetLikeOnPost(id);
 
             return Ok(
                 new
@@ -42,33 +43,32 @@ namespace PyxisKapriBack.Controllers
             );
 
         }
-        [Authorize(Roles ="Admin")]
-        [HttpDelete("DeleteUserPost/{postId}")]
-        public async Task<IActionResult> DeleteUserPost(int postId, string userName)
-        {
-            bool succeed = postService.DeleteUserPost(postId, userName);
-
-            var answer = new { message = succeed ? "Uspesno obrisan post!" : "Greska pri brisanju posta!" };
-            if(!succeed)
-                return BadRequest(answer);
-            return Ok(answer);
-        }
         
+        [HttpDelete("DeleteUserPost/{postId}")]
+        public async Task<IActionResult> DeleteUserPost(int postId)
+        {
+            var response = postUI.DeleteUserPost(postId);
+            var message = new { message = response.Message };
+            if (response.StatusCode.Equals(StatusCodes.Status404NotFound))
+                return NotFound(message);
+            if (response.StatusCode.Equals(StatusCodes.Status403Forbidden))
+                return BadRequest(message);
+            return Ok(message);
+        }
+        [Authorize(Roles = "Admin")]
         [HttpDelete("DeletePost/{postId}")]
         public async Task<IActionResult> DeletePost(int postId)
         {
-            postService.DeletePost(postId);
-            return Ok(
-                new
-                {
-                    message = "Uspesno obrisan post"
-                }
-            );
+            var response = postUI.DeletePost(postId);
+            var message = new { message = response.Message };
+            if (response.StatusCode.Equals(StatusCodes.Status404NotFound))
+                return BadRequest(message);
+            return Ok(message);
         }
         [HttpGet("GetUserPosts/{username}")]
         public async Task<IActionResult> GetUserPosts(string username)
         {
-            var posts = postService.GetUserPosts(username);
+            var posts = postUI.GetUserPosts(username);
             return Ok(posts);
         }
     }
