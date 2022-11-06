@@ -14,6 +14,8 @@ namespace PyxisKapriBack.DAL
         }
         public bool AddNewUser(User user)
         {
+            if (GetUser(user.Username) != null)
+                return false; 
             if (user == null)
                 return false; 
             _context.Users.Add(user);
