@@ -19,11 +19,11 @@ interface UserService {
     @POST("api/Auth/register")
     fun register(@Body requestBody: RegisterRequest) : Call<MessageResponse>
 
-    @POST("api/User/UpdateUser")
+    @PUT("api/User/UpdateUser")
     fun editUser(@Body requestBody: EditUserRequest) : Call<MessageResponse>
 
-    @GET("api/User/GetUser/{username}")
-    fun getUser(@Path(value = "username") username: String) : Call<GetUserResponse>
+    @GET("api/User/GetUser")
+    fun getUser() : Call<GetUserResponse>
 
 
 }

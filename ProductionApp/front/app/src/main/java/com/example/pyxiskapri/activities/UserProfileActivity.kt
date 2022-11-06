@@ -23,7 +23,8 @@ import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.modal_confirm_password.*
 import retrofit2.Call
 import retrofit2.Response
-import javax.security.auth.callback.Callback
+import retrofit2.Callback
+import java.util.Objects
 
 class UserProfileActivity : AppCompatActivity() {
 
@@ -49,7 +50,7 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     private fun setupGetUser() {
-        apiClient.getUserService(this).getUser(sessionManager.fetchUserData()!!.username)
+        apiClient.getUserService(this).getUser()
             .enqueue(object : retrofit2.Callback<GetUserResponse>{
                 override fun onResponse(
                     call: Call<GetUserResponse>,
@@ -101,16 +102,72 @@ class UserProfileActivity : AppCompatActivity() {
             ib_confirm.setOnClickListener()
             {
 
-                showModalDialog()
+                val dialog= Dialog(this)
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                dialog.setCancelable(true)
+                dialog.setContentView(R.layout.modal_confirm_password)
+
+                dialog.btn_confirm_password.setOnClickListener(){
 
 
-                tv_first_name.text=et_first_name.text.toString()
-                tv_last_name.text=et_last_name.text.toString()
-                tv_username.text=et_username.text.toString()
-                tv_email.text=et_email.text.toString()
+                    var editUserRequest= EditUserRequest(
 
-                tv_name1.text=et_first_name.text.toString()
-                tv_name2.text=et_last_name.text.toString()
+                        firstName = this.et_first_name.text.toString(),
+                        lastName = this.et_last_name.text.toString(),
+                        username = this.et_username.text.toString(),
+                        email = this.et_email.text.toString(),
+                        password = dialog.et_modul_password.text.toString(),
+                        profileimage = ""
+                    )
+
+                    Log.d("","Ovde sam")
+
+                    val context: Context = this
+
+                    apiClient.getUserService(context).editUser(editUserRequest).enqueue(object : Callback<MessageResponse>{
+                        override fun onResponse(
+                            call: Call<MessageResponse>,
+                            response: Response<MessageResponse>
+                        ) {
+                            if(response.isSuccessful)
+                            {
+
+                                Log.d("",response.body().toString())
+                                if(response.body()!!.message.toString()=="User updated succesffuly!")
+                                {
+                                    Toast.makeText(context,"Credentials changed successfully!",Toast.LENGTH_LONG).show()
+
+                                    tv_first_name.text=et_first_name.text.toString()
+                                    tv_last_name.text=et_last_name.text.toString()
+                                    tv_username.text=et_username.text.toString()
+                                    tv_email.text=et_email.text.toString()
+
+                                    tv_name1.text=et_first_name.text.toString()
+                                    tv_name2.text=et_last_name.text.toString()
+                                }
+
+                                else
+                                    Toast.makeText(context,"Wrong password, try again!",Toast.LENGTH_LONG).show()
+
+
+
+                            }
+
+
+                        }
+
+                        override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                            Toast.makeText(context,"Something went wrong, try again.",Toast.LENGTH_LONG).show()
+                        }
+
+
+                    })
+
+
+
+                    dialog.dismiss()
+                }
+                dialog.show()
 
                 tv_first_name.isGone=false
                 tv_last_name.isGone=false
@@ -131,58 +188,6 @@ class UserProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun showModalDialog() {
-
-
-        val dialog= Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setCancelable(true)
-        dialog.setContentView(R.layout.modal_confirm_password)
-
-
-        dialog.btn_confirm_password.setOnClickListener(){
-
-            EditUser()
-
-            dialog.dismiss()
-        }
-        dialog.show()
-
-    }
-
-    private fun EditUser() {
-
-        var editUserRequest= EditUserRequest(
-
-            firstName = et_first_name.text.toString(),
-            lastName = et_last_name.text.toString(),
-            username = et_username.text.toString(),
-            email = et_email.text.toString(),
-            password = et_modul_password.text.toString()
-        )
-
-        val context: Context = this
-        apiClient.getUserService(context).editUser(editUserRequest).enqueue(object :
-            retrofit2.Callback<MessageResponse>{
-            override fun onResponse(
-                call: Call<MessageResponse>,
-                response: Response<MessageResponse>
-            ) {
-                if(response.isSuccessful){
-
-                    Toast.makeText(context, "User informations successfully updated", Toast.LENGTH_SHORT).show()
-
-                }
-            }
-
-            override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                Toast.makeText(context, "Incorrect password, try again!", Toast.LENGTH_SHORT).show()
-            }
-
-
-        })
-
-        }
 
 
 
