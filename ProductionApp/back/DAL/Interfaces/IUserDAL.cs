@@ -12,5 +12,6 @@ namespace PyxisKapriBack.DAL.Interfaces
         bool UpdateUserRole(string username, string roleName);
         bool UpdateUser(User user);
         bool DeleteUser(int userID); 
+        List<User> GetAllUsers(User user);
     }
 }

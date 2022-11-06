@@ -68,5 +68,10 @@ namespace PyxisKapriBack.DAL
         {
             return _context.Users.Where(user => user.Id == userID).FirstOrDefault(); 
         }
+
+        public List<User> GetAllUsers(User user)
+        {
+            return _context.Users.Where(user => user.Id != user.Id).ToList(); 
+        }
     }
 }
