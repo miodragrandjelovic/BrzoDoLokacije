@@ -10,6 +10,8 @@ data class GetUserResponse(
     @SerializedName("username")
     var username: String,
     @SerializedName("email")
-    var email: String
+    var email: String,
+    @SerializedName("profileImage")
+    var profileImage: String
 
 )
