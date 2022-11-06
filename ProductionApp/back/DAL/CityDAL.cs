@@ -37,7 +37,7 @@ namespace PyxisKapriBack.DAL
 
         public List<City> FilterCities(string filter)
         {
-            return _context.Cities.Where(city => city.Name.ToLower().Contains(filter.ToLower())).ToList();
+            return _context.Cities.Where(city => city.Name.ToLower().Contains(filter.ToLower())).Include(city => city.Country).ToList();
         }
 
         public City GetCity(string cityName)

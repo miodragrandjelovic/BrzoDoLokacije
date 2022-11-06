@@ -34,7 +34,10 @@ namespace PyxisKapriBack.DAL
             return _context.Posts.Where(post => post.Id == PostID).Include(post => post.User)
                                                                   .Include(post => post.Dislikes)
                                                                   .Include(post => post.Likes)
-                                                                  .Include(post => post.Comments).FirstOrDefault(); 
+                                                                  .Include(post => post.Comments)
+                                                                  .Include(post => post.Images)
+                                                                  .Include(post => post.Location)
+                                                                  .FirstOrDefault(); 
         }
 
         public void UpdatePost(Post post)

@@ -23,7 +23,9 @@
         }
         public Location GetLocation(string name)
         {
-            return Locations.Where(x => x.Name.Equals(name)).FirstOrDefault();
+            return Locations.Where(x => x.Name.Equals(name)).Include(location => location.City)
+                                                            .Include(location => location.Posts)
+                                                            .FirstOrDefault();
         }
         private void InsertLocations()
         {

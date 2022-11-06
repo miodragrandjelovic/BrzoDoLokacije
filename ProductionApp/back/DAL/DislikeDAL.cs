@@ -13,10 +13,11 @@ namespace PyxisKapriBack.DAL
 
         public bool AddDislike(Dislike Dislike)
         {
+            if (Dislike == null)
+                return false; 
             _context.Dislikes.Add(Dislike);
-            if (_context.SaveChanges() == 1) 
-                return true; 
-            return false;
+            _context.SaveChanges();
+            return true;
         }   
 
         public bool DeleteDislike(int DislikeID)
@@ -31,12 +32,16 @@ namespace PyxisKapriBack.DAL
 
         public Dislike GetDislike(int DislikeID)
         {
-            return _context.Dislikes.Where(dislike => dislike.Id == DislikeID).FirstOrDefault(); 
+            return _context.Dislikes.Where(dislike => dislike.Id == DislikeID).Include(dislike => dislike.User)
+                                                                              .Include(dislike => dislike.Post)
+                                                                              .FirstOrDefault(); 
         }
 
         public List<Dislike> GetDislikesPost(Post Post)
         {
-            return _context.Dislikes.Where(dislike => dislike.PostId == Post.Id).ToList();
+            return _context.Dislikes.Where(dislike => dislike.PostId == Post.Id).Include(dislike => dislike.User)
+                                                                                .Include(dislike => dislike.Post)
+                                                                                .ToList();
         }
     }
 }

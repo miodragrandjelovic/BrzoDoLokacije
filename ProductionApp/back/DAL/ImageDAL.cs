@@ -33,19 +33,19 @@ namespace PyxisKapriBack.DAL
             if (image == null)
                 return false; 
 
-             _context.Remove(image);
-             _context.SaveChanges();
+            _context.Remove(image);
+            _context.SaveChanges();
             return true; 
         }
 
         public Image GetImage(int ImageID)
         {
-            return _context.Images.Where(image => image.Id == ImageID).FirstOrDefault(); 
+            return _context.Images.Where(image => image.Id == ImageID).Include(image => image.Post).FirstOrDefault(); 
         }
 
         public List<Image> GetImages(int PostID)
         {
-            return _context.Images.Where(image => image.PostId == PostID).ToList(); 
+            return _context.Images.Where(image => image.PostId == PostID).Include(image => image.Post).ToList(); 
         }
     }
 }
