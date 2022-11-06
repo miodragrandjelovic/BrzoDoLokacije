@@ -28,7 +28,7 @@ namespace PyxisKapriBack.Services
             newPost.User = userService.GetUser(userService.GetLoggedUser());
             newPost.Description = post.Description;
             newPost.LocationId = post.LocationId;   
-            newPost.CoverImage = Encoding.ASCII.GetBytes(post.CoverImage).ToString();//izmeniti u Post modelu CoverImage type string --> byte[] i skloniti toString metod
+   //         newPost.CoverImage = Encoding.ASCII.GetBytes(post.CoverImage).ToString();//izmeniti u Post modelu CoverImage type string --> byte[] i skloniti toString metod
             foreach(string image in post.Images)
             {
                 Image newImage = new Image();

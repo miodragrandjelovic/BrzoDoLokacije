@@ -46,7 +46,7 @@ namespace PyxisKapriBack.UI
             {
                 postsDTO.Add(new PostDTO
                 {
-                    CoverImage = post.CoverImage,
+                   // CoverImage = post.CoverImage,
                     NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
                     NumberOfViews = 0
                 });
@@ -64,7 +64,7 @@ namespace PyxisKapriBack.UI
             {
                 postsDTO.Add(new PostDTO
                 {
-                    CoverImage = post.CoverImage,
+                  //  CoverImage = post.CoverImage,
                     NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
                     NumberOfViews = 0
                 });
