@@ -53,6 +53,7 @@ namespace PyxisKapriBack.Services
             {
                 response.StatusCode = StatusCodes.Status400BadRequest;
                 response.Message = "User already exists";
+                return response;
             }
 
             encryptionManager.EncryptPassword(request.Password, out passwordHash, out passwordKey);
