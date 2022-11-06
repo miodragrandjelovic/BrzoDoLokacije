@@ -14,8 +14,10 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.dtos.request.EditUserRequest
+import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.SessionManager
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.modal_confirm_password.*
@@ -27,6 +29,7 @@ class UserProfileActivity : AppCompatActivity() {
 
 
     lateinit var apiClient: ApiClient
+    lateinit var sessionManager: SessionManager
 
     private val PICK_IMAGE_CODE=1
     lateinit var profileImage: Uri
@@ -36,15 +39,40 @@ class UserProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_user_profile)
 
         apiClient=ApiClient()
+        sessionManager= SessionManager(this)
 
-
-
-
-
+        setupGetUser()
 
         setupChangePhoto()
         setupUpdateUser()
 
+    }
+
+    private fun setupGetUser() {
+        apiClient.getUserService(this).getUser(sessionManager.fetchUserData()!!.username)
+            .enqueue(object : retrofit2.Callback<GetUserResponse>{
+                override fun onResponse(
+                    call: Call<GetUserResponse>,
+                    response: Response<GetUserResponse>
+                ) {
+                    if(response.isSuccessful)
+                    {
+                        tv_first_name.text=response.body()!!.firstName
+                        tv_last_name.text=response.body()!!.lastName
+                        tv_username.text=response.body()!!.username
+                        tv_email.text=response.body()!!.email
+
+                        tv_name1.text=response.body()!!.firstName
+                        tv_name2.text=response.body()!!.lastName
+
+                    }
+                }
+
+                override fun onFailure(call: Call<GetUserResponse>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+
+            })
     }
 
     private fun setupUpdateUser() {
@@ -81,6 +109,9 @@ class UserProfileActivity : AppCompatActivity() {
                 tv_username.text=et_username.text.toString()
                 tv_email.text=et_email.text.toString()
 
+                tv_name1.text=et_first_name.text.toString()
+                tv_name2.text=et_last_name.text.toString()
+
                 tv_first_name.isGone=false
                 tv_last_name.isGone=false
                 tv_username.isGone=false
@@ -102,21 +133,17 @@ class UserProfileActivity : AppCompatActivity() {
 
     private fun showModalDialog() {
 
-        Log.d("","ovde sam")
+
         val dialog= Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.modal_confirm_password)
 
-        Log.d("","I ovde sam")
 
         dialog.btn_confirm_password.setOnClickListener(){
 
-            Log.d("","I I ovde sam")
-
             EditUser()
 
-            Log.d("","I I I ovde sam")
             dialog.dismiss()
         }
         dialog.show()
