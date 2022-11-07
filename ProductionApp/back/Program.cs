@@ -15,6 +15,7 @@ using PyxisKapriBack.LocationManager;
 using PyxisKapriBack.LocationManager.Interfaces;
 using PyxisKapriBack.UI.Interfaces;
 using PyxisKapriBack.UI;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +28,7 @@ builder.Services.AddDbContext<Database>(options =>
 builder.Services.AddCors(options =>
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins("https://localhost:7231")
+        builder.WithOrigins("http://localhost:10030/")
         .AllowAnyHeader()
         .AllowAnyMethod();
     }
@@ -55,7 +56,7 @@ builder.Services.AddAuthentication(item =>
     });
 
 // Add services to the container.
-
+builder.Services.Configure<KestrelServerOptions>(builder.Configuration.GetSection("Kestrel"));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
