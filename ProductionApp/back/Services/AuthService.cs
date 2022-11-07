@@ -68,7 +68,7 @@ namespace PyxisKapriBack.Services
 
             User newUser = new User
             {
-                ProfileImage = System.Text.Encoding.UTF8.GetBytes(FileService.GetFileName(Directory.GetFiles(@"C:\Users\Tekalo\Desktop\brzodolokacije\ProductionApp\back\Images\DefaultProfileImage\").FirstOrDefault())),
+                ProfileImage = System.Text.Encoding.UTF8.GetBytes(FileService.GetFileName(Directory.GetFiles(@"..\back\Images\DefaultProfileImage\").FirstOrDefault())),
                 Username = request.Username,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
