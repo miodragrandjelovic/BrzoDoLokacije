@@ -20,7 +20,7 @@ interface UserService {
     fun register(@Body requestBody: RegisterRequest) : Call<MessageResponse>
 
     @PUT("api/User/UpdateUser")
-    fun editUser(@Body requestBody: EditUserRequest) : Call<MessageResponse>
+    fun editUser(@Body requestBody: EditUserRequest) : Call<LoginResponse>
 
     @GET("api/User/GetUser")
     fun getUser() : Call<GetUserResponse>

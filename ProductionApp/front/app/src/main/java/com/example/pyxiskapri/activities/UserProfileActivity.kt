@@ -19,8 +19,10 @@ import androidx.core.view.isVisible
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.dtos.request.EditUserRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
+import com.example.pyxiskapri.dtos.response.LoginResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
@@ -40,7 +42,7 @@ class UserProfileActivity : AppCompatActivity() {
 
     private val PICK_IMAGE_CODE=1
     lateinit var profileImage: Uri
-
+    lateinit var oldProfileImage:String
 
     private var flag=0
 
@@ -56,6 +58,13 @@ class UserProfileActivity : AppCompatActivity() {
         setupChangePhoto()
         setupUpdateUser()
         confirmButton()
+
+        back.setOnClickListener()
+        {
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 
@@ -79,9 +88,9 @@ class UserProfileActivity : AppCompatActivity() {
                         val picture=response.body()!!.profileImage
                         if(picture!=null)
                         {
+                            oldProfileImage=response.body()!!.profileImage
                             var imageData = android.util.Base64.decode(picture, android.util.Base64.DEFAULT)
                             imageViewReal.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
-
                         }
 
 
@@ -154,6 +163,11 @@ class UserProfileActivity : AppCompatActivity() {
                     slika=encodedString
                 }
 
+                else if(this::oldProfileImage.isInitialized)
+                {
+                   slika=oldProfileImage
+                }
+
                 if(flag==0)
                 {
                     et_first_name.setText(tv_first_name.text)
@@ -175,39 +189,38 @@ class UserProfileActivity : AppCompatActivity() {
 
                 val context: Context = this
 
-                apiClient.getUserService(context).editUser(editUserRequest).enqueue(object : Callback<MessageResponse>{
+                apiClient.getUserService(context).editUser(editUserRequest).enqueue(object : Callback<LoginResponse>{
                     override fun onResponse(
-                        call: Call<MessageResponse>,
-                        response: Response<MessageResponse>
+                        call: Call<LoginResponse>,
+                        response: Response<LoginResponse>
                     ) {
                         if(response.isSuccessful)
                         {
+                            Log.d("",response.body()?.token.toString())
+                            sessionManager.clearToken()
+                            sessionManager.saveToken(response.body()?.token.toString())
 
-                            Log.d("",response.body().toString())
-                            if(response.body()!!.message.toString()=="User updated succesffuly!")
-                            {
-                                Toast.makeText(context,"Credentials changed successfully!",Toast.LENGTH_LONG).show()
+                            Toast.makeText(context,"Credentials changed successfully!",Toast.LENGTH_LONG).show()
 
-                                tv_first_name.text=et_first_name.text.toString()
-                                tv_last_name.text=et_last_name.text.toString()
-                                tv_username.text=et_username.text.toString()
-                                tv_email.text=et_email.text.toString()
+                            tv_first_name.text=et_first_name.text.toString()
+                            tv_last_name.text=et_last_name.text.toString()
+                            tv_username.text=et_username.text.toString()
+                            tv_email.text=et_email.text.toString()
 
-                                tv_name1.text=et_first_name.text.toString()
-                                tv_name2.text=et_last_name.text.toString()
-                            }
+                            tv_name1.text=et_first_name.text.toString()
+                            tv_name2.text=et_last_name.text.toString()
 
-                            else
-                                Toast.makeText(context,"Wrong password, try again!",Toast.LENGTH_LONG).show()
-
-
-                            flag=0
                         }
 
+                        if(response.code() == Constants.CODE_NOT_FOUND)
+                            Toast.makeText(context, "User not found!", Toast.LENGTH_SHORT).show()
+                        if(response.code() == Constants.CODE_BAD_REQUEST)
+                            Toast.makeText(context, "Wrong password!", Toast.LENGTH_SHORT).show()
 
+                        flag=0
                     }
 
-                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                    override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                         Toast.makeText(context,"Something went wrong, try again.",Toast.LENGTH_LONG).show()
                     }
 
