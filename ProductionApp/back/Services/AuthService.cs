@@ -12,12 +12,20 @@ namespace PyxisKapriBack.Services
         private readonly IEncryptionManager encryptionManager;
         private readonly IJWTManagerRepository JWTManager;
 
-        public AuthService(IUserService userService, IEncryptionManager encryptionManager, IJWTManagerRepository JWTManager)
+        public AuthService(
+            IUserService userService, 
+            IEncryptionManager encryptionManager, 
+            IJWTManagerRepository JWTManager,
+            IFileService fileService
+            )
         {
             this.userService = userService;
             this.encryptionManager = encryptionManager;
             this.JWTManager = JWTManager;
+            FileService = fileService;
         }
+
+        public IFileService FileService { get; }
 
         public async Task<Response> Login(LoginDTO request)
         {
@@ -55,11 +63,12 @@ namespace PyxisKapriBack.Services
                 response.Message = "User already exists";
                 return response;
             }
-
+            
             encryptionManager.EncryptPassword(request.Password, out passwordHash, out passwordKey);
 
             User newUser = new User
             {
+                ProfileImage = System.Text.Encoding.UTF8.GetBytes(FileService.GetFileName(Directory.GetFiles(@"C:\Users\Tekalo\Desktop\brzodolokacije\ProductionApp\back\Images\DefaultProfileImage\").FirstOrDefault())),
                 Username = request.Username,
                 FirstName = request.FirstName,
                 LastName = request.LastName,

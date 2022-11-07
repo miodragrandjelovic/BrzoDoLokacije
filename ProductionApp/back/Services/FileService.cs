@@ -18,5 +18,12 @@ namespace PyxisKapriBack.Services
 
             return image; 
         }
+
+        public string GetFileName(string imagePath)
+        {
+            var sections = imagePath.Split('/');    
+
+            return sections.Last();
+        }
     }
 }
