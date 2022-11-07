@@ -25,5 +25,22 @@ namespace PyxisKapriBack.Services
 
             return sections.Last();
         }
+
+        public string ConvertStringToBase64(string str)
+        {
+            var byteArray = System.Text.Encoding.UTF8.GetBytes(str);
+
+            return Convert.ToBase64String(byteArray);
+        }
+
+        public string GetDefaultProfileImage()
+        {
+            return Directory.GetFiles(Constants.Constants.IMAGE_PATH).FirstOrDefault();
+        }
+
+        public byte[]? ConvertImageToByte(string image)
+        {
+            return System.IO.File.ReadAllBytes(image);
+        }
     }
 }

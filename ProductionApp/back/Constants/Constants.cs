@@ -16,6 +16,9 @@
         public const string MODERATOR = "Moderator";
         public const int ALL_ROLES = 0;
 
+
+        // DefaultImage path
+        public const string IMAGE_PATH = @"..\back\Images\DefaultProfileImage\";
         #region 'Error Messages'
         public const string resNoFoundCountry  = "Država nije pronađena";
         public const string resNoFoundCity     = "Grad nije pronađen";
