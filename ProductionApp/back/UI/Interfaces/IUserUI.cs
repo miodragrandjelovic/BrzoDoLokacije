@@ -23,5 +23,7 @@ namespace PyxisKapriBack.UI.Interfaces
         Response UpdateUser(UserDTO user);
 
         List<UserDTO> GetAllUsers();
+
+        Response ChangeUserPassword(CredentialsDTO credentials);
     }
 }

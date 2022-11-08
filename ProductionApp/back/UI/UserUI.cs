@@ -90,5 +90,10 @@ namespace PyxisKapriBack.UI
         {
             return userService.UserAlreadyExists(username);
         }
+
+        public Response ChangeUserPassword(CredentialsDTO credentials)
+        {
+            return userService.ChangeUserPassword(credentials);
+        }
     }
 }
