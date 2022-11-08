@@ -1,13 +1,14 @@
 package com.example.pyxiskapri.adapters
 
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.activities.OpenPost
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.models.PostListItem
 import kotlinx.android.synthetic.main.item_post.view.*
@@ -21,19 +22,23 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        var currentPost = postList[position]
+        val currentPost = postList[position]
         holder.itemView.apply{
-            tv_ownerUsername.text = currentPost.username
+            tv_ownerUsername.text = currentPost.ownerUsername
             tv_likeCount.text = currentPost.likeCount.toString()
             tv_viewCount.text = currentPost.viewCount.toString()
 
-            var imageData = android.util.Base64.decode(currentPost.image, android.util.Base64.DEFAULT)
+            val ownerImageData = android.util.Base64.decode(currentPost.ownerImage, android.util.Base64.DEFAULT)
+            iv_ownerAvatar.setImageBitmap(BitmapFactory.decodeByteArray(ownerImageData, 0, ownerImageData.size))
+
+            val imageData = android.util.Base64.decode(currentPost.coverImage, android.util.Base64.DEFAULT)
             iv_postImage.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
 
-            iv_like.setColorFilter(R.color.white)
-            iv_dislike.setColorFilter(R.color.white)
-            iv_follow.setColorFilter(R.color.white)
-            iv_report.setColorFilter(R.color.red)
+            iv_postImage.setOnClickListener{
+                val intent = Intent(context, OpenPost::class.java);
+                intent.putExtra("postId", currentPost.id)
+                context.startActivity(intent);
+            }
         }
     }
 
@@ -41,16 +46,11 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
         return postList.size
     }
 
-    public fun setPostList(ownerUsername: String, postResponseList: ArrayList<PostResponse>){
+    public fun setPostList(postResponseList: ArrayList<PostResponse>){
         postList.clear()
-
-        //Log.d("SLIKA", postResponseList[0].image)
 
         for(post: PostResponse in postResponseList)
             postList.add(PostListItem(post))
-
-        for(post: PostListItem in postList)
-            post.username = ownerUsername
 
         notifyDataSetChanged()
     }

@@ -27,12 +27,11 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         sessionManager = SessionManager(this)
-
         apiClient = ApiClient()
 
         setPostsRV()
 
-        //fillPostsRV()
+        fillPostsRV()
 
         setupButtonNewPost()
     }
@@ -68,7 +67,7 @@ class HomeActivity : AppCompatActivity() {
             .enqueue(object : Callback<ArrayList<PostResponse>> {
                 override fun onResponse( call: Call<ArrayList<PostResponse>>, response: Response<ArrayList<PostResponse>>) {
                     if(response.isSuccessful)
-                        postListAdapter.setPostList(sessionManager.fetchUserData()!!.username, response.body()!!)
+                        postListAdapter.setPostList(response.body()!!)
 
                 }
 
