@@ -1,20 +1,18 @@
 package com.example.pyxiskapri.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.GestureDetector
-import android.view.MotionEvent
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.PostListAdapter
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
-import kotlinx.android.synthetic.main.activity_home.*
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
+import kotlinx.android.synthetic.main.activity_home.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,13 +29,11 @@ class HomeActivity : AppCompatActivity() {
 
         sessionManager = SessionManager(this)
 
-
-
         apiClient = ApiClient()
 
         setPostsRV()
 
-        fillPostsRV()
+        //fillPostsRV()
 
         setupButtonNewPost()
     }
@@ -49,10 +45,13 @@ class HomeActivity : AppCompatActivity() {
 
 
     override fun onRestart() {
-        super.onRestart();
+        super.onRestart()
         fillPostsRV()
-    }
 
+        /*val drawerFragment = fcv_drawerNav.getFragment<DrawerNav>()
+        var ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+        ft.detach(drawerFragment).attach(drawerFragment).commitAllowingStateLoss()*/
+    }
 
 
     private fun setupButtonNewPost(){

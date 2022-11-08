@@ -43,7 +43,6 @@
         </activity>
         <activity
             android:name=".activities.HomeActivity"
-            android:alwaysRetainTaskState="true"
             android:exported="false"
             android:launchMode="singleInstance">
             <meta-data

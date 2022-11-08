@@ -1,17 +1,18 @@
 package com.example.pyxiskapri.fragments
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.MainActivity
 import com.example.pyxiskapri.activities.UserProfileActivity
-import com.example.pyxiskapri.models.BasicUserData
 import com.example.pyxiskapri.models.UserData
 import com.example.pyxiskapri.utility.SessionManager
-import kotlinx.android.synthetic.main.fragment_drawer_nav.fl_navContainer
+import kotlinx.android.synthetic.main.fragment_drawer_nav.*
 import kotlinx.android.synthetic.main.fragment_drawer_nav.view.*
 
 
@@ -25,24 +26,33 @@ class DrawerNav : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         var view: View = inflater.inflate(R.layout.fragment_drawer_nav, container, false)
 
-        var sessionManager: SessionManager = SessionManager(requireContext())
+        updateDrawerData(view)
+        setDrawerButtons(view)
 
+        return view
+    }
+
+    public fun updateDrawerData(view: View){
+        //iv_userAvatar.setImageBitmap()
         view.apply {
-
-            //iv_userAvatar.setImageBitmap()
-            var userData: UserData? = sessionManager.fetchUserData()
-
-            if(userData != null) {
+            val userData: UserData? = SessionManager(requireContext()).fetchUserData()
+            if (userData != null) {
                 tv_username.text = userData.username
                 tv_fullName.text = userData.firstName + " " + userData.lastName
             }
+        }
+    }
+
+    public fun setDrawerButtons(view: View){
+        view.apply {
 
             btn_closeMenu.setOnClickListener {
-                fl_navContainer.translationX = (320f * requireContext().resources.displayMetrics.density + 0.5f)
+                hideDrawer()
             }
 
             btn_signOut.setOnClickListener {
-                sessionManager.clearToken()
+                SessionManager(requireContext()).clearToken()
+                hideDrawer()
                 val intent = Intent(requireContext(), MainActivity::class.java);
                 startActivity(intent)
             }
@@ -53,10 +63,18 @@ class DrawerNav : Fragment() {
             }
 
         }
+    }
 
 
+    override fun onResume() {
+        super.onResume()
+        view?.let { updateDrawerData(it) }
+    }
 
-        return view
+    public fun hideDrawer(){
+        view.apply{
+            fl_navContainer.translationX = (320f * requireContext().resources.displayMetrics.density + 0.5f)
+        }
     }
 
     public fun showDrawer(){
