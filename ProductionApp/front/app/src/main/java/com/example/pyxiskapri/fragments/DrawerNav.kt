@@ -52,7 +52,6 @@ class DrawerNav : Fragment() {
 
             btn_signOut.setOnClickListener {
                 SessionManager(requireContext()).clearToken()
-                hideDrawer()
                 val intent = Intent(requireContext(), MainActivity::class.java);
                 startActivity(intent)
             }
@@ -68,6 +67,7 @@ class DrawerNav : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        hideDrawer()
         view?.let { updateDrawerData(it) }
     }
 

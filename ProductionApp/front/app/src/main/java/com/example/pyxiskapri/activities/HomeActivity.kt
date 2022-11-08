@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.PostListAdapter
@@ -38,7 +37,7 @@ class HomeActivity : AppCompatActivity() {
         setupButtonNewPost()
     }
 
-    public fun showDrawerMenu(view: View){
+    fun showDrawerMenu(view: View){
         if(view.id == R.id.btn_menu)
             fcv_drawerNav.getFragment<DrawerNav>().showDrawer()
     }
@@ -47,10 +46,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         fillPostsRV()
-
-        /*val drawerFragment = fcv_drawerNav.getFragment<DrawerNav>()
-        var ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-        ft.detach(drawerFragment).attach(drawerFragment).commitAllowingStateLoss()*/
     }
 
 

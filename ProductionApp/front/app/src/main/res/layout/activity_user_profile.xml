@@ -7,6 +7,17 @@
     android:background="#23262B"
     tools:context=".activities.UserProfileActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcv_drawerNavUserProfile"
+        android:name="com.example.pyxiskapri.fragments.DrawerNav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_drawer_nav" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
