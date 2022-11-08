@@ -9,5 +9,7 @@ namespace PyxisKapriBack.DAL.Interfaces
         Post GetPost(int PostID);
         List<Post> GetUserPosts(String username);
         List<Post> GetPostsForLocation(int LocationID);
+
+        List<Post> GetPosts(String username);   
     }
 }

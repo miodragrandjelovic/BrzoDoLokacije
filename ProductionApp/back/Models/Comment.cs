@@ -7,7 +7,8 @@
 
         [MaxLength(Constants.ModelConstants.LENGTH_DESCRIPTION)]
         public string Text { get; set; }
-        public List<Comment>? Replies { get; set; } = null; 
+        public List<Comment>? Replies { get; set; } = null;
+        public DateTime DateCreated { get; set; }
 
         #region 'Post'
         public int PostId { get; set; }

@@ -56,5 +56,13 @@ namespace PyxisKapriBack.DAL
             User user = _iUserDAL.GetUser(username); 
             return _context.Posts.Where(post => post.UserId == user.Id).ToList(); 
         }
+
+        public List<Post> GetPosts(string username)
+        {
+            User user = _iUserDAL.GetUser(username);
+            if (user == null)
+                return null; 
+            return _context.Posts.Where(post => post.UserId != user.Id).ToList();
+        }
     }
 }
