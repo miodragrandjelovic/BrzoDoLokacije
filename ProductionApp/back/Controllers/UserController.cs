@@ -63,6 +63,15 @@ namespace PyxisKapriBack.Controllers
             return BadRequest(new { message = answer.Message });
         }
 
+        [HttpPut("ChangePassword")]
+        public async Task<IActionResult> ChangeUserPassword(CredentialsDTO credentials)
+        {
+            var answer = userUI.ChangeUserPassword(credentials);
+            var message = new {message = answer.Message};
+            if (answer.StatusCode.Equals(StatusCodes.Status200OK))
+                return Ok(message);
+            return BadRequest(message);
+        }
 
 
     }

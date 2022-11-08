@@ -41,6 +41,55 @@ namespace PyxisKapriBack.Services
             };
         }
 
+        public Response ChangeUserPassword(CredentialsDTO credentials)
+        {
+            var loggedUser = GetUser(GetLoggedUser());
+            // Proverava da li korisnik postoji
+            if (loggedUser == null)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status404NotFound,
+                    Message = "User not found!"
+                };
+            byte[] newPasswordHash, newPasswordSalt;
+
+
+            // Proverava da li je validna stara lozinka
+            if (!manager.DecryptPassword(credentials.OldPassword, loggedUser.Password, loggedUser.PasswordKey))
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status403Forbidden,
+                    Message = "Wrong password!"
+                };
+            // Proverava da li je nova lozinka ista kao stara
+            if (manager.DecryptPassword(credentials.NewPassword,loggedUser.Password,loggedUser.PasswordKey))
+                return new Response
+                {
+                    StatusCode= StatusCodes.Status400BadRequest,
+                    Message = "Password is same like old password!"
+                };
+
+            manager.EncryptPassword(credentials.NewPassword, out newPasswordHash, out newPasswordSalt);
+            loggedUser.Password = newPasswordHash;
+            loggedUser.PasswordKey = newPasswordSalt;
+
+            var succeed = userDAL.UpdateUser(loggedUser);
+
+            if (!succeed)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status400BadRequest,
+                    Message = "Error while updating password!"
+                };
+
+
+            return new Response
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = "Password updated successfuly"
+            };
+        }
+
         public List<User> GetAllUsers()
         {
             return userDAL.GetAllUsers(GetUser(GetLoggedUser()));
