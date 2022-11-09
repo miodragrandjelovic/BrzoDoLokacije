@@ -18,6 +18,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.dtos.request.ChangePasswordRequest
 import com.example.pyxiskapri.dtos.request.EditUserRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.LoginResponse
@@ -30,6 +31,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.item_post.view.*
+import kotlinx.android.synthetic.main.modal_change_pass.*
 import kotlinx.android.synthetic.main.modal_confirm_password.*
 import retrofit2.Call
 import retrofit2.Response
@@ -68,8 +70,15 @@ class UserProfileActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        btn_change_pass.setOnClickListener()
+        {
+            changepass()
+        }
+
+
 
     }
+
 
     fun showDrawerMenu(view: View){
         if(view.id == R.id.btn_menu)
@@ -142,6 +151,54 @@ class UserProfileActivity : AppCompatActivity() {
 
     }
 
+
+    }
+
+    private fun changepass() {
+        val dialog= Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.modal_change_pass)
+
+        dialog.show()
+        dialog.btn_save_new_pass.setOnClickListener(){
+
+            if(et_new_pass.text.toString()!=et_confirm_new_pass.text.toString())
+                Toast.makeText(this,"New password and confirmed password are not the same!",Toast.LENGTH_LONG).show()
+
+            else
+            {
+                var changepassreq= ChangePasswordRequest(
+                    oldPassword = et_old_pass.text.toString(),
+                    newPassword = et_new_pass.text.toString()
+                )
+
+                apiClient.getUserService(this).changePassword(changepassreq).enqueue(object:Callback<MessageResponse>{
+                    override fun onResponse(
+                        call: Call<MessageResponse>,
+                        response: Response<MessageResponse>
+                    ) {
+                        if(response.isSuccessful)
+                        {
+                            Toast.makeText(dialog.context,"Password changed successfully!",Toast.LENGTH_LONG).show()
+                            dialog.dismiss()
+                        }
+
+                        else
+                            Toast.makeText(dialog.context,response.body()!!.message,Toast.LENGTH_LONG).show()
+
+                    }
+
+                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                        Toast.makeText(dialog.context,"Something went wrong, try again.",Toast.LENGTH_LONG).show()
+                    }
+
+                })
+
+            }
+
+
+        }
 
     }
 

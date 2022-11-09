@@ -179,10 +179,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
                 android:background="@drawable/ll_border"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -415,7 +416,28 @@
 
 
 
+                <LinearLayout
+                    android:id="@+id/btn_change_pass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="change password"
+                        android:textColor="#737373"
+                        android:textSize="14dp"
+                        />
+
+                </LinearLayout>
+
+
             </LinearLayout>
+
+
+
 
 
             <Button

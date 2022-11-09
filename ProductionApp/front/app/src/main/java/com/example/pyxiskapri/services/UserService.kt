@@ -1,6 +1,7 @@
 package com.example.pyxiskapri.services
 
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.example.pyxiskapri.dtos.request.ChangePasswordRequest
 import com.example.pyxiskapri.dtos.request.EditUserRequest
 import com.example.pyxiskapri.dtos.request.NewPostRequest
 import com.example.pyxiskapri.dtos.request.RegisterRequest
@@ -24,6 +25,10 @@ interface UserService {
 
     @GET("api/User/GetUser")
     fun getUser() : Call<GetUserResponse>
+
+
+    @POST("api/User/ChangePassword")
+    fun changePassword(@Body requestBody: ChangePasswordRequest) : Call<MessageResponse>
 
 
 }
