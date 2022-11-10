@@ -163,34 +163,37 @@ class UserProfileActivity : AppCompatActivity() {
         dialog.show()
         dialog.btn_save_new_pass.setOnClickListener(){
 
-            if(et_new_pass.text.toString()!=et_confirm_new_pass.text.toString())
+            if(dialog.et_new_pass.text.toString()!=dialog.et_confirm_new_pass.text.toString())
                 Toast.makeText(this,"New password and confirmed password are not the same!",Toast.LENGTH_LONG).show()
 
             else
             {
                 var changepassreq= ChangePasswordRequest(
-                    oldPassword = et_old_pass.text.toString(),
-                    newPassword = et_new_pass.text.toString()
+                    oldPassword = dialog.et_old_pass.text.toString(),
+                    newPassword = dialog.et_new_pass.text.toString()
                 )
 
-                apiClient.getUserService(this).changePassword(changepassreq).enqueue(object:Callback<MessageResponse>{
+                Log.d("",changepassreq.toString())
+
+                val context: Context = this
+                apiClient.getUserService(context).changePassword(changepassreq).enqueue(object:Callback<MessageResponse>{
                     override fun onResponse(
                         call: Call<MessageResponse>,
                         response: Response<MessageResponse>
                     ) {
                         if(response.isSuccessful)
                         {
-                            Toast.makeText(dialog.context,"Password changed successfully!",Toast.LENGTH_LONG).show()
+                            Toast.makeText(context,"Password changed successfully!",Toast.LENGTH_LONG).show()
                             dialog.dismiss()
                         }
 
                         else
-                            Toast.makeText(dialog.context,response.body()!!.message,Toast.LENGTH_LONG).show()
+                            Toast.makeText(context,"Wrong password, try again!",Toast.LENGTH_LONG).show()
 
                     }
 
                     override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                        Toast.makeText(dialog.context,"Something went wrong, try again.",Toast.LENGTH_LONG).show()
+                        Toast.makeText(context,"Something went wrong, try again.",Toast.LENGTH_LONG).show()
                     }
 
                 })

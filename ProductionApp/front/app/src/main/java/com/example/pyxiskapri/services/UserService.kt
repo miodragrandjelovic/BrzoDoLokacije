@@ -27,7 +27,7 @@ interface UserService {
     fun getUser() : Call<GetUserResponse>
 
 
-    @POST("api/User/ChangePassword")
+    @PUT("api/User/ChangePassword")
     fun changePassword(@Body requestBody: ChangePasswordRequest) : Call<MessageResponse>
 
 
