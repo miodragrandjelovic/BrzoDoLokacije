@@ -6,38 +6,50 @@ namespace PyxisKapriBack.DAL
     {
         private Database _context; 
         private IUserDAL _iUserDAL;
-        public LikeDAL(Database context, IUserDAL iUserDAL)
+        private IPostDAL _iPostDAL;
+        public LikeDAL(Database context, IUserDAL iUserDAL, IPostDAL postDAL)
         {
             _context = context;
             _iUserDAL = iUserDAL;
+            _iPostDAL = postDAL;
         }
-        public void AddLike(Post post, string username)
+        public bool AddLike(int postId, string username)
         {
-            int userID = _iUserDAL.GetUser(username).Id;
-            int postID = post.Id; 
+            User user = _iUserDAL.GetUser(username);
+            Post post = _iPostDAL.GetPost(postId);
+            
+            if(user == null)
+                return false;
+
+            if (post == null)
+                return false;
 
             Like like = new Like()
             {
-                PostId = postID,
-                UserId = userID 
+                PostId = postId,
+                UserId = user.Id 
             };
 
             _context.Likes.Add(like);
             _context.SaveChanges(); 
+            return true; 
         }
 
-        public void DeleteLike(int LikeID)
+        public bool DeleteLike(int LikeId)
         {
-            Like like = _context.Likes.Where(like => like.Id == LikeID).Include(like => like.User)
+            Like like = _context.Likes.Where(like => like.Id == LikeId).Include(like => like.User)
                                                                        .Include(like => like.Post)
-                                                                       .FirstOrDefault(); 
+                                                                       .FirstOrDefault();
+            if (like == null)
+                return false; 
             _context.Likes.Remove(like);
             _context.SaveChanges();
+            return true; 
         }
 
-        public List<Like> GetLikes(int PostID, out int NumberOfLikes)
+        public List<Like> GetLikes(int PostId, out int NumberOfLikes)
         {
-            List<Like> likes = _context.Likes.Where(like => like.PostId == PostID).Include(like => like.User)
+            List<Like> likes = _context.Likes.Where(like => like.PostId == PostId).Include(like => like.User)
                                                                                   .Include(like => like.Post)
                                                                                   .ToList(); 
             NumberOfLikes = likes.Count;

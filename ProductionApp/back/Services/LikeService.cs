@@ -16,7 +16,7 @@ namespace PyxisKapriBack.Services
 
         public void AddLike(Post post, string username)
         {
-            likeDAL.AddLike(post, userService.GetLoggedUser());
+            likeDAL.AddLike(post.Id, userService.GetLoggedUser());
         }
 
         public void DeleteLike(int likeID)
