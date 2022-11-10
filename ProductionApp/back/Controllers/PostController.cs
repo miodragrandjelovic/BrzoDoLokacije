@@ -33,14 +33,12 @@ namespace PyxisKapriBack.Controllers
         [HttpGet("SetLike/{id}")]
         public async Task<IActionResult> SetLikeOnPost(int id)
         {   //izmena ovde da vraca response
-            postUI.SetLikeOnPost(id);
+            var response = postUI.SetLikeOnPost(id);
+            var message = new { message = response.Message };
+            if(response.StatusCode.Equals(StatusCodes.Status200OK))
+                return Ok(message);
 
-            return Ok(
-                new
-                {
-                    message = "Uspesno postavljen like"
-                }
-            );
+            return BadRequest(message);
 
         }
         

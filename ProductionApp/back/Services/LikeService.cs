@@ -14,7 +14,7 @@ namespace PyxisKapriBack.Services
             this.userService = userService;
         }
 
-        public Response AddLike(int postID, string username)
+        public Response AddLike(int postID)
         {
 
             likeDAL.AddLike(postID, userService.GetLoggedUser());
@@ -51,6 +51,11 @@ namespace PyxisKapriBack.Services
 
 
             return numberOfLikes;
+        }
+
+        public bool IsLiked(int postID, string username)
+        {
+            return likeDAL.IsPostLiked(postID, username);
         }
     }
 }

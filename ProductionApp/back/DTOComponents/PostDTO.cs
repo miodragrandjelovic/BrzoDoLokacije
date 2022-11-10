@@ -8,5 +8,6 @@
         public string CoverImage { get; set; } = string.Empty;
         public int NumberOfLikes { get; set; } = 0;
         public int NumberOfViews { get; set; } = 0;
+        public bool IsLiked { get; set; } = false;
     }
 }

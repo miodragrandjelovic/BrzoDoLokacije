@@ -9,11 +9,13 @@ namespace PyxisKapriBack.UI
     {
         private readonly IPostService postService;
         private readonly ILikeService likeService;
+        private readonly IUserService userService;
 
-        public PostUI(IPostService postService, ILikeService likeService)
+        public PostUI(IPostService postService, ILikeService likeService, IUserService userService)
         {
             this.postService = postService;
             this.likeService = likeService;
+            this.userService = userService;
         }
         public void AddPost(NewPostDTO post)
         {
@@ -45,7 +47,8 @@ namespace PyxisKapriBack.UI
                     NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
                     NumberOfViews = 0,
                     Username = post.User.Username,
-                    ProfileImage = Convert.ToBase64String(post.User.ProfileImage)
+                    ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
+                    IsLiked = likeService.IsLiked(post.Id,userService.GetLoggedUser())
                 });
             }
             return allPosts;
@@ -99,7 +102,7 @@ namespace PyxisKapriBack.UI
                     Id = post.Id,
                     CoverImage = Convert.ToBase64String( post.CoverImage),
                     NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
-                    NumberOfViews = 0
+                    NumberOfViews = 0,              
                 });
             }
 
