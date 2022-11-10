@@ -48,13 +48,25 @@ namespace PyxisKapriBack.DAL
 
         public List<Post> GetPostsForLocation(int LocationID)
         {
-            return _context.Posts.Where(post => post.LocationId == LocationID).ToList(); 
+            return _context.Posts.Where(post => post.LocationId == LocationID).Include(post => post.User)
+                                                                              .Include(post => post.Dislikes)
+                                                                              .Include(post => post.Likes)
+                                                                              .Include(post => post.Comments)
+                                                                              .Include(post => post.Images)
+                                                                              .Include(post => post.Location)
+                                                                              .ToList(); 
         }
 
         public List<Post> GetUserPosts(string username)
         {
             User user = _iUserDAL.GetUser(username); 
-            return _context.Posts.Where(post => post.UserId == user.Id).ToList(); 
+            return _context.Posts.Where(post => post.UserId == user.Id).Include(post => post.User)
+                                                                       .Include(post => post.Dislikes)
+                                                                       .Include(post => post.Likes)
+                                                                       .Include(post => post.Comments)
+                                                                       .Include(post => post.Images)
+                                                                       .Include(post => post.Location)
+                                                                       .ToList(); 
         }
 
         public List<Post> GetPosts(string username)
@@ -62,7 +74,13 @@ namespace PyxisKapriBack.DAL
             User user = _iUserDAL.GetUser(username);
             if (user == null)
                 return null; 
-            return _context.Posts.Where(post => post.UserId != user.Id).Include(post => post.User).ToList();
+            return _context.Posts.Where(post => post.UserId != user.Id).Include(post => post.User)
+                                                                       .Include(post => post.Dislikes)
+                                                                       .Include(post => post.Likes)
+                                                                       .Include(post => post.Comments)
+                                                                       .Include(post => post.Images)
+                                                                       .Include(post => post.Location)
+                                                                       .ToList();
         }
     }
 }
