@@ -17,14 +17,16 @@ namespace PyxisKapriBack.DAL
         {
             User user = _iUserDAL.GetUser(username);
             Post post = _iPostDAL.GetPost(postId);
+
+            if ((user == null) || (post == null))
+                return false;
+
+            Like like = GetLike(postId, username);
+
+            if (like != null)
+                return false; 
             
-            if(user == null)
-                return false;
-
-            if (post == null)
-                return false;
-
-            Like like = new Like()
+            like = new Like()
             {
                 PostId = postId,
                 UserId = user.Id 
@@ -35,11 +37,15 @@ namespace PyxisKapriBack.DAL
             return true; 
         }
 
-        public bool DeleteLike(int LikeId)
+        public bool DeleteLike(int postId, string username)
         {
-            Like like = _context.Likes.Where(like => like.Id == LikeId).Include(like => like.User)
-                                                                       .Include(like => like.Post)
-                                                                       .FirstOrDefault();
+            User user = _iUserDAL.GetUser(username);
+            Post post = _iPostDAL.GetPost(postId);
+
+            if ((user == null) || (post == null))
+                return false;
+
+            Like like = GetLike(postId, username); 
             if (like == null)
                 return false; 
             _context.Likes.Remove(like);
@@ -61,17 +67,19 @@ namespace PyxisKapriBack.DAL
             User user = _iUserDAL.GetUser(username);
             Post post = _iPostDAL.GetPost(postId);
 
-            if (user == null)
+            if ((user == null) || (post == null))
                 return false;
 
-            if (post == null)
-                return false;
-
-            Like like = _context.Likes.Where(like => like.PostId == postId).FirstOrDefault();
+            Like like = GetLike(postId, username); 
             if (like == null)
                 return false;
 
             return true; 
+        }
+        public Like GetLike(int postId, string username)
+        {
+            Like like = _context.Likes.Where(like => (like.PostId == postId) && (like.User.Username.Equals(username))).First();
+            return like; 
         }
     }
 }
