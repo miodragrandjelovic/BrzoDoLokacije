@@ -55,5 +55,23 @@ namespace PyxisKapriBack.DAL
             NumberOfLikes = likes.Count;
             return likes; 
         }
+
+        public bool IsPostLiked(int postId, string username)
+        {
+            User user = _iUserDAL.GetUser(username);
+            Post post = _iPostDAL.GetPost(postId);
+
+            if (user == null)
+                return false;
+
+            if (post == null)
+                return false;
+
+            Like like = _context.Likes.Where(like => like.PostId == postId).FirstOrDefault();
+            if (like == null)
+                return false;
+
+            return true; 
+        }
     }
 }
