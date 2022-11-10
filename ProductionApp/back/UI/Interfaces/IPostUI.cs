@@ -9,9 +9,9 @@ namespace PyxisKapriBack.UI.Interfaces
         List<PostDTO> GetPostsForLocation(int LocationID);
         void AddPost(NewPostDTO post);
         Response DeletePost(int postID);
-        Post GetPost(int PostID);
+        AdditionalPostData GetPost(int PostID);
         void SetLikeOnPost(int postID);
-
         Response DeleteUserPost(int postID);
+        List<PostDTO> GetAllPosts();
     }
 }

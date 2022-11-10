@@ -19,6 +19,11 @@
 
         // DefaultImage path
         public const string IMAGE_PATH = @"..\back\Images\DefaultProfileImage\";
+
+        // Posts
+        public const int FIRST_PAGE = 1;
+        public const int NUMBER_OF_POSTS = 5;
+
         #region 'Error Messages'
         public const string resNoFoundCountry  = "Država nije pronađena";
         public const string resNoFoundCity     = "Grad nije pronađen";

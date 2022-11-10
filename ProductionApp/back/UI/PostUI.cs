@@ -30,9 +30,41 @@ namespace PyxisKapriBack.UI
             return postService.DeleteUserPost(postID);
         }
 
-        public Post GetPost(int PostID)
+        public List<PostDTO> GetAllPosts()
         {
-            return postService.GetPost(PostID); 
+            var posts = postService.GetAllPosts();
+
+            var allPosts = new List<PostDTO>();
+
+            foreach (var post in posts)
+            {
+                allPosts.Add(new PostDTO
+                {
+                    Id = post.Id,
+                    CoverImage = Convert.ToBase64String(post.CoverImage),
+                    NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
+                    NumberOfViews = 0,
+                    Username = post.User.Username,
+                    ProfileImage = Convert.ToBase64String(post.User.ProfileImage)
+                });
+            }
+            return allPosts;
+        }
+
+        public AdditionalPostData GetPost(int PostID)
+        {
+            var post = postService.GetPost(PostID);
+            if(post == null)
+                return null;
+            var images = new List<string>();
+
+            foreach (var image in post.Images)
+                images.Add(Convert.ToBase64String(image.ImageData));
+            return new AdditionalPostData
+            {
+                Description = post.Description,
+                Images = images
+            };
 
            
         }
@@ -64,6 +96,7 @@ namespace PyxisKapriBack.UI
             {
                 postsDTO.Add(new PostDTO
                 {
+                    Id = post.Id,
                     CoverImage = Convert.ToBase64String( post.CoverImage),
                     NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
                     NumberOfViews = 0

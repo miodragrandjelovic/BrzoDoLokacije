@@ -71,5 +71,21 @@ namespace PyxisKapriBack.Controllers
             var posts = postUI.GetUserPosts(username);
             return Ok(posts);
         }
+
+        [HttpGet("GetPostById/{id}")]
+        public async Task<IActionResult> GetPostById(int id)
+        {
+            var post = postUI.GetPost(id);
+            if (post == null)
+                return BadRequest(new {message = "Error"});
+            return Ok(post);
+        }
+
+        [HttpGet("GetAllPosts")]
+        public async Task<IActionResult> GetAllPosts()
+        {
+            var posts = postUI.GetAllPosts();
+            return Ok(posts);
+        }
     }
 }

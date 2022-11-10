@@ -92,9 +92,22 @@ namespace PyxisKapriBack.Services
 
         }
 
+        public List<Post> GetAllPosts()
+        {
+            return postDAL.GetPosts(userService.GetLoggedUser());
+        }
+
         public Post GetPost(int PostID)
         {
-            return postDAL.GetPost(PostID);
+            var loggedUser = userService.GetLoggedUser();
+            var role = userService.GetRoleFromLoggedUser();
+            var post = postDAL.GetPost(PostID);
+
+            if (post.User.Username.Equals(loggedUser) || role.Equals(Constants.Constants.ADMIN))
+                return post;
+
+            return null;
+            
         }
 
         public List<Post> GetPostsForLocation(int LocationID)
