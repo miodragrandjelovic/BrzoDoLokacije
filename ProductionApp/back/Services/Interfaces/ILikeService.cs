@@ -5,7 +5,7 @@ namespace PyxisKapriBack.Services.Interfaces
     {
         public List<Like> GetLikes(int postID, out int numberOfLikes);
         public Response AddLike(int postID);
-        public void DeleteLike(int likeID);
+        public Response DeleteLike(int postId);
 
         public int GetNumberOfLikesByPostID(int postID);
 

@@ -33,9 +33,19 @@ namespace PyxisKapriBack.Services
             };
         }
 
-        public void DeleteLike(int likeID)
+        public Response DeleteLike(int postId)
         {
-            likeDAL.DeleteLike(likeID);
+            if (likeDAL.DeleteLike(postId, userService.GetLoggedUser()))
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Message = "Success!"
+                };
+            return new Response
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+                Message = "Error!"
+            };
         }
 
         public List<Like> GetLikes(int postID, out int numberOfLikes)

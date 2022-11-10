@@ -30,10 +30,10 @@ namespace PyxisKapriBack.Controllers
                 }
             );
         }
-        [HttpGet("SetLike/{id}")]
-        public async Task<IActionResult> SetLikeOnPost(int id)
-        {   //izmena ovde da vraca response
-            var response = postUI.SetLikeOnPost(id);
+        [HttpPut("SetLike/{postId}")]
+        public async Task<IActionResult> SetLikeOnPost(int postId)
+        {   
+            var response = postUI.SetLikeOnPost(postId);
             var message = new { message = response.Message };
             if(response.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(message);
@@ -41,7 +41,14 @@ namespace PyxisKapriBack.Controllers
             return BadRequest(message);
 
         }
-        
+        [HttpDelete("RemoveLike/{postId}")]
+        public async Task<IActionResult> RemoveLikeFromPost(int postId)
+        {
+            var response = postUI.RemoveLikeFromPost(postId);
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                return Ok();
+            return BadRequest();
+        }
         [HttpDelete("DeleteUserPost/{postId}")]
         public async Task<IActionResult> DeleteUserPost(int postId)
         {

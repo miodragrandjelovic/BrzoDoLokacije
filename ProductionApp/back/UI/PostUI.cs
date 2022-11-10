@@ -109,6 +109,11 @@ namespace PyxisKapriBack.UI
             return postsDTO;
         }
 
+        public Response RemoveLikeFromPost(int postID)
+        {
+            return likeService.DeleteLike(postID);
+        }
+
         public Response SetLikeOnPost(int postID)
         {
             return postService.SetLikeOnPost(postID);
