@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName
 data class PostResponse(
     @SerializedName("id")
     var id: Int,
-    @SerializedName("ownerUsername")
+    @SerializedName("username")
     var ownerUsername: String,
-    @SerializedName("ownerImage")
+    @SerializedName("profileImage")
     var ownerImage: String,
     @SerializedName("coverImage")
     var coverImage: String,

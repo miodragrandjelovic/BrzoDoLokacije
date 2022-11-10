@@ -1,60 +1,69 @@
 package com.example.pyxiskapri.activities
 
-import android.graphics.BitmapFactory
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.dtos.response.PostFullResponse
-import com.example.pyxiskapri.dtos.response.PostResponse
+import com.example.pyxiskapri.dtos.response.PostAdditionalData
+import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
 import kotlinx.android.synthetic.main.activity_open_post.*
-import kotlinx.android.synthetic.main.activity_open_post.view.*
-import kotlinx.android.synthetic.main.item_post.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class OpenPost : AppCompatActivity() {
+class OpenPostActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
     lateinit var apiClient: ApiClient
 
-    private var postId: Int = -1
+    private lateinit var postData: PostListItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_open_post)
-        postId = savedInstanceState!!.getInt("postId")
+
+
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            postData = intent.getSerializableExtra("postData", PostListItem::class.java)!!
+        else
+            postData = intent.getSerializableExtra("postData") as PostListItem
+
+
 
         sessionManager = SessionManager(this)
         apiClient = ApiClient()
 
+        requestPostData()
     }
 
     private fun requestPostData(){
-        apiClient.getPostService(this).getPostById(postId)
-            .enqueue(object : Callback<PostFullResponse> {
-                override fun onResponse(call: Call<PostFullResponse>, response: Response<PostFullResponse>) {
-                    if(response.isSuccessful)
+        apiClient.getPostService(this).getPostById(postData.id)
+            .enqueue(object : Callback<PostAdditionalData> {
+                override fun onResponse(call: Call<PostAdditionalData>, response: Response<PostAdditionalData>) {
+                    if(response.isSuccessful) {
                         updatePostData(response.body()!!)
-
+                    }
 
                 }
 
-                override fun onFailure(call: Call<PostFullResponse>, t: Throwable) {
+                override fun onFailure(call: Call<PostAdditionalData>, t: Throwable) {
 
                 }
 
             })
     }
 
-    private fun updatePostData(postData: PostFullResponse){
+    private fun updatePostData(postAdditionalData: PostAdditionalData){
         iv_ownerAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(postData.ownerImage))
 
         tv_ownerUsername.text = postData.ownerUsername
-        tv_postDescription.text = postData.postDescription
+        tv_postDescription.text = postAdditionalData.postDescription
 
         iv_ownerAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(postData.coverImage))
 
