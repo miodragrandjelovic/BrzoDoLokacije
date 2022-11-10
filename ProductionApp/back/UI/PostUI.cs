@@ -106,9 +106,9 @@ namespace PyxisKapriBack.UI
             return postsDTO;
         }
 
-        public void SetLikeOnPost(int postID)
+        public Response SetLikeOnPost(int postID)
         {
-            postService.SetLikeOnPost(postID);
+            return postService.SetLikeOnPost(postID);
         }
     }
 }

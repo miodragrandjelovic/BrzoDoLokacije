@@ -9,7 +9,7 @@ namespace PyxisKapriBack.Services.Interfaces
         void AddPost(NewPostDTO post);
         Response DeletePost(int postID);
         Post GetPost(int PostID);
-        void SetLikeOnPost(int postID);
+        Response SetLikeOnPost(int postID);
 
         Response DeleteUserPost(int postID);
         List<Post> GetAllPosts();

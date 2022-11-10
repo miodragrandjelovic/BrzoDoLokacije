@@ -49,11 +49,9 @@ namespace PyxisKapriBack.Controllers
         {
             var response = postUI.DeleteUserPost(postId);
             var message = new { message = response.Message };
-            if (response.StatusCode.Equals(StatusCodes.Status404NotFound))
-                return NotFound(message);
-            if (response.StatusCode.Equals(StatusCodes.Status403Forbidden))
-                return BadRequest(message);
-            return Ok(message);
+            if(response.StatusCode.Equals(StatusCodes.Status200OK))
+                return Ok(message);
+            return BadRequest(message);
         }
         [Authorize(Roles = "Admin")]
         [HttpDelete("DeletePost/{postId}")]
@@ -61,7 +59,7 @@ namespace PyxisKapriBack.Controllers
         {
             var response = postUI.DeletePost(postId);
             var message = new { message = response.Message };
-            if (response.StatusCode.Equals(StatusCodes.Status404NotFound))
+            if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
                 return BadRequest(message);
             return Ok(message);
         }

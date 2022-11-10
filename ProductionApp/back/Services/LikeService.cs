@@ -14,9 +14,22 @@ namespace PyxisKapriBack.Services
             this.userService = userService;
         }
 
-        public void AddLike(Post post, string username)
+        public Response AddLike(int postID, string username)
         {
-            likeDAL.AddLike(post.Id, userService.GetLoggedUser());
+            likeDAL.AddLike(postID, userService.GetLoggedUser());
+            var succeed = likeDAL.AddLike(postID, userService.GetLoggedUser());
+            if (!succeed)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = "Error!"
+                };
+
+            return new Response
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = "Success!"
+            };
         }
 
         public void DeleteLike(int likeID)

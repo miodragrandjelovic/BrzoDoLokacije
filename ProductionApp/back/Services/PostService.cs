@@ -46,7 +46,7 @@ namespace PyxisKapriBack.Services
             if (!succeed)
                 return new Response
                 {
-                    StatusCode = StatusCodes.Status404NotFound,
+                    StatusCode = StatusCodes.Status500InternalServerError,
                     Message = "Post doesn't exist!"
                 };
 
@@ -113,10 +113,9 @@ namespace PyxisKapriBack.Services
         }
 
 
-        public void SetLikeOnPost(int postID)
+        public Response SetLikeOnPost(int postID)
         {
-            Post post = GetPost(postID);
-            likeService.AddLike(post, userService.GetLoggedUser());
+            return likeService.AddLike(postId, userService.GetLoggedUser());
 
         }
     }
