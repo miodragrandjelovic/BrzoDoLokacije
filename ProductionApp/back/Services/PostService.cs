@@ -115,7 +115,7 @@ namespace PyxisKapriBack.Services
 
         public Response SetLikeOnPost(int postID)
         {
-            return likeService.AddLike(postId, userService.GetLoggedUser());
+            return likeService.AddLike(postID, userService.GetLoggedUser());
 
         }
     }
