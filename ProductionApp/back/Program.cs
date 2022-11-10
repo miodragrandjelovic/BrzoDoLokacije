@@ -73,34 +73,43 @@ builder.Services.AddSwaggerGen(options => {
 // Configure dependency injection
 
 #region 'Interface - Class Dependency Injection'
-builder.Services.AddTransient<IUserDAL, UserDAL>();
-builder.Services.AddTransient<IPostDAL, PostDAL>();
-builder.Services.AddTransient<IRoleDAL, RoleDAL>();
-builder.Services.AddTransient<ILikeDAL, LikeDAL>();
-builder.Services.AddTransient<IImageDAL, ImageDAL>();
 
-builder.Services.AddTransient<ICountryDAL, CountryDAL>();
-builder.Services.AddTransient<ICityDAL, CityDAL>();
-builder.Services.AddTransient<ILocationDAL, LocationDAL>();
+    #region 'DAL Dependencies'
+    builder.Services.AddTransient<IUserDAL, UserDAL>();
+    builder.Services.AddTransient<IPostDAL, PostDAL>();
+    builder.Services.AddTransient<IRoleDAL, RoleDAL>();
+    builder.Services.AddTransient<ILikeDAL, LikeDAL>();
+    builder.Services.AddTransient<IImageDAL, ImageDAL>();
 
-builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
-builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();
-builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+    builder.Services.AddTransient<ICountryDAL, CountryDAL>();
+    builder.Services.AddTransient<ICityDAL, CityDAL>();
+    builder.Services.AddTransient<ILocationDAL, LocationDAL>();
+    builder.Services.AddTransient<ICommentDAL, CommentDAL>();
+    builder.Services.AddTransient<IDislikeDAL, DislikeDAL>();
+    builder.Services.AddTransient<IFollowDAL, FollowDAL>(); 
+    #endregion
 
-builder.Services.AddTransient<IAuthService, AuthService>();
-builder.Services.AddTransient<IFileService, FileService>();
-builder.Services.AddTransient<ILocationManager, LocationManager>(); 
-builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<IPostService, PostService>();
-builder.Services.AddTransient<ILikeService, LikeService>();
-builder.Services.AddTransient<IPlaceService, PlaceService>();
+    #region 'Services - BL Dependencies'
+    builder.Services.AddTransient<IAuthService, AuthService>();
+    builder.Services.AddTransient<IFileService, FileService>();
+    builder.Services.AddTransient<IUserService, UserService>();
+    builder.Services.AddTransient<IPostService, PostService>();
+    builder.Services.AddTransient<ILikeService, LikeService>();
+    builder.Services.AddTransient<IPlaceService, PlaceService>();
+    #endregion
 
-builder.Services.AddTransient<ICommentDAL, CommentDAL>();
-builder.Services.AddTransient<IDislikeDALcs, DislikeDAL>();
+    #region 'UI - Dependencies'
+    builder.Services.AddTransient<IUserUI, UserUI>();
+    builder.Services.AddTransient<IPostUI, PostUI>();
+    #endregion
 
-// UI
-builder.Services.AddTransient<IUserUI, UserUI>();
-builder.Services.AddTransient<IPostUI, PostUI>();
+    #region 'Managers'
+    builder.Services.AddTransient<ILocationManager, LocationManager>();
+    builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
+    builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();
+    builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+    #endregion
+
 #endregion
 
 

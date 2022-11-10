@@ -3,7 +3,7 @@ using PyxisKapriBack.Models;
 
 namespace PyxisKapriBack.DAL
 {
-    public class DislikeDAL : IDislikeDALcs
+    public class DislikeDAL : IDislikeDAL
     {
         private Database _context; 
         public DislikeDAL(Database context)

@@ -28,6 +28,7 @@
         /*
          * Na primer, Jaffa Crvenka prati Stark 
          */
+
         #region 'Country'
 
         [ForeignKey("Country")]

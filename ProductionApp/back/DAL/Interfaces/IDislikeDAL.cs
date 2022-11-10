@@ -2,7 +2,7 @@
 
 namespace PyxisKapriBack.DAL.Interfaces
 {
-    public interface IDislikeDALcs
+    public interface IDislikeDAL
     {
         bool AddDislike(Dislike Dislike); 
         bool DeleteDislike(int DislikeID);
