@@ -78,7 +78,7 @@ namespace PyxisKapriBack.DAL
         }
         public Like GetLike(int postId, string username)
         {
-            Like like = _context.Likes.Where(like => (like.PostId == postId) && (like.User.Username.Equals(username))).First();
+            Like like = _context.Likes.Where(like => (like.PostId == postId) && (like.User.Username.Equals(username))).FirstOrDefault();
             return like; 
         }
     }

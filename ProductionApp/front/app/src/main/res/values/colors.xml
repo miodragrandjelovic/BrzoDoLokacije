@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="gold">#FFC300</color>
     <color name="blue">#444DC3</color>
     <color name="red">#CC2045</color>
     <color name="black">#000000</color>

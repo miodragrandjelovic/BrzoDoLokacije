@@ -5,6 +5,7 @@ import java.io.Serializable
 
 data class PostListItem(
     var id: Int,
+    var isLiked: Boolean,
     var ownerUsername: String,
     var ownerImage: String,
     var coverImage: String,
@@ -12,5 +13,5 @@ data class PostListItem(
     var viewCount: Int
 ) : Serializable
 {
-    constructor(response: PostResponse) : this(response.id, response.ownerUsername, response.ownerImage, response.coverImage, response.likeCount, response.viewCount)
+    constructor(response: PostResponse) : this(response.id, response.isLiked, response.ownerUsername, response.ownerImage, response.coverImage, response.likeCount, response.viewCount)
 }

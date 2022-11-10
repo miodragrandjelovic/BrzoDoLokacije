@@ -1,24 +1,37 @@
 package com.example.pyxiskapri.adapters
 
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.content.Intent
+import android.graphics.PorterDuff
+import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.OpenPostActivity
+import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.models.PostListItem
+import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.Constants
 import kotlinx.android.synthetic.main.item_post.view.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 class PostListAdapter(private val postList: MutableList<PostListItem>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
+        apiClient = ApiClient()
         return PostViewHolder( LayoutInflater.from(parent.context).inflate( R.layout.item_post, parent, false ) )
     }
+
+    lateinit var apiClient: ApiClient
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val currentPost = postList[position]
@@ -27,27 +40,31 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
             tv_likeCount.text = currentPost.likeCount.toString()
             tv_viewCount.text = currentPost.viewCount.toString()
 
-            // val ownerImageData = android.util.Base64.decode(currentPost.ownerImage, android.util.Base64.DEFAULT)
-            // iv_ownerAvatar.setImageBitmap(BitmapFactory.decodeByteArray(ownerImageData, 0, ownerImageData.size))
+
+            // Liked
+            if(currentPost.isLiked)
+                iv_likeIcon.setColorFilter(ContextCompat.getColor(context, R.color.gold), PorterDuff.Mode.SRC_IN);
+            else
+                iv_likeIcon.setColorFilter(ContextCompat.getColor(context, R.color.white), PorterDuff.Mode.SRC_IN);
 
             val imageData = android.util.Base64.decode(currentPost.coverImage, android.util.Base64.DEFAULT)
             iv_postImage.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
 
             iv_postImage.setOnClickListener{
                 val intent = Intent(context, OpenPostActivity::class.java)
-
-
                 intent.putExtra("postData", currentPost)
-
-//                intent.putExtra("postId", currentPost.id)
-//                intent.putExtra("ownerUsername", currentPost.ownerUsername)
-//                intent.putExtra("ownerImage", currentPost.ownerImage)
-//                intent.putExtra("coverImage", currentPost.coverImage)
-//                intent.putExtra("numberOfLikes", currentPost.likeCount)
-//                intent.putExtra("numberOfView", currentPost.viewCount)
-
                 context.startActivity(intent)
             }
+
+            btn_like.setOnClickListener {
+                if (currentPost.isLiked)
+                    removeLike(currentPost, position, context)
+                else
+                    setLike(currentPost, position, context)
+
+                notifyItemChanged(position)
+            }
+
         }
     }
 
@@ -62,6 +79,39 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
             postList.add(PostListItem(post))
 
         notifyDataSetChanged()
+    }
+
+    private fun setLike(currentPost: PostListItem, position: Int, context: Context){
+        apiClient.getPostService(context).setLike(currentPost.id)
+            .enqueue(object : Callback<MessageResponse> {
+                override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
+                    if(response.isSuccessful) {
+                        postList[position].isLiked = true
+                    }
+
+                }
+
+                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                    Log.d("PostListAdapter", "Nije implementiran onFailure za setLike api zahtev!")
+                }
+
+            })
+    }
+
+    private fun removeLike(currentPost: PostListItem, position: Int, context: Context){
+        apiClient.getPostService(context).removeLike(currentPost.id)
+            .enqueue(object : Callback<MessageResponse> {
+                override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
+                    if(response.isSuccessful) {
+                        postList[position].isLiked = false
+                    }
+                }
+
+                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                    Log.d("PostListAdapter", "Nije implementiran onFailure za deleteLike api zahtev!")
+                }
+
+            })
     }
 
 }
