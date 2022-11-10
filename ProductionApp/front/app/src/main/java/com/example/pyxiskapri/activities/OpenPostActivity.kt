@@ -65,7 +65,7 @@ class OpenPostActivity : AppCompatActivity() {
         tv_ownerUsername.text = postData.ownerUsername
         tv_postDescription.text = postAdditionalData.postDescription
 
-        iv_ownerAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(postData.coverImage))
+        iv_coverImage.setImageBitmap(UtilityFunctions.base64ToBitmap(postData.coverImage))
 
         // ADDITIONAL IMAGES
 
