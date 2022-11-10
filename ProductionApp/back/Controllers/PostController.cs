@@ -45,9 +45,10 @@ namespace PyxisKapriBack.Controllers
         public async Task<IActionResult> RemoveLikeFromPost(int postId)
         {
             var response = postUI.RemoveLikeFromPost(postId);
+            var message = new { message = response.Message };
             if (response.StatusCode.Equals(StatusCodes.Status200OK))
-                return Ok();
-            return BadRequest();
+                return Ok(message);
+            return BadRequest(message);
         }
         [HttpDelete("DeleteUserPost/{postId}")]
         public async Task<IActionResult> DeleteUserPost(int postId)
