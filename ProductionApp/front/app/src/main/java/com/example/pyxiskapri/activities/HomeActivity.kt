@@ -2,6 +2,7 @@ package com.example.pyxiskapri.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -63,11 +64,12 @@ class HomeActivity : AppCompatActivity() {
 
     private fun fillPostsRV(){
 
-        apiClient.getPostService(this).getUserPosts(sessionManager.fetchUserData()!!.username)
+        apiClient.getPostService(this).getAllPosts()
             .enqueue(object : Callback<ArrayList<PostResponse>> {
                 override fun onResponse( call: Call<ArrayList<PostResponse>>, response: Response<ArrayList<PostResponse>>) {
-                    if(response.isSuccessful)
+                    if(response.isSuccessful) {
                         postListAdapter.setPostList(response.body()!!)
+                    }
 
                 }
 
