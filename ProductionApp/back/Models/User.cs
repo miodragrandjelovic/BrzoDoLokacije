@@ -18,6 +18,16 @@
         public List<Like>? Likes { get; set; }
         public List<Dislike>? Dislikes { get; set; }
         public List<Comment>? Comments { get; set; }
+
+        public List<Follow>? Followers { get; set; } // lista korisnika koji prate ovog korisnika 
+        /*
+         * Na primer, Ja pratim oficijalnu stranu Jaffa Crvenke 
+         */
+
+        public List<Follow>? Following { get; set; } // lista korisnika koje prati ovaj korisnik
+        /*
+         * Na primer, Jaffa Crvenka prati Stark 
+         */
         #region 'Country'
 
         [ForeignKey("Country")]
