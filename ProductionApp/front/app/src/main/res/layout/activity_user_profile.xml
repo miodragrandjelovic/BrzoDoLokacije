@@ -127,50 +127,7 @@
 
 
 
-<!--            <LinearLayout
-                android:id="@+id/ll_buttons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_name">
 
-
-                <ImageButton
-                    android:id="@+id/ib_message"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:background="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/messages" />
-
-
-                <ImageButton
-                    android:id="@+id/ib_follow"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:background="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/follow" />
-
-
-                <ImageButton
-                    android:id="@+id/ib_report"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:background="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/report" />
-
-
-
-
-            </LinearLayout>-->
 
 
             <LinearLayout
