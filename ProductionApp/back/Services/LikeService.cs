@@ -16,8 +16,6 @@ namespace PyxisKapriBack.Services
 
         public Response AddLike(int postID)
         {
-
-            likeDAL.AddLike(postID, userService.GetLoggedUser());
             var succeed = likeDAL.AddLike(postID, userService.GetLoggedUser());
             if (!succeed)
                 return new Response
