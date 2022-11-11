@@ -1,10 +1,7 @@
 package com.example.pyxiskapri.services
 
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.pyxiskapri.dtos.request.ChangePasswordRequest
-import com.example.pyxiskapri.dtos.request.EditUserRequest
-import com.example.pyxiskapri.dtos.request.NewPostRequest
-import com.example.pyxiskapri.dtos.request.RegisterRequest
+import com.example.pyxiskapri.dtos.request.*
 import com.example.pyxiskapri.dtos.request.response.LoginRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.LoginResponse
@@ -26,9 +23,13 @@ interface UserService {
     @GET("api/User/GetUser")
     fun getUser() : Call<GetUserResponse>
 
-
     @PUT("api/User/ChangePassword")
     fun changePassword(@Body requestBody: ChangePasswordRequest) : Call<MessageResponse>
+
+    //PROMENITI API!!!
+    @POST("api/User/GetUserByUsername")
+    fun getForeignUser(@Body requestBody: ForeignUserRequest) : Call<GetUserResponse>
+
 
 
 }

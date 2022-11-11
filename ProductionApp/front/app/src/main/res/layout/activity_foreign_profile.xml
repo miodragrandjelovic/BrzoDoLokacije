@@ -62,7 +62,7 @@
                 >
 
                 <ImageView
-                    android:id="@+id/imageViewReal"
+                    android:id="@+id/f_imageViewReal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
@@ -82,7 +82,7 @@
 
 
                 <TextView
-                    android:id="@+id/tv_name1"
+                    android:id="@+id/tv_f_name1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_medium"
@@ -94,7 +94,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/tv_name2"
+                    android:id="@+id/tv_f_name2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -204,7 +204,7 @@
 
                     <TextView
 
-                        android:id="@+id/tv_first_name"
+                        android:id="@+id/tv_f_first_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -238,7 +238,7 @@
                         />
 
                     <TextView
-                        android:id="@+id/tv_last_name"
+                        android:id="@+id/tv_f_last_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -271,7 +271,7 @@
                         />
 
                     <TextView
-                        android:id="@+id/tv_username"
+                        android:id="@+id/tv_f_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -303,7 +303,7 @@
                         />
 
                     <TextView
-                        android:id="@+id/tv_email"
+                        android:id="@+id/tv_f_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
