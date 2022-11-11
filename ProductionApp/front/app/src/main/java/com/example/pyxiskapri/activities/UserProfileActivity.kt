@@ -16,7 +16,6 @@ import android.view.Window
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.dtos.request.ChangePasswordRequest
 import com.example.pyxiskapri.dtos.request.EditUserRequest
@@ -27,17 +26,13 @@ import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
-import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
-import kotlinx.android.synthetic.main.item_post.view.*
 import kotlinx.android.synthetic.main.modal_change_pass.*
 import kotlinx.android.synthetic.main.modal_confirm_password.*
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Callback
 import java.io.ByteArrayOutputStream
-import java.util.Objects
 
 class UserProfileActivity : AppCompatActivity() {
 
@@ -50,6 +45,11 @@ class UserProfileActivity : AppCompatActivity() {
     lateinit var oldProfileImage:String
 
     private var flag=0
+
+    override fun onRestart() {
+        super.onRestart()
+        setupGetUser()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +96,11 @@ class UserProfileActivity : AppCompatActivity() {
                     {
                         tv_first_name.text=response.body()!!.firstName
                         tv_last_name.text=response.body()!!.lastName
-                        tv_username.text=response.body()!!.username
+
+                        Log.d("USERNAME PRE: ", tv_userName.text.toString())
+                        tv_userName.text=response.body()!!.username
+                        Log.d("USERNAME POSLE: ", tv_userName.text.toString())
+
                         tv_email.text=response.body()!!.email
 
                         tv_name1.text=response.body()!!.firstName
@@ -132,13 +136,13 @@ class UserProfileActivity : AppCompatActivity() {
 
             et_first_name.setText(tv_first_name.text)
             et_last_name.setText(tv_last_name.text)
-            et_username.setText(tv_username.text)
+            et_username.setText(tv_userName.text)
             et_email.setText(tv_email.text)
 
 
             tv_first_name.isGone=true
             tv_last_name.isGone=true
-            tv_username.isGone=true
+            tv_userName.isGone=true
             tv_email.isGone=true
 
             et_first_name.isGone=false
@@ -240,7 +244,7 @@ class UserProfileActivity : AppCompatActivity() {
                 {
                     et_first_name.setText(tv_first_name.text)
                     et_last_name.setText(tv_last_name.text)
-                    et_username.setText(tv_username.text)
+                    et_username.setText(tv_userName.text)
                     et_email.setText(tv_email.text)
                 }
 
@@ -272,7 +276,7 @@ class UserProfileActivity : AppCompatActivity() {
 
                             tv_first_name.text=et_first_name.text.toString()
                             tv_last_name.text=et_last_name.text.toString()
-                            tv_username.text=et_username.text.toString()
+                            tv_userName.text=et_username.text.toString()
                             tv_email.text=et_email.text.toString()
 
                             tv_name1.text=et_first_name.text.toString()
@@ -305,7 +309,7 @@ class UserProfileActivity : AppCompatActivity() {
 
             tv_first_name.isGone=false
             tv_last_name.isGone=false
-            tv_username.isGone=false
+            tv_userName.isGone=false
             tv_email.isGone=false
 
             et_first_name.isGone=true
