@@ -40,7 +40,6 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
             tv_likeCount.text = currentPost.likeCount.toString()
             tv_viewCount.text = currentPost.viewCount.toString()
 
-
             // Liked
             if(currentPost.isLiked)
                 iv_likeIcon.setColorFilter(ContextCompat.getColor(context, R.color.gold), PorterDuff.Mode.SRC_IN);
@@ -57,12 +56,7 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
             }
 
             btn_like.setOnClickListener {
-                if (currentPost.isLiked)
-                    removeLike(currentPost, position, context)
-                else
-                    setLike(currentPost, position, context)
-
-                notifyItemChanged(position)
+                setRemoveLike(currentPost, position, context, currentPost.isLiked)
             }
 
         }
@@ -81,37 +75,55 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
         notifyDataSetChanged()
     }
 
-    private fun setLike(currentPost: PostListItem, position: Int, context: Context){
-        apiClient.getPostService(context).setLike(currentPost.id)
-            .enqueue(object : Callback<MessageResponse> {
-                override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
-                    if(response.isSuccessful) {
-                        postList[position].isLiked = true
+    private fun setRemoveLike(currentPost: PostListItem, position: Int, context: Context, isPostLiked: Boolean){
+        if(isPostLiked) {
+            apiClient.getPostService(context).removeLike(currentPost.id)
+                .enqueue(object : Callback<MessageResponse> {
+                    override fun onResponse(
+                        call: Call<MessageResponse>,
+                        response: Response<MessageResponse>
+                    ) {
+                        if(response.isSuccessful) {
+                            postList[position].isLiked = false
+                            postList[position].likeCount -= 1
+                            notifyItemChanged(position)
+                        }
+
                     }
 
-                }
-
-                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                    Log.d("PostListAdapter", "Nije implementiran onFailure za setLike api zahtev!")
-                }
-
-            })
-    }
-
-    private fun removeLike(currentPost: PostListItem, position: Int, context: Context){
-        apiClient.getPostService(context).removeLike(currentPost.id)
-            .enqueue(object : Callback<MessageResponse> {
-                override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
-                    if(response.isSuccessful) {
-                        postList[position].isLiked = false
+                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                        Log.d(
+                            "PostListAdapter",
+                            "Nije implementiran onFailure za removeLike api zahtev!"
+                        )
                     }
-                }
 
-                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                    Log.d("PostListAdapter", "Nije implementiran onFailure za deleteLike api zahtev!")
-                }
+                })
+        }
+        else {
+            apiClient.getPostService(context).setLike(currentPost.id)
+                .enqueue(object : Callback<MessageResponse> {
+                    override fun onResponse(
+                        call: Call<MessageResponse>,
+                        response: Response<MessageResponse>
+                    ) {
+                        if(response.isSuccessful) {
+                            postList[position].isLiked = true
+                            postList[position].likeCount += 1
+                            notifyItemChanged(position)
+                        }
 
-            })
+                    }
+
+                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                        Log.d(
+                            "PostListAdapter",
+                            "Nije implementiran onFailure za setLike api zahtev!"
+                        )
+                    }
+
+                })
+        }
     }
 
 }

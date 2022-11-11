@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.PostListAdapter
 import com.example.pyxiskapri.dtos.response.PostResponse
@@ -60,6 +61,7 @@ class HomeActivity : AppCompatActivity() {
         postListAdapter = PostListAdapter(mutableListOf())
         rv_posts.adapter = postListAdapter
         rv_posts.layoutManager = LinearLayoutManager(this)
+        (rv_posts.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 
     private fun fillPostsRV(){

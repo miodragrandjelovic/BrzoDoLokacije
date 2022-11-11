@@ -167,7 +167,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="10dp"
-                android:layout_weight=".5">
+                android:layout_weight=".5"
+                android:clickable="true"
+                android:focusable="true">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -188,8 +190,7 @@
                     android:layout_height="20dp"
                     android:layout_weight="0"
                     android:adjustViewBounds="true"
-                    android:clickable="true"
-                    android:focusable="true"
+                    android:clickable="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -203,7 +204,9 @@
                 android:id="@+id/btn_report"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5">
+                android:layout_weight="0.5"
+                android:clickable="true"
+                android:focusable="true">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -224,8 +227,7 @@
                     android:layout_height="20dp"
                     android:layout_weight="0"
                     android:adjustViewBounds="true"
-                    android:clickable="true"
-                    android:focusable="true"
+                    android:clickable="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
