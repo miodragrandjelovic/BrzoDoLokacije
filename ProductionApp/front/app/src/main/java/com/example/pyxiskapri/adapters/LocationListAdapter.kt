@@ -1,10 +1,8 @@
 package com.example.pyxiskapri.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.dtos.response.LocationResponse
@@ -38,6 +36,10 @@ class LocationListAdapter(private val locationList: MutableList<LocationListItem
         for(response: LocationResponse in locationResponseList)
             locationList.add(LocationListItem(response))
         notifyDataSetChanged()
+    }
+
+    public fun clearLocations(){
+        locationList.clear()
     }
 
 }

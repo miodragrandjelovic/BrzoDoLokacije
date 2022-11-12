@@ -13,6 +13,7 @@ import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_login.et_password
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,8 +40,13 @@ class LoginActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart();
         ActivityControl.handleUserSignedIn(this, sessionManager, null)
+        resetInputs()
     }
 
+    private fun resetInputs(){
+        et_usernameOrEmail.setText("")
+        et_password.setText("")
+    }
 
     private fun setupGoToRegisterButton(){
         btn_registerHere.setOnClickListener{

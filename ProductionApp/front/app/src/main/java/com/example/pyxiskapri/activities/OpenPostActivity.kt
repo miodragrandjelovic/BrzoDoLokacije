@@ -18,6 +18,7 @@ import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
 import kotlinx.android.synthetic.main.activity_open_post.*
+import kotlinx.android.synthetic.main.activity_register.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -46,6 +47,15 @@ class OpenPostActivity : AppCompatActivity() {
         super.onResume()
         collectActivityPassedData()
         updatePostData(null)
+        resetInputs()
+    }
+
+    private fun resetInputs(){
+        et_username.setText("")
+        et_firstName.setText("")
+        et_lastName.setText("")
+        et_email.setText("")
+        et_password.setText("")
     }
 
     override fun onPause() {

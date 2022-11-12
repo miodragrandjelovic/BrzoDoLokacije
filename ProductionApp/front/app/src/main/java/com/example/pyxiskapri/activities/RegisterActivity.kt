@@ -4,33 +4,18 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.pyxiskapri.services.UserService
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.dtos.request.RegisterRequest
-import com.example.pyxiskapri.dtos.response.LoginResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.utility.ActivityControl
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.activity_register.et_password
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.OkHttpClient
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import java.util.concurrent.TimeUnit
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var sessionManager: SessionManager
@@ -53,6 +38,15 @@ class RegisterActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart();
         ActivityControl.handleUserSignedIn(this, sessionManager, null)
+        resetInputs()
+    }
+
+    private fun resetInputs(){
+        et_username.setText("")
+        et_firstName.setText("")
+        et_lastName.setText("")
+        et_email.setText("")
+        et_password.setText("")
     }
 
     private fun setupGoToLoginButton(){
