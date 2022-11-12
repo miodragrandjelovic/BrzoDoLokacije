@@ -13,10 +13,11 @@ namespace PyxisKapriBack.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserUI userUI;
-
-        public UserController(IUserUI userUI)
+        private readonly IFollowUI followUI;
+        public UserController(IUserUI userUI, IFollowUI followUI)
         {
-            this.userUI = userUI;
+            this.userUI   = userUI;
+            this.followUI = followUI;
         }
 
         [Authorize(Roles ="Admin")]
@@ -73,6 +74,18 @@ namespace PyxisKapriBack.Controllers
             return BadRequest(message);
         }
 
+        [HttpGet("GetFollowers")]
+        public async Task<IActionResult> GetFollowers()
+        {
+            var followers = followUI.GetFollowers();
+            return Ok(followers);
+        }
 
+        [HttpGet("GetFollowing")]
+        public async Task<IActionResult> GetFollowing()
+        {
+            var following = followUI.GetFollowing();
+            return Ok(following);
+        }
     }
 }
