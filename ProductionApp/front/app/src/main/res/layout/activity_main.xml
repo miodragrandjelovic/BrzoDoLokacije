@@ -81,9 +81,9 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
 
-        android:fontFamily="@font/poppins_medium"
+        android:fontFamily="@font/montserrat_regular"
 
-        android:text="Lorem ipsum dolor sit."
+        android:text="Brzo do lokacije"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="26sp"
@@ -94,12 +94,12 @@
     <TextView
         android:id="@+id/tv_info"
 
-        android:layout_width="320dp"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
 
-        android:fontFamily="@font/poppins"
-        android:text="Cursus tortor, consectetur viverra, lacus habitant nullam facilisi."
+        android:fontFamily="@font/montserrat_regular"
+        android:text="All informations about world-famous locations in one place"
         android:textAlignment="center"
 
         android:textColor="@color/white"
@@ -115,7 +115,7 @@
         android:layout_height="70dp"
         android:backgroundTint="@color/blue"
 
-        android:fontFamily="@font/poppins_medium"
+        android:fontFamily="@font/montserrat_regular"
         android:text="Get Started"
 
         android:textAlignment="center"
@@ -137,7 +137,7 @@
         android:layout_marginBottom="30dp"
 
         android:backgroundTint="@color/white"
-        android:fontFamily="@font/poppins_medium"
+        android:fontFamily="@font/montserrat_regular"
         android:text="Sign In"
 
         android:textAlignment="center"
