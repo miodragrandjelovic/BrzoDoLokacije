@@ -137,6 +137,14 @@ namespace PyxisKapriBack.Services
         public Response UpdateUser(UserDTO user)
         {
             var loggedUser = userDAL.GetUser(GetLoggedUser());
+            if(UserAlreadyExists(user.Username).Result)
+            {
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status403Forbidden,
+                    Message = "Username already taken!"
+                };
+            }
             if (loggedUser == null)
                 return new Response
                 {

@@ -35,7 +35,8 @@ namespace PyxisKapriBack.Services
 
         public string GetDefaultProfileImage()
         {
-            return Directory.GetFiles(Constants.Constants.IMAGE_PATH).FirstOrDefault();
+            Console.WriteLine(Directory.GetCurrentDirectory()); 
+            return Directory.GetFiles(Directory.GetCurrentDirectory()+""+Constants.Constants.IMAGE_PATH_LINUX).FirstOrDefault();
         }
 
         public byte[]? ConvertImageToByte(string image)
