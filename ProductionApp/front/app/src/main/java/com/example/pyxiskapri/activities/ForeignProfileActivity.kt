@@ -28,6 +28,11 @@ class ForeignProfileActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
     lateinit var username:String
 
+    override fun onRestart() {
+        super.onRestart()
+        getForeignUser()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_foreign_profile)
