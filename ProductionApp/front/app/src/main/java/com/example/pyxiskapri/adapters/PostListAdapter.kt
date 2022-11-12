@@ -53,6 +53,8 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
 
             iv_postImage.setOnClickListener{
                 val intent = Intent(context, OpenPostActivity::class.java)
+                Log.d("BASE 64", currentPost.coverImage)
+                //currentPost.coverImage = ""
                 intent.putExtra("postData", currentPost)
                 context.startActivity(intent)
             }
