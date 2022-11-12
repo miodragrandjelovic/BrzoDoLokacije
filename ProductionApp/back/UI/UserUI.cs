@@ -40,7 +40,7 @@ namespace PyxisKapriBack.UI
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email,
+                Email = user.Email
             };
 
             return userDTO;
