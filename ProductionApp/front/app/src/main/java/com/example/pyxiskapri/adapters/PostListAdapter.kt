@@ -16,6 +16,7 @@ import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.models.PostListItem
+import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.UtilityFunctions
@@ -54,8 +55,8 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
             iv_postImage.setOnClickListener{
                 val intent = Intent(context, OpenPostActivity::class.java)
                 Log.d("BASE 64", currentPost.coverImage)
-                //currentPost.coverImage = ""
-                intent.putExtra("postData", currentPost)
+                //intent.putExtra("postData", currentPost)
+                ActivityTransferStorage.postItemToOpenPost = currentPost
                 context.startActivity(intent)
             }
 
