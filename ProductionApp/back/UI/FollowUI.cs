@@ -1,4 +1,5 @@
 ﻿using PyxisKapriBack.DTOComponents;
+using PyxisKapriBack.Models;
 using PyxisKapriBack.Services.Interfaces;
 using PyxisKapriBack.UI.Interfaces;
 
@@ -14,32 +15,52 @@ namespace PyxisKapriBack.UI
             _iUserService   = iUserService;
         }
 
-        public List<UserDTO> GetFollowers()
+        public Response AddFollow(string followingUsername)
+        {
+            return _iFollowService.AddFollow(_iUserService.GetLoggedUser(), followingUsername); 
+        }
+
+        public Response DeleteFollow(string followingUsername)
+        {
+            return _iFollowService.DeleteFollow(_iUserService.GetLoggedUser(), followingUsername);
+        }
+
+        public List<FollowDTO>? GetFollowers()
         {
             var followers = _iFollowService.GetFollowers(_iUserService.GetLoggedUser());
 
-            if (followers == null)
-                return null; 
+            var followersDTO = new List<FollowDTO>();
 
-            var followersDTO  = new List<UserDTO>();
-
-            foreach(var follower in followers)
+            foreach (var follow in followers)
             {
-                followersDTO.Add(new UserDTO
+                followersDTO.Add(new FollowDTO
                 {
-                    ProfileImage = follower.ProfileImage == null ? string.Empty : Convert.ToBase64String(follower.ProfileImage),
-                    Username = follower.Username,
-                    FirstName = follower.FirstName,
-                    LastName = follower.LastName,
-                    Email = follower.Email
-                }); 
+                    ProfileImage = follow.ProfileImage == null ? string.Empty : Convert.ToBase64String(follow.ProfileImage),
+                    Username = follow.Username,
+                    FirstName = follow.FirstName,
+                    LastName = follow.LastName
+                });
             }
             return followersDTO;
         }
 
-        public List<UserDTO> GetFollowing()
+        public List<FollowDTO>? GetFollowing()
         {
-            throw new NotImplementedException();
+            var followings = _iFollowService.GetFollowing(_iUserService.GetLoggedUser());
+
+            var followingDTO = new List<FollowDTO>();
+
+            foreach (var follow in followings)
+            {
+                followingDTO.Add(new FollowDTO
+                {
+                    ProfileImage = follow.ProfileImage == null ? string.Empty : Convert.ToBase64String(follow.ProfileImage),
+                    Username = follow.Username,
+                    FirstName = follow.FirstName,
+                    LastName = follow.LastName
+                });
+            }
+            return followingDTO;
         }
     }
 }

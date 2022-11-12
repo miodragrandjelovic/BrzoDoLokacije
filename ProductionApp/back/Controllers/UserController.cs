@@ -87,5 +87,26 @@ namespace PyxisKapriBack.Controllers
             var following = followUI.GetFollowing();
             return Ok(following);
         }
+
+        [HttpPost("AddFollow")]
+        public async Task<IActionResult> AddFollow(string followingUsername)
+        {   //izmena da vraca response
+            var answer = followUI.AddFollow(followingUsername);
+            var message = answer.Message;
+
+            if (answer.StatusCode.Equals(StatusCodes.Status200OK))
+                return Ok(message);
+            return BadRequest(message);
+        }
+
+        [HttpDelete("RemoveFollow/{followingUsername}")]
+        public async Task<IActionResult> RemoveFollow(string followingUsername)
+        {
+            var response = followUI.DeleteFollow(followingUsername);
+            var message = new { message = response.Message };
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                return Ok(message);
+            return BadRequest(message);
+        }
     }
 }

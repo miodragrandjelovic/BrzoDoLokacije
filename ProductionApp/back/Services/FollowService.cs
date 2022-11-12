@@ -1,4 +1,5 @@
 ﻿using PyxisKapriBack.DAL.Interfaces;
+using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.Models;
 using PyxisKapriBack.Services.Interfaces;
 
@@ -13,6 +14,18 @@ namespace PyxisKapriBack.Services
             _iFollowDAL = iFollowDAL;
         }
 
+        public Response AddFollow(string usernameFollower, string usernameFollowing)
+        {
+            bool succeed = _iFollowDAL.AddFollow(usernameFollower, usernameFollowing); 
+            return ResponseService.GetResponse(succeed, "Follow added!", "Add follow failed!");
+        }
+
+        public Response DeleteFollow(string usernameFollower, string usernameFollowing)
+        {
+            bool succeed = _iFollowDAL.DeleteFollow(usernameFollower, usernameFollowing);
+            return ResponseService.GetResponse(succeed, "Follow deleted", "Delete follow failed!"); 
+        }
+
         public List<User> GetFollowers(string username)
         {
             return _iFollowDAL.GetFollowers(username);
@@ -20,7 +33,7 @@ namespace PyxisKapriBack.Services
 
         public List<User> GetFollowing(string username)
         {
-            return _iFollowDAL.GetFollowing(username);
+            return _iFollowDAL.GetFollowing(username); 
         }
     }
 }
