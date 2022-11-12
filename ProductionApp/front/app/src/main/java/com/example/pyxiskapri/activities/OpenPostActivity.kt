@@ -170,8 +170,12 @@ class OpenPostActivity : AppCompatActivity() {
             //ADDITIONAL IMAGES
         }
 
-        iv_ownerAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(postData.ownerImage))
-        tv_ownerUsername.text = postData.ownerUsername
+        if(postData.ownerImage != null)
+        {
+            iv_ownerAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(postData.ownerImage))
+            tv_ownerUsername.text = postData.ownerUsername
+        }
+
 
         iv_coverImage.setImageBitmap(UtilityFunctions.base64ToBitmap(postData.coverImage))
 
