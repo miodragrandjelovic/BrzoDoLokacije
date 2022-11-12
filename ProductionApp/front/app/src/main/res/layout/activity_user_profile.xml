@@ -33,18 +33,20 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
 
-            <Button
+            <ImageButton
                 android:id="@+id/back"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:text="Back"
-                android:textSize="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:src="@drawable/back_btn"
+                android:layout_margin="12dp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+            <!---->
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/imageView"
@@ -52,18 +54,17 @@
                 android:layout_height="150dp"
                 android:layout_marginTop="30dp"
 
+                app:cardCornerRadius="5000dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:cardCornerRadius="5000dp"
-                >
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/imageViewReal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
                     android:background="@color/black"
+                    android:scaleType="centerCrop"
                     app:srcCompat="@drawable/avatarplaceholder" />
 
 
@@ -94,7 +95,7 @@
                     android:id="@+id/tv_name1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/montserrat_regular"
                     android:text="Petar"
                     android:textColor="@color/white"
                     android:textSize="20sp"
@@ -107,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/montserrat_regular"
                     android:text="Petrovic"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
@@ -115,22 +116,18 @@
             </LinearLayout>
 
 
-
-
-
-
             <LinearLayout
 
                 android:id="@+id/ll_user_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="30dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginRight="20dp"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
                 android:background="@drawable/ll_border"
+                android:orientation="vertical"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_name">
@@ -145,7 +142,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_medium"
+                        android:fontFamily="@font/montserrat_regular"
                         android:text="User information"
                         android:textColor="@color/white"
                         android:textSize="20sp" />
@@ -171,21 +168,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:orientation="horizontal"
-                        >
+                        android:orientation="horizontal">
                         <!--android:gravity="center"-->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:fontFamily="@font/poppins_medium"
+                            android:fontFamily="@font/montserrat_regular"
                             android:text="First name: "
                             android:textColor="#C3C3C3"
                             android:textSize="16dp"
@@ -193,17 +189,18 @@
                             />
 
 
-                            />
+                        />
+
                         <TextView
 
                             android:id="@+id/tv_first_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:fontFamily="@font/poppins_medium"
-                            android:textSize="16dp"
-                            android:textColor="@color/white"
+                            android:fontFamily="@font/montserrat_regular"
                             android:text="Petar"
+                            android:textColor="@color/white"
+                            android:textSize="16dp"
 
 
                             />
@@ -213,13 +210,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:fontFamily="@font/poppins_medium"
-                            android:textSize="16dp"
-                            android:textColor="@color/white"
+                            android:fontFamily="@font/montserrat_regular"
                             android:hint="Write your first name here"
                             android:paddingBottom="7.5dp"
-                            android:visibility="gone"
-                            />
+                            android:textColor="@color/white"
+                            android:textSize="16dp"
+                            android:visibility="gone" />
 
 
                     </LinearLayout>
@@ -227,14 +223,13 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:orientation="horizontal"
-                        >
+                        android:orientation="horizontal">
                         <!--android:gravity="center"-->
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:fontFamily="@font/poppins_medium"
+                            android:fontFamily="@font/montserrat_regular"
                             android:text="Last name: "
                             android:textColor="#C3C3C3"
                             android:textSize="16dp"
@@ -246,10 +241,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:fontFamily="@font/poppins_medium"
-                            android:textSize="16dp"
-                            android:textColor="@color/white"
+                            android:fontFamily="@font/montserrat_regular"
                             android:text="Petrovic"
+                            android:textColor="@color/white"
+                            android:textSize="16dp"
 
                             />
 
@@ -258,12 +253,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:fontFamily="@font/poppins_medium"
-                            android:textSize="16dp"
-                            android:textColor="@color/white"
+                            android:fontFamily="@font/montserrat_regular"
                             android:hint="Write your last name here"
                             android:paddingBottom="7.5dp"
-                            android:visibility="gone"/>
+                            android:textColor="@color/white"
+                            android:textSize="16dp"
+                            android:visibility="gone" />
 
 
                     </LinearLayout>
@@ -271,14 +266,13 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        >
+                        android:layout_height="40dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:fontFamily="@font/poppins_medium"
+                            android:fontFamily="@font/montserrat_regular"
                             android:text="Username: "
                             android:textColor="#C3C3C3"
                             android:textSize="16dp"
@@ -301,27 +295,25 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:fontFamily="@font/poppins_medium"
-                            android:textSize="16dp"
-                            android:textColor="@color/white"
+                            android:fontFamily="@font/montserrat_regular"
                             android:hint="Write your username here"
                             android:paddingBottom="7.5dp"
-                            android:visibility="gone"/>
-
+                            android:textColor="@color/white"
+                            android:textSize="16dp"
+                            android:visibility="gone" />
 
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        >
+                        android:layout_height="40dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:fontFamily="@font/poppins_medium"
+                            android:fontFamily="@font/montserrat_regular"
                             android:text="Email: "
                             android:textColor="#C3C3C3"
                             android:textSize="16dp"
@@ -333,10 +325,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:fontFamily="@font/poppins_medium"
-                            android:textSize="16dp"
-                            android:textColor="@color/white"
+                            android:fontFamily="@font/montserrat_regular"
                             android:text="ppetrovic@gmail.com"
+                            android:textColor="@color/white"
+                            android:textSize="16dp"
 
                             />
 
@@ -346,12 +338,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:fontFamily="@font/poppins_medium"
-                            android:textSize="16dp"
-                            android:textColor="@color/white"
+                            android:fontFamily="@font/montserrat_regular"
                             android:hint="Write your new email here"
                             android:paddingBottom="7.5dp"
-                            android:visibility="gone"/>
+                            android:textColor="@color/white"
+                            android:textSize="16dp"
+                            android:visibility="gone" />
 
 
                     </LinearLayout>
@@ -359,22 +351,20 @@
                 </LinearLayout>
 
 
-
                 <LinearLayout
                     android:id="@+id/btn_change_pass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-10dp"
                     android:layout_gravity="right"
-                    >
+                    android:layout_marginTop="-10dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_regular"
                         android:text="change password"
                         android:textColor="#737373"
-                        android:textSize="14dp"
-                        />
+                        android:textSize="14dp" />
 
                 </LinearLayout>
 
@@ -382,19 +372,17 @@
             </LinearLayout>
 
 
-
-
-
             <Button
                 android:id="@+id/ib_confirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:fontFamily="@font/montserrat_regular"
                 android:text="Save changes"
+                android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_user_information"
-                android:visibility="invisible"/>
+                app:layout_constraintTop_toBottomOf="@+id/ll_user_information" />
 
 
             <LinearLayout
@@ -413,7 +401,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/montserrat_regular"
                     android:text="User posts"
                     android:textColor="@color/white"
                     android:textSize="20sp" />

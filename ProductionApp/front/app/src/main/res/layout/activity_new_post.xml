@@ -53,7 +53,7 @@
                     android:id="@+id/tv_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/montserrat_regular"
                     android:text="Description"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -66,6 +66,7 @@
                     android:layout_marginTop="5dp"
                     android:background="@drawable/et_rounded"
                     android:gravity="top|start"
+                    android:fontFamily="@font/montserrat_regular"
                     android:hint="Describe what your pictures are all about"
                     android:lines="5"
                     android:maxLines="10"
@@ -88,7 +89,7 @@
                     android:id="@+id/tv_Locations"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/montserrat_regular"
                     android:text="Location"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -99,6 +100,7 @@
                     android:layout_height="30dp"
                     android:background="@drawable/et_rounded"
                     android:hint="Search your location"
+                    android:fontFamily="@font/montserrat_regular"
                     android:lines="1"
                     android:maxLines="1"
                     android:minLines="1"
@@ -113,6 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:fontFamily="@font/montserrat_regular"
                     android:background="@drawable/et_rounded"
                     android:nestedScrollingEnabled="false"
                     android:paddingLeft="15dp"
@@ -128,7 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/et_rounded"
-                    android:fontFamily="@font/poppins"
+                    android:fontFamily="@font/montserrat_regular"
                     android:paddingLeft="15dp"
                     android:paddingTop="5dp"
                     android:text="Unknown location"
@@ -148,7 +151,7 @@
                     android:id="@+id/tv_coverImage"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/montserrat_regular"
                     android:text="Cover image"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -213,7 +216,7 @@
                     android:id="@+id/tv_additionalImages"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_medium"
+                    android:fontFamily="@font/montserrat_regular"
                     android:text="Additionals images"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
@@ -231,6 +234,7 @@
 
                 <Button
                     android:id="@+id/btn_pickImages"
+                    android:fontFamily="@font/montserrat_regular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Pick Images" />
@@ -248,8 +252,11 @@
 
                 <Button
                     android:id="@+id/btn_addPost"
+                    android:fontFamily="@font/montserrat_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="40dp"
                     android:text="Add post" />
 
             </LinearLayout>
