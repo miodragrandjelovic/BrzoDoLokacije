@@ -18,6 +18,7 @@ import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.Constants
+import com.example.pyxiskapri.utility.UtilityFunctions
 import kotlinx.android.synthetic.main.item_post.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,6 +38,7 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val currentPost = postList[position]
         holder.itemView.apply{
+            iv_ownerAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(currentPost.ownerImage))
             tv_ownerUsername.text = currentPost.ownerUsername
             tv_likeCount.text = currentPost.likeCount.toString()
             tv_viewCount.text = currentPost.viewCount.toString()
@@ -47,8 +49,7 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
             else
                 iv_likeIcon.setColorFilter(ContextCompat.getColor(context, R.color.white), PorterDuff.Mode.SRC_IN);
 
-            val imageData = android.util.Base64.decode(currentPost.coverImage, android.util.Base64.DEFAULT)
-            iv_postImage.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
+            iv_postImage.setImageBitmap(UtilityFunctions.base64ToBitmap(currentPost.coverImage))
 
             iv_postImage.setOnClickListener{
                 val intent = Intent(context, OpenPostActivity::class.java)

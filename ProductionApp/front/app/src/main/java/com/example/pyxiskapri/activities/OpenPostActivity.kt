@@ -32,22 +32,32 @@ class OpenPostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_open_post)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            postData = intent.getSerializableExtra("postData", PostListItem::class.java)!!
-        else
-            postData = intent.getSerializableExtra("postData") as PostListItem
+        collectActivityPassedData()
 
         sessionManager = SessionManager(this)
         apiClient = ApiClient()
 
         setupNavButtons()
-        requestPostData()
         setupPostButtons()
+        requestPostData()
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
+        collectActivityPassedData()
         updatePostData(null)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        finish()
+    }
+
+    private fun collectActivityPassedData(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            postData = intent.getSerializableExtra("postData", PostListItem::class.java)!!
+        else
+            postData = intent.getSerializableExtra("postData") as PostListItem
     }
 
     fun showDrawerMenu(view: View){
