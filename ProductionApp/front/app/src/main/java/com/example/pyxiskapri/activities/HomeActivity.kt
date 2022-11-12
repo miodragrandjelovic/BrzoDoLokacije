@@ -35,7 +35,7 @@ class HomeActivity : AppCompatActivity() {
 
         fillPostsRV()
 
-        setupButtonNewPost()
+        setupNavButtons()
     }
 
     fun showDrawerMenu(view: View){
@@ -49,6 +49,10 @@ class HomeActivity : AppCompatActivity() {
         fillPostsRV()
     }
 
+    private fun setupNavButtons(){
+        setupButtonNewPost()
+
+    }
 
     private fun setupButtonNewPost(){
         btn_newPost .setOnClickListener {

@@ -7,17 +7,6 @@
     android:background="@color/gray"
     tools:context=".activities.HomeActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fcv_drawerNav"
-        android:name="com.example.pyxiskapri.fragments.DrawerNav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="200dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_drawer_nav" />
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -40,7 +29,7 @@
         android:id="@+id/coordinatorLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toTopOf="@+id/navMenu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -201,14 +190,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar"
-                tools:listitem="@layout/item_post"/>
+                tools:listitem="@layout/item_post" />
 
         </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/navMenu"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:background="@drawable/navmenubackground"
@@ -276,5 +265,16 @@
             app:tint="#292D33" />
 
     </LinearLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcv_drawerNav"
+        android:name="com.example.pyxiskapri.fragments.DrawerNav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_drawer_nav" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
