@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 
@@ -19,29 +18,20 @@ import com.example.pyxiskapri.models.ImageGridItem
 
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toFile
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-
 import com.example.pyxiskapri.dtos.request.NewPostRequest
 import com.example.pyxiskapri.dtos.response.LocationResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
-
 import com.example.pyxiskapri.utility.ApiClient
-import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
-import com.google.android.material.internal.ContextUtils.getActivity
 import kotlinx.android.synthetic.main.activity_new_post.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.io.IOException
-import java.io.InputStream
-
 import java.util.*
 
 
@@ -75,6 +65,17 @@ class NewPostActivity : AppCompatActivity(){
 
         setupAddPost()
         setupGoHomeButton()
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        resetInputs()
+    }
+
+    private fun resetInputs(){
+        et_description.setText("")
+        et_location.setText("")
+        locationListAdapter.clearLocations()
     }
 
     private fun setupGoHomeButton(){
