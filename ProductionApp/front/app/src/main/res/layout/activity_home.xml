@@ -94,7 +94,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:layout_gravity="left|center_vertical"
-                                android:fontFamily="@font/poppins"
+                                android:fontFamily="@font/montserrat_regular"
                                 android:gravity="center_vertical"
                                 android:text="Popular"
                                 android:textColor="@color/white" />
@@ -127,7 +127,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:layout_gravity="left|center_vertical"
-                                android:fontFamily="@font/poppins"
+                                android:fontFamily="@font/montserrat_regular"
                                 android:gravity="center_vertical"
                                 android:text="Trending"
                                 android:textColor="@color/white" />
@@ -160,7 +160,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:layout_gravity="left|center_vertical"
-                                android:fontFamily="@font/poppins"
+                                android:fontFamily="@font/montserrat_regular"
                                 android:gravity="center_vertical"
                                 android:text="Trending"
                                 android:textColor="@color/white" />
