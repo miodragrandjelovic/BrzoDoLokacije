@@ -221,15 +221,8 @@ class NewPostActivity : AppCompatActivity(){
                 // Multiple images chosen
                 if (data!!.clipData != null) {
                     val count = data.clipData!!.itemCount
-                    for (index in 0 until count) {
-                        imageGridAdapter.imageItems!!.add(
-                            ImageGridItem(
-                                data.clipData!!.getItemAt(
-                                    index
-                                ).uri
-                            )
-                        )
-                    }
+                    for (index in 0 until count)
+                        imageGridAdapter.imageItems!!.add(ImageGridItem(data.clipData!!.getItemAt(index).uri))
                 }
 
                 // Single image chosen
@@ -242,27 +235,29 @@ class NewPostActivity : AppCompatActivity(){
             }
             imageGridAdapter.notifyDataSetChanged()
         }
+
         if(requestCode == PICK_COVER_IMAGE_CODE)  {
+            if(data == null)
+                return
 
-                if (data!!.clipData != null) {
-                    iv_coverImage.setImageURI(data.clipData!!.getItemAt(0).uri)
-                    coverImage=data.clipData!!.getItemAt(0).uri
-                }
-
-                else {
-                    val imageUri = data.data
-                    if (imageUri != null) {
-                        iv_coverImage.setImageURI(imageUri)
-                        coverImage=imageUri
-                    }
-                }
-
-                Log.d("",iv_coverImage.drawable.toString())
-
-                tv_coverText.isVisible = false
-                btn_coverImage.isVisible = false
-
+            if (data.clipData != null) {
+                iv_coverImage.setImageURI(data.clipData!!.getItemAt(0).uri)
+                coverImage=data.clipData!!.getItemAt(0).uri
             }
+            else {
+                val imageUri = data.data
+                if (imageUri != null) {
+                    iv_coverImage.setImageURI(imageUri)
+                    coverImage=imageUri
+                }
+            }
+
+            Log.d("",iv_coverImage.drawable.toString())
+
+            tv_coverText.isVisible = false
+            btn_coverImage.isVisible = false
+
+        }
     }
 
 }
