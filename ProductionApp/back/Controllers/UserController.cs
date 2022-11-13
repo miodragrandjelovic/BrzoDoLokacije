@@ -55,6 +55,15 @@ namespace PyxisKapriBack.Controllers
             return Ok(user);
         }
 
+        [HttpGet("GetUserByUsername")]
+        public async Task<IActionResult> GetUser(string username)
+        {
+            var user = userUI.GetUser(username);
+            if (user == null)
+                return NotFound();
+            return Ok(user);
+        }
+
         [HttpPut("UpdateUser")]
         public async Task<IActionResult> UpdateUserCredentials(UserDTO user)
         {
@@ -108,5 +117,6 @@ namespace PyxisKapriBack.Controllers
                 return Ok(message);
             return BadRequest(message);
         }
+
     }
 }
