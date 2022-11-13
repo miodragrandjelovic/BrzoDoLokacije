@@ -13,5 +13,6 @@ namespace PyxisKapriBack.Services.Interfaces
 
         Response DeleteUserPost(int postID);
         List<Post> GetAllPosts();
+        List<Post> GetFollowingPosts(string username);
     }
 }
