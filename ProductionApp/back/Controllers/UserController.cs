@@ -55,7 +55,7 @@ namespace PyxisKapriBack.Controllers
             return Ok(user);
         }
 
-        [HttpGet("GetUserByUsername")]
+        [HttpGet("GetUserByUsername/{username}")]
         public async Task<IActionResult> GetUser(string username)
         {
             var user = userUI.GetUser(username);
