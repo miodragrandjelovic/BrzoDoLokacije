@@ -17,19 +17,15 @@ import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.adapters.ImageGridAdapter
-import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.dtos.request.ChangePasswordRequest
 import com.example.pyxiskapri.dtos.request.EditUserRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.LoginResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
-import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
-import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.modal_change_pass.*
 import kotlinx.android.synthetic.main.modal_confirm_password.*
@@ -48,17 +44,12 @@ class UserProfileActivity : AppCompatActivity() {
     lateinit var profileImage: Uri
     lateinit var oldProfileImage:String
 
-    lateinit var userPostAdapter:UserPostsAdapter
-
     private var flag=0
 
     override fun onRestart() {
         super.onRestart()
-        setupUserPostAdapter()
         setupGetUser()
-        setupGetUserPosts()
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,9 +59,6 @@ class UserProfileActivity : AppCompatActivity() {
         sessionManager= SessionManager(this)
 
         setupGetUser()
-
-        setupUserPostAdapter()
-        setupGetUserPosts()
 
         setupChangePhoto()
         setupUpdateUser()
@@ -384,34 +372,5 @@ class UserProfileActivity : AppCompatActivity() {
         }
 
     }
-
-    private fun setupUserPostAdapter() {
-        userPostAdapter = UserPostsAdapter(mutableListOf(),this)
-        gv_user_posts.adapter = userPostAdapter
-    }
-
-
-    private fun setupGetUserPosts() {
-
-        var user=sessionManager.fetchUserData()
-
-        apiClient.getPostService(this).getUserPosts(user!!.username)
-            .enqueue(object : Callback<ArrayList<PostResponse>> {
-                override fun onResponse(call: Call<ArrayList<PostResponse>>, response: Response<ArrayList<PostResponse>>) {
-                    if(response.isSuccessful) {
-                        userPostAdapter.setPostList(response.body()!!)
-                    }
-
-                }
-
-                override fun onFailure(call: Call<ArrayList<PostResponse>>, t: Throwable) {
-
-                }
-
-            })
-
-
-    }
-
 
 }

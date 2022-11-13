@@ -19,7 +19,6 @@ namespace PyxisKapriBack.UI.Interfaces
         List<Role> GetAvailableRolesForUser(string user);
 
         UserDTO GetUser();
-        UserDTO GetUser(string username);
 
         Response UpdateUser(UserDTO user);
 

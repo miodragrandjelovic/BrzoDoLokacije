@@ -13,11 +13,10 @@ namespace PyxisKapriBack.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserUI userUI;
-        private readonly IFollowUI followUI;
-        public UserController(IUserUI userUI, IFollowUI followUI)
+
+        public UserController(IUserUI userUI)
         {
-            this.userUI   = userUI;
-            this.followUI = followUI;
+            this.userUI = userUI;
         }
 
         [Authorize(Roles ="Admin")]
@@ -55,15 +54,6 @@ namespace PyxisKapriBack.Controllers
             return Ok(user);
         }
 
-        [HttpGet("GetUserByUsername/{username}")]
-        public async Task<IActionResult> GetUser(string username)
-        {
-            var user = userUI.GetUser(username);
-            if (user == null)
-                return NotFound();
-            return Ok(user);
-        }
-
         [HttpPut("UpdateUser")]
         public async Task<IActionResult> UpdateUserCredentials(UserDTO user)
         {
@@ -83,40 +73,6 @@ namespace PyxisKapriBack.Controllers
             return BadRequest(message);
         }
 
-        [HttpGet("GetFollowers")]
-        public async Task<IActionResult> GetFollowers()
-        {
-            var followers = followUI.GetFollowers();
-            return Ok(followers);
-        }
-
-        [HttpGet("GetFollowing")]
-        public async Task<IActionResult> GetFollowing()
-        {
-            var following = followUI.GetFollowing();
-            return Ok(following);
-        }
-
-        [HttpPost("AddFollow")]
-        public async Task<IActionResult> AddFollow(string followingUsername)
-        {   //izmena da vraca response
-            var answer = followUI.AddFollow(followingUsername);
-            var message = answer.Message;
-
-            if (answer.StatusCode.Equals(StatusCodes.Status200OK))
-                return Ok(message);
-            return BadRequest(message);
-        }
-
-        [HttpDelete("RemoveFollow/{followingUsername}")]
-        public async Task<IActionResult> RemoveFollow(string followingUsername)
-        {
-            var response = followUI.DeleteFollow(followingUsername);
-            var message = new { message = response.Message };
-            if (response.StatusCode.Equals(StatusCodes.Status200OK))
-                return Ok(message);
-            return BadRequest(message);
-        }
 
     }
 }

@@ -13,8 +13,6 @@ namespace PyxisKapriBack.UI.Interfaces
         Response SetLikeOnPost(int postID);
         Response DeleteUserPost(int postID);
         List<PostDTO> GetAllPosts();
-        Response RemoveLikeFromPost(int postID);
-        List<PostDTO> GetFollowingPosts();
-        List<PostDTO> GetRecommendedPosts();
+        Response RemoveLikeFromPost(int postID);    
     }
 }

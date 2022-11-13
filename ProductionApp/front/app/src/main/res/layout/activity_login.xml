@@ -87,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:fontFamily="@font/montserrat_regular"
+            android:fontFamily="@font/poppins_medium"
             android:lineSpacingExtra="-10dp"
             android:text="Welcome\nBack"
             android:textAlignment="viewStart"
@@ -100,17 +100,16 @@
             android:layout_height="50dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/inputborder"
-            android:fontFamily="@font/montserrat_regular"
+            android:fontFamily="@font/poppins"
             android:hint="Email or Username"
             android:inputType="textPersonName"
             android:paddingStart="10dp"
             android:paddingTop="5dp"
             android:paddingEnd="10dp"
             android:paddingBottom="5dp"
-            android:singleLine="true"
             android:textColor="@color/white"
             android:textColorHint="@color/light_gray"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/et_password"
@@ -124,10 +123,9 @@
             android:paddingTop="5dp"
             android:paddingEnd="10dp"
             android:paddingBottom="5dp"
-            android:singleLine="true"
             android:textColor="@color/white"
             android:textColorHint="@color/light_gray"
-            android:textSize="17sp" />
+            android:textSize="16sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_forgotPassword"
@@ -136,7 +134,7 @@
             android:layout_gravity="right"
             android:padding="0dp"
             android:background="@color/transparent"
-            android:fontFamily="@font/montserrat_bold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="Forgot password?"
             android:textAllCaps="false"
             android:textSize="14sp"
@@ -153,7 +151,7 @@
             android:text="Sign In"
             android:textSize="16sp"
             android:textColor="@color/white"
-            android:fontFamily="@font/montserrat_regular"
+            android:fontFamily="@font/poppins_medium"
             android:textAllCaps="false" />
 
         <LinearLayout
@@ -166,7 +164,7 @@
                 android:id="@+id/tv_dontHaveAnAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_regular"
+                android:fontFamily="@font/poppins"
                 android:text="Don't have an account? "
                 android:textAllCaps="false"
                 android:textColor="@color/white"
@@ -177,7 +175,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:fontFamily="@font/montserrat_bold"
+                android:fontFamily="@font/poppins_semibold"
                 android:padding="0dp"
                 android:text="Register here."
                 android:textColor="@color/white"

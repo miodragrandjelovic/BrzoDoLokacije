@@ -39,6 +39,7 @@ namespace PyxisKapriBack.Services
 
             postDAL.AddPost(newPost);
         }
+
         public Response DeletePost(int postID)
         {
             bool succeed = postDAL.DeletePost(postID);
@@ -55,6 +56,7 @@ namespace PyxisKapriBack.Services
                 Message = "Post deleted succesffuly!"
             };
         }
+
         public Response DeleteUserPost(int postID)
         {
             var response = new Response();
@@ -89,34 +91,32 @@ namespace PyxisKapriBack.Services
             return response;
 
         }
+
         public List<Post> GetAllPosts()
         {
             return postDAL.GetPosts(userService.GetLoggedUser());
         }
+
         public Post GetPost(int PostID)
         {
             return postDAL.GetPost(PostID);
         }
+
         public List<Post> GetPostsForLocation(int LocationID)
         {
             return postDAL.GetPostsForLocation(LocationID);
         }
+
         public List<Post> GetUserPosts(string username)
         {
             return postDAL.GetUserPosts(username);
         }
 
+
         public Response SetLikeOnPost(int postID)
         {
             return likeService.AddLike(postID);
-        }
-        public List<Post> GetFollowingPosts(string username)
-        {
-            return postDAL.GetFollowingPosts(username); 
-        }
-        public List<Post> GetRecommendedPosts(string username)
-        {
-            return postDAL.GetRecommendedPosts(username); 
+
         }
     }
 }

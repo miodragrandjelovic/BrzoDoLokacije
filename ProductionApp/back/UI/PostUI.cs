@@ -54,48 +54,6 @@ namespace PyxisKapriBack.UI
             return allPosts;
         }
 
-        public List<PostDTO> GetFollowingPosts()
-        {
-            var posts = postService.GetFollowingPosts(userService.GetLoggedUser());
-
-            var allPosts = new List<PostDTO>();
-
-            foreach (var post in posts)
-            {
-                allPosts.Add(new PostDTO
-                {
-                    Id = post.Id,
-                    CoverImage = Convert.ToBase64String(post.CoverImage),
-                    NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
-                    NumberOfViews = 0,
-                    Username = post.User.Username,
-                    ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
-                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser())
-                });
-            }
-            return allPosts;
-        }
-        public List<PostDTO> GetRecommendedPosts()
-        {
-            var posts = postService.GetRecommendedPosts(userService.GetLoggedUser());
-
-            var allPosts = new List<PostDTO>();
-
-            foreach (var post in posts)
-            {
-                allPosts.Add(new PostDTO
-                {
-                    Id = post.Id,
-                    CoverImage = Convert.ToBase64String(post.CoverImage),
-                    NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
-                    NumberOfViews = 0,
-                    Username = post.User.Username,
-                    ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
-                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser())
-                });
-            }
-            return allPosts;
-        }
         public AdditionalPostData GetPost(int PostID)
         {
             var post = postService.GetPost(PostID);

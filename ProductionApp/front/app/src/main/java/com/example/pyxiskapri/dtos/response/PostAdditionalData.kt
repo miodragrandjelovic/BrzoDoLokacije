@@ -6,5 +6,5 @@ data class PostAdditionalData(
     @SerializedName("description")
     var postDescription: String,
     @SerializedName("images")
-    var additionalImages: ArrayList<String>
+    var additionalImages: ArrayList<String>,
 )

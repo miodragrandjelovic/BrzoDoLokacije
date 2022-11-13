@@ -37,7 +37,6 @@ namespace PyxisKapriBack.DAL
                                                                   .Include(post => post.Comments)
                                                                   .Include(post => post.Images)
                                                                   .Include(post => post.Location)
-                                                                  .OrderByDescending(post => post.CreatedDate)
                                                                   .FirstOrDefault(); 
         }
 
@@ -55,7 +54,6 @@ namespace PyxisKapriBack.DAL
                                                                               .Include(post => post.Comments)
                                                                               .Include(post => post.Images)
                                                                               .Include(post => post.Location)
-                                                                              .OrderByDescending(post => post.CreatedDate)
                                                                               .ToList(); 
         }
 
@@ -68,7 +66,6 @@ namespace PyxisKapriBack.DAL
                                                                        .Include(post => post.Comments)
                                                                        .Include(post => post.Images)
                                                                        .Include(post => post.Location)
-                                                                       .OrderByDescending(post => post.CreatedDate)
                                                                        .ToList(); 
         }
 
@@ -83,52 +80,7 @@ namespace PyxisKapriBack.DAL
                                                                        .Include(post => post.Comments)
                                                                        .Include(post => post.Images)
                                                                        .Include(post => post.Location)
-                                                                       .OrderByDescending(post => post.CreatedDate)
                                                                        .ToList();
-        }
-
-        public List<Post> GetFollowingPosts(string username)
-        {
-            var _user = _iUserDAL.GetUser(username);
-            if (_user == null)
-                return null;
-            List<int> users = _context.Follow.Where(follow => follow.FollowerId == _user.Id)
-                                                          .Select(follow => follow.Following)
-                                                          .Select(user => user.Id)
-                                                          .ToList(); 
-
-            List<Post> posts = _context.Posts.Where(post => users.Contains(post.UserId))
-                                             .Include(post => post.User)
-                                             .Include(post => post.Dislikes)
-                                             .Include(post => post.Likes)
-                                             .Include(post => post.Comments)
-                                             .Include(post => post.Images)
-                                             .Include(post => post.Location)
-                                             .OrderByDescending(post => post.CreatedDate)
-                                             .ToList();
-            return posts; 
-        }
-
-        public List<Post> GetRecommendedPosts(string username)
-        {
-            var _user = _iUserDAL.GetUser(username);
-            if (_user == null)
-                return null;
-            List<int> users = _context.Follow.Where(follow => follow.FollowerId == _user.Id)
-                                                          .Select(follow => follow.Following)
-                                                          .Select(user => user.Id)
-                                                          .ToList();
-            users.Add(_user.Id); 
-            List<Post> posts = _context.Posts.Where(post => !users.Contains(post.UserId))
-                                             .Include(post => post.User)
-                                             .Include(post => post.Dislikes)
-                                             .Include(post => post.Likes)
-                                             .Include(post => post.Comments)
-                                             .Include(post => post.Images)
-                                             .Include(post => post.Location)
-                                             .OrderByDescending(post => post.CreatedDate)
-                                             .ToList();
-            return posts;
         }
     }
 }
