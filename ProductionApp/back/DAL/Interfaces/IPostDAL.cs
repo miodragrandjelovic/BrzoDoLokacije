@@ -11,5 +11,6 @@ namespace PyxisKapriBack.DAL.Interfaces
         List<Post> GetPostsForLocation(int LocationID);
         List<Post> GetPosts(String username);
         List<Post> GetFollowingPosts(string username);
+        List<Post> GetRecommendedPosts(string username); 
     }
 }

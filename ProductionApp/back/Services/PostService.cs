@@ -114,6 +114,9 @@ namespace PyxisKapriBack.Services
         {
             return postDAL.GetFollowingPosts(username); 
         }
-
+        public List<Post> GetRecommendedPosts(string username)
+        {
+            return postDAL.GetRecommendedPosts(username); 
+        }
     }
 }
