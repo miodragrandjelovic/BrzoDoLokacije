@@ -40,7 +40,25 @@ namespace PyxisKapriBack.UI
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email,
+                Email = user.Email
+            };
+
+            return userDTO;
+        }
+
+        public UserDTO GetUser(string username)
+        {
+            var user = userService.GetUser(username);
+            if (user == null)
+                return null;
+
+            var userDTO = new UserDTO
+            {
+                ProfileImage = user.ProfileImage == null ? string.Empty : Convert.ToBase64String(user.ProfileImage),
+                Username = user.Username,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email
             };
 
             return userDTO;

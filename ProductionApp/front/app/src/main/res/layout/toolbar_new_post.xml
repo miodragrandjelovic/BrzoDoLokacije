@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="33dp"
         android:layout_marginStart="10dp"
-        android:fontFamily="@font/poppins_medium"
+        android:fontFamily="@font/montserrat_regular"
         android:text="Create new post"
         android:textColor="@color/white"
         android:textSize="22sp"

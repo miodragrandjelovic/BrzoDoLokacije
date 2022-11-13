@@ -13,11 +13,9 @@ import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostAdditionalData
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.PostListItem
-import com.example.pyxiskapri.utility.ApiClient
-import com.example.pyxiskapri.utility.Constants
-import com.example.pyxiskapri.utility.SessionManager
-import com.example.pyxiskapri.utility.UtilityFunctions
+import com.example.pyxiskapri.utility.*
 import kotlinx.android.synthetic.main.activity_open_post.*
+import kotlinx.android.synthetic.main.activity_register.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,13 +24,18 @@ class OpenPostActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
     lateinit var apiClient: ApiClient
 
+    lateinit var activityTransferStorage: ActivityTransferStorage
+
     private lateinit var postData: PostListItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_open_post)
 
-        collectActivityPassedData()
+        //collectActivityPassedData()
+        Log.d("postData", ActivityTransferStorage.postItemToOpenPost.toString())
+        postData = ActivityTransferStorage.postItemToOpenPost
+
 
         sessionManager = SessionManager(this)
         apiClient = ApiClient()
@@ -44,7 +47,7 @@ class OpenPostActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        collectActivityPassedData()
+        //collectActivityPassedData()
         updatePostData(null)
     }
 
@@ -53,12 +56,12 @@ class OpenPostActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun collectActivityPassedData(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            postData = intent.getSerializableExtra("postData", PostListItem::class.java)!!
-        else
-            postData = intent.getSerializableExtra("postData") as PostListItem
-    }
+//    private fun collectActivityPassedData(){
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+//            postData = intent.getSerializableExtra("postData", PostListItem::class.java)!!
+//        else
+//            postData = intent.getSerializableExtra("postData") as PostListItem
+//    }
 
     fun showDrawerMenu(view: View){
         if(view.id == R.id.btn_menu)
@@ -170,8 +173,12 @@ class OpenPostActivity : AppCompatActivity() {
             //ADDITIONAL IMAGES
         }
 
-        iv_ownerAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(postData.ownerImage))
-        tv_ownerUsername.text = postData.ownerUsername
+        if(postData.ownerImage != null)
+        {
+            iv_ownerAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(postData.ownerImage))
+            tv_ownerUsername.text = postData.ownerUsername
+        }
+
 
         iv_coverImage.setImageBitmap(UtilityFunctions.base64ToBitmap(postData.coverImage))
 

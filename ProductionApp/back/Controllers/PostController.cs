@@ -91,5 +91,19 @@ namespace PyxisKapriBack.Controllers
             var posts = postUI.GetAllPosts();
             return Ok(posts);
         }
+
+        [HttpGet("GetFollowingPosts")]
+        public async Task<IActionResult> GetFollowingPosts()
+        {
+            var posts = postUI.GetFollowingPosts();
+            return Ok(posts);
+        }
+
+        [HttpGet("GetRecommendedPosts")]
+        public async Task<IActionResult> GetRecommendedPosts()
+        {
+            var posts = postUI.GetRecommendedPosts();
+            return Ok(posts);
+        }
     }
 }
