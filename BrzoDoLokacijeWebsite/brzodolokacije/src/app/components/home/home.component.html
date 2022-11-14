@@ -1,6 +1,14 @@
-<div class="container-fluid">
-    <div class="row w-100"><div class="btn btn-primary" (click)="logout()">Logout</div></div>
-    <button id="downloadButton" (click)="download()">
-      Download App
-    </button>
+<div class="container-fluid home-container d-flex justify-content-center align-items-center">
+  <div class="container w-50 h-50 d-flex justify-content-center align-items-center">
+    <div class="row w-100 text-center justify-content-around">
+      <div class="col-12 text-light"><h1>Download app</h1></div>
+      <div class="col-12 m-3">
+        <button id="downloadButton" class="btn btn-success btn-download text-light p-5" (click)="download()">
+          <img src="assets/iconmonstr-download-10-240.png">
+        </button>
+      </div>
+      <div class="col-12 m-3"><div class="btn text-light custom-button-primary" (click)="logout()">Logout</div>
+    </div>
+  </div>
+</div>
 </div>
