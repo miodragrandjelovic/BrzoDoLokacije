@@ -11,25 +11,38 @@ namespace PyxisKapriBack.Services
         private readonly IPostDAL postDAL;
         private readonly ILikeService likeService;
         private readonly IUserService userService;
+        private readonly ILocationDAL locationDAL;
 
-        public PostService(IPostDAL postDAL, ILikeService likeService, IUserService userService)
+        public PostService(IPostDAL postDAL, ILikeService likeService, IUserService userService, ILocationDAL locationDAL)
         {
             this.postDAL = postDAL;
             this.likeService = likeService;
             this.userService = userService;
+            this.locationDAL = locationDAL;
         }
 
         public void AddPost(NewPostDTO post)
         {
 
             var newPost = new Post();
-
-            newPost.CreatedDate = DateTime.Now;
             newPost.User = userService.GetUser(userService.GetLoggedUser());
+            newPost.CreatedDate = DateTime.Now;
             newPost.Description = post.Description;
-            newPost.LocationId = post.LocationId;
             newPost.CoverImage = Convert.FromBase64String(post.CoverImage);
-            foreach(string image in post.Images)
+
+
+            var location = locationDAL.GetLocation(post.LocationName);
+            if (location == null)
+                locationDAL.AddLocation(post.LocationName, post.City, post.Country);
+
+            newPost.Location = locationDAL.GetLocation(post.LocationName);
+            newPost.Location.Latitude = post.Latitude;
+            newPost.Location.Longitude = post.Lognitude;
+            newPost.Location.Address = post.Address;
+
+
+
+            foreach (string image in post.Images)
             {
                 Image newImage = new Image();
                 newImage.ImageData = Encoding.ASCII.GetBytes(image);
