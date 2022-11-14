@@ -1,31 +1,38 @@
 package com.example.pyxiskapri.activities
 
+
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.location.Address
+import android.location.Geocoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pyxiskapri.R
-import com.example.pyxiskapri.adapters.ImageGridAdapter
-import com.example.pyxiskapri.adapters.LocationListAdapter
-import com.example.pyxiskapri.models.ImageGridItem
-
-
 import android.util.Log
+import android.widget.AdapterView.OnItemClickListener
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
+import com.example.pyxiskapri.R
+import com.example.pyxiskapri.adapters.ImageGridAdapter
 import com.example.pyxiskapri.dtos.request.NewPostRequest
-import com.example.pyxiskapri.dtos.response.LocationResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
+import com.example.pyxiskapri.models.ImageGridItem
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_new_post.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,18 +42,25 @@ import java.io.IOException
 import java.util.*
 
 
-class NewPostActivity : AppCompatActivity(){
-    private val PICK_IMAGES_CODE = 0
-    private val PICK_COVER_IMAGE_CODE = 1
+class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
+    private val PICK_IMAGES_CODE: Int = 0
+    private val PICK_COVER_IMAGE_CODE: Int = 1
 
     private lateinit var sessionManager: SessionManager
     private lateinit var apiClient: ApiClient
 
-    lateinit var locationListAdapter: LocationListAdapter
-    lateinit var imageGridAdapter: ImageGridAdapter
+    private lateinit var map: GoogleMap
+    private lateinit var geocoder: Geocoder
+    private var locationList: ArrayList<String> = ArrayList<String>()
 
-    private var selectedLocationID: Int = -1
-    lateinit var coverImage:Uri
+
+    private lateinit var selectedLocation: LatLng
+    private lateinit var locationAddress: String
+    private lateinit var locationCity: String
+    private lateinit var locationCountry: String
+
+    private lateinit var coverImage:Uri
+    private lateinit var imageGridAdapter: ImageGridAdapter
     var images:ArrayList<String> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,26 +70,17 @@ class NewPostActivity : AppCompatActivity(){
         sessionManager = SessionManager(this)
         apiClient = ApiClient()
 
-        setupImageGridAdapter()
-        setupLocationListAdapter()
+        setupMap()
+        setupLocationButton()
 
-        setupSearchLocationButton()
+        setupImageGridAdapter()
         setupPickCoverImage()
         setupPickImagesButton()
 
-        setupAddPost()
         setupGoHomeButton()
-    }
 
-    override fun onRestart() {
-        super.onRestart()
-        resetInputs()
-    }
+        setupAddPostButton()
 
-    private fun resetInputs(){
-        et_description.setText("")
-        et_location.setText("")
-        locationListAdapter.clearLocations()
     }
 
     private fun setupGoHomeButton(){
@@ -85,81 +90,36 @@ class NewPostActivity : AppCompatActivity(){
         }
     }
 
-    private fun onLocationListItemClick(id: Int, name: String){
-        selectedLocationID = id
-        tv_selectedLocation.text = name
-    }
-
-    private fun setupSearchLocationButton() {
-        var context: Context = this
-        et_location.addTextChangedListener {
-            apiClient.getPlaceService(context)
-                .getLocationsByString(et_location.text.toString().trim())
-                .enqueue(object : Callback<MutableList<LocationResponse>> {
-
-                    override fun onResponse(
-                        call: Call<MutableList<LocationResponse>>,
-                        response: Response<MutableList<LocationResponse>>
-                    ) {
-                        if(response.isSuccessful)
-                            locationListAdapter.setLocations(response.body()!!)
-                    }
-
-                    override fun onFailure(
-                        call: Call<MutableList<LocationResponse>>,
-                        t: Throwable
-                    ) {
-                        TODO("Not yet implemented")
-                    }
-
-                })
-        }
-    }
-
-    private fun setupLocationListAdapter(){
-        locationListAdapter = LocationListAdapter(mutableListOf()) { id, name -> onLocationListItemClick(id, name) }
-        rv_locations.adapter = locationListAdapter
-        rv_locations.layoutManager = LinearLayoutManager(this)
-
-    }
-
     @Throws(IOException::class)
-    private fun readBytes(context: Context, uri: Uri): ByteArray? =
-        context.contentResolver.openInputStream(uri)?.buffered()?.use { it.readBytes() }
+    private fun readBytes(context: Context, uri: Uri): ByteArray? = context.contentResolver.openInputStream(uri)?.buffered()?.use { it.readBytes() }
 
-    private fun setupAddPost() {
-         btn_addPost.setOnClickListener()
-        {
-            if(tv_selectedLocation.text.toString().trim() != "" && selectedLocationID >= 0 && et_description.text.toString().trim() !="" && iv_coverImage.drawable!=null)
-                addPost()
-            else
-                Toast.makeText(this, "You have to fill all the fields!", Toast.LENGTH_SHORT).show()
+    private fun setupAddPostButton() {
+        btn_addPost.setOnClickListener {
+            for (imageGridItem in imageGridAdapter.imageItems) {
+                val byteArray = readBytes(this, imageGridItem.uri)
+                images.add(byteArray!!.toString())
+            }
+
+            var encodedCoverImage = android.util.Base64.encodeToString(ByteArrayOutputStream().toByteArray(), android.util.Base64.DEFAULT);
+
+            val newPostRequest = NewPostRequest(
+                description = et_description.text.toString(),
+                address = locationAddress,
+                city = locationCity,
+                country = locationCountry,
+                longitude = selectedLocation.longitude,
+                latitude = selectedLocation.latitude,
+                coverImage = encodedCoverImage,
+                images = images
+            )
+
+            Log.d("New POST: ", newPostRequest.toString())
+
+            sendPostRequest(newPostRequest, this)
         }
     }
 
-    private fun addPost() {
-
-        for(imageGridItem in imageGridAdapter.imageItems)
-        {
-            var byteArray=readBytes(this,imageGridItem.uri)
-            images.add(byteArray!!.toString())
-        }
-
-        var bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), coverImage);
-        var outputStream = ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-        var byteArray = outputStream.toByteArray();
-        var encodedString = android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
-
-        var newPostRequest= NewPostRequest(
-            location = selectedLocationID,
-            description = et_description.text.toString(),
-            coverImage= encodedString,
-            images=images,
-        )
-
-        val context: Context = this
-
+    private fun sendPostRequest(newPostRequest: NewPostRequest, context: Context){
         apiClient.getPostService(context).addPost(newPostRequest).enqueue(object :
             Callback<MessageResponse> {
             override fun onResponse(
@@ -169,6 +129,7 @@ class NewPostActivity : AppCompatActivity(){
                 if (response.isSuccessful) {
                     val intent = Intent(context, HomeActivity::class.java)
                     startActivity(intent)
+                    finish()
                 }
             }
 
@@ -176,8 +137,10 @@ class NewPostActivity : AppCompatActivity(){
                 Toast.makeText(context, "Adding new post failed!", Toast.LENGTH_SHORT).show()
             }
         })
-
     }
+
+
+
 
 
     private fun setupImageGridAdapter() {
@@ -223,14 +186,14 @@ class NewPostActivity : AppCompatActivity(){
                 if (data!!.clipData != null) {
                     val count = data.clipData!!.itemCount
                     for (index in 0 until count)
-                        imageGridAdapter.imageItems!!.add(ImageGridItem(data.clipData!!.getItemAt(index).uri))
+                        imageGridAdapter.imageItems.add(ImageGridItem(data.clipData!!.getItemAt(index).uri))
                 }
 
                 // Single image chosen
                 else {
                     val imageUri = data.data
                     if (imageUri != null)
-                        imageGridAdapter.imageItems!!.add(ImageGridItem(imageUri))
+                        imageGridAdapter.imageItems.add(ImageGridItem(imageUri))
                 }
 
             }
@@ -253,12 +216,104 @@ class NewPostActivity : AppCompatActivity(){
                 }
             }
 
-            Log.d("",iv_coverImage.drawable.toString())
-
             tv_coverText.isVisible = false
             btn_coverImage.isVisible = false
 
         }
     }
 
+
+
+
+
+    private fun setupMap(){
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+        geocoder = Geocoder(this, Locale.getDefault())
+        setupAddMarkerOnTouch()
+    }
+
+    private fun addMarker(address: Address){
+        val location: LatLng = LatLng(address.latitude, address.longitude)
+        map.clear()
+        map.addMarker(MarkerOptions().position(location))
+
+        val locationName: String = address.getAddressLine(0)
+        btn_location.text = locationName
+        selectedLocation = location
+
+        tv_latitude.text = buildString {
+            append("Lat: ")
+            append(location.latitude.toString().take(12))
+        }
+        tv_longitude.text = buildString {
+            append("Long: ")
+            append(location.longitude.toString().take(12))
+        }
+
+        locationAddress = buildString {
+            append(address.thoroughfare)
+            append(" ")
+            append(address.featureName)
+        }
+        locationCity = address.locality
+        locationCountry = address.countryName
+
+        Log.d("Address", address.toString())
+    }
+
+    private fun setupAddMarkerOnTouch(){
+        map.setOnMapClickListener {
+            val addresses : MutableList<Address>? = geocoder.getFromLocation(it.latitude, it.longitude, 1)
+
+            if(addresses == null || addresses.size == 0)
+                return@setOnMapClickListener
+
+            addMarker(addresses[0])
+        }
+    }
+
+    private fun setupLocationButton() {
+        btn_location.setOnClickListener{
+            val dialog: Dialog = Dialog(this)
+
+            dialog.setContentView(R.layout.dialog_location_search)
+            dialog.window?.setLayout(920, 1000)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            dialog.show()
+
+            var editText: EditText = dialog.findViewById(R.id.edit_text)
+            var listView: ListView =dialog.findViewById(R.id.list_view)
+
+            var listAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.item_search_text, locationList)
+
+            var fetchedAddresses: MutableList<Address> = mutableListOf()
+
+            listView.adapter = listAdapter
+            editText.doOnTextChanged { _, _, _, _ ->
+                listAdapter.clear()
+
+                if(editText.text.toString() != "") {
+                    fetchedAddresses = geocoder.getFromLocationName(editText.text.toString(), 6)!!
+                    for (address in fetchedAddresses)
+                        listAdapter.add(address.getAddressLine(0))
+                }
+
+
+                listAdapter.notifyDataSetChanged()
+            }
+
+            listView.onItemClickListener =
+                OnItemClickListener { _, _, position, _ ->
+                    addMarker(fetchedAddresses[position])
+                    dialog.dismiss()
+                }
+
+        }
+    }
 }
