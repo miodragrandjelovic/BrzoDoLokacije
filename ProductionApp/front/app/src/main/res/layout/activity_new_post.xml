@@ -28,8 +28,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingRight="20dp"
+        android:paddingEnd="20dp"
         android:scrollbarAlwaysDrawHorizontalTrack="false"
         android:scrollbarAlwaysDrawVerticalTrack="false"
         android:scrollbars="none"
@@ -64,14 +63,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/et_rounded"
-                    android:gravity="top|start"
+                    android:background="@drawable/back_dark_rounded_border_red"
                     android:fontFamily="@font/montserrat_regular"
+                    android:gravity="top|start"
                     android:hint="Describe what your pictures are all about"
                     android:lines="5"
                     android:maxLines="10"
                     android:minLines="5"
-                    android:padding="5dp"
+                    android:padding="10dp"
                     android:scrollbars="vertical"
                     android:textColor="@color/white"
                     android:textColorHint="#878787"
@@ -94,49 +93,58 @@
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/et_location"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:background="@drawable/et_rounded"
-                    android:hint="Search your location"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:minLines="1"
-                    android:padding="5dp"
-                    android:singleLine="true"
-                    android:textColor="@color/white"
-                    android:textColorHint="#878787"
-                    android:textSize="11dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_locations"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:background="@drawable/et_rounded"
-                    android:nestedScrollingEnabled="false"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="5dp"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/item_location" />
-
                 <TextView
-                    android:id="@+id/tv_selectedLocation"
+                    android:id="@+id/btn_location"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/et_rounded"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/back_dark_rounded_border_red"
                     android:fontFamily="@font/montserrat_regular"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="5dp"
-                    android:text="Unknown location"
-                    android:textColor="#9AFFFFFF"
-                    android:textSize="16sp" />
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:text="Select post location"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="420dp" />
+
+                <LinearLayout
+                    android:id="@+id/ll_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_latitude"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:alpha="0.6"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Lat: 0.00"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/tv_longitude"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:alpha="0.6"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Long: 0.00"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/white" />
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -149,7 +157,7 @@
 
                 <TextView
                     android:id="@+id/tv_coverImage"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_regular"
                     android:text="Cover image"
@@ -158,8 +166,8 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_coverImage"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="360dp"
                     android:background="@drawable/et_rounded"
                     android:clickable="true"
                     android:focusable="true">
@@ -169,6 +177,7 @@
                         android:id="@+id/iv_coverImage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@drawable/back_dark_rounded_border_red"
                         android:scaleType="centerCrop" />
 
                     <ImageButton
@@ -187,15 +196,16 @@
 
                     <TextView
                         android:id="@+id/tv_coverText"
-                        android:layout_width="wrap_content"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
+                        android:alpha="0.5"
+                        android:gravity="center"
                         android:paddingLeft="20dp"
                         android:paddingRight="20dp"
                         android:text="Image must be less then 20mb in size."
                         android:textAlignment="center"
                         android:textColor="@color/white"
-                        android:textSize="12dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/btn_coverImage" />
@@ -216,6 +226,7 @@
                     android:id="@+id/tv_additionalImages"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:fontFamily="@font/montserrat_regular"
                     android:text="Additionals images"
                     android:textColor="@color/white"
@@ -226,17 +237,21 @@
                     android:id="@+id/gv_additionalImages"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/back_dark_rounded_border_red"
                     android:gravity="center"
                     android:horizontalSpacing="10dp"
                     android:numColumns="3"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="10dp" />
 
                 <Button
                     android:id="@+id/btn_pickImages"
-                    android:fontFamily="@font/montserrat_regular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_regular"
                     android:text="Pick Images" />
 
 
@@ -252,11 +267,11 @@
 
                 <Button
                     android:id="@+id/btn_addPost"
-                    android:fontFamily="@font/montserrat_regular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="40dp"
+                    android:fontFamily="@font/montserrat_regular"
                     android:text="Add post" />
 
             </LinearLayout>
