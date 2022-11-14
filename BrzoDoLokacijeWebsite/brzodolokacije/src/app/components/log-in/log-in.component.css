@@ -1,0 +1,24 @@
+.login{
+    background: rgba(0, 0, 0, 0.5);
+
+    border-width: 1px 3px;
+    border-style: solid;
+    border-color: #CC2045;
+    backdrop-filter: blur(10px);
+    border-radius: 25px
+}
+
+.login-containter{
+    height: 100vh;
+    width: 100vw;
+}
+
+.login-header{
+    font-size: 2.5rem;
+    color: #FFFFFF;
+}
+.form-control{
+    color: #FFFFFF;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid#CC2045;
+}

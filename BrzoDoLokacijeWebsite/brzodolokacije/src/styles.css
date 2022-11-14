@@ -4,3 +4,24 @@ html, body {
     height: auto;
     margin: 0;
   }
+
+body{
+  background: linear-gradient(144.27deg, #444DC3 -19.6%, rgba(68, 77, 195, 0) 49.7%), 
+  linear-gradient(323.64deg, #D23A3A -24.74%, rgba(210, 58, 113, 0) 53.61%), #131A20;
+}
+
+.custom-button-primary{
+  background-color: #CC2045;
+  border: none;
+  cursor: pointer;
+}
+
+.custom-button-primary:hover{
+  background-color: #bd163a;
+  transition: 0.5s;
+}
+
+.home-container,.login-containter{
+  width: 100vw;
+  height: 100vh;
+}
