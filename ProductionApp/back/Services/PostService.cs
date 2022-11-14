@@ -37,16 +37,18 @@ namespace PyxisKapriBack.Services
 
             newPost.Location = locationDAL.GetLocation(post.LocationName);
             newPost.Location.Latitude = post.Latitude;
-            newPost.Location.Longitude = post.Lognitude;
+            newPost.Location.Longitude = post.Longitude;
             newPost.Location.Address = post.Address;
 
 
-
-            foreach (string image in post.Images)
+            if (post.Images.Count > 0)
             {
-                Image newImage = new Image();
-                newImage.ImageData = Encoding.ASCII.GetBytes(image);
-                newPost.Images.Add(newImage);
+                foreach (string image in post.Images)
+                {
+                    Image newImage = new Image();
+                    newImage.ImageData = Encoding.ASCII.GetBytes(image);
+                    newPost.Images.Add(newImage);
+                }
             }
 
 
