@@ -65,6 +65,7 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
             }
 
             btn_ForeignUser.setOnClickListener(){
+
                 val intent = Intent(context, ForeignProfileActivity::class.java)
                 intent.putExtra("username", tv_ownerUsername.text.toString())
                 context.startActivity(intent)

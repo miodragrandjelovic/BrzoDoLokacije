@@ -48,6 +48,16 @@
             android:layout_height="wrap_content"
             >
 
+            <ImageButton
+                android:id="@+id/back_f"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:src="@drawable/back_btn"
+                android:layout_margin="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/imageView"
@@ -345,11 +355,12 @@
 
 
                 <com.example.pyxiskapri.custom_view_models.WrapGridView
-                    android:id="@+id/gv_user_posts"
+                    android:id="@+id/gv_f_user_posts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:horizontalSpacing="10dp"
+                    android:layout_marginBottom="15dp"
                     android:numColumns="3"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="10dp" />

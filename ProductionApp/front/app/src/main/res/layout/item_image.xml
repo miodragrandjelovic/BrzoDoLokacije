@@ -32,6 +32,7 @@
                 android:layout_height="20dp"
                 android:layout_margin="5dp"
                 android:background="@drawable/ib_rounded"
+                android:backgroundTint="@color/red"
                 android:clickable="true"
                 android:focusable="true"
                 android:scaleType="centerInside"

@@ -54,10 +54,12 @@ class UserProfileActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        setupUserPostAdapter()
-        setupGetUser()
+        //setupUserPostAdapter()
+        //setupGetUser()
         setupGetUserPosts()
     }
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +82,7 @@ class UserProfileActivity : AppCompatActivity() {
         {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         btn_change_pass.setOnClickListener()

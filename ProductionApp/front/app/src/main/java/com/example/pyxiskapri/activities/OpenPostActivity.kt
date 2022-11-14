@@ -16,6 +16,7 @@ import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.*
 import kotlinx.android.synthetic.main.activity_open_post.*
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.item_post.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,6 +44,20 @@ class OpenPostActivity : AppCompatActivity() {
         setupNavButtons()
         setupPostButtons()
         requestPostData()
+
+        ll_user_btn.setOnClickListener(){
+            val intent = Intent(this, ForeignProfileActivity::class.java)
+            intent.putExtra("username", tv_ownerUsername.text.toString())
+            this.startActivity(intent)
+        }
+
+        iv_ownerAvatar.setOnClickListener()
+        {
+            val intent = Intent(this, ForeignProfileActivity::class.java)
+            intent.putExtra("username", tv_ownerUsername.text.toString())
+            this.startActivity(intent)
+        }
+
     }
 
     override fun onResume() {
@@ -173,7 +188,7 @@ class OpenPostActivity : AppCompatActivity() {
             //ADDITIONAL IMAGES
         }
 
-        if(postData.ownerImage != null)
+        if(postData.ownerImage != null && postData.ownerImage != "")
         {
             iv_ownerAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(postData.ownerImage))
             tv_ownerUsername.text = postData.ownerUsername

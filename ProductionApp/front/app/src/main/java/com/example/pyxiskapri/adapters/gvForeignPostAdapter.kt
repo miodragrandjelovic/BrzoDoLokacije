@@ -10,21 +10,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
+import androidx.core.view.isGone
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.OpenPostActivity
-import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
-import com.example.pyxiskapri.models.ImageGridItem
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
-import kotlinx.android.synthetic.main.activity_user_profile.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.ArrayList
 
-class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: Context) : BaseAdapter() {
+
+class gvForeignPostAdapter (var postsItem: MutableList<PostListItem>, var context: Context) : BaseAdapter() {
+
 
     private var apiClient: ApiClient = ApiClient()
 
@@ -48,12 +44,14 @@ class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: C
         if(view == null)
             view = layoutInflater.inflate(R.layout.item_image, parent, false)
 
+
         var gvItemImage = view?.findViewById<ImageView>(R.id.iv_image)
         var ibDelete = view?.findViewById<ImageView>(R.id.ib_delete)
 
-        ibDelete?.setOnClickListener {
-            removeImage(position)
-        }
+
+        ibDelete?.isGone=true
+
+
 
         val picture=postsItem[position].coverImage
         if(picture!=null)
@@ -71,37 +69,14 @@ class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: C
             context.startActivity(intent)
 
             (context as Activity).finish()
+
         }
 
+
         return view!!
-
     }
 
 
-
-
-    fun removeImage(position: Int) {
-
-        apiClient.getPostService(context).removePost(postsItem[position].id).enqueue(object : Callback<MessageResponse>{
-            override fun onResponse(
-                call: Call<MessageResponse>,
-                response: Response<MessageResponse>
-            ) {
-                if(response.isSuccessful)
-                {
-                    postsItem.removeAt(position)
-                    notifyDataSetChanged()
-                }
-            }
-
-            override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
-
-        })
-
-
-    }
 
     fun setPostList(postResponseList: ArrayList<PostResponse>){
         postsItem.clear()
@@ -111,6 +86,5 @@ class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: C
 
         notifyDataSetChanged()
     }
-
 
 }

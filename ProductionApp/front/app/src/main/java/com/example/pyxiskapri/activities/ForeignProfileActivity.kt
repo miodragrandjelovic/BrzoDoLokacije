@@ -1,6 +1,7 @@
 package com.example.pyxiskapri.activities
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
@@ -8,8 +9,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.adapters.UserPostsAdapter
+import com.example.pyxiskapri.adapters.gvForeignPostAdapter
 import com.example.pyxiskapri.dtos.request.ForeignUserRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
+import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
@@ -28,10 +32,16 @@ class ForeignProfileActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
     lateinit var username:String
 
+    lateinit var gvForeignPostAdapter: gvForeignPostAdapter
+
     override fun onRestart() {
         super.onRestart()
-        getForeignUser()
+       // getForeignUser()
+       // setupUserPostAdapter()
+        setupGetUserPosts()
     }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +50,23 @@ class ForeignProfileActivity : AppCompatActivity() {
         apiClient=ApiClient()
         sessionManager= SessionManager(this)
 
+
         val bundle = intent.extras
         username = bundle?.getString("username")!!
 
         Log.d("",username)
 
+        setupUserPostAdapter()
+        setupGetUserPosts()
+
+
+        back_f.setOnClickListener()
+        {
+
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         getForeignUser()
 
@@ -54,11 +76,8 @@ class ForeignProfileActivity : AppCompatActivity() {
 
     private fun getForeignUser() {
 
-        val foreignUser= ForeignUserRequest(
-            username = username
-        )
         val context:Context=this
-        apiClient.getUserService(context).getForeignUser(foreignUser).enqueue(object : Callback<GetUserResponse>{
+        apiClient.getUserService(context).getForeignUser(username).enqueue(object : Callback<GetUserResponse>{
             override fun onResponse(
                 call: Call<GetUserResponse>,
                 response: Response<GetUserResponse>
@@ -95,6 +114,34 @@ class ForeignProfileActivity : AppCompatActivity() {
         if(view.id == R.id.btn_menu)
             fcv_drawerNavUserProfile.getFragment<DrawerNav>().showDrawer()
     }
+
+    private fun setupUserPostAdapter() {
+        gvForeignPostAdapter = gvForeignPostAdapter(mutableListOf(),this)
+        gv_f_user_posts.adapter = gvForeignPostAdapter
+    }
+
+
+    private fun setupGetUserPosts() {
+
+
+        apiClient.getPostService(this).getUserPosts(username)
+            .enqueue(object : Callback<ArrayList<PostResponse>> {
+                override fun onResponse(call: Call<ArrayList<PostResponse>>, response: Response<ArrayList<PostResponse>>) {
+                    if(response.isSuccessful) {
+                        gvForeignPostAdapter.setPostList(response.body()!!)
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ArrayList<PostResponse>>, t: Throwable) {
+
+                }
+
+            })
+
+
+    }
+
 
 
 }

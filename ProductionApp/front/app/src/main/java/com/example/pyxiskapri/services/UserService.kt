@@ -26,10 +26,8 @@ interface UserService {
     @PUT("api/User/ChangePassword")
     fun changePassword(@Body requestBody: ChangePasswordRequest) : Call<MessageResponse>
 
-    //PROMENITI API!!!
-    @POST("api/User/GetUserByUsername")
-    fun getForeignUser(@Body requestBody: ForeignUserRequest) : Call<GetUserResponse>
-
+    @GET("api/User/GetUserByUsername/{username}")
+    fun getForeignUser(@Path(value = "username") username: String) : Call<GetUserResponse>
 
 
 }
