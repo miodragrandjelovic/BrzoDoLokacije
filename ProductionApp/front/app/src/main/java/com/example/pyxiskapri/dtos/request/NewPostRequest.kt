@@ -6,22 +6,22 @@ import com.example.pyxiskapri.models.UserData
 import com.google.gson.annotations.SerializedName
 
 data class NewPostRequest (
-    @SerializedName("Description")
+    @SerializedName("description")
     var description: String = "",
-    @SerializedName("Address")
+    @SerializedName("address")
     var address: String = "",
-    @SerializedName("LocationName")
+    @SerializedName("locationName")
     var locationName: String = "",
-    @SerializedName("City")
+    @SerializedName("city")
     var city: String = "",
-    @SerializedName("Country")
+    @SerializedName("country")
     var country: String = "",
-    @SerializedName("Longitude")
+    @SerializedName("longitude")
     var longitude: Double = 0.00,
-    @SerializedName("Latitude")
+    @SerializedName("latitude")
     var latitude: Double = 0.00,
-    @SerializedName("CoverImage")
+    @SerializedName("coverImage")
     var coverImage: String = "",
-    @SerializedName("Images")
+    @SerializedName("images")
     var images: ArrayList<String> = arrayListOf()
 )

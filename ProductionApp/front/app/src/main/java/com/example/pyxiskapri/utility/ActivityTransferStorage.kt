@@ -1,12 +1,16 @@
 package com.example.pyxiskapri.utility
 
 import com.example.pyxiskapri.models.PostListItem
+import com.google.android.gms.maps.model.LatLng
 
 interface ActivityTransferStorage {
 
     companion object {
         @JvmStatic
-        var postItemToOpenPost: PostListItem = PostListItem()
+        lateinit var postItemToOpenPost: PostListItem
+
+        @JvmStatic
+        lateinit var openPostToMap: LatLng
     }
 
 }

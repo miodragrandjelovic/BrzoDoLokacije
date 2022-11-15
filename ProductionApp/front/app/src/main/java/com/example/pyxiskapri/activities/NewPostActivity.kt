@@ -31,15 +31,12 @@ import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.ImageGridItem
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
-import com.example.pyxiskapri.utility.UtilityFunctions
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_new_post.*
-import kotlinx.android.synthetic.main.activity_new_post.btn_home
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -94,17 +91,13 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             fcv_drawerNavNewPost.getFragment<DrawerNav>().showDrawer()
     }
 
-    override fun onStop() {
-        super.onStop()
-        finish()
-    }
-
     private fun setupGoHomeButton(){
         btn_home.setOnClickListener {
             val intent = Intent (this, HomeActivity::class.java);
             startActivity(intent);
         }
     }
+
 
     @Throws(IOException::class)
     private fun readBytes(context: Context, uri: Uri): ByteArray? = context.contentResolver.openInputStream(uri)?.buffered()?.use { it.readBytes() }

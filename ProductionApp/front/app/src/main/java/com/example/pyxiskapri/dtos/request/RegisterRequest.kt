@@ -3,14 +3,14 @@ package com.example.pyxiskapri.dtos.request
 import com.google.gson.annotations.SerializedName
 
 data class RegisterRequest (
-    @SerializedName("FirstName")
+    @SerializedName("firstName")
     var firstName: String,
-    @SerializedName("LastName")
+    @SerializedName("lastName")
     var lastName: String,
-    @SerializedName("Email")
+    @SerializedName("email")
     var email: String,
-    @SerializedName("Username")
+    @SerializedName("username")
     var username: String,
-    @SerializedName("Password")
+    @SerializedName("password")
     var password: String
 )
