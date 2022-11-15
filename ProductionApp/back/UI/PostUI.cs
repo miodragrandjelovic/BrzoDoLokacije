@@ -48,7 +48,9 @@ namespace PyxisKapriBack.UI
                     NumberOfViews = 0,
                     Username = post.User.Username,
                     ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
-                    IsLiked = likeService.IsLiked(post.Id,userService.GetLoggedUser())
+                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
+                    DateCreated = post.CreatedDate,
+
                 });
             }
             return allPosts;
@@ -70,7 +72,8 @@ namespace PyxisKapriBack.UI
                     NumberOfViews = 0,
                     Username = post.User.Username,
                     ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
-                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser())
+                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
+                    DateCreated = post.CreatedDate
                 });
             }
             return allPosts;
@@ -91,7 +94,8 @@ namespace PyxisKapriBack.UI
                     NumberOfViews = 0,
                     Username = post.User.Username,
                     ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
-                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser())
+                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
+                    DateCreated = post.CreatedDate
                 });
             }
             return allPosts;
@@ -108,6 +112,11 @@ namespace PyxisKapriBack.UI
             return new AdditionalPostData
             {
                 Description = post.Description,
+                Latitude = post.Location.Latitude,
+                Longitude = post.Location.Longitude,
+                Address = post.Location.Address,
+                City = post.Location.City.Name,
+                Country = string.Empty,
                 Images = images
             };
 
@@ -146,8 +155,8 @@ namespace PyxisKapriBack.UI
                     NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
                     NumberOfViews = 0,
                     Username = post.User.Username.ToString(),
-                    ProfileImage = Convert.ToBase64String(post.User.ProfileImage)
-
+                    ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
+                    DateCreated = post.CreatedDate
                 }) ;
             }
 
