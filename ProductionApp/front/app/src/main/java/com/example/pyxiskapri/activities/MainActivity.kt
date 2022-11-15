@@ -17,7 +17,7 @@ class  MainActivity : AppCompatActivity() {
 
         sessionManager = SessionManager(this)
 
-        ActivityControl.handleUserSignedIn(this, sessionManager, savedInstanceState)
+        ActivityControl.handleUserSignedIn(this, this, sessionManager, savedInstanceState)
 
         setupGoToRegisterButton();
         setupGoToSignInButton();
@@ -28,7 +28,7 @@ class  MainActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart();
-        ActivityControl.handleUserSignedIn(this, sessionManager, null)
+        ActivityControl.handleUserSignedIn(this, this, sessionManager, null)
     }
 
     private fun setupGoToRegisterButton(){

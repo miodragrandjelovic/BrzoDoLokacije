@@ -49,12 +49,14 @@ class DrawerNav : Fragment() {
 
             btn_signOut.setOnClickListener {
                 SessionManager(requireContext()).clearToken()
-                val intent = Intent(requireContext(), MainActivity::class.java);
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                activity?.finishAffinity()
                 startActivity(intent)
             }
 
             btn_UserProfile.setOnClickListener {
-                val intent = Intent (requireContext(), UserProfileActivity::class.java);
+                val intent = Intent (requireContext(), UserProfileActivity::class.java)
                 startActivity(intent);
             }
 

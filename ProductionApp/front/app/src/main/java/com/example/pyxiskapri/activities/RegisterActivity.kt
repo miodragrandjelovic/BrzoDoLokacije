@@ -27,7 +27,7 @@ class RegisterActivity : AppCompatActivity() {
 
         sessionManager = SessionManager(this)
 
-        ActivityControl.handleUserSignedIn(this, sessionManager, null)
+        ActivityControl.handleUserSignedIn(this, this, sessionManager, null)
 
         apiClient = ApiClient()
 
@@ -37,7 +37,7 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart();
-        ActivityControl.handleUserSignedIn(this, sessionManager, null)
+        ActivityControl.handleUserSignedIn(this, this, sessionManager, null)
         resetInputs()
     }
 

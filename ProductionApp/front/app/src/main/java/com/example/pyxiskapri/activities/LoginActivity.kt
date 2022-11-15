@@ -29,7 +29,7 @@ class LoginActivity : AppCompatActivity() {
 
         sessionManager = SessionManager(this)
 
-        ActivityControl.handleUserSignedIn(this, sessionManager, savedInstanceState)
+        ActivityControl.handleUserSignedIn(this,this, sessionManager, savedInstanceState)
 
         apiClient = ApiClient()
 
@@ -39,7 +39,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart();
-        ActivityControl.handleUserSignedIn(this, sessionManager, null)
+        ActivityControl.handleUserSignedIn(this,this, sessionManager, null)
         resetInputs()
     }
 
@@ -85,6 +85,8 @@ class LoginActivity : AppCompatActivity() {
                     if(response.isSuccessful) {
                         sessionManager.saveToken(response.body()?.token.toString())
                         val intent = Intent(context, HomeActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        finishAffinity()
                         startActivity(intent)
                     }
 
