@@ -13,6 +13,7 @@ import com.example.pyxiskapri.dtos.response.PostAdditionalData
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.*
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.activity_open_post.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,6 +26,7 @@ class OpenPostActivity : AppCompatActivity() {
     lateinit var activityTransferStorage: ActivityTransferStorage
 
     private lateinit var postData: PostListItem
+    private lateinit var postLocation: LatLng
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +43,8 @@ class OpenPostActivity : AppCompatActivity() {
         setupNavButtons()
         setupPostButtons()
         requestPostData()
+
+        setupOpenMapButton()
 
         ll_user_btn.setOnClickListener(){
             val intent = Intent(this, ForeignProfileActivity::class.java)
@@ -179,11 +183,13 @@ class OpenPostActivity : AppCompatActivity() {
     }
 
     private fun updatePostData(postAdditionalData: PostAdditionalData?){
-
         if(postAdditionalData != null){
             tv_postDescription.text = postAdditionalData.postDescription
             //ADDITIONAL IMAGES
         }
+
+        if(postAdditionalData != null)
+            postLocation = LatLng(postAdditionalData.latitude, postAdditionalData.longitude)
 
         if(postData.ownerImage != null && postData.ownerImage != "")
         {
@@ -208,6 +214,14 @@ class OpenPostActivity : AppCompatActivity() {
 
         // COMMENT SETUP
 
+    }
+
+    private fun setupOpenMapButton(){
+        btn_openMap.setOnClickListener {
+            val intent = Intent (this, MapActivity::class.java);
+            ActivityTransferStorage.openPostToMap = LatLng(postLocation.latitude, postLocation.longitude)
+            startActivity(intent);
+        }
     }
 
 }

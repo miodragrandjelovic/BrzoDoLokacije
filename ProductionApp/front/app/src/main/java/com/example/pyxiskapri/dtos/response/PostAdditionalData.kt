@@ -6,5 +6,15 @@ data class PostAdditionalData(
     @SerializedName("description")
     var postDescription: String,
     @SerializedName("images")
-    var additionalImages: ArrayList<String>
+    var additionalImages: ArrayList<String>,
+    @SerializedName("latitude")
+    var latitude: Double,
+    @SerializedName("longitude")
+    var longitude: Double,
+    @SerializedName("address")
+    var address: String,
+    @SerializedName("city")
+    var city: String,
+    @SerializedName("country")
+    var country: String
 )

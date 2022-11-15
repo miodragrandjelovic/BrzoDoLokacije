@@ -2,6 +2,8 @@ package com.example.pyxiskapri.models
 
 import com.example.pyxiskapri.dtos.response.PostResponse
 import java.io.Serializable
+import java.time.LocalDateTime
+import java.util.*
 
 data class PostListItem(
     var id: Int = 0,
