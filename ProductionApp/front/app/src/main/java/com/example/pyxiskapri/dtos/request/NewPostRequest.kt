@@ -10,6 +10,8 @@ data class NewPostRequest (
     var description: String = "",
     @SerializedName("Address")
     var address: String = "",
+    @SerializedName("LocationName")
+    var locationName: String = "",
     @SerializedName("City")
     var city: String = "",
     @SerializedName("Country")

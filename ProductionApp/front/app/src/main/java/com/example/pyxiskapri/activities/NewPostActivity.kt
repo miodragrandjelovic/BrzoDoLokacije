@@ -5,13 +5,14 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
@@ -28,6 +29,7 @@ import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.models.ImageGridItem
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
+import com.example.pyxiskapri.utility.UtilityFunctions
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -99,12 +101,16 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
                 val byteArray = readBytes(this, imageGridItem.uri)
                 images.add(byteArray!!.toString())
             }
-
-            var encodedCoverImage = android.util.Base64.encodeToString(ByteArrayOutputStream().toByteArray(), android.util.Base64.DEFAULT);
+            var bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), coverImage);
+            var outputStream = ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            var byteArray = outputStream.toByteArray();
+            var encodedCoverImage = android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
 
             val newPostRequest = NewPostRequest(
                 description = et_description.text.toString(),
                 address = locationAddress,
+                locationName = "__LocationName__",
                 city = locationCity,
                 country = locationCountry,
                 longitude = selectedLocation.longitude,
@@ -112,8 +118,6 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
                 coverImage = encodedCoverImage,
                 images = images
             )
-
-            Log.d("New POST: ", newPostRequest.toString())
 
             sendPostRequest(newPostRequest, this)
         }
@@ -238,6 +242,10 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
     }
 
     private fun addMarker(address: Address){
+
+        if(address.countryName == null || address.locality == null || address.featureName == null && address.thoroughfare == null)
+            return
+
         val location: LatLng = LatLng(address.latitude, address.longitude)
         map.clear()
         map.addMarker(MarkerOptions().position(location))
@@ -260,6 +268,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             append(" ")
             append(address.featureName)
         }
+
         locationCity = address.locality
         locationCountry = address.countryName
 

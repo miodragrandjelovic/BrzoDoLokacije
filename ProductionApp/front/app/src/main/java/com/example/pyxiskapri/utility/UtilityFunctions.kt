@@ -2,7 +2,6 @@ package com.example.pyxiskapri.utility
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import kotlinx.android.synthetic.main.activity_open_post.*
 
 object UtilityFunctions {
 

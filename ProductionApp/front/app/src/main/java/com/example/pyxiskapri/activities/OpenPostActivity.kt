@@ -2,7 +2,6 @@ package com.example.pyxiskapri.activities
 
 import android.content.Intent
 import android.graphics.PorterDuff
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,8 +14,6 @@ import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.*
 import kotlinx.android.synthetic.main.activity_open_post.*
-import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.item_post.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
