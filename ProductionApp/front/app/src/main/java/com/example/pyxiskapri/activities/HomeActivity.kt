@@ -55,7 +55,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupButtonNewPost(){
-        btn_newPost .setOnClickListener {
+        btn_newPost.setOnClickListener {
             val intent = Intent (this, NewPostActivity::class.java);
             startActivity(intent);
         }

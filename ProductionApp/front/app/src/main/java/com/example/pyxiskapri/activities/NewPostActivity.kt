@@ -14,6 +14,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.EditText
@@ -26,6 +27,7 @@ import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.ImageGridAdapter
 import com.example.pyxiskapri.dtos.request.NewPostRequest
 import com.example.pyxiskapri.dtos.response.MessageResponse
+import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.ImageGridItem
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
@@ -35,7 +37,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_new_post.*
+import kotlinx.android.synthetic.main.activity_new_post.btn_home
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -83,6 +87,16 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
         setupAddPostButton()
 
+    }
+
+    fun showDrawerMenu(view: View){
+        if(view.id == R.id.btn_menu)
+            fcv_drawerNavNewPost.getFragment<DrawerNav>().showDrawer()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        finish()
     }
 
     private fun setupGoHomeButton(){
