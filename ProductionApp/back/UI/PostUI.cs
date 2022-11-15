@@ -49,7 +49,7 @@ namespace PyxisKapriBack.UI
                     Username = post.User.Username,
                     ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
-                    DateCreated = post.CreatedDate,
+                    //DateCreated = post.CreatedDate,
 
                 });
             }
@@ -73,7 +73,7 @@ namespace PyxisKapriBack.UI
                     Username = post.User.Username,
                     ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
-                    DateCreated = post.CreatedDate
+                    //DateCreated = post.CreatedDate
                 });
             }
             return allPosts;
@@ -95,7 +95,7 @@ namespace PyxisKapriBack.UI
                     Username = post.User.Username,
                     ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
-                    DateCreated = post.CreatedDate
+                    //DateCreated = post.CreatedDate
                 });
             }
             return allPosts;
@@ -115,7 +115,7 @@ namespace PyxisKapriBack.UI
                 Latitude = post.Location.Latitude,
                 Longitude = post.Location.Longitude,
                 Address = post.Location.Address,
-                City = post.Location.City.Name,
+                City = string.Empty,
                 Country = string.Empty,
                 Images = images
             };
@@ -156,7 +156,7 @@ namespace PyxisKapriBack.UI
                     NumberOfViews = 0,
                     Username = post.User.Username.ToString(),
                     ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
-                    DateCreated = post.CreatedDate
+                    //DateCreated = post.CreatedDate
                 }) ;
             }
 
