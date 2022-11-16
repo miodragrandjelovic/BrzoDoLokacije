@@ -2,12 +2,17 @@ package com.example.pyxiskapri.activities
 
 import android.content.Intent
 import android.graphics.PorterDuff
+import android.location.Address
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.DatePicker
+import android.widget.ListAdapter
 import androidx.core.content.ContextCompat
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.dtos.response.CommentResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostAdditionalData
 import com.example.pyxiskapri.fragments.DrawerNav
@@ -18,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_open_post.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.sql.Date
 
 class OpenPostActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
@@ -27,6 +33,11 @@ class OpenPostActivity : AppCompatActivity() {
 
     private lateinit var postData: PostListItem
     private lateinit var postLocation: LatLng
+
+    // DUMMY DATA
+    private lateinit var comments: ArrayList<CommentResponse>
+
+    // END OF DUMMY DATA
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +69,8 @@ class OpenPostActivity : AppCompatActivity() {
             intent.putExtra("username", tv_ownerUsername.text.toString())
             this.startActivity(intent)
         }
+
+        setupComments()
 
     }
 
@@ -210,10 +223,6 @@ class OpenPostActivity : AppCompatActivity() {
             iv_likeIcon.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_IN);
 
         // REPORT CHECK
-
-
-        // COMMENT SETUP
-
     }
 
     private fun setupOpenMapButton(){
@@ -222,6 +231,15 @@ class OpenPostActivity : AppCompatActivity() {
             ActivityTransferStorage.openPostToMap = LatLng(postLocation.latitude, postLocation.longitude)
             startActivity(intent);
         }
+    }
+
+
+
+    private fun setupComments(){
+        //comments.add(CommentResponse(1,"Tekst prvog komentara", java))
+        var listAdapter: ArrayAdapter<CommentResponse> = ArrayAdapter<CommentResponse>(this, R.layout.item_comment, comments)
+
+
     }
 
 }

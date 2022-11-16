@@ -30,14 +30,10 @@
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/postbg"
-        android:paddingStart="20dp"
-        android:paddingTop="20dp"
-        android:paddingEnd="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:scrollbars="none"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/navMenu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -51,7 +47,12 @@
                 android:id="@+id/ll_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/et_rounded"
+                android:backgroundTint="@color/dark_gray"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_owner"
@@ -134,24 +135,20 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
-            <View
-                android:id="@+id/vertical_line"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:background="@color/red" />
-
             <TextView
                 android:id="@+id/tv_postDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:alpha="0.75"
+                android:background="@drawable/et_rounded"
+                android:backgroundTint="@color/dark_gray"
                 android:fontFamily="@font/montserrat_regular"
-                android:lineSpacingExtra="-4dp"
+                android:lineSpacingExtra="-2dp"
+                android:padding="10dp"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis quam tincidunt, aliquam elit eget, mollis tortor. Etiam in venenatis turpis. Donec vel molestie massa. Maecenas vel magna turpis. Suspendisse justo elit, sodales et sapien a, feugiat dui."
                 android:textColor="@color/white"
-                android:textSize="14sp" />
-
+                android:textSize="12sp" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -177,18 +174,24 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_additionalImages"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="100dp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="3"
-                tools:listitem="@layout/recycler_view_item" />
+                tools:listitem="@layout/recycler_view_item" >
+
+            </androidx.recyclerview.widget.RecyclerView>
 
             <LinearLayout
+                android:id="@+id/ll_postOptions"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_weight="0"
-                android:orientation="horizontal">
+                android:background="@drawable/et_rounded"
+                android:backgroundTint="@color/dark_gray"
+                android:orientation="horizontal"
+                android:padding="12dp">
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -344,12 +347,146 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/vertical_line2"
+                android:id="@+id/vertical_line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 android:background="@color/red" />
+
+            <LinearLayout
+                android:id="@+id/ll_newPost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/et_rounded"
+                android:backgroundTint="@color/dark_gray"
+                android:gravity="center_horizontal|center_vertical"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <ImageView
+                    android:id="@+id/iv_userNewCommentAvatar"
+                    android:layout_width="50dp"
+                    android:layout_height="44dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="0"
+                    android:adjustViewBounds="true"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <EditText
+                    android:id="@+id/editTextTextMultiLine"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/et_roundedborder"
+                    android:ems="10"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:gravity="start|top"
+                    android:hint="Leave your comment.."
+                    android:inputType="textMultiLine"
+                    android:minHeight="44dp"
+                    android:padding="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="#80FFFFFF"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_sort"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/btn_categoryPopular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/ib_rounded"
+                    android:backgroundTint="@color/red"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <ImageView
+                        android:id="@+id/iv_categoryPopular"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="3dp"
+                        android:adjustViewBounds="true"
+                        app:srcCompat="@drawable/popular" />
+
+                    <TextView
+                        android:id="@+id/tv_categoryPopular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_gravity="left|center_vertical"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:gravity="center_vertical"
+                        android:text="Popular"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/btn_categoryNewest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/ib_rounded"
+                    android:backgroundTint="@color/dark_gray"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <ImageView
+                        android:id="@+id/iv_categoryNewest"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginEnd="3dp"
+                        android:adjustViewBounds="true"
+                        app:srcCompat="@drawable/star" />
+
+                    <TextView
+                        android:id="@+id/tv_categoryNewest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_gravity="left|center_vertical"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:gravity="center_vertical"
+                        android:text="Newest"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_commentsCount"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left|center_vertical"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:gravity="right|center_vertical"
+                    android:text="xyz comments"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lv_comments"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                tools:listitem="@layout/item_comment" />
+
 
         </LinearLayout>
     </ScrollView>
