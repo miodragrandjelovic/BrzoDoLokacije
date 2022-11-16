@@ -97,6 +97,7 @@ builder.Services.AddSwaggerGen(options => {
     builder.Services.AddTransient<ILikeService, LikeService>();
     builder.Services.AddTransient<IPlaceService, PlaceService>();
     builder.Services.AddTransient<IFollowService, FollowService>();
+    builder.Services.AddTransient<ICommentService, CommentService>();
     #endregion
 
     #region 'UI - Dependencies'
