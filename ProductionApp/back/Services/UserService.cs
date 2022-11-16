@@ -137,7 +137,7 @@ namespace PyxisKapriBack.Services
         public Response UpdateUser(UserDTO user)
         {
             var loggedUser = userDAL.GetUser(GetLoggedUser());
-            if(UserAlreadyExists(user.Username).Result)
+            if(userDAL.GetUser(user.Username) != null && !loggedUser.Equals(user.Username))
             {
                 return new Response
                 {
