@@ -26,7 +26,7 @@
             tools:layout_editor_absoluteX="16dp" />
     </androidx.appcompat.widget.Toolbar>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -480,16 +480,16 @@
 
             </LinearLayout>
 
-            <ListView
+            <com.example.pyxiskapri.custom_view_models.WrapListView
                 android:id="@+id/lv_comments"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 tools:listitem="@layout/item_comment" />
 
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/navMenu"
