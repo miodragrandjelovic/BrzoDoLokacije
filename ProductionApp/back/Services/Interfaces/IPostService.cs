@@ -10,10 +10,11 @@ namespace PyxisKapriBack.Services.Interfaces
         Response DeletePost(int postID);
         Post GetPost(int PostID);
         Response SetLikeOnPost(int postID);
-
         Response DeleteUserPost(int postID);
         List<Post> GetAllPosts();
         List<Post> GetFollowingPosts(string username);
         List<Post> GetRecommendedPosts(string username);
+
+
     }
 }

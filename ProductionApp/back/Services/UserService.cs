@@ -137,14 +137,7 @@ namespace PyxisKapriBack.Services
         public Response UpdateUser(UserDTO user)
         {
             var loggedUser = userDAL.GetUser(GetLoggedUser());
-            if(UserAlreadyExists(user.Username).Result)
-            {
-                return new Response
-                {
-                    StatusCode = StatusCodes.Status403Forbidden,
-                    Message = "Username already taken!"
-                };
-            }
+            
             if (loggedUser == null)
                 return new Response
                 {
@@ -157,6 +150,15 @@ namespace PyxisKapriBack.Services
                     StatusCode = StatusCodes.Status403Forbidden,
                     Message = "Wrong password!"
                 };
+
+            if (userDAL.GetUser(user.Username) != null && !loggedUser.Id.Equals(GetUser(user.Username).Id))
+            {
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status403Forbidden,
+                    Message = "Username already taken!"
+                };
+            }
 
             loggedUser.ProfileImage = Convert.FromBase64String(user.ProfileImage);
             loggedUser.Username = user.Username;

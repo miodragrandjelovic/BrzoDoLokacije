@@ -56,7 +56,7 @@ builder.Services.AddAuthentication(item =>
     });
 
 // Add services to the container.
-//builder.Services.Configure<KestrelServerOptions>(builder.Configuration.GetSection("Kestrel"));
+builder.Services.Configure<KestrelServerOptions>(builder.Configuration.GetSection("Kestrel"));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -97,12 +97,14 @@ builder.Services.AddSwaggerGen(options => {
     builder.Services.AddTransient<ILikeService, LikeService>();
     builder.Services.AddTransient<IPlaceService, PlaceService>();
     builder.Services.AddTransient<IFollowService, FollowService>();
+    builder.Services.AddTransient<ICommentService, CommentService>();
     #endregion
 
     #region 'UI - Dependencies'
     builder.Services.AddTransient<IUserUI, UserUI>();
     builder.Services.AddTransient<IPostUI, PostUI>();
     builder.Services.AddTransient<IFollowUI, FollowUI>(); 
+    builder.Services.AddTransient<ICommentUI, CommentUI>(); 
     #endregion
 
     #region 'Managers'

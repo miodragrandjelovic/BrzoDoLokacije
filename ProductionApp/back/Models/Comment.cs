@@ -21,8 +21,8 @@
         #endregion
 
         #region 'Comment'
-        public int CommentParentId { get; set; }
-        public Comment CommentParent { get; set; }
+        public int? CommentParentId { get; set; }
+        public Comment? CommentParent { get; set; }
         #endregion
     }
 }
