@@ -1,6 +1,7 @@
 package com.example.pyxiskapri.adapters
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -8,8 +9,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.BaseAdapter
 import android.widget.ImageView
+import android.widget.Toast
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.MessageResponse
@@ -19,6 +22,7 @@ import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import kotlinx.android.synthetic.main.activity_user_profile.*
+import kotlinx.android.synthetic.main.modal_confirm_delete.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -82,23 +86,48 @@ class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: C
 
     fun removeImage(position: Int) {
 
-        apiClient.getPostService(context).removePost(postsItem[position].id).enqueue(object : Callback<MessageResponse>{
-            override fun onResponse(
-                call: Call<MessageResponse>,
-                response: Response<MessageResponse>
-            ) {
-                if(response.isSuccessful)
-                {
-                    postsItem.removeAt(position)
-                    notifyDataSetChanged()
+        val dialog= Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.modal_confirm_delete)
+
+        dialog.show()
+
+        dialog.btn_confirm_delete.setOnClickListener(){
+
+            apiClient.getPostService(context).removePost(postsItem[position].id).enqueue(object : Callback<MessageResponse>{
+                override fun onResponse(
+                    call: Call<MessageResponse>,
+                    response: Response<MessageResponse>
+                ) {
+                    if(response.isSuccessful)
+                    {
+                        postsItem.removeAt(position)
+                        notifyDataSetChanged()
+                        Toast.makeText(context,"Post is successfully deleted!",Toast.LENGTH_LONG).show()
+                    }
+
+                    else
+                    {
+                        Toast.makeText(context,"Post cannot be deleted.",Toast.LENGTH_LONG).show()
+                    }
+
+                    dialog.dismiss()
                 }
-            }
 
-            override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                TODO("Not yet implemented")
-            }
+                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                    Toast.makeText(context,"Something went wrong.",Toast.LENGTH_LONG).show()
+                    dialog.dismiss()
+                }
 
-        })
+            })
+        }
+
+
+        dialog.btn_close_dialog.setOnClickListener(){
+            dialog.dismiss()
+        }
+
 
 
     }
