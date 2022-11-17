@@ -15,5 +15,13 @@ data class PostListItem(
     var viewCount: Int = 0
 ) : Serializable
 {
-    constructor(response: PostResponse) : this(response.id, response.isLiked, response.ownerUsername, response.ownerImage, response.coverImage, response.likeCount, response.viewCount)
+    constructor(response: PostResponse) : this(
+        response.id,
+        response.isLiked,
+        response.ownerUsername,
+        response.ownerImage,
+        response.coverImage,
+        response.likeCount,
+        response.viewCount
+    )
 }

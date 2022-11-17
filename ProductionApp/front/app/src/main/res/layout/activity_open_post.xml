@@ -480,12 +480,12 @@
 
             </LinearLayout>
 
-            <com.example.pyxiskapri.custom_view_models.WrapListView
-                android:id="@+id/lv_comments"
+            <com.example.pyxiskapri.custom_view_models.WrapExpandableListView
+                android:id="@+id/elv_comments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                tools:listitem="@layout/item_comment" />
+                tools:listitem="@layout/item_comment"/>
 
 
         </LinearLayout>

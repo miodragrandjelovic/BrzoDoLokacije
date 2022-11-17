@@ -2,12 +2,11 @@ package com.example.pyxiskapri.custom_view_models
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View.MeasureSpec
 import android.view.ViewGroup
-import android.widget.ListView
+import android.widget.ExpandableListView
 
 
-class WrapListView : ListView {
+class WrapExpandableListView : ExpandableListView {
 
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {}
