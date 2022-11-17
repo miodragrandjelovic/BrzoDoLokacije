@@ -9,10 +9,10 @@ import retrofit2.http.*
 import java.util.ArrayList
 
 interface CommentService {
-    @GET("api/Comment/GetCommentsPost{postId}")
+    @GET("api/Comment/GetCommentsForPost/{postId}")
     fun getPostComments(@Path(value = "postId") postId: Int): Call<ArrayList<CommentResponse>>
 
-    @POST("api/Comment/AddComment")
+    @POST("api/Comment/AddNewCommentOnPost")
     fun addNewComment(@Body requestBody: NewCommentRequest) : Call<MessageResponse>
 
 }

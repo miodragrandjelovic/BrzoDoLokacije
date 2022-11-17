@@ -3,22 +3,25 @@ package com.example.pyxiskapri.dtos.response
 import com.google.gson.annotations.SerializedName
 
 data class CommentResponse(
-    @SerializedName("Id")
+    @SerializedName("id")
     var id: Int,
-    @SerializedName("CommenterImage")
+    @SerializedName("profileImage")
     var commenterImage: String,
-    @SerializedName("CommenterUsername")
+    @SerializedName("username")
     var commenterUsername: String,
-    @SerializedName("CommentText")
+    @SerializedName("commentText")
     var commentText: String,
-    @SerializedName("CreationDate")
+    @SerializedName("dateOfCommenting")
     var creationDate: String,
-    @SerializedName("LikeStatus")
-    var likeStatus: Int,
-    @SerializedName("LikeCount")
-    var likeCount: Int,
-    @SerializedName("DislikeCount")
-    var dislikeCount: Int,
-    @SerializedName("ReplyCount")
-    var replyCount: Int
+
+    @SerializedName("likeStatus")
+    var likeStatus: Int = 0,
+    @SerializedName("likeCount")
+    var likeCount: Int = 0,
+    @SerializedName("dislikeCount")
+    var dislikeCount: Int = 0,
+    @SerializedName("replyCount")
+    var replyCount: Int = 0
+
+
 )

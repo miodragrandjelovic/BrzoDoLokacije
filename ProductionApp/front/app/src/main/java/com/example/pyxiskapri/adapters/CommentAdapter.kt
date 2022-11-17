@@ -136,6 +136,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
             // Comment
             tv_replyText.text = reply.commentText
 
+
             // Like / Dislike
             tv_replyLikeCount.text = reply.likeCount.toString()
             tv_replyDislikeCount.text = reply.dislikeCount.toString()

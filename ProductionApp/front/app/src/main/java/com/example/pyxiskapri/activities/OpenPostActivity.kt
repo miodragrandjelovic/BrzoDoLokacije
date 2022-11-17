@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.CommentAdapter
+import com.example.pyxiskapri.dtos.request.NewCommentRequest
 import com.example.pyxiskapri.dtos.response.CommentResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostAdditionalData
@@ -269,6 +270,10 @@ class OpenPostActivity : AppCompatActivity() {
         commentsAdapter = CommentAdapter(arrayListOf(), this)
         elv_comments.setAdapter(commentsAdapter)
 
+        button.setOnClickListener{
+            postNewComment()
+        }
+
         requestComments()
     }
 
@@ -280,6 +285,9 @@ class OpenPostActivity : AppCompatActivity() {
                         commentsAdapter.AddCommentList(response.body()!!)
                     }
 
+                    if(response.code() == Constants.CODE_BAD_REQUEST)
+                        Log.d("ERROR", "Bad Request")
+
                 }
 
                 override fun onFailure(call: Call<ArrayList<CommentResponse>>, t: Throwable) {
@@ -289,6 +297,40 @@ class OpenPostActivity : AppCompatActivity() {
                     )
                 }
 
+            }
+        )
+    }
+
+    private fun postNewComment(){
+
+        if(et_newCommentText.text.toString() == "") {
+            // Obavestenje da mora da unese tekst ili da pocrveni okvir
+            return
+        }
+
+        var newComment = NewCommentRequest(
+            postId = postData.id,
+            commentText = et_newCommentText.text.toString()
+        )
+
+        apiClient.getCommentService(this).addNewComment(newComment)
+            .enqueue(object : Callback<MessageResponse> {
+                override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
+                    if(response.isSuccessful) {
+                        // Uradi nesto
+                    }
+
+                    if(response.code() == Constants.CODE_BAD_REQUEST)
+                        Log.d("ERROR", "Bad Request")
+
+                }
+
+                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                    Log.d(
+                        "OpenPostActivity",
+                        "Nije implementiran onFailure za addNewComment api zahtev!"
+                    )
+                }
             }
         )
     }

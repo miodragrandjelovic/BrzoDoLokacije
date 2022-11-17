@@ -5,6 +5,6 @@ import com.google.gson.annotations.SerializedName
 data class NewCommentRequest(
     @SerializedName("PostId")
     var postId: Int,
-    @SerializedName("CommentText")
+    @SerializedName("Comment")
     var commentText: String
 )
