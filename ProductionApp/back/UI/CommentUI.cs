@@ -31,7 +31,7 @@ namespace PyxisKapriBack.UI
             {
                 Id = comment.Id,
                 CommentText = comment.Text,
-                DateOfCommenting = comment.DateCreated,
+                DateOfCommenting = comment.DateCreated.ToString(),
                 Username = comment.User.Username,
                 ProfileImage = Convert.ToBase64String(comment.User.ProfileImage)
             };
@@ -49,7 +49,7 @@ namespace PyxisKapriBack.UI
                 {
                     Id = comment.Id,
                     CommentText = comment.Text,
-                    DateOfCommenting = comment.DateCreated,
+                    DateOfCommenting = comment.DateCreated.ToString(),
                     Username = comment.User.Username,
                     ProfileImage = Convert.ToBase64String(comment.User.ProfileImage)
                 });
