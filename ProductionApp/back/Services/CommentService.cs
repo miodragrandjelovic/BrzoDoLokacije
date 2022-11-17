@@ -75,12 +75,12 @@ namespace PyxisKapriBack.Services
 
         public Comment GetComment(int commentId)
         {
-            throw new NotImplementedException();
+            return commentDAL.GetComment(commentId);
         }
 
         public List<Comment> GetCommentsPost(int postId)
         {
-            throw new NotImplementedException();
+            return commentDAL.GetCommentsPost(postId);  
         }
     }
 }
