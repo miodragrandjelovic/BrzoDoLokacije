@@ -160,12 +160,6 @@
 
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/lv_replies"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -174,6 +168,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/et_rounded_sharper"
         android:backgroundTint="@color/red"
+        android:clickable="true"
+        android:focusable="true"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingStart="10dp"

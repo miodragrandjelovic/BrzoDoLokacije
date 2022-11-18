@@ -368,17 +368,18 @@
 
                 <ImageView
                     android:id="@+id/iv_userNewCommentAvatar"
-                    android:layout_width="50dp"
-                    android:layout_height="44dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_weight="0"
-                    android:adjustViewBounds="true"
+                    android:adjustViewBounds="false"
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <EditText
                     android:id="@+id/et_newCommentText"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/et_roundedborder"
                     android:ems="10"
@@ -386,18 +387,33 @@
                     android:gravity="start|top"
                     android:hint="Leave your comment.."
                     android:inputType="textMultiLine"
-                    android:minHeight="44dp"
+                    android:minHeight="40dp"
                     android:padding="10dp"
                     android:textColor="@color/white"
                     android:textColorHint="#80FFFFFF"
                     android:textSize="12sp" />
 
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/btn_postComment"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_weight="0"
-                    android:text=">" />
+                    android:background="@drawable/et_rounded"
+                    android:backgroundTint="@color/red"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:id="@+id/iv_sendIcon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="0"
+                        android:foreground="@drawable/send"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
 
@@ -493,7 +509,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
-                tools:listitem="@layout/item_comment"/>
+                tools:listitem="@layout/item_comment"
+                android:groupIndicator="@null"/>
 
 
         </LinearLayout>
