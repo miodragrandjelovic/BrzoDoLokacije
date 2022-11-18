@@ -62,5 +62,10 @@ namespace PyxisKapriBack.UI
             }
             return followingDTO;
         }
+
+        public Response IsFollowed(string followingUsername)
+        {
+            return _iFollowService.IsFollowed(_iUserService.GetLoggedUser(), followingUsername); 
+        }
     }
 }

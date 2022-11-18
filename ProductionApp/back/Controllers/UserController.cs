@@ -118,5 +118,14 @@ namespace PyxisKapriBack.Controllers
             return BadRequest(message);
         }
 
+        [HttpGet("IsFollowed/{username}")]
+        public async Task<IActionResult> IsFollowed(string followingUsername)
+        {
+            var response = followUI.IsFollowed(followingUsername);
+            var message = new { message = response.Message };
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                return Ok(message);
+            return BadRequest(message);
+        }
     }
 }

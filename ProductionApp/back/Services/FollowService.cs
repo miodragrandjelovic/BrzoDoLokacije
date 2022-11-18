@@ -35,5 +35,17 @@ namespace PyxisKapriBack.Services
         {
             return _iFollowDAL.GetFollowing(username); 
         }
+        public Response IsFollowed(string followerUsername, string followingUsername)
+        {
+            try
+            {
+                bool succeed = _iFollowDAL.IsFollowed(followerUsername, followingUsername);
+                return ResponseService.CreateOkResponse("IsFollowed executed succesfully");
+            }
+            catch(Exception e)
+            {
+                return ResponseService.CreateErrorResponse(e.Message); 
+            }
+        }
     }
 }

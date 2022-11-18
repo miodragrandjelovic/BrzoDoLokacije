@@ -10,5 +10,6 @@ namespace PyxisKapriBack.DAL.Interfaces
         bool DeleteFollow(string followerUsername, string followingUsername);
         Follow GetFollow(string followerUsername, string followingUsername, out User follower, out User following);
         Follow GetFollow(string followerUsername, string followingUsername); 
+        bool IsFollowed(string followerUsername, string followingUsername);
     }
 }

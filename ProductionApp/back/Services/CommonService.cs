@@ -19,5 +19,23 @@ namespace PyxisKapriBack.Services
                 Message = statusMessageSuccess
             };
         }
+
+        public static Response CreateErrorResponse(string statusMessage)
+        {
+            return new Response
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = statusMessage
+            };
+        }
+
+        public static Response CreateOkResponse(string statusMessage)
+        {
+            return new Response
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = statusMessage
+            };
+        }
     }
 }

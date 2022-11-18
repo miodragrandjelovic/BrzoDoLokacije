@@ -112,7 +112,6 @@ namespace PyxisKapriBack.DAL
                                                    .Include(follow => follow.Follower)
                                                    .Select(follow => follow.Follower)
                                                    .ToList();
-           // return _context.Follow.Where(follow => follow.Following.Username.Equals(username)).ToList();
         }
 
         // trazimo one naloge koji su zapraceni od ovog korisnika
@@ -125,7 +124,24 @@ namespace PyxisKapriBack.DAL
                                                    .Include(follow => follow.Following)
                                                    .Select(follow => follow.Following)
                                                    .ToList();
-            //return _context.Follow.Where(follow => follow.Follower.Username.Equals(username)).ToList();
+        }
+
+        public bool IsFollowed(string followerUsername, string followingUsername)
+        {
+            User following = _iUserDAL.GetUser(followingUsername);
+            User follower = _iUserDAL.GetUser(followerUsername);
+
+            if (following == null)
+                throw new Exception("Following username is not found");
+            if (follower == null)
+                throw new Exception("Follower username is not found");
+
+            Follow follow = _context.Follow.Where(follow => (follow.Follower.Id == follower.Id) && 
+                                                            (follow.Following.Id == following.Id))
+                                           .FirstOrDefault();
+            if (follow == null)
+                return false;
+            return true; 
         }
     }
 }

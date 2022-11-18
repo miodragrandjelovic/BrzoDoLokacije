@@ -8,6 +8,7 @@ namespace PyxisKapriBack.Services.Interfaces
         public List<User> GetFollowers(string username);
         public List<User> GetFollowing(string username);
         public Response DeleteFollow(string usernameFollower, string usernameFollowing);
-        public Response AddFollow(string usernameFollower, string usernameFollowing);  
+        public Response AddFollow(string usernameFollower, string usernameFollowing);
+        public Response IsFollowed(string followerUsername, string followingUsername);
     }
 }
