@@ -65,6 +65,7 @@ namespace PyxisKapriBack.Services
             }
             
             var convertedImage = FileService.ConvertImageToByte(FileService.GetDefaultProfileImage());
+
             encryptionManager.EncryptPassword(request.Password, out passwordHash, out passwordKey);
             User newUser = new User
             {

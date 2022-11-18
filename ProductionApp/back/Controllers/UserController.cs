@@ -14,10 +14,13 @@ namespace PyxisKapriBack.Controllers
     {
         private readonly IUserUI userUI;
         private readonly IFollowUI followUI;
-        public UserController(IUserUI userUI, IFollowUI followUI)
+        private readonly IFileService fileService;
+
+        public UserController(IUserUI userUI, IFollowUI followUI, IFileService fileService)
         {
             this.userUI   = userUI;
             this.followUI = followUI;
+            this.fileService = fileService;
         }
 
         [Authorize(Roles ="Admin")]
@@ -126,6 +129,40 @@ namespace PyxisKapriBack.Controllers
             if (response.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(message);
             return BadRequest(message);
+        }
+
+        [HttpPost("Test")]
+        public async Task<IActionResult> Test(IFormFile image)
+        {
+            string path = String.Empty;
+            var user = userUI.GetLoggedUser();
+            if (fileService.CheckIfFolderExists(user))
+                fileService.AddFile(user, image);
+            else
+            {
+                fileService.CreateFolder(user, out path);
+                fileService.AddFile(user, image);
+            }
+
+            return Ok("Proslo");
+        }
+
+        [HttpGet("GetFile")]
+        public async Task<IActionResult> GetFile()
+        {
+            var user = userUI.GetLoggedUser();
+            var file = fileService.GetFile(user, "profileImage.jpg");
+            if (file == null)
+                return BadRequest();
+
+            return Ok(file);
+        }
+
+        [HttpPost("GetFile")]
+        public async Task<IActionResult> GetFile(IFormFile image)
+        {
+           
+            return Ok(image);
         }
     }
 }
