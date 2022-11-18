@@ -118,7 +118,7 @@ namespace PyxisKapriBack.Controllers
             return BadRequest(message);
         }
 
-        [HttpGet("IsFollowed/{username}")]
+        [HttpGet("IsFollowed/{followingUsername}")]
         public async Task<IActionResult> IsFollowed(string followingUsername)
         {
             var response = followUI.IsFollowed(followingUsername);
