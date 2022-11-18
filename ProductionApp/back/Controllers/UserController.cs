@@ -98,10 +98,10 @@ namespace PyxisKapriBack.Controllers
         }
 
         [HttpPost("AddFollow")]
-        public async Task<IActionResult> AddFollow(string followingUsername)
+        public async Task<IActionResult> AddFollow(FollowUsernameDTO followingUsername)
         {   //izmena da vraca response
-            var answer = followUI.AddFollow(followingUsername);
-            var message = answer.Message;
+            var answer = followUI.AddFollow(followingUsername.Username);
+            var message = new { message = answer.Message };
 
             if (answer.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(message);

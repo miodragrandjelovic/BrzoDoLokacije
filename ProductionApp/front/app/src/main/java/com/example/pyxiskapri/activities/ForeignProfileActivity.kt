@@ -8,23 +8,23 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.adapters.gvForeignPostAdapter
-import com.example.pyxiskapri.dtos.request.ForeignUserRequest
+import com.example.pyxiskapri.dtos.request.AddFollowRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
+import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
+import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_foreign_profile.*
-import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.activity_user_profile.fcv_drawerNavUserProfile
-import kotlinx.android.synthetic.main.activity_user_profile.tv_name1
-import kotlinx.android.synthetic.main.activity_user_profile.tv_name2
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class ForeignProfileActivity : AppCompatActivity() {
 
@@ -60,6 +60,7 @@ class ForeignProfileActivity : AppCompatActivity() {
         setupGetUserPosts()
 
 
+
         back_f.setOnClickListener()
         {
 
@@ -72,7 +73,90 @@ class ForeignProfileActivity : AppCompatActivity() {
 
 
 
+        ib_follow.setOnClickListener(){
+            followProfile()
+        }
+
+
+        ib_following.setOnClickListener(){
+            unfollowProfile()
+        }
+
+
+
     }
+
+
+    private fun followProfile() {
+
+
+        val context:Context=this
+
+        val addFollowRequest= AddFollowRequest(
+            username = tv_f_username.text.toString()
+        )
+
+        apiClient.getUserService(context).follow(addFollowRequest).enqueue(object : Callback<MessageResponse>{
+            override fun onResponse(
+                call: Call<MessageResponse>,
+                response: Response<MessageResponse>
+            ) {
+
+                if(response.isSuccessful)
+                {
+                    ib_follow.isGone=true
+                    ib_following.isGone=false
+                }
+                else
+                {
+                    Toast.makeText(context,"Something went wrong, try again.", Toast.LENGTH_LONG).show()
+
+                }
+
+            }
+
+            override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+
+                Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
+            }
+
+        })
+
+    }
+
+
+    private fun unfollowProfile() {
+
+        val context:Context=this
+        apiClient.getUserService(context).unfollow(tv_f_username.text.toString()).enqueue(object : Callback<MessageResponse>{
+            override fun onResponse(
+                call: Call<MessageResponse>,
+                response: Response<MessageResponse>
+            ) {
+
+                if(response.isSuccessful)
+                {
+                    ib_follow.isGone=false
+                    ib_following.isGone=true
+                }
+
+                else
+                {
+                    Toast.makeText(context,"Something went wrong, try again.", Toast.LENGTH_LONG).show()
+
+                }
+
+            }
+
+            override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
+            }
+
+        })
+
+
+    }
+
 
     private fun getForeignUser() {
 
@@ -98,6 +182,37 @@ class ForeignProfileActivity : AppCompatActivity() {
                         var imageData = android.util.Base64.decode(picture, android.util.Base64.DEFAULT)
                         f_imageViewReal.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
                     }
+
+
+                    /*
+
+                    val addFollowRequest= AddFollowRequest(
+                        username = tv_f_username.text.toString()
+                    )
+
+
+                    apiClient.getUserService(context).getFollow(addFollowRequest).enqueue(object : Callback<MessageResponse>{
+                        override fun onResponse(
+                            call: Call<MessageResponse>,
+                            response: Response<MessageResponse>
+                        ) {
+                            if(response.isSuccessful)
+                            {
+                                ib_follow.isGone=false
+                                ib_following.isGone=true
+                            }
+                            else
+                            {
+                                ib_follow.isGone=true
+                                ib_following.isGone=false
+                            }
+                        }
+
+                        override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                            Toast.makeText(context,"Something went wrong, try again.", Toast.LENGTH_LONG).show()
+                        }
+
+                    })*/
 
                 }
             }

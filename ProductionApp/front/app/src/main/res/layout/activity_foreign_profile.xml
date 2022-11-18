@@ -143,8 +143,21 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:background="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/follow" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/add" />
+
+
+                <ImageButton
+                    android:id="@+id/ib_following"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@null"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/added"
+                    android:visibility="gone"
+                    />
 
 
                 <ImageButton

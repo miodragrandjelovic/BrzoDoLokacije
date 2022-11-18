@@ -7,6 +7,8 @@ import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.LoginResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
+import com.google.gson.JsonObject
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -28,6 +30,17 @@ interface UserService {
 
     @GET("api/User/GetUserByUsername/{username}")
     fun getForeignUser(@Path(value = "username") username: String) : Call<GetUserResponse>
+
+    @POST("api/User/AddFollow")
+    fun follow(@Body requestBody: AddFollowRequest): Call<MessageResponse>
+
+    @DELETE("api/User/RemoveFollow/{followingUsername}")
+    fun unfollow(@Path(value = "followingUsername") followingUsername: String): Call<MessageResponse>
+
+    @POST("api/User/getFollow")
+    fun getFollow(@Body requestBody: AddFollowRequest): Call<MessageResponse>
+
+
 
 
 }
