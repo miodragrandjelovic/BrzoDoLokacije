@@ -40,7 +40,7 @@ namespace PyxisKapriBack.Services
             try
             {
                 bool succeed = _iFollowDAL.IsFollowed(followerUsername, followingUsername);
-                return ResponseService.CreateOkResponse("IsFollowed executed succesfully");
+                return ResponseService.CreateOkResponse(succeed.ToString());
             }
             catch(Exception e)
             {

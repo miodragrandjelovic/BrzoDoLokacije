@@ -24,7 +24,7 @@ namespace PyxisKapriBack.Services
         {
             return new Response
             {
-                StatusCode = StatusCodes.Status200OK,
+                StatusCode = StatusCodes.Status500InternalServerError,
                 Message = statusMessage
             };
         }

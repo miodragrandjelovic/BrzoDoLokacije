@@ -128,16 +128,11 @@ namespace PyxisKapriBack.DAL
 
         public bool IsFollowed(string followerUsername, string followingUsername)
         {
-            User following = _iUserDAL.GetUser(followingUsername);
-            User follower = _iUserDAL.GetUser(followerUsername);
+            if (followerUsername.Equals(followingUsername))
+                throw new Exception("Same follower and following username!");
 
-            if (following == null)
-                throw new Exception("Following username is not found");
-            if (follower == null)
-                throw new Exception("Follower username is not found");
-
-            Follow follow = _context.Follow.Where(follow => (follow.Follower.Id == follower.Id) && 
-                                                            (follow.Following.Id == following.Id))
+            Follow follow = _context.Follow.Where(follow => (follow.Follower.Username.Equals(followerUsername)) &&
+                                                            (follow.Following.Username.Equals(followingUsername)))
                                            .FirstOrDefault();
             if (follow == null)
                 return false;
