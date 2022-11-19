@@ -25,15 +25,15 @@ namespace PyxisKapriBack.UI
             return _iFollowService.DeleteFollow(_iUserService.GetLoggedUser(), followingUsername);
         }
 
-        public List<FollowDTO>? GetFollowers()
+        public List<UserShortDTO>? GetFollowers()
         {
             var followers = _iFollowService.GetFollowers(_iUserService.GetLoggedUser());
 
-            var followersDTO = new List<FollowDTO>();
+            var followersDTO = new List<UserShortDTO>();
 
             foreach (var follow in followers)
             {
-                followersDTO.Add(new FollowDTO
+                followersDTO.Add(new UserShortDTO
                 {
                     ProfileImage = follow.ProfileImage == null ? string.Empty : Convert.ToBase64String(follow.ProfileImage),
                     Username = follow.Username,
@@ -44,15 +44,15 @@ namespace PyxisKapriBack.UI
             return followersDTO;
         }
 
-        public List<FollowDTO>? GetFollowing()
+        public List<UserShortDTO>? GetFollowing()
         {
             var followings = _iFollowService.GetFollowing(_iUserService.GetLoggedUser());
 
-            var followingDTO = new List<FollowDTO>();
+            var followingDTO = new List<UserShortDTO>();
 
             foreach (var follow in followings)
             {
-                followingDTO.Add(new FollowDTO
+                followingDTO.Add(new UserShortDTO
                 {
                     ProfileImage = follow.ProfileImage == null ? string.Empty : Convert.ToBase64String(follow.ProfileImage),
                     Username = follow.Username,

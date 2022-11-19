@@ -7,10 +7,12 @@ namespace PyxisKapriBack.Services
     public class CommentDislikeService : ICommentDislikeService
     {
         private readonly ICommentDislikeDAL _iCommentDislikeDAL;
+        private readonly IUserService userService;
         
-        public CommentDislikeService(ICommentDislikeDAL commentDislikeDAL)
+        public CommentDislikeService(ICommentDislikeDAL commentDislikeDAL, IUserService userService)
         {
             _iCommentDislikeDAL = commentDislikeDAL;
+            this.userService = userService; 
         }
 
         public Response AddDislikeOnComment(CommentDislike dislike)
@@ -26,11 +28,11 @@ namespace PyxisKapriBack.Services
             }
         }
 
-        public Response DeleteDislikeFromComment(int dislikeID)
+        public Response DeleteDislikeFromComment(int commentID)
         {
             try
             {
-                bool succeed = _iCommentDislikeDAL.DeleteDislikeFromComment(dislikeID);
+                bool succeed = _iCommentDislikeDAL.DeleteDislikeFromComment(userService.GetLoggedUser(), commentID);
                 return ResponseService.CreateOkResponse(succeed.ToString());
             }
             catch (Exception e)
@@ -54,11 +56,11 @@ namespace PyxisKapriBack.Services
             return _iCommentDislikeDAL.GetUsersWhoDisliked(commentID); 
         }
 
-        public Response IsCommentDisliked(int commentID, string username)
+        public Response IsCommentDisliked(int commentID)
         {
             try
             {
-                bool succeed = _iCommentDislikeDAL.IsCommentDisliked(commentID, username);
+                bool succeed = _iCommentDislikeDAL.IsCommentDisliked(userService.GetLoggedUser(), commentID);
                 return ResponseService.CreateOkResponse(succeed.ToString());
             }
             catch (Exception e)

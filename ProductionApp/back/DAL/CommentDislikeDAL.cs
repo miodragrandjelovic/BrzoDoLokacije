@@ -23,12 +23,18 @@ namespace PyxisKapriBack.DAL
             return true;
         }
 
-        public bool DeleteDislikeFromComment(int dislikeID)
+        public bool DeleteDislikeFromComment(string username, int commentID)
         {
-            CommentDislike dislike = GetCommentDislike(dislikeID); 
-            if (dislike == null)
-                throw new Exception(Constants.Constants.resNullValue);
+            User user = _iUserDAL.GetUser(username);
+            Comment comment = _iCommentDAL.GetComment(commentID);
 
+            if (user == null)
+                throw new Exception(Constants.Constants.resNoFoundUser);
+
+            if (_iCommentDAL.GetComment(commentID) == null)
+                throw new Exception(Constants.Constants.resNoFoundComment);
+
+            CommentDislike dislike = GetCommentDislike(username, commentID);
             _context.CommentDislikes.Remove(dislike);
             return true;
         }
@@ -51,7 +57,7 @@ namespace PyxisKapriBack.DAL
                                            .ToList();
         }
 
-        public bool IsCommentDisliked(int commentID, string username)
+        public bool IsCommentDisliked(string username, int commentID)
         {
             if (_iCommentDAL.GetComment(commentID) == null)
                 throw new Exception(Constants.Constants.resNoFoundComment);
@@ -66,5 +72,12 @@ namespace PyxisKapriBack.DAL
                 return false;
             return true;
         }
+        public CommentDislike GetCommentDislike(string username, int commentID)
+        {
+            CommentDislike dislike = _context.CommentDislikes.Where(dislike => (dislike.User.Username.Equals(username)) &&
+                                                           (dislike.CommentId == commentID)).FirstOrDefault();
+            return dislike;
+        }
+
     }
 }

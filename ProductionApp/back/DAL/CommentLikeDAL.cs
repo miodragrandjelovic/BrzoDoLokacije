@@ -25,13 +25,18 @@ namespace PyxisKapriBack.DAL
             return true; 
         }
 
-        public bool DeleteLikeFromComment(int likeID)
+        public bool DeleteLikeFromComment(string username, int commentID)
         {
-            CommentLike like = GetCommentLike(likeID);
-            if (like == null)
-                throw new Exception(Constants.Constants.resNullValue);
+            User user = _iUserDAL.GetUser(username); 
+            Comment comment = _iCommentDAL.GetComment(commentID);
 
-            _context.CommentLikes.Remove(like);
+            if (user == null)
+                throw new Exception(Constants.Constants.resNoFoundUser);
+
+            if (_iCommentDAL.GetComment(commentID) == null)
+                throw new Exception(Constants.Constants.resNoFoundComment);
+
+            CommentLike like = GetCommentLike(username, commentID);
             return true;
         }
 
@@ -39,7 +44,12 @@ namespace PyxisKapriBack.DAL
         {
             return _context.CommentLikes.Where(like => like.Id == likeID).FirstOrDefault();
         }
-
+        public CommentLike GetCommentLike(string username, int commentID)
+        {
+            CommentLike like = _context.CommentLikes.Where(like => (like.User.Username.Equals(username)) &&
+                                                           (like.CommentId == commentID)).FirstOrDefault();
+            return like; 
+        }
         public List<CommentLike> GetLikesOfComment(int commentID)
         {
             return _context.CommentLikes.Where(like => like.CommentId == commentID).ToList(); 
@@ -53,7 +63,7 @@ namespace PyxisKapriBack.DAL
                                            .ToList();
         }
 
-        public bool IsCommentLiked(int commentID, string username)
+        public bool IsCommentLiked(string username, int commentID)
         {
             if (_iCommentDAL.GetComment(commentID) == null)
                 throw new Exception(Constants.Constants.resNoFoundComment);
@@ -61,8 +71,7 @@ namespace PyxisKapriBack.DAL
             if (_iUserDAL.GetUser(username) == null)
                 throw new Exception(Constants.Constants.resNoFoundUser);
 
-            CommentLike like = _context.CommentLikes.Where(like => (like.User.Username.Equals(username)) &&
-                                                           (like.CommentId == commentID)).FirstOrDefault();
+            CommentLike like = GetCommentLike(username, commentID);
 
             if (like == null)
                 return false;

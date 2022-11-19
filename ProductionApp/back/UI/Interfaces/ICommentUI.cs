@@ -10,5 +10,12 @@ namespace PyxisKapriBack.UI.Interfaces
 
         public CommentDTO GetComment(int commentId);
         public List<CommentDTO> GetCommentsPost(int postId);
+        public Response AddLike(int commentID);
+        public Response DeleteLike(int commentID);
+        public Response IsCommentLiked(int commentID);
+        public Response IsCommentDisliked(int commentID); 
+        public List<UserShortDTO> GetUsersWhoLiked(int commentID);
+        public List<UserShortDTO> GetUsersWhoDisliked(int commentID); 
+
     }
 }

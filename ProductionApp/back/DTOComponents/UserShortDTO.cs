@@ -1,6 +1,6 @@
 ﻿namespace PyxisKapriBack.DTOComponents
 {
-    public class FollowDTO
+    public class UserShortDTO
     {
         public string ProfileImage { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
