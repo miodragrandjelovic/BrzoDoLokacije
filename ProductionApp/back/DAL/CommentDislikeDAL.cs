@@ -6,11 +6,13 @@ namespace PyxisKapriBack.DAL
     public class CommentDislikeDAL : ICommentDislikeDAL
     {
         private Database _context;
-        private CommentDAL _commentDAL; 
-
-        public CommentDislikeDAL(Database _context)
+        private ICommentDAL _iCommentDAL;
+        private IUserDAL _iUserDAL; 
+        public CommentDislikeDAL(Database _context, ICommentDAL _iCommentDAL, IUserDAL _iUserDAL)
         {
             this._context = _context;
+            this._iCommentDAL = _iCommentDAL;
+            this._iUserDAL = _iUserDAL;
         }
         public bool AddDislikeOnComment(CommentDislike dislike)
         {
@@ -21,13 +23,19 @@ namespace PyxisKapriBack.DAL
             return true;
         }
 
-        public bool DeleteDislikeFromComment(CommentDislike dislike)
+        public bool DeleteDislikeFromComment(int dislikeID)
         {
+            CommentDislike dislike = GetCommentDislike(dislikeID); 
             if (dislike == null)
                 throw new Exception(Constants.Constants.resNullValue);
 
             _context.CommentDislikes.Remove(dislike);
             return true;
+        }
+
+        public CommentDislike GetCommentDislike(int dislikeID)
+        {
+            return _context.CommentDislikes.Where(dislike => dislike.Id == dislikeID).FirstOrDefault(); 
         }
 
         public List<CommentDislike> GetDislikesOfComment(int commentID)
@@ -45,6 +53,12 @@ namespace PyxisKapriBack.DAL
 
         public bool IsCommentDisliked(int commentID, string username)
         {
+            if (_iCommentDAL.GetComment(commentID) == null)
+                throw new Exception(Constants.Constants.resNoFoundComment);
+
+            if (_iUserDAL.GetUser(username) == null)
+                throw new Exception(Constants.Constants.resNoFoundUser); 
+
             CommentDislike dislike = _context.CommentDislikes.Where(dislike => (dislike.User.Username.Equals(username)) &&
                                                            (dislike.CommentId == commentID)).FirstOrDefault();
 
