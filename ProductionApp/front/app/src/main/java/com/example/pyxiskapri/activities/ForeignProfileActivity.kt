@@ -184,35 +184,39 @@ class ForeignProfileActivity : AppCompatActivity() {
                     }
 
 
-                    /*
-
-                    val addFollowRequest= AddFollowRequest(
-                        username = tv_f_username.text.toString()
-                    )
-
-
-                    apiClient.getUserService(context).getFollow(addFollowRequest).enqueue(object : Callback<MessageResponse>{
+                    apiClient.getUserService(context).getFollow(tv_f_username.text.toString()).enqueue(object : Callback<MessageResponse>{
                         override fun onResponse(
                             call: Call<MessageResponse>,
                             response: Response<MessageResponse>
                         ) {
+                            
                             if(response.isSuccessful)
                             {
-                                ib_follow.isGone=false
-                                ib_following.isGone=true
+
+                                if(response.body()!!.message=="True")
+                                {
+                                    ib_follow.isGone=true
+                                    ib_following.isGone=false
+                                }
+
+                                else
+                                {
+
+                                    ib_follow.isGone=false
+                                    ib_following.isGone=true
+                                }
+
                             }
-                            else
-                            {
-                                ib_follow.isGone=true
-                                ib_following.isGone=false
-                            }
+
                         }
 
-                        override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                        override fun onFailure(call: Call<MessageResponse>, t: Throwable)
+                        {
+
                             Toast.makeText(context,"Something went wrong, try again.", Toast.LENGTH_LONG).show()
                         }
 
-                    })*/
+                    })
 
                 }
             }

@@ -37,8 +37,8 @@ interface UserService {
     @DELETE("api/User/RemoveFollow/{followingUsername}")
     fun unfollow(@Path(value = "followingUsername") followingUsername: String): Call<MessageResponse>
 
-    @POST("api/User/getFollow")
-    fun getFollow(@Body requestBody: AddFollowRequest): Call<MessageResponse>
+    @GET("api/User/IsFollowed/{followingUsername}")
+    fun getFollow(@Path(value = "followingUsername") followingUsername: String): Call<MessageResponse>
 
 
 
