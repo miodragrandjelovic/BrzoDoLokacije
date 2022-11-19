@@ -40,14 +40,16 @@ namespace PyxisKapriBack.Services
             return Directory.GetFiles(Directory.GetCurrentDirectory() + "" + Constants.Constants.IMAGE_PATH).FirstOrDefault();
         }
 
+
+
         public byte[]? ConvertImageToByte(string image)
         {
             return System.IO.File.ReadAllBytes(image);
         }
 
-        public bool CreateFolder(string folderName,out string folderPath)
+        public bool CreateFolder(string folderName)
         {
-            folderPath = Path.Combine(Directory.GetCurrentDirectory(), ROOT_FOLDER, folderName);
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), ROOT_FOLDER, folderName);
 
             Directory.CreateDirectory(folderPath);
             return true;
@@ -92,6 +94,19 @@ namespace PyxisKapriBack.Services
                 
             }
             return null;
+        }
+
+        public byte[] GetUserProfileImage(string topFolder)
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(),ROOT_FOLDER ,topFolder);
+
+            var profileImagePath = Directory.GetFiles(path,"profileImage.jpg").FirstOrDefault();
+            if(profileImagePath != null)
+            {
+                return ConvertImageToByte(profileImagePath);
+            }
+
+            return ConvertImageToByte(GetDefaultProfileImage());
         }
     }
 }

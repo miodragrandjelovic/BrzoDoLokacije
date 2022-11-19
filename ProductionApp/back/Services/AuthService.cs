@@ -64,7 +64,10 @@ namespace PyxisKapriBack.Services
                 return response;
             }
             
+
             var convertedImage = FileService.ConvertImageToByte(FileService.GetDefaultProfileImage());
+            
+
 
             encryptionManager.EncryptPassword(request.Password, out passwordHash, out passwordKey);
             User newUser = new User
@@ -80,11 +83,22 @@ namespace PyxisKapriBack.Services
                 CountryId = Constants.ModelConstants.DEFAULT
 
             };
-            userService.AddNewUser(newUser);
+            var answer = userService.AddNewUser(newUser);
+            if (answer.StatusCode.Equals(StatusCodes.Status200OK))
+            {
+                FileService.CreateFolder(request.Username);
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Message = "User added successfully!"
+                };
+            }
+
+
             return new Response
             {
-                StatusCode = StatusCodes.Status200OK,
-                Message = "User added successfully!"
+                StatusCode = StatusCodes.Status400BadRequest,
+                Message = "Error while adding user!"
             };
         }
     }
