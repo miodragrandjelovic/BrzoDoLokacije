@@ -58,6 +58,68 @@ namespace PyxisKapriBack.Controllers
             return BadRequest(new { message = answer.Message });
         }
 
+        [HttpPut("SetLike/{commentId}")]
+        public async Task<IActionResult> SetLikeOnComment(int commentId)
+        {
+            var response = commentUI.AddLike(commentId);
+            var message = new { message = response.Message };
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                return Ok(message);
 
+            return BadRequest(message);
+
+        }
+
+        [HttpPut("SetDislike/{commentId}")]
+        public async Task<IActionResult> SetDislikeOnComment(int commentId)
+        {
+            var response = commentUI.AddDislike(commentId);
+            var message = new { message = response.Message };
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                return Ok(message);
+
+            return BadRequest(message);
+
+        }
+
+        [HttpDelete("DeleteLikeFromComment/{id}")]
+        public async Task<IActionResult> DeleteLikeFromComment(int commentId)
+        {
+            var answer = commentUI.DeleteLike(commentId);
+            if (answer.Message.Equals(StatusCodes.Status200OK))
+                return Ok(new { message = answer.Message });
+
+            return BadRequest(new { message = answer.Message });
+        }
+
+        [HttpDelete("DeleteDislikeFromComment/{id}")]
+        public async Task<IActionResult> DeleteDislikeFromComment(int commentId)
+        {
+            var answer = commentUI.DeleteDislike(commentId);
+            if (answer.Message.Equals(StatusCodes.Status200OK))
+                return Ok(new { message = answer.Message });
+
+            return BadRequest(new { message = answer.Message });
+        }
+
+        [HttpGet("GetUsersWhoLikedComment/{commentId}")]
+        public async Task<IActionResult> GetUsersWhoLikedComment(int commentId)
+        {
+            var users = commentUI.GetUsersWhoLiked(commentId);
+            if (users == null)
+                return BadRequest();
+
+            return Ok(users);
+        }
+
+        [HttpGet("GetUsersWhoDislikedComment/{commentId}")]
+        public async Task<IActionResult> GetUsersWhoDislikedComment(int commentId)
+        {
+            var users = commentUI.GetUsersWhoDisliked(commentId);
+            if (users == null)
+                return BadRequest();
+
+            return Ok(users);
+        }
     }
 }

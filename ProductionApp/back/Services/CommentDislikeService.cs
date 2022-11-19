@@ -8,18 +8,25 @@ namespace PyxisKapriBack.Services
     {
         private readonly ICommentDislikeDAL _iCommentDislikeDAL;
         private readonly IUserService userService;
+        private readonly ICommentService commentService;
         
-        public CommentDislikeService(ICommentDislikeDAL commentDislikeDAL, IUserService userService)
+        public CommentDislikeService(ICommentDislikeDAL commentDislikeDAL, IUserService userService, ICommentService commentService)
         {
             _iCommentDislikeDAL = commentDislikeDAL;
             this.userService = userService; 
+            this.commentService = commentService;
         }
 
-        public Response AddDislikeOnComment(CommentDislike dislike)
+        public Response AddDislikeOnComment(int commentID)
         {
             try
             {
-                bool succeed = _iCommentDislikeDAL.AddDislikeOnComment(dislike);
+
+                bool succeed = _iCommentDislikeDAL.AddDislikeOnComment(new CommentDislike
+                {
+                    User = userService.GetUser(userService.GetLoggedUser()),
+                    Comment = commentService.GetComment(commentID)
+                });
                 return ResponseService.CreateOkResponse(succeed.ToString()); 
             }
             catch(Exception e)

@@ -19,8 +19,7 @@ namespace PyxisKapriBack.DAL
         public bool AddLikeOnComment(CommentLike like)
         {
             if (like == null)
-                throw new Exception(Constants.Constants.resNullValue);
-
+                throw new Exception(Constants.Constants.resNullValue); 
             _context.CommentLikes.Add(like);
             return true; 
         }

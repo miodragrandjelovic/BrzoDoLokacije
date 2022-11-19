@@ -24,6 +24,11 @@ namespace PyxisKapriBack.UI
             return commentService.AddComment(comment);
         }
 
+        public Response AddDislike(int commentID)
+        {
+            return commentDislikeService.AddDislikeOnComment(commentID); 
+        }
+
         public Response AddLike(int commentID)
         {
 
@@ -33,6 +38,11 @@ namespace PyxisKapriBack.UI
         public Response DeleteComment(int commentId)
         {
             return commentService.DeleteComment(commentId);
+        }
+
+        public Response DeleteDislike(int commentID)
+        {
+            return commentDislikeService.DeleteDislikeFromComment(commentID);
         }
 
         public Response DeleteLike(int commentID)
