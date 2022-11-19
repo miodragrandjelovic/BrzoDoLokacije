@@ -86,11 +86,14 @@ builder.Services.AddSwaggerGen(options => {
     builder.Services.AddTransient<ILocationDAL, LocationDAL>();
     builder.Services.AddTransient<ICommentDAL, CommentDAL>();
     builder.Services.AddTransient<IDislikeDAL, DislikeDAL>();
-    builder.Services.AddTransient<IFollowDAL, FollowDAL>(); 
-    #endregion
+    builder.Services.AddTransient<IFollowDAL, FollowDAL>();
 
-    #region 'Services - BL Dependencies'
-    builder.Services.AddTransient<IAuthService, AuthService>();
+    builder.Services.AddTransient<ICommentLikeDAL, CommentLikeDAL>();
+    builder.Services.AddTransient<ICommentDislikeDAL, CommentDislikeDAL>();
+#endregion
+
+#region 'Services - BL Dependencies'
+builder.Services.AddTransient<IAuthService, AuthService>();
     builder.Services.AddTransient<IFileService, FileService>();
     builder.Services.AddTransient<IUserService, UserService>();
     builder.Services.AddTransient<IPostService, PostService>();

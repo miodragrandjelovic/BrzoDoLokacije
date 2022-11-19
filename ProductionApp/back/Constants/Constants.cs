@@ -32,6 +32,7 @@
         public const string resNoFoundCity     = "Grad nije pronađen";
         public const string resNoFoundLocation = "Lokacija nije pronađena";
         public const string resDeleteFailed    = "Neuspešno brisanje {0}";
+        public const string resNullValue       = "Poslata je NULL vrednost za argument"; 
         #endregion
 
         public const int TAKE_ELEMENT = 5; 
