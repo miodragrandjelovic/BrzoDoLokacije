@@ -8,10 +8,12 @@ namespace PyxisKapriBack.UI
     public class UserUI : IUserUI
     {
         private readonly IUserService userService;
+        private readonly IFileService fileService;
 
-        public UserUI(IUserService userService)
+        public UserUI(IUserService userService,IFileService fileService)
         {
             this.userService = userService;
+            this.fileService = fileService;
         }
         public List<Role> GetAvailableRolesForUser(string user)
         {

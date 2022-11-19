@@ -14,10 +14,13 @@ namespace PyxisKapriBack.Services.Interfaces
         public byte[]? ConvertImageToByte(string image);
 
         public bool CheckIfFolderExists(string folderPath);
-        public bool CreateFolder(string folderName, out string folderPath);
+        public bool CreateFolder(string folderName);
 
         public void AddFile(string topFolder, IFormFile file);
 
         public IFormFile GetFile(string topFolder, string fileName);
+
+        public byte[] GetUserProfileImage(string topFolder);
+ 
     }
 }

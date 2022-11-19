@@ -140,7 +140,7 @@ namespace PyxisKapriBack.Controllers
                 fileService.AddFile(user, image);
             else
             {
-                fileService.CreateFolder(user, out path);
+                fileService.CreateFolder(user);
                 fileService.AddFile(user, image);
             }
 
@@ -163,6 +163,14 @@ namespace PyxisKapriBack.Controllers
         {
            
             return Ok(image);
+        }
+
+        [HttpGet("GetProfileImage")]
+        public async Task<IActionResult> GetProfileImage()
+        {
+            var image = fileService.GetUserProfileImage(userUI.GetLoggedUser());
+
+            return Ok(Convert.ToBase64String(image));
         }
     }
 }
