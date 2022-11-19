@@ -6,10 +6,14 @@ namespace PyxisKapriBack.DAL
     public class CommentLikeDAL : ICommentLikeDAL
     {
         private Database _context;
+        private ICommentDAL _iCommentDAL;
+        private IUserDAL _iUserDAL;
 
-        public CommentLikeDAL(Database _context)
+        public CommentLikeDAL(Database _context, ICommentDAL _iCommentDAL, IUserDAL _iUserDAL)
         {
             this._context = _context;
+            this._iCommentDAL = _iCommentDAL;
+            this._iUserDAL = _iUserDAL;
         }
 
         public bool AddLikeOnComment(CommentLike like)
@@ -21,13 +25,19 @@ namespace PyxisKapriBack.DAL
             return true; 
         }
 
-        public bool DeleteLikeFromComment(CommentLike like)
+        public bool DeleteLikeFromComment(int likeID)
         {
+            CommentLike like = GetCommentLike(likeID);
             if (like == null)
                 throw new Exception(Constants.Constants.resNullValue);
 
             _context.CommentLikes.Remove(like);
             return true;
+        }
+
+        public CommentLike GetCommentLike(int likeID)
+        {
+            return _context.CommentLikes.Where(like => like.Id == likeID).FirstOrDefault();
         }
 
         public List<CommentLike> GetLikesOfComment(int commentID)
@@ -45,12 +55,18 @@ namespace PyxisKapriBack.DAL
 
         public bool IsCommentLiked(int commentID, string username)
         {
-            CommentLike like = _context.CommentLikes.Where(like => (like.User.Username.Equals(username)) && 
+            if (_iCommentDAL.GetComment(commentID) == null)
+                throw new Exception(Constants.Constants.resNoFoundComment);
+
+            if (_iUserDAL.GetUser(username) == null)
+                throw new Exception(Constants.Constants.resNoFoundUser);
+
+            CommentLike like = _context.CommentLikes.Where(like => (like.User.Username.Equals(username)) &&
                                                            (like.CommentId == commentID)).FirstOrDefault();
 
             if (like == null)
                 return false;
-            return true; 
+            return true;
         }
     }
 }
