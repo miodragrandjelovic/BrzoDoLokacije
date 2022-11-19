@@ -18,6 +18,8 @@
         public List<Like>? Likes { get; set; }
         public List<Dislike>? Dislikes { get; set; }
         public List<Comment>? Comments { get; set; }
+        public List<CommentLike>? CommentLikes { get; set; }
+        public List<CommentDislike>? CommentDislikes { get; set; }
 
         public List<Follow>? Followers { get; set; } // lista korisnika koji prate ovog korisnika 
         /*
