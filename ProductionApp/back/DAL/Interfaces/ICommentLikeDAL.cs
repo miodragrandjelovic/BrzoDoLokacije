@@ -8,5 +8,6 @@ namespace PyxisKapriBack.DAL.Interfaces
         public bool AddLikeOnComment(CommentLike like); 
         public bool DeleteLikeFromComment(CommentLike like);
         public List<CommentLike> GetLikesOfComment(int commentID);
+        public List<User> GetUsersWhoLiked(int commentID);
     }
 }

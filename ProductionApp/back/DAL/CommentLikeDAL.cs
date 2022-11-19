@@ -35,6 +35,14 @@ namespace PyxisKapriBack.DAL
             return _context.CommentLikes.Where(like => like.CommentId == commentID).ToList(); 
         }
 
+        public List<User> GetUsersWhoLiked(int commentID)
+        {
+            return _context.CommentLikes.Where(like => like.CommentId == commentID)
+                                           .Include(like => like.User)
+                                           .Select(like => like.User)
+                                           .ToList();
+        }
+
         public bool IsCommentLiked(int commentID, string username)
         {
             CommentLike like = _context.CommentLikes.Where(like => (like.User.Username.Equals(username)) && 
