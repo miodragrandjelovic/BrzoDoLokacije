@@ -39,6 +39,11 @@ namespace PyxisKapriBack.Services
             }
         }
 
+        public int GetCommentLikeCount(int commentID)
+        {
+            return GetLikesOfComment(commentID).Count();
+        }
+
         public List<CommentLike> GetLikesOfComment(int commentID)
         {
             return _iCommentLikeDAL.GetLikesOfComment(commentID);

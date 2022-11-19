@@ -39,6 +39,11 @@ namespace PyxisKapriBack.Services
             }
         }
 
+        public int GetCommentDislikeCount(int commentID)
+        {
+            return GetDislikesOfComment(commentID).Count();
+        }
+
         public List<CommentDislike> GetDislikesOfComment(int commentID)
         {
             return _iCommentDislikeDAL.GetDislikesOfComment(commentID);

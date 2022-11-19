@@ -10,5 +10,6 @@ namespace PyxisKapriBack.Services.Interfaces
         public Response DeleteLikeFromComment(int likeID);
         public List<CommentLike> GetLikesOfComment(int commentID);
         public List<User> GetUsersWhoLiked(int commentID);
+        public int GetCommentLikeCount(int commentID);
     }
 }
