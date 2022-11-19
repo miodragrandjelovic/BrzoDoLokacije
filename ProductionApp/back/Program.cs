@@ -92,8 +92,8 @@ builder.Services.AddSwaggerGen(options => {
     builder.Services.AddTransient<ICommentDislikeDAL, CommentDislikeDAL>();
 #endregion
 
-#region 'Services - BL Dependencies'
-builder.Services.AddTransient<IAuthService, AuthService>();
+    #region 'Services - BL Dependencies'
+    builder.Services.AddTransient<IAuthService, AuthService>();
     builder.Services.AddTransient<IFileService, FileService>();
     builder.Services.AddTransient<IUserService, UserService>();
     builder.Services.AddTransient<IPostService, PostService>();
@@ -101,10 +101,13 @@ builder.Services.AddTransient<IAuthService, AuthService>();
     builder.Services.AddTransient<IPlaceService, PlaceService>();
     builder.Services.AddTransient<IFollowService, FollowService>();
     builder.Services.AddTransient<ICommentService, CommentService>();
+
+    builder.Services.AddTransient<ICommentLikeService, CommentLikeService>();
+    builder.Services.AddTransient<ICommentDislikeService, CommentDislikeService>();
     #endregion
 
-    #region 'UI - Dependencies'
-    builder.Services.AddTransient<IUserUI, UserUI>();
+#region 'UI - Dependencies'
+builder.Services.AddTransient<IUserUI, UserUI>();
     builder.Services.AddTransient<IPostUI, PostUI>();
     builder.Services.AddTransient<IFollowUI, FollowUI>(); 
     builder.Services.AddTransient<ICommentUI, CommentUI>(); 
