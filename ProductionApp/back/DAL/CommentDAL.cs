@@ -40,7 +40,7 @@ namespace PyxisKapriBack.DAL
 
         public List<Comment> GetCommentsPost(int PostID)
         {
-            return _context.Comments.Where(comment => comment.PostId == PostID).ToList(); 
+            return _context.Comments.Where(comment => comment.PostId == PostID).Include(comment => comment.User).ToList(); 
         }
 
         public List<Comment> GetReplies(int CommentID)
