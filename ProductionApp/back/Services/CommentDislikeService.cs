@@ -88,16 +88,16 @@ namespace PyxisKapriBack.Services
             return _iCommentDislikeDAL.GetUsersWhoDisliked(commentID); 
         }
 
-        public Response IsCommentDisliked(int commentID)
+        public bool IsCommentDisliked(int commentID)
         {
             try
             {
                 bool succeed = _iCommentDislikeDAL.IsCommentDisliked(userService.GetLoggedUser(), commentID);
-                return ResponseService.CreateOkResponse(succeed.ToString());
+                return succeed;
             }
             catch (Exception e)
             {
-                return ResponseService.CreateErrorResponse(e.Message);
+                return false;
             }
         }
     }

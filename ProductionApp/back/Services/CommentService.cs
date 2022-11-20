@@ -131,9 +131,9 @@ namespace PyxisKapriBack.Services
             var isLiked = commentLikeService.IsCommentLiked(commentId);
             var isDisliked = commentDislikeService.IsCommentDisliked(commentId);
 
-            if (isLiked.StatusCode.Equals(StatusCodes.Status200OK))
+            if (isLiked)
                 status = Constants.Constants.LIKED;
-            else if (isDisliked.StatusCode.Equals(StatusCodes.Status200OK))
+            else if (isDisliked)
                 status = Constants.Constants.DISLIKED;
 
             return status;

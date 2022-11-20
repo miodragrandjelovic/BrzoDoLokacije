@@ -129,12 +129,37 @@ namespace PyxisKapriBack.UI
 
         public Response IsCommentDisliked(int commentID)
         {
-            return commentDislikeService.IsCommentDisliked(commentID); 
+            var answer = commentDislikeService.IsCommentDisliked(commentID);
+            if (answer)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Message = "Success"
+                };
+
+            return new Response
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+                Message = "Error"
+            };
         }
 
         public Response IsCommentLiked(int commentID)
         {
-            return commentLikeService.IsCommentLiked(commentID); 
+            var answer = commentLikeService.IsCommentLiked(commentID);
+            if (answer)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Message = "Success"
+                };
+
+            return new Response
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+                Message = "Error"
+            };
         }
     }
 }
+
