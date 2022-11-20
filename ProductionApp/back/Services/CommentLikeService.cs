@@ -30,7 +30,7 @@ namespace PyxisKapriBack.Services
                     throw new Exception(Constants.Constants.resNoFoundUser);
                 if (comment == null)
                     throw new Exception(Constants.Constants.resNoFoundComment);
-                if (!commentDislikeDAL.CheckIfUserDislike(user.Id, commentID))
+                if (commentDislikeDAL.CheckIfUserDislike(user.Id, commentID))
                 {
                     var answer = commentDislikeDAL.DeleteDislikeFromComment(user.Username, commentID);
                     if (!answer)
