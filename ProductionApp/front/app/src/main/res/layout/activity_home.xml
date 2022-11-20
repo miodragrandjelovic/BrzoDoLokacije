@@ -46,16 +46,39 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <LinearLayout
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/ll_follow"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="231dp"
                         android:layout_marginBottom="15dp"
                         android:background="@drawable/followedusersbackground"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:text="Posts from people you follow:"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/montserrat_regular"
+                            />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_f_posts"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            tools:listitem="@layout/item_post_followed_profiles" />
+                        <!--android:layout_marginTop="1dp"-->
 
                     </LinearLayout>
 
