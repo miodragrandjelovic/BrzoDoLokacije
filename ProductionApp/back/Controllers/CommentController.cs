@@ -58,8 +58,8 @@ namespace PyxisKapriBack.Controllers
             return BadRequest(new { message = answer.Message });
         }
 
-        [HttpPut("SetLike/{commentId}")]
-        public async Task<IActionResult> SetLikeOnComment(int commentId)
+        [HttpPut("ChangeLikeState/{commentId}")]
+        public async Task<IActionResult> ChangeLikeStateOnComment(int commentId)
         {
             var response = commentUI.ChangeLikeStateOnComment(commentId);
             var message = new { message = response.Message };
@@ -70,10 +70,10 @@ namespace PyxisKapriBack.Controllers
 
         }
 
-        [HttpPut("SetDislike/{commentId}")]
-        public async Task<IActionResult> SetDislikeOnComment(int commentId)
+        [HttpPut("ChangeDislikeState/{commentId}")]
+        public async Task<IActionResult> ChangeDislikeStateOnComment(int commentId)
         {
-            var response = commentUI.AddDislike(commentId);
+            var response = commentUI.ChangeDislikeStateOnComment(commentId);
             var message = new { message = response.Message };
             if (response.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(message);

@@ -51,7 +51,6 @@ namespace PyxisKapriBack.Services
                     return ResponseService.CreateOkResponse(succeed.ToString());
 
                 }
-                return ResponseService.CreateErrorResponse("error"); // izmeniti if 
             }
             catch (Exception e)
             {
