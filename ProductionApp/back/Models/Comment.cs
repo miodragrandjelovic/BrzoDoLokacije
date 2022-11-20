@@ -8,8 +8,8 @@
         [MaxLength(Constants.ModelConstants.LENGTH_DESCRIPTION)]
         public string Text { get; set; }
         public List<Comment>? Replies { get; set; } = null;
-        public List<CommentLike>? Likes { get; set; }
-        public List<CommentDislike>? Dislikes { get; set; }
+        public List<CommentLike>? Likes { get; set; } = null;
+        public List<CommentDislike>? Dislikes { get; set; } = null;
         public DateTime DateCreated { get; set; }
 
         #region 'Post'

@@ -21,12 +21,20 @@ namespace PyxisKapriBack.Services
         {
             try
             {
+                User user = userService.GetUser(userService.GetLoggedUser());
+                Comment comment = commentService.GetComment(commentID);
 
-                bool succeed = _iCommentDislikeDAL.AddDislikeOnComment(new CommentDislike
+                if (user == null)
+                    throw new Exception(Constants.Constants.resNoFoundUser);
+                if (comment == null)
+                    throw new Exception(Constants.Constants.resNoFoundComment);
+
+                CommentDislike dislike = new CommentDislike
                 {
-                    User = userService.GetUser(userService.GetLoggedUser()),
-                    Comment = commentService.GetComment(commentID)
-                });
+                    User = user,
+                    Comment = comment
+                }; 
+                bool succeed = _iCommentDislikeDAL.AddDislikeOnComment(dislike); 
                 return ResponseService.CreateOkResponse(succeed.ToString()); 
             }
             catch(Exception e)

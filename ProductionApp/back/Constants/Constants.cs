@@ -28,13 +28,14 @@
         public const int NUMBER_OF_POSTS = 5;
 
         #region 'Error Messages'
-        public const string resNoFoundCountry  = "Država nije pronađena";
-        public const string resNoFoundCity     = "Grad nije pronađen";
-        public const string resNoFoundLocation = "Lokacija nije pronađena";
-        public const string resDeleteFailed    = "Neuspešno brisanje {0}";
-        public const string resNullValue       = "Poslata je NULL vrednost za argument";
-        public const string resNoFoundComment  = "Nije pronađen komentar";
-        public const string resNoFoundUser     = "Nije pronađen korisnik";
+        public const string resNoFoundCountry       = "Država nije pronađena";
+        public const string resNoFoundCity          = "Grad nije pronađen";
+        public const string resNoFoundLocation      = "Lokacija nije pronađena";
+        public const string resDeleteFailed         = "Neuspešno brisanje {0}";
+        public const string resNullValue            = "Poslata je NULL vrednost za argument";
+        public const string resNoFoundComment       = "Nije pronađen komentar";
+        public const string resNoFoundUser          = "Nije pronađen korisnik";
+        public const string resCommentDislikeExists = "Dislike već postoji";
         #endregion
 
         public const int TAKE_ELEMENT = 5; 

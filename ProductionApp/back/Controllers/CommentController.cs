@@ -42,7 +42,7 @@ namespace PyxisKapriBack.Controllers
         public async Task<IActionResult> AddNewCommentOnPost(NewCommentDTO newComment)
         {
             var answer = commentUI.AddComment(newComment);
-            if (answer.Message.Equals(StatusCodes.Status200OK))
+            if (answer.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(new { message = answer.Message });
 
             return BadRequest(new {message = answer.Message});
@@ -52,7 +52,7 @@ namespace PyxisKapriBack.Controllers
         public async Task<IActionResult> DeleteCommentFromPost(int commentId)
         {
             var answer = commentUI.DeleteComment(commentId);
-            if (answer.Message.Equals(StatusCodes.Status200OK))
+            if (answer.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(new { message = answer.Message });
 
             return BadRequest(new { message = answer.Message });
@@ -86,7 +86,7 @@ namespace PyxisKapriBack.Controllers
         public async Task<IActionResult> DeleteLikeFromComment(int commentId)
         {
             var answer = commentUI.DeleteLike(commentId);
-            if (answer.Message.Equals(StatusCodes.Status200OK))
+            if (answer.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(new { message = answer.Message });
 
             return BadRequest(new { message = answer.Message });
@@ -96,7 +96,7 @@ namespace PyxisKapriBack.Controllers
         public async Task<IActionResult> DeleteDislikeFromComment(int commentId)
         {
             var answer = commentUI.DeleteDislike(commentId);
-            if (answer.Message.Equals(StatusCodes.Status200OK))
+            if (answer.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(new { message = answer.Message });
 
             return BadRequest(new { message = answer.Message });
@@ -106,9 +106,6 @@ namespace PyxisKapriBack.Controllers
         public async Task<IActionResult> GetUsersWhoLikedComment(int commentId)
         {
             var users = commentUI.GetUsersWhoLiked(commentId);
-            if (users == null)
-                return BadRequest();
-
             return Ok(users);
         }
 
@@ -116,9 +113,6 @@ namespace PyxisKapriBack.Controllers
         public async Task<IActionResult> GetUsersWhoDislikedComment(int commentId)
         {
             var users = commentUI.GetUsersWhoDisliked(commentId);
-            if (users == null)
-                return BadRequest();
-
             return Ok(users);
         }
     }

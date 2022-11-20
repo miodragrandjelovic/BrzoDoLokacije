@@ -19,9 +19,10 @@ namespace PyxisKapriBack.DAL
         public bool AddLikeOnComment(CommentLike like)
         {
             if (like == null)
-                throw new Exception(Constants.Constants.resNullValue); 
+                throw new Exception(Constants.Constants.resNullValue);
+
             _context.CommentLikes.Add(like);
-            return true; 
+            return true;
         }
 
         public bool DeleteLikeFromComment(string username, int commentID)
@@ -32,7 +33,7 @@ namespace PyxisKapriBack.DAL
             if (user == null)
                 throw new Exception(Constants.Constants.resNoFoundUser);
 
-            if (_iCommentDAL.GetComment(commentID) == null)
+            if (comment == null)
                 throw new Exception(Constants.Constants.resNoFoundComment);
 
             CommentLike like = GetCommentLike(username, commentID);

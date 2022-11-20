@@ -20,16 +20,24 @@ namespace PyxisKapriBack.Services
         public Response AddComment(NewCommentDTO comment)
         {
             var loggedUser = userService.GetUser(userService.GetLoggedUser());
+
             if (loggedUser == null)
                 return new Response
                 {
                     StatusCode = StatusCodes.Status404NotFound,
                     Message = "User not found"
                 };
+            var post = postService.GetPost(comment.PostId); 
+            if(post == null)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status404NotFound,
+                    Message = "Post not found"
+                };
             var newComment = new Comment
             {
                 PostId = comment.PostId,
-                Post = postService.GetPost(comment.PostId),
+                Post = post,
                 DateCreated = DateTime.Now,
                 Text = comment.Comment,
                 UserId = loggedUser.Id,
@@ -54,23 +62,23 @@ namespace PyxisKapriBack.Services
 
         public Response DeleteComment(int commentId)
         {
-            /*
-            var succeed = commentDAL.DeleteComment(commentId); //ispraviti u DAL sloju da se prima Id komentara
-            if (!succeed)
+            try
             {
+                var succeed = commentDAL.DeleteComment(commentId);
                 return new Response
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
                     Message = "Error while deleting comment!"
                 };
             }
-            return new Response
+            catch
             {
-                StatusCode = StatusCodes.Status200OK,
-                Message = "Comment deleted succesffuly!"
-            };
-            */
-            return null;
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Message = "Comment deleted succesffuly!"
+                };
+            }
         }
 
         public Comment GetComment(int commentId)

@@ -23,9 +23,9 @@ namespace PyxisKapriBack.DAL
 
         public bool DeleteComment(int CommentID)
         {
-            Comment comment = GetComment(CommentID); 
+            Comment comment = GetComment(CommentID);
             if (comment == null)
-                return false;
+                throw new Exception("Comment does not exist!"); 
             _context.Comments.Remove(comment);
             _context.SaveChanges();
             return true; 

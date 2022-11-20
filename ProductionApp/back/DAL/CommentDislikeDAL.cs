@@ -17,8 +17,8 @@ namespace PyxisKapriBack.DAL
         public bool AddDislikeOnComment(CommentDislike dislike)
         {
             if (dislike == null)
-                throw new Exception(Constants.Constants.resNullValue);
-
+                throw new Exception(Constants.Constants.resNullValue); 
+           
             _context.CommentDislikes.Add(dislike);
             return true;
         }

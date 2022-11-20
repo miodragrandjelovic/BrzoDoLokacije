@@ -53,7 +53,8 @@ namespace PyxisKapriBack.UI
         public CommentDTO GetComment(int commentId)
         {
             var comment = commentService.GetComment(commentId);
-
+            if (comment == null)
+                return null; 
             return new CommentDTO
             {
                 Id = comment.Id,
