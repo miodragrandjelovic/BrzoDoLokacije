@@ -16,7 +16,7 @@ namespace PyxisKapriBack.DAL
         {
             if (Comment == null)
                 return false; 
-            _context.Comments.Update(Comment);
+            _context.Comments.Add(Comment);
             _context.SaveChanges(); 
             return true;
         }
