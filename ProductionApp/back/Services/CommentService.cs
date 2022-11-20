@@ -10,12 +10,16 @@ namespace PyxisKapriBack.Services
         private readonly ICommentDAL commentDAL;
         private readonly IPostService postService;
         private readonly IUserService userService;
+        private readonly ICommentDislikeService commentDislikeService;
+        private readonly ICommentLikeService commentLikeService;
 
-        public CommentService(ICommentDAL commentDAL, IPostService postService,IUserService userService)
+        public CommentService(ICommentDAL commentDAL, IPostService postService,IUserService userService, ICommentDislikeService commentDislikeService,ICommentLikeService commentLikeService)
         {
             this.commentDAL = commentDAL;
             this.postService = postService;
             this.userService = userService;
+            this.commentDislikeService = commentDislikeService;
+            this.commentLikeService = commentLikeService;
         }
         public Response AddComment(NewCommentDTO comment)
         {
@@ -60,6 +64,35 @@ namespace PyxisKapriBack.Services
             };
         }
 
+        public Response ChangeDislikeStateOnComment(int commentID)
+        {
+            var comment = commentDAL.GetComment(commentID);
+            if (comment == null)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = "Cannot find comment"
+                };
+
+            var response = commentDislikeService.ChangeDislikeStateOnComment(comment);
+            return response;
+        }
+
+        public Response ChangeLikeStateOnComment(int commentID)
+        {
+            var comment = commentDAL.GetComment(commentID);
+            if(comment == null)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError,
+                    Message = "Cannot find comment"
+                };
+
+            var response = commentLikeService.ChangeLikeStateOnComment(comment);
+
+            return response;
+        }
+
         public Response DeleteComment(int commentId)
         {
             try
@@ -89,6 +122,21 @@ namespace PyxisKapriBack.Services
         public List<Comment> GetCommentsPost(int postId)
         {
             return commentDAL.GetCommentsPost(postId);  
+        }
+
+        public int GetCommentStatus(int commentId)
+        {
+            int status = Constants.Constants.NONE;
+
+            var isLiked = commentLikeService.IsCommentLiked(commentId);
+            var isDisliked = commentDislikeService.IsCommentDisliked(commentId);
+
+            if (isLiked.StatusCode.Equals(StatusCodes.Status200OK))
+                status = Constants.Constants.LIKED;
+            else if (isDisliked.StatusCode.Equals(StatusCodes.Status200OK))
+                status = Constants.Constants.DISLIKED;
+
+            return status;
         }
     }
 }

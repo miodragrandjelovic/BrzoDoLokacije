@@ -26,13 +26,13 @@ namespace PyxisKapriBack.UI
 
         public Response ChangeDislikeStateOnComment(int commentID)
         {
-            return commentDislikeService.ChangeDislikeStateOnComment(commentID); 
+            return commentService.ChangeDislikeStateOnComment(commentID); 
         }
 
         public Response ChangeLikeStateOnComment(int commentID)
         {
 
-            return commentLikeService.ChangeLikeStateOnComment(commentID); 
+            return commentService.ChangeLikeStateOnComment(commentID); 
         }
 
         public Response DeleteComment(int commentId)
@@ -79,6 +79,7 @@ namespace PyxisKapriBack.UI
                     CommentText = comment.Text,
                     DateOfCommenting = comment.DateCreated.ToString(),
                     Username = comment.User.Username,
+                    LikeStatus = commentService.GetCommentStatus(comment.Id),
                     ProfileImage = Convert.ToBase64String(comment.User.ProfileImage),
                     LikeCount = commentLikeService.GetCommentLikeCount(comment.Id), 
                     DislikeCount = commentDislikeService.GetCommentDislikeCount(comment.Id)

@@ -6,7 +6,7 @@ namespace PyxisKapriBack.Services.Interfaces
     public interface ICommentDislikeService
     {
         public Response IsCommentDisliked(int commentID);
-        public Response ChangeDislikeStateOnComment(int commentID);
+        public Response ChangeDislikeStateOnComment(Comment comment);
         public Response DeleteDislikeFromComment(int commentID);
         public List<CommentDislike> GetDislikesOfComment(int commentID);
         public List<User> GetUsersWhoDisliked(int commentID);
