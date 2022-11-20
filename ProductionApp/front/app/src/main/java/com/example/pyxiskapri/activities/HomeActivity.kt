@@ -2,7 +2,6 @@ package com.example.pyxiskapri.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
@@ -58,12 +57,19 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setupNavButtons(){
         setupButtonNewPost()
-
+        setupButtonMessages()
     }
 
     private fun setupButtonNewPost(){
         btn_newPost.setOnClickListener {
             val intent = Intent (this, NewPostActivity::class.java);
+            startActivity(intent);
+        }
+    }
+
+    private fun setupButtonMessages(){
+        btn_newPost.setOnClickListener {
+            val intent = Intent (this, ChatMainActivity::class.java);
             startActivity(intent);
         }
     }
