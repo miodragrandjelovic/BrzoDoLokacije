@@ -10,5 +10,8 @@ namespace PyxisKapriBack.Services.Interfaces
 
         public Comment GetComment(int commentId);
         public List<Comment> GetCommentsPost(int postId);
+        public int GetCommentStatus(int commentId);
+        public Response ChangeLikeStateOnComment(int commentID);
+        public Response ChangeDislikeStateOnComment(int commentID);
     }
 }

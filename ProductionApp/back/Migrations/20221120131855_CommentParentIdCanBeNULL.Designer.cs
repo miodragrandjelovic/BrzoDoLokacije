@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PyxisKapriBack.Models;
 
@@ -10,9 +11,10 @@ using PyxisKapriBack.Models;
 namespace PyxisKapriBack.Migrations
 {
     [DbContext(typeof(Database))]
-    partial class DatabaseModelSnapshot : ModelSnapshot
+    [Migration("20221120131855_CommentParentIdCanBeNULL")]
+    partial class CommentParentIdCanBeNULL
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,34 +248,6 @@ namespace PyxisKapriBack.Migrations
                     b.HasIndex("CityID");
 
                     b.ToTable("Locations");
-                });
-
-            modelBuilder.Entity("PyxisKapriBack.Models.Message", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("ReceiverId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SenderId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReceiverId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Post", b =>
@@ -530,25 +504,6 @@ namespace PyxisKapriBack.Migrations
                     b.Navigation("City");
                 });
 
-            modelBuilder.Entity("PyxisKapriBack.Models.Message", b =>
-                {
-                    b.HasOne("PyxisKapriBack.Models.User", "Receiver")
-                        .WithMany("ReceivedMessages")
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PyxisKapriBack.Models.User", "Sender")
-                        .WithMany("SentMessages")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Receiver");
-
-                    b.Navigation("Sender");
-                });
-
             modelBuilder.Entity("PyxisKapriBack.Models.Post", b =>
                 {
                     b.HasOne("PyxisKapriBack.Models.Location", "Location")
@@ -646,10 +601,6 @@ namespace PyxisKapriBack.Migrations
                     b.Navigation("Likes");
 
                     b.Navigation("Posts");
-
-                    b.Navigation("ReceivedMessages");
-
-                    b.Navigation("SentMessages");
                 });
 #pragma warning restore 612, 618
         }

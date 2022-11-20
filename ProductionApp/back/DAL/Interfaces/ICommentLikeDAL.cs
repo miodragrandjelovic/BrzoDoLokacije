@@ -7,6 +7,7 @@ namespace PyxisKapriBack.DAL.Interfaces
         public bool IsCommentLiked(string username, int commentID); 
         public bool AddLikeOnComment(CommentLike like); 
         public bool DeleteLikeFromComment(string username, int commentID);
+        public bool CheckIfUserLike(int userID, int commentID);
         public List<CommentLike> GetLikesOfComment(int commentID);
         public List<User> GetUsersWhoLiked(int commentID);
         public CommentLike GetCommentLike(int likeID);

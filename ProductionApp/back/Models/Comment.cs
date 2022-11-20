@@ -23,8 +23,8 @@
         #endregion
 
         #region 'Comment'
-        public int CommentParentId { get; set; } = 0; 
-        public Comment? CommentParent { get; set; }
+        public int? CommentParentId { get; set; } = null;
+        public Comment? CommentParent { get; set; } = null;
         #endregion
     }
 }

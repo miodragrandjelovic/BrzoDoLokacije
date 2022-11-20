@@ -22,7 +22,15 @@ namespace PyxisKapriBack.DAL
                 throw new Exception(Constants.Constants.resNullValue);
 
             _context.CommentLikes.Add(like);
+            _context.SaveChanges();
             return true;
+        }
+
+        public bool CheckIfUserLike(int userID, int commentID)
+        {
+            var like = _context.CommentLikes.Where(like => like.UserId.Equals(userID) && like.CommentId.Equals(commentID));
+
+            return like == null ? false : true;
         }
 
         public bool DeleteLikeFromComment(string username, int commentID)
@@ -37,6 +45,10 @@ namespace PyxisKapriBack.DAL
                 throw new Exception(Constants.Constants.resNoFoundComment);
 
             CommentLike like = GetCommentLike(username, commentID);
+
+            _context.CommentLikes.Remove(like);
+            _context.SaveChanges();
+
             return true;
         }
 

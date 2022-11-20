@@ -31,6 +31,8 @@
          * Na primer, Jaffa Crvenka prati Stark 
          */
 
+        public List<Message>? SentMessages { get; set; }
+        public List<Message>? ReceivedMessages { get; set; }
         #region 'Country'
 
         [ForeignKey("Country")]

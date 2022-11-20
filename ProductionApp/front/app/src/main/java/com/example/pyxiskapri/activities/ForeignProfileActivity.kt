@@ -1,11 +1,13 @@
 package com.example.pyxiskapri.activities
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
@@ -21,6 +23,8 @@ import com.example.pyxiskapri.utility.SessionManager
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_foreign_profile.*
 import kotlinx.android.synthetic.main.activity_user_profile.fcv_drawerNavUserProfile
+import kotlinx.android.synthetic.main.modal_confirm_follow.*
+import kotlinx.android.synthetic.main.modal_confirm_unfollow.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -90,69 +94,116 @@ class ForeignProfileActivity : AppCompatActivity() {
     private fun followProfile() {
 
 
-        val context:Context=this
+        val dialog= Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.modal_confirm_follow)
 
-        val addFollowRequest= AddFollowRequest(
-            username = tv_f_username.text.toString()
-        )
+        dialog.show()
 
-        apiClient.getUserService(context).follow(addFollowRequest).enqueue(object : Callback<MessageResponse>{
-            override fun onResponse(
-                call: Call<MessageResponse>,
-                response: Response<MessageResponse>
-            ) {
+        dialog.tv_follow.text="Are you sure you want to follow "+tv_f_username.text+"?"
 
-                if(response.isSuccessful)
-                {
-                    ib_follow.isGone=true
-                    ib_following.isGone=false
+        dialog.btn_close_dialog_f.setOnClickListener()
+        {
+            dialog.dismiss()
+        }
+
+        dialog.btn_confirm_follow.setOnClickListener(){
+
+            val context:Context=this
+
+            val addFollowRequest= AddFollowRequest(
+                username = tv_f_username.text.toString()
+            )
+
+            apiClient.getUserService(context).follow(addFollowRequest).enqueue(object : Callback<MessageResponse>{
+                override fun onResponse(
+                    call: Call<MessageResponse>,
+                    response: Response<MessageResponse>
+                ) {
+
+                    if(response.isSuccessful)
+                    {
+                        ib_follow.isGone=true
+                        ib_following.isGone=false
+                        tv_follow_ing.text="Following"
+                    }
+                    else
+                    {
+                        Toast.makeText(context,"Something went wrong, try again.", Toast.LENGTH_LONG).show()
+
+                    }
+
+                    dialog.dismiss()
+
                 }
-                else
-                {
-                    Toast.makeText(context,"Something went wrong, try again.", Toast.LENGTH_LONG).show()
 
+                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+
+                    Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
+                    dialog.dismiss()
                 }
 
-            }
+            })
 
-            override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+        }
 
-                Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
-            }
 
-        })
 
     }
 
 
     private fun unfollowProfile() {
 
-        val context:Context=this
-        apiClient.getUserService(context).unfollow(tv_f_username.text.toString()).enqueue(object : Callback<MessageResponse>{
-            override fun onResponse(
-                call: Call<MessageResponse>,
-                response: Response<MessageResponse>
-            ) {
 
-                if(response.isSuccessful)
-                {
-                    ib_follow.isGone=false
-                    ib_following.isGone=true
+        val dialog= Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.modal_confirm_unfollow)
+
+        dialog.show()
+
+        dialog.tv_unfollow.text="Are you sure you want to unfollow "+tv_f_username.text+"?"
+
+        dialog.btn_close_dialog_uf.setOnClickListener()
+        {
+            dialog.dismiss()
+        }
+
+        dialog.btn_confirm_unfollow.setOnClickListener()
+        {
+
+            val context:Context=this
+            apiClient.getUserService(context).unfollow(tv_f_username.text.toString()).enqueue(object : Callback<MessageResponse>{
+                override fun onResponse(
+                    call: Call<MessageResponse>,
+                    response: Response<MessageResponse>
+                ) {
+
+                    if(response.isSuccessful)
+                    {
+                        ib_follow.isGone=false
+                        ib_following.isGone=true
+                        tv_follow_ing.text="Follow"
+                    }
+
+                    else
+                    {
+                        Toast.makeText(context,"Something went wrong, try again.", Toast.LENGTH_LONG).show()
+
+                    }
+                    dialog.dismiss()
+
                 }
 
-                else
-                {
-                    Toast.makeText(context,"Something went wrong, try again.", Toast.LENGTH_LONG).show()
-
+                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                    Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
+                    dialog.dismiss()
                 }
 
-            }
+            })
 
-            override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
-            }
-
-        })
+        }
 
 
     }
@@ -197,6 +248,7 @@ class ForeignProfileActivity : AppCompatActivity() {
                                 {
                                     ib_follow.isGone=true
                                     ib_following.isGone=false
+                                    tv_follow_ing.text="Following"
                                 }
 
                                 else
@@ -204,6 +256,7 @@ class ForeignProfileActivity : AppCompatActivity() {
 
                                     ib_follow.isGone=false
                                     ib_following.isGone=true
+                                    tv_follow_ing.text="Follow"
                                 }
 
                             }

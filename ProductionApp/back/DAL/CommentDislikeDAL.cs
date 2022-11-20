@@ -20,28 +20,35 @@ namespace PyxisKapriBack.DAL
                 throw new Exception(Constants.Constants.resNullValue); 
            
             _context.CommentDislikes.Add(dislike);
+            _context.SaveChanges();
             return true;
         }
 
         public bool DeleteDislikeFromComment(string username, int commentID)
         {
             User user = _iUserDAL.GetUser(username);
-            Comment comment = _iCommentDAL.GetComment(commentID);
+            Comment comment = _iCommentDAL.GetComment(commentID); // nigde se ne koristi a poziva se
 
             if (user == null)
                 throw new Exception(Constants.Constants.resNoFoundUser);
 
-            if (_iCommentDAL.GetComment(commentID) == null)
+            if (_iCommentDAL.GetComment(commentID) == null) // moze samo comment ovaj gore 
                 throw new Exception(Constants.Constants.resNoFoundComment);
 
             CommentDislike dislike = GetCommentDislike(username, commentID);
             _context.CommentDislikes.Remove(dislike);
+            _context.SaveChanges();
             return true;
         }
 
         public CommentDislike GetCommentDislike(int dislikeID)
         {
             return _context.CommentDislikes.Where(dislike => dislike.Id == dislikeID).FirstOrDefault(); 
+        }
+        public bool CheckIfUserDislike(int userID, int commentID)
+        {
+            var dislike = _context.CommentDislikes.Where(dislike => dislike.UserId.Equals(userID) && dislike.CommentId.Equals(commentID));
+            return dislike == null? false: true;
         }
 
         public List<CommentDislike> GetDislikesOfComment(int commentID)

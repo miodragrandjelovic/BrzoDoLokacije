@@ -5,8 +5,8 @@ namespace PyxisKapriBack.Services.Interfaces
 {
     public interface ICommentLikeService
     {
-        public Response IsCommentLiked(int commentID);
-        public Response AddLikeOnComment(int commentID);
+        public bool IsCommentLiked(int commentID);
+        public Response ChangeLikeStateOnComment(Comment comment);
         public Response DeleteLikeFromComment(int commentID);
         public List<CommentLike> GetLikesOfComment(int commentID);
         public List<User> GetUsersWhoLiked(int commentID);

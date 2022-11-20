@@ -24,15 +24,15 @@ namespace PyxisKapriBack.UI
             return commentService.AddComment(comment);
         }
 
-        public Response AddDislike(int commentID)
+        public Response ChangeDislikeStateOnComment(int commentID)
         {
-            return commentDislikeService.AddDislikeOnComment(commentID); 
+            return commentService.ChangeDislikeStateOnComment(commentID); 
         }
 
-        public Response AddLike(int commentID)
+        public Response ChangeLikeStateOnComment(int commentID)
         {
 
-            return commentLikeService.AddLikeOnComment(commentID); 
+            return commentService.ChangeLikeStateOnComment(commentID); 
         }
 
         public Response DeleteComment(int commentId)
@@ -79,9 +79,10 @@ namespace PyxisKapriBack.UI
                     CommentText = comment.Text,
                     DateOfCommenting = comment.DateCreated.ToString(),
                     Username = comment.User.Username,
+                    LikeStatus = commentService.GetCommentStatus(comment.Id),
                     ProfileImage = Convert.ToBase64String(comment.User.ProfileImage),
-                    LikeCount = commentDislikeService.GetCommentDislikeCount(comment.Id), 
-                    DislikeCount = commentLikeService.GetCommentLikeCount(comment.Id)
+                    LikeCount = commentLikeService.GetCommentLikeCount(comment.Id), 
+                    DislikeCount = commentDislikeService.GetCommentDislikeCount(comment.Id)
                 });
             }
 
@@ -128,12 +129,37 @@ namespace PyxisKapriBack.UI
 
         public Response IsCommentDisliked(int commentID)
         {
-            return commentDislikeService.IsCommentDisliked(commentID); 
+            var answer = commentDislikeService.IsCommentDisliked(commentID);
+            if (answer)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Message = "Success"
+                };
+
+            return new Response
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+                Message = "Error"
+            };
         }
 
         public Response IsCommentLiked(int commentID)
         {
-            return commentLikeService.IsCommentLiked(commentID); 
+            var answer = commentLikeService.IsCommentLiked(commentID);
+            if (answer)
+                return new Response
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Message = "Success"
+                };
+
+            return new Response
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+                Message = "Error"
+            };
         }
     }
 }
+

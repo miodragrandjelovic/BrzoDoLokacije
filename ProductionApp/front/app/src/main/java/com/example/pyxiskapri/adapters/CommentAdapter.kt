@@ -15,7 +15,6 @@ import android.widget.ExpandableListView.OnGroupClickListener
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.dtos.request.LikeDislikeRequest
 import com.example.pyxiskapri.dtos.request.NewReplyRequest
 import com.example.pyxiskapri.dtos.response.CommentResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
@@ -189,19 +188,44 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
             btn_commentLike.setOnClickListener {
 
                 when(comment.likeStatus){
-                    1 -> comment.likeStatus = 0
-                    else -> comment.likeStatus = 1
+                    1 -> {
+                        comment.likeStatus = 0
+                        comment.likeCount -= 1
+                    }
+                    -1 -> {
+                        comment.likeStatus = 1
+                        comment.likeCount += 1
+                        comment.dislikeCount -= 1
+                    }
+                    else -> {
+                        comment.likeStatus = 1
+                        comment.likeCount += 1
+                    }
                 }
-                likeComment(comment.id)
+
+
+                likeComment(commentList[groupPosition].id)
                 notifyDataSetChanged()
             }
             btn_commentDislike.setOnClickListener {
 
-                when(comment.likeStatus){
-                    -1 -> comment.likeStatus = 0
-                    else -> comment.likeStatus = -1
+                when (comment.likeStatus) {
+                    -1 -> {
+                        comment.likeStatus = 0
+                        comment.dislikeCount -= 1
+                    }
+                    1 -> {
+                        comment.likeStatus = -1
+                        comment.dislikeCount += 1
+                        comment.likeCount -= 1
+                    }
+                    else -> {
+                        comment.likeStatus = -1
+                        comment.dislikeCount += 1
+                    }
                 }
-                dislikeComment((comment.id))
+
+                dislikeComment(comment.id)
                 notifyDataSetChanged()
             }
 
@@ -282,20 +306,45 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
 
             // Like-Dislike Buttons
             btn_replyLike.setOnClickListener {
-
                 when(reply.likeStatus){
-                    1 -> reply.likeStatus = 0
-                    else -> reply.likeStatus = 1
+                    1 -> {
+                        reply.likeStatus = 0
+                        reply.likeCount -= 1
+                    }
+                    -1 -> {
+                        reply.likeStatus = 1
+                        reply.likeCount += 1
+                        reply.dislikeCount -= 1
+                    }
+                    else -> {
+                        reply.likeStatus = 1
+                        reply.likeCount += 1
+                    }
                 }
+
+
                 likeComment(commentList[groupPosition].id)
                 notifyDataSetChanged()
             }
             btn_replyDislike.setOnClickListener {
 
-                when(reply.likeStatus){
-                    -1 -> reply.likeStatus = 0
-                    else -> reply.likeStatus = -1
+                when (reply.likeStatus) {
+                    -1 -> {
+                        reply.likeStatus = 0
+                        reply.dislikeCount -= 1
+                    }
+                    1 -> {
+                        reply.likeStatus = -1
+                        reply.dislikeCount += 1
+                        reply.likeCount -= 1
+                    }
+                    else -> {
+                        reply.likeStatus = -1
+                        reply.dislikeCount += 1
+                    }
                 }
+
+
                 dislikeComment(commentList[groupPosition].id)
                 notifyDataSetChanged()
             }
@@ -373,7 +422,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
     }
 
     private fun likeComment(commentId: Int){
-        apiClient.getCommentService(context).likeComment(LikeDislikeRequest(commentId))
+        apiClient.getCommentService(context).likeComment(commentId)
             .enqueue(object : Callback<MessageResponse> {
                 override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
                     if(response.isSuccessful) {
@@ -395,7 +444,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
 
     private fun dislikeComment(commentId: Int){
 
-        apiClient.getCommentService(context).dislikeComment(LikeDislikeRequest(commentId))
+        apiClient.getCommentService(context).dislikeComment(commentId)
             .enqueue(object : Callback<MessageResponse> {
                 override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
                     if(response.isSuccessful) {
