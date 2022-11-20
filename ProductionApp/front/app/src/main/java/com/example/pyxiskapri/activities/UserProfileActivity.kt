@@ -299,10 +299,8 @@ class UserProfileActivity : AppCompatActivity() {
 
                         }
 
-                        if(response.code() == Constants.CODE_NOT_FOUND)
-                            Toast.makeText(context, "User not found!", Toast.LENGTH_SHORT).show()
                         if(response.code() == Constants.CODE_BAD_REQUEST)
-                            Toast.makeText(context, "Wrong password!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "The password is wrong, or username is taken!", Toast.LENGTH_SHORT).show()
 
                         flag=0
                     }
