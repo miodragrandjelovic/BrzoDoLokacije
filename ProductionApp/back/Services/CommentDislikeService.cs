@@ -31,7 +31,11 @@ namespace PyxisKapriBack.Services
                 if (comment == null)
                     throw new Exception(Constants.Constants.resNoFoundComment);
                 if (!commentLikeDAL.CheckIfUserLike(user.Id, commentID))
-                    throw new Exception(Constants.Constants.resNoFoundComment); // napravi u konstantama za forbiden
+                {
+                    var answer = commentLikeDAL.DeleteLikeFromComment(user.Username,commentID);
+                    if (!answer)
+                        throw new Exception("Cannot delete like");
+                }
                 if (_iCommentDislikeDAL.IsCommentDisliked(user.Username, commentID))
                 {
                     var answer = _iCommentDislikeDAL.DeleteDislikeFromComment(user.Username,commentID);
