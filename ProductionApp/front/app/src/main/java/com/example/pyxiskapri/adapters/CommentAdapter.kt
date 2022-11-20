@@ -312,7 +312,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
                         reply.likeCount -= 1
                     }
                     -1 -> {
-                        reply.likeStatus = 0
+                        reply.likeStatus = 1
                         reply.likeCount += 1
                         reply.dislikeCount -= 1
                     }

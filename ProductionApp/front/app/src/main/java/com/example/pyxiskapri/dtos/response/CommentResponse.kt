@@ -13,7 +13,6 @@ data class CommentResponse(
     var commentText: String,
     @SerializedName("dateOfCommenting")
     var creationDate: String,
-
     @SerializedName("likeStatus")
     var likeStatus: Int = 0,
     @SerializedName("likeCount")

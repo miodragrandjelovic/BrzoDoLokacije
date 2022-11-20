@@ -18,10 +18,10 @@ interface CommentService {
     @POST("api/Comment/AddNewReplyOnComment")
     fun addNewReply(@Body requestBody: NewReplyRequest) : Call<MessageResponse>
 
-    @PUT("api/Comment/SetLike/{commentId}")
+    @PUT("api/Comment/ChangeLikeState/{commentId}")
     fun likeComment(@Path(value = "commentId") id: Int): Call<MessageResponse>
 
-    @PUT("api/Comment/SetDislike/{commentId}")
+    @PUT("api/Comment/ChangeDislikeState/{commentId}")
     fun dislikeComment(@Path(value = "commentId") id: Int): Call<MessageResponse>
 
 }

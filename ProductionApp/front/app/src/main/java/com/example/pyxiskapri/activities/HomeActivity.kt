@@ -135,7 +135,7 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ArrayList<PostResponse>>, t: Throwable) {
-                    TODO("Not yet implemented")
+
                 }
 
             })
