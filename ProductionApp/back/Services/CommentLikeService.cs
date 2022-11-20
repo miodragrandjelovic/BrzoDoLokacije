@@ -8,37 +8,35 @@ namespace PyxisKapriBack.Services
     {
         private readonly ICommentLikeDAL _iCommentLikeDAL;
         private readonly IUserService userService;
-        private readonly ICommentService commentService;
         private readonly ICommentDislikeDAL commentDislikeDAL;
 
-        public CommentLikeService(ICommentLikeDAL commentLikeDAL, IUserService userService, ICommentService commentService, ICommentDislikeDAL commentDislikeDAL)
+        public CommentLikeService(ICommentLikeDAL commentLikeDAL, IUserService userService, ICommentDislikeDAL commentDislikeDAL)
         {
             _iCommentLikeDAL = commentLikeDAL;
             this.userService = userService;
-            this.commentService = commentService;
             this.commentDislikeDAL = commentDislikeDAL;
         }
 
-        public Response ChangeLikeStateOnComment(int commentID)
+        public Response ChangeLikeStateOnComment(Comment comment)
         {
             try
             {
                 User user = userService.GetUser(userService.GetLoggedUser());
-                Comment comment = commentService.GetComment(commentID);
+                //Comment comment = commentService.GetComment(commentID);
 
                 if (user == null)
                     throw new Exception(Constants.Constants.resNoFoundUser);
                 if (comment == null)
                     throw new Exception(Constants.Constants.resNoFoundComment);
-                if (commentDislikeDAL.CheckIfUserDislike(user.Id, commentID))
+                if (commentDislikeDAL.CheckIfUserDislike(user.Id, comment.Id))
                 {
-                    var answer = commentDislikeDAL.DeleteDislikeFromComment(user.Username, commentID);
+                    var answer = commentDislikeDAL.DeleteDislikeFromComment(user.Username, comment.Id);
                     if (!answer)
                         throw new Exception("Cannot delete dislike");
                 }// napravi u konstantama za forbiden
-                if (_iCommentLikeDAL.IsCommentLiked(user.Username, commentID))
+                if (_iCommentLikeDAL.IsCommentLiked(user.Username, comment.Id))
                 {
-                    var answer = _iCommentLikeDAL.DeleteLikeFromComment(user.Username, commentID);
+                    var answer = _iCommentLikeDAL.DeleteLikeFromComment(user.Username, comment.Id);
                     if (answer)
                         return ResponseService.CreateOkResponse("OK");
 

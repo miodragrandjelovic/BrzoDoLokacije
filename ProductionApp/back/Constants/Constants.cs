@@ -38,7 +38,11 @@
         public const string resCommentDislikeExists = "Dislike već postoji";
         #endregion
 
-        public const int TAKE_ELEMENT = 5; 
+        public const int TAKE_ELEMENT = 5;
 
+        // Comment status
+        public const int NONE = 0;
+        public const int LIKED = 1;
+        public const int DISLIKED = -1;
     }
 }
