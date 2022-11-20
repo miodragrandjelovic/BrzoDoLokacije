@@ -161,6 +161,22 @@ namespace PyxisKapriBack.Models
             .HasForeignKey(commentDislike => commentDislike.UserId)
             .OnDelete(DeleteBehavior.Cascade);
             #endregion
+
+            #region 'Message Relationships'
+
+            modelBuilder.Entity<Message>()
+            .HasOne(message => message.Sender)
+            .WithMany(sender => sender.SentMessages)
+            .HasForeignKey(message => message.SenderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Message>()
+            .HasOne(message => message.Receiver)
+            .WithMany(receiver => receiver.ReceivedMessages)
+            .HasForeignKey(message => message.ReceiverId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+            #endregion
         }
 
         #region 'Database Datasets'
@@ -177,6 +193,7 @@ namespace PyxisKapriBack.Models
         public DbSet<Follow> Follow { get; set; }
         public DbSet<CommentLike> CommentLikes { get; set; }
         public DbSet<CommentDislike> CommentDislikes { get; set; }
+        public DbSet<Message> Messages { get; set; }
         #endregion
 
         #region 'Insert Data'
