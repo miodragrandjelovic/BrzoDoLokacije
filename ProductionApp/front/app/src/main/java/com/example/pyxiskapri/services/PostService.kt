@@ -27,8 +27,12 @@ interface PostService {
     @DELETE("api/Post/RemoveLike/{postId}")
     fun removeLike(@Path(value= "postId") postId: Int) : Call<MessageResponse>
 
-
     @DELETE("api/Post/DeleteUserPost/{postId}")
     fun removePost(@Path(value= "postId") postId: Int) : Call<MessageResponse>
+
+    @GET("api/Post/GetFollowingPosts")
+    fun getFollowingPosts() : Call<ArrayList<PostResponse>>
+
+
 
 }

@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.adapters.FollowedPostListAdapter
 import com.example.pyxiskapri.adapters.PostListAdapter
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
@@ -24,6 +26,8 @@ class HomeActivity : AppCompatActivity() {
 
     lateinit var postListAdapter: PostListAdapter
 
+    lateinit var followedPostListAdapter: FollowedPostListAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -32,8 +36,10 @@ class HomeActivity : AppCompatActivity() {
         apiClient = ApiClient()
 
         setPostsRV()
+        setFollowedPostsRV()
 
         fillPostsRV()
+        fillFollowedPostsRv()
 
         setupNavButtons()
     }
@@ -47,6 +53,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         fillPostsRV()
+        fillFollowedPostsRv()
     }
 
     private fun setupNavButtons(){
@@ -62,11 +69,24 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setPostsRV(){
+
         postListAdapter = PostListAdapter(mutableListOf())
-        rv_posts.adapter = postListAdapter
         rv_posts.layoutManager = LinearLayoutManager(this)
+        rv_posts.adapter = postListAdapter
         (rv_posts.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
     }
+
+
+    private fun setFollowedPostsRV()
+    {
+        followedPostListAdapter = FollowedPostListAdapter(mutableListOf())
+        rv_f_posts.adapter = followedPostListAdapter
+        rv_f_posts.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        (rv_f_posts.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+    }
+
+
 
     private fun fillPostsRV(){
 
@@ -85,5 +105,42 @@ class HomeActivity : AppCompatActivity() {
 
             })
     }
+
+
+    private fun fillFollowedPostsRv(){
+
+        apiClient.getPostService(this).getFollowingPosts()
+            .enqueue(object : Callback<ArrayList<PostResponse>>{
+                override fun onResponse(
+                    call: Call<ArrayList<PostResponse>>,
+                    response: Response<ArrayList<PostResponse>>
+                )
+                {
+
+                    if(response.isSuccessful){
+
+                        if(response.body()!!.size==0)
+                        {
+                            ll_follow.isGone=true
+                        }
+                        else
+                        {
+                            ll_follow.isGone=false
+                            followedPostListAdapter.setFollowedPostList(response.body()!!)
+                        }
+
+
+                    }
+
+                }
+
+                override fun onFailure(call: Call<ArrayList<PostResponse>>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+
+    }
+
 
 }
