@@ -9,15 +9,17 @@ namespace PyxisKapriBack.Services
         private readonly ICommentDislikeDAL _iCommentDislikeDAL;
         private readonly IUserService userService;
         private readonly ICommentService commentService;
-        
-        public CommentDislikeService(ICommentDislikeDAL commentDislikeDAL, IUserService userService, ICommentService commentService)
+        private readonly ICommentLikeDAL commentLikeDAL;
+
+        public CommentDislikeService(ICommentDislikeDAL commentDislikeDAL, IUserService userService, ICommentService commentService, ICommentLikeDAL commentLikeDAL)
         {
             _iCommentDislikeDAL = commentDislikeDAL;
             this.userService = userService; 
             this.commentService = commentService;
+            this.commentLikeDAL = commentLikeDAL;
         }
 
-        public Response AddDislikeOnComment(int commentID)
+        public Response ChangeDislikeStateOnComment(int commentID)
         {
             try
             {
@@ -28,14 +30,27 @@ namespace PyxisKapriBack.Services
                     throw new Exception(Constants.Constants.resNoFoundUser);
                 if (comment == null)
                     throw new Exception(Constants.Constants.resNoFoundComment);
-
-                CommentDislike dislike = new CommentDislike
+                if (!commentLikeDAL.CheckIfUserLike(user.Id, commentID))
+                    throw new Exception(Constants.Constants.resNoFoundComment); // napravi u konstantama za forbiden
+                if (_iCommentDislikeDAL.IsCommentDisliked(user.Username, commentID))
                 {
-                    User = user,
-                    Comment = comment
-                }; 
-                bool succeed = _iCommentDislikeDAL.AddDislikeOnComment(dislike); 
-                return ResponseService.CreateOkResponse(succeed.ToString()); 
+                    var answer = _iCommentDislikeDAL.DeleteDislikeFromComment(user.Username,commentID);
+                    if (answer)
+                        return ResponseService.CreateOkResponse("OK");
+
+                    return ResponseService.CreateErrorResponse("NOT OK");
+                }
+                else
+                {
+                    CommentDislike dislike = new CommentDislike
+                    {
+                        User = user,
+                        Comment = comment
+                    };
+                    bool succeed = _iCommentDislikeDAL.AddDislikeOnComment(dislike);
+                    return ResponseService.CreateOkResponse(succeed.ToString());
+                }
+                
             }
             catch(Exception e)
             {

@@ -24,9 +24,9 @@ namespace PyxisKapriBack.UI
             return commentService.AddComment(comment);
         }
 
-        public Response AddDislike(int commentID)
+        public Response ChangeDislikeStateOnComment(int commentID)
         {
-            return commentDislikeService.AddDislikeOnComment(commentID); 
+            return commentDislikeService.ChangeDislikeStateOnComment(commentID); 
         }
 
         public Response ChangeLikeStateOnComment(int commentID)

@@ -26,6 +26,13 @@ namespace PyxisKapriBack.DAL
             return true;
         }
 
+        public bool CheckIfUserLike(int userID, int commentID)
+        {
+            var like = _context.CommentLikes.Where(like => like.UserId.Equals(userID) && like.CommentId.Equals(commentID));
+
+            return like == null ? false : true;
+        }
+
         public bool DeleteLikeFromComment(string username, int commentID)
         {
             User user = _iUserDAL.GetUser(username); 
