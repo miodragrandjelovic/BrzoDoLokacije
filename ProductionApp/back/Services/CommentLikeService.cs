@@ -8,16 +8,18 @@ namespace PyxisKapriBack.Services
     {
         private readonly ICommentLikeDAL _iCommentLikeDAL;
         private readonly IUserService userService;
-        private readonly ICommentService commentService; 
-        
-        public CommentLikeService(ICommentLikeDAL commentLikeDAL, IUserService userService, ICommentService commentService)
+        private readonly ICommentService commentService;
+        private readonly ICommentDislikeDAL commentDislikeDAL;
+
+        public CommentLikeService(ICommentLikeDAL commentLikeDAL, IUserService userService, ICommentService commentService, ICommentDislikeDAL commentDislikeDAL)
         {
             _iCommentLikeDAL = commentLikeDAL;
             this.userService = userService;
             this.commentService = commentService;
+            this.commentDislikeDAL = commentDislikeDAL;
         }
 
-        public Response AddLikeOnComment(int commentID)
+        public Response ChangeLikeStateOnComment(int commentID)
         {
             try
             {
@@ -28,14 +30,28 @@ namespace PyxisKapriBack.Services
                     throw new Exception(Constants.Constants.resNoFoundUser);
                 if (comment == null)
                     throw new Exception(Constants.Constants.resNoFoundComment);
-
-                CommentLike dislike = new CommentLike
+                if (!commentDislikeDAL.CheckIfUserDislike(user.Id, commentID))
+                    throw new Exception(Constants.Constants.resNoFoundComment); // napravi u konstantama za forbiden
+                if (_iCommentLikeDAL.IsCommentLiked(user.Username, commentID))
                 {
-                    User = user,
-                    Comment = comment
-                };
-                bool succeed = _iCommentLikeDAL.AddLikeOnComment(dislike);
-                return ResponseService.CreateOkResponse(succeed.ToString());
+                    var answer = _iCommentLikeDAL.DeleteLikeFromComment(user.Username, commentID);
+                    if (answer)
+                        return ResponseService.CreateOkResponse("OK");
+
+                    return ResponseService.CreateErrorResponse("NOT OK");
+                }
+                else
+                {
+                    CommentLike like = new CommentLike
+                    {
+                        User = user,
+                        Comment = comment
+                    };
+                    bool succeed = _iCommentLikeDAL.AddLikeOnComment(like);
+                    return ResponseService.CreateOkResponse(succeed.ToString());
+
+                }
+                return ResponseService.CreateErrorResponse("error"); // izmeniti if 
             }
             catch (Exception e)
             {

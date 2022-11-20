@@ -20,6 +20,7 @@ namespace PyxisKapriBack.DAL
                 throw new Exception(Constants.Constants.resNullValue); 
            
             _context.CommentDislikes.Add(dislike);
+            _context.SaveChanges();
             return true;
         }
 
@@ -36,12 +37,18 @@ namespace PyxisKapriBack.DAL
 
             CommentDislike dislike = GetCommentDislike(username, commentID);
             _context.CommentDislikes.Remove(dislike);
+            _context.SaveChanges();
             return true;
         }
 
         public CommentDislike GetCommentDislike(int dislikeID)
         {
             return _context.CommentDislikes.Where(dislike => dislike.Id == dislikeID).FirstOrDefault(); 
+        }
+        public bool CheckIfUserDislike(int userID, int commentID)
+        {
+            var dislike = _context.CommentDislikes.Where(dislike => dislike.UserId.Equals(userID) && dislike.CommentId.Equals(commentID));
+            return dislike == null? false: true;
         }
 
         public List<CommentDislike> GetDislikesOfComment(int commentID)
