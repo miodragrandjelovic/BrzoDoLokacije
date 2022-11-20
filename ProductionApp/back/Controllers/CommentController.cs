@@ -61,7 +61,7 @@ namespace PyxisKapriBack.Controllers
         [HttpPut("SetLike/{commentId}")]
         public async Task<IActionResult> SetLikeOnComment(int commentId)
         {
-            var response = commentUI.AddLike(commentId);
+            var response = commentUI.ChangeLikeStateOnComment(commentId);
             var message = new { message = response.Message };
             if (response.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(message);

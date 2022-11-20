@@ -29,10 +29,10 @@ namespace PyxisKapriBack.UI
             return commentDislikeService.AddDislikeOnComment(commentID); 
         }
 
-        public Response AddLike(int commentID)
+        public Response ChangeLikeStateOnComment(int commentID)
         {
 
-            return commentLikeService.AddLikeOnComment(commentID); 
+            return commentLikeService.ChangeLikeStateOnComment(commentID); 
         }
 
         public Response DeleteComment(int commentId)

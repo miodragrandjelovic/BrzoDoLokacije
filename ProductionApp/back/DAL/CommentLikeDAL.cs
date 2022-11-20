@@ -22,6 +22,7 @@ namespace PyxisKapriBack.DAL
                 throw new Exception(Constants.Constants.resNullValue);
 
             _context.CommentLikes.Add(like);
+            _context.SaveChanges();
             return true;
         }
 
@@ -37,6 +38,10 @@ namespace PyxisKapriBack.DAL
                 throw new Exception(Constants.Constants.resNoFoundComment);
 
             CommentLike like = GetCommentLike(username, commentID);
+
+            _context.CommentLikes.Remove(like);
+            _context.SaveChanges();
+
             return true;
         }
 
