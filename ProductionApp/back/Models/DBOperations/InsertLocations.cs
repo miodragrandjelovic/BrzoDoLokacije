@@ -25,6 +25,7 @@
         {
             return Locations.Where(x => x.Name.Equals(name)).Include(location => location.City)
                                                             .Include(location => location.Posts)
+                                                            .Include(location => location.City.Country)
                                                             .FirstOrDefault();
         }
         private void InsertLocations()

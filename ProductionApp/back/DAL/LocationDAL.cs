@@ -124,5 +124,17 @@ namespace PyxisKapriBack.DAL
         {
             return null; 
         }
+
+        public bool AddLocation(Location location)
+        {
+            if (location.City == null)
+                throw new Exception(Constants.Constants.resNoFoundCity); 
+
+            _context.Locations.Add(location);
+            _context.SaveChanges();
+
+            return true; 
+
+        }
     }
 }

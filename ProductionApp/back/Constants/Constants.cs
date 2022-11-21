@@ -36,6 +36,7 @@
         public const string resNoFoundComment       = "Nije pronađen komentar";
         public const string resNoFoundUser          = "Nije pronađen korisnik";
         public const string resCommentDislikeExists = "Dislike već postoji";
+        public const string resNoFoundPost          = "Post nije pronađen"; 
         #endregion
 
         public const int TAKE_ELEMENT = 5;

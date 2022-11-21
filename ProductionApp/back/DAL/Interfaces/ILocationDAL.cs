@@ -5,6 +5,7 @@ namespace PyxisKapriBack.DAL.Interfaces
     public interface ILocationDAL
     {
         public bool AddLocation(string locationName, string cityName, string countryName = Constants.Constants.UNKNWOWN);
+        public bool AddLocation(Location location); 
         public bool UpdateLocation(Location location);
         public bool DeleteLocation(string locationName);
         public Location GetLocation(string locationName);
