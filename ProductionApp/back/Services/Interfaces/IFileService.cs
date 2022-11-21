@@ -25,5 +25,7 @@ namespace PyxisKapriBack.Services.Interfaces
         public bool UpdateFile(string path, IFormFile file);
 
         public string GetDefaultPath(string folderName);
+
+        public string GetExtension(string image);
     }
 }

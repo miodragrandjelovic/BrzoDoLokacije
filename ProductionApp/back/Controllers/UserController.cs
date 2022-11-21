@@ -134,15 +134,9 @@ namespace PyxisKapriBack.Controllers
         [HttpPost("Test")]
         public async Task<IActionResult> Test(IFormFile image)
         {
-            string path = String.Empty;
-            var user = userUI.GetLoggedUser();
-            if (fileService.CheckIfFolderExists(user))
-                fileService.AddFile(user, image);
-            else
-            {
-                fileService.CreateFolder(user);
-                fileService.AddFile(user, image);
-            }
+            var path = @"C:\Users\Tekalo\Desktop\brzodolokacije\ProductionApp\back\Images\Tekalo";
+
+            fileService.AddFile(path, image);
 
             return Ok("Proslo");
         }
