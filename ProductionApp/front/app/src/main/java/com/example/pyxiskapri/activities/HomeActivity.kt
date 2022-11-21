@@ -15,6 +15,9 @@ import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.activity_home.btn_messages
+import kotlinx.android.synthetic.main.activity_home.btn_newPost
+import kotlinx.android.synthetic.main.activity_map.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -68,7 +71,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupButtonMessages(){
-        btn_newPost.setOnClickListener {
+        btn_messages.setOnClickListener {
             val intent = Intent (this, ChatMainActivity::class.java);
             startActivity(intent);
         }

@@ -25,16 +25,31 @@
             tools:layout_editor_absoluteX="16dp" />
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fcv_chatMainDrawerNav"
-        android:name="com.example.pyxiskapri.fragments.DrawerNav"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/et_friendSearch"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:elevation="200dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/back_dark_rounded_border_red"
+        android:ems="10"
+        android:fontFamily="@font/montserrat_regular"
+        android:hint="Search friends..."
+        android:inputType="textPersonName"
+        android:maxLines="1"
+        android:minLines="1"
+        android:paddingStart="20dp"
+        android:paddingTop="14dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="14dp"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textColorHint="#444F60"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_drawer_nav" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarChatMain" />
 
     <LinearLayout
         android:id="@+id/navMenu"
@@ -81,7 +96,7 @@
             android:clickable="true"
             android:focusable="true"
             app:srcCompat="@drawable/home"
-            app:tint="@color/red" />
+            app:tint="#292D33" />
 
         <ImageView
             android:id="@+id/btn_messages"
@@ -92,7 +107,7 @@
             android:clickable="true"
             android:focusable="true"
             app:srcCompat="@drawable/messages"
-            app:tint="#292D33" />
+            app:tint="@color/red" />
 
         <ImageView
             android:id="@+id/btn_notifications"
@@ -106,4 +121,27 @@
             app:tint="#292D33" />
 
     </LinearLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcv_chatMainDrawerNav"
+        android:name="com.example.pyxiskapri.fragments.DrawerNav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_drawer_nav" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_friends"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/navMenu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_friendSearch"
+        tools:listitem="@layout/item_friend_in_chat" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
