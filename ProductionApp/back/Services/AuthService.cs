@@ -73,6 +73,7 @@ namespace PyxisKapriBack.Services
             User newUser = new User
             {
                 ProfileImage = convertedImage,
+                FolderPath = FileService.GetDefaultPath(request.Username),
                 Username = request.Username,
                 FirstName = request.FirstName,
                 LastName = request.LastName,

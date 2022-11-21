@@ -56,7 +56,9 @@ namespace PyxisKapriBack.UI
 
             var userDTO = new UserDTO
             {
-                ProfileImage = user.ProfileImage == null ? string.Empty : Convert.ToBase64String(user.ProfileImage),
+                ProfileImage = Convert.ToBase64String(fileService.GetUserProfileImage(user.FolderPath)),
+                               //user.ProfileImage == null ? string.Empty : Convert.ToBase64String(user.ProfileImage),
+                               
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,

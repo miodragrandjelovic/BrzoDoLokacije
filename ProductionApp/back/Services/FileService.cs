@@ -5,6 +5,7 @@ namespace PyxisKapriBack.Services
     public class FileService : IFileService
     {
         private const string ROOT_FOLDER = "Images";
+        private static Random _generator = new Random();
         public byte[] ImageToByteArray(Image image)
         {
             MemoryStream ms = new MemoryStream();
@@ -34,10 +35,16 @@ namespace PyxisKapriBack.Services
             return Convert.ToBase64String(byteArray);
         }
 
-        public string GetDefaultProfileImage()
+        public string? GetDefaultProfileImage()
         {
             Console.WriteLine(Directory.GetCurrentDirectory());
-            return Directory.GetFiles(Directory.GetCurrentDirectory() + "" + Constants.Constants.IMAGE_PATH).FirstOrDefault();
+            var path = Path.Combine(Directory.GetCurrentDirectory(), ROOT_FOLDER, "DefaultProfileImage");
+            var image = Directory.GetFiles(path).FirstOrDefault();
+            if(!string.IsNullOrEmpty(image))
+                return image;
+
+            return string.Empty;
+
         }
 
 
@@ -56,11 +63,11 @@ namespace PyxisKapriBack.Services
 
         }
         // umesto topFolder ide putanja iz baze
-        public void AddFile(string topFolder, IFormFile file)
+        public void AddFile(string path, IFormFile file)
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), ROOT_FOLDER, topFolder,"profileImage.jpg");
+            var filePath = Path.Combine(path,"profileImage.jpg");
 
-            using(FileStream fs = new FileStream(path, FileMode.Create))
+            using(FileStream fs = new FileStream(filePath, FileMode.Create))
             {
                 file.CopyTo(fs);
             }
@@ -68,21 +75,19 @@ namespace PyxisKapriBack.Services
             
         }
 
-        public bool CheckIfFolderExists(string folderPath)
+        public bool CheckIfFolderExists(string path)
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), ROOT_FOLDER, folderPath);
             if (Directory.Exists(path))
                 return true;
-
             return false;
         }
 
-        public IFormFile GetFile(string topFolder, string fileName)
+        public IFormFile GetFile(string path, string fileName)
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory(),ROOT_FOLDER,topFolder, fileName);
-            if (File.Exists(path))
+            var filePath = Path.Combine(path, fileName);
+            if (File.Exists(filePath))
             {
-                using (var stream = File.OpenRead(path))
+                using (var stream = File.OpenRead(filePath))
                 {
                     var file = new FormFile(stream, 0, stream.Length, "image", Path.GetFileName(stream.Name))
                     {
@@ -96,17 +101,38 @@ namespace PyxisKapriBack.Services
             return null;
         }
 
-        public byte[] GetUserProfileImage(string topFolder)
+        public byte[] GetUserProfileImage(string path)
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory(),ROOT_FOLDER ,topFolder);
-
             var profileImagePath = Directory.GetFiles(path,"profileImage.jpg").FirstOrDefault();
             if(profileImagePath != null)
             {
                 return ConvertImageToByte(profileImagePath);
             }
-
             return ConvertImageToByte(GetDefaultProfileImage());
+        }
+
+        public bool UpdateFile(string topFolder, IFormFile file)
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory(), topFolder, "profileImage.jpg");
+
+            if (CheckIfFolderExists(path))
+            {
+                Directory.Move(path,path);//izmeni
+                return true;
+            }
+            else
+            {
+                AddFile(topFolder,file);
+                return true;
+            }
+
+            return false;
+        }
+
+        public string GetDefaultPath(string folderName)
+        {
+            var path = Path.Combine(Directory.GetCurrentDirectory (), ROOT_FOLDER,folderName);
+            return path;
         }
     }
 }

@@ -9,18 +9,21 @@ namespace PyxisKapriBack.Services.Interfaces
 
         public string ConvertStringToBase64(string str);
 
-        public string GetDefaultProfileImage();
+        public string? GetDefaultProfileImage();
 
         public byte[]? ConvertImageToByte(string image);
 
-        public bool CheckIfFolderExists(string folderPath);
+        public bool CheckIfFolderExists(string path);
         public bool CreateFolder(string folderName);
 
-        public void AddFile(string topFolder, IFormFile file);
+        public void AddFile(string path, IFormFile file);
 
-        public IFormFile GetFile(string topFolder, string fileName);
+        public IFormFile GetFile(string path, string fileName);
 
-        public byte[] GetUserProfileImage(string topFolder);
+        public byte[] GetUserProfileImage(string path);
  
+        public bool UpdateFile(string path, IFormFile file);
+
+        public string GetDefaultPath(string folderName);
     }
 }

@@ -168,7 +168,8 @@ namespace PyxisKapriBack.Controllers
         [HttpGet("GetProfileImage")]
         public async Task<IActionResult> GetProfileImage()
         {
-            var image = fileService.GetUserProfileImage(userUI.GetLoggedUser());
+            var path = @"C:\Users\Tekalo\Desktop\brzodolokacije\ProductionApp\back\Images\Tekalo";
+            var image = fileService.GetUserProfileImage(path);
 
             return Ok(Convert.ToBase64String(image));
         }
