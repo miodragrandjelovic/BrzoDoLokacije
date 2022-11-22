@@ -79,7 +79,7 @@ class ChatMainActivity : AppCompatActivity() {
     }
 
     private fun setupFriendList(){
-        friendsAdapter = ChatFriendsAdapter(arrayListOf())
+        friendsAdapter = ChatFriendsAdapter(arrayListOf(), this)
         rv_friends.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
         (rv_friends.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         rv_friends.adapter = friendsAdapter

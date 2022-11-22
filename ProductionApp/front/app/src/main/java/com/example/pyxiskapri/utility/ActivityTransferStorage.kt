@@ -1,5 +1,6 @@
 package com.example.pyxiskapri.utility
 
+import com.example.pyxiskapri.dtos.response.FriendResponse
 import com.example.pyxiskapri.models.PostListItem
 import com.google.android.gms.maps.model.LatLng
 
@@ -11,6 +12,9 @@ interface ActivityTransferStorage {
 
         @JvmStatic
         lateinit var openPostToMap: LatLng
+
+        @JvmStatic
+        lateinit var chatToChatting: FriendResponse
     }
 
 }
