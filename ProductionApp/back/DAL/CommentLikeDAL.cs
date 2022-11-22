@@ -28,7 +28,8 @@ namespace PyxisKapriBack.DAL
 
         public bool CheckIfUserLike(int userID, int commentID)
         {
-            var like = _context.CommentLikes.Where(like => like.UserId.Equals(userID) && like.CommentId.Equals(commentID));
+            CommentLike like = _context.CommentLikes.Where(like => like.UserId.Equals(userID) && like.CommentId.Equals(commentID))
+                                                    .FirstOrDefault();
 
             return like == null ? false : true;
         }
