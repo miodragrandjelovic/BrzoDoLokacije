@@ -38,7 +38,8 @@
         public const string resCommentDislikeExists = "Dislike već postoji";
         public const string resNoFoundPost          = "Post nije pronađen";
         public const string resDeleteLikeFailed     = "Neuspešno brisanje like-a";
-        public const string resDeleteDislikeFailed  = "Neuspešno brisanje dislike-a"; 
+        public const string resDeleteDislikeFailed  = "Neuspešno brisanje dislike-a";
+        public const string resPermissionDenied    = "Odbijen pristup!"; 
         #endregion
 
         #region 'Ok message'
