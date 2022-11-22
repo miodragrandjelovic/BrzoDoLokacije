@@ -69,6 +69,8 @@ namespace PyxisKapriBack.Services
                 location.Address = post.Address;
                 locationDAL.AddLocation(location);
             }
+
+            newPost.Location = location;
                 
             if (post.Images.Count > 0)
             {
