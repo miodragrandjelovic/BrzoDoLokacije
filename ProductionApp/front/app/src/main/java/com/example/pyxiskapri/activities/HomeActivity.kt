@@ -2,7 +2,6 @@ package com.example.pyxiskapri.activities
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
@@ -16,6 +15,9 @@ import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.activity_home.btn_messages
+import kotlinx.android.synthetic.main.activity_home.btn_newPost
+import kotlinx.android.synthetic.main.activity_map.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -58,12 +60,19 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setupNavButtons(){
         setupButtonNewPost()
-
+        setupButtonMessages()
     }
 
     private fun setupButtonNewPost(){
         btn_newPost.setOnClickListener {
             val intent = Intent (this, NewPostActivity::class.java);
+            startActivity(intent);
+        }
+    }
+
+    private fun setupButtonMessages(){
+        btn_messages.setOnClickListener {
+            val intent = Intent (this, ChatMainActivity::class.java);
             startActivity(intent);
         }
     }
