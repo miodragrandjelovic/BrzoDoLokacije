@@ -49,8 +49,11 @@
         public const int TAKE_ELEMENT = 5;
 
         // Comment status
-        public const int NONE = 0;
-        public const int LIKED = 1;
-        public const int DISLIKED = -1;
+    }
+    public enum CommentState
+    {
+        DISLIKED = -1,
+        NONE = 0,
+        LIKED = 1
     }
 }
