@@ -32,15 +32,15 @@ namespace PyxisKapriBack.Services
                 {
                     var answer = commentLikeDAL.DeleteLikeFromComment(user.Username, comment.Id);
                     if (!answer)
-                        throw new Exception("Cannot delete like");
+                        throw new Exception(Constants.Constants.resDeleteLikeFailed);
                 }
                 if (_iCommentDislikeDAL.IsCommentDisliked(user.Username, comment.Id))
                 {
                     var answer = _iCommentDislikeDAL.DeleteDislikeFromComment(user.Username, comment.Id);
                     if (answer)
-                        return ResponseService.CreateOkResponse("OK");
+                        return ResponseService.CreateOkResponse(Constants.Constants.resDeletedDislike);
 
-                    return ResponseService.CreateErrorResponse("NOT OK");
+                    return ResponseService.CreateErrorResponse(Constants.Constants.resDeleteDislikeFailed);
                 }
                 else
                 {

@@ -36,7 +36,14 @@
         public const string resNoFoundComment       = "Nije pronađen komentar";
         public const string resNoFoundUser          = "Nije pronađen korisnik";
         public const string resCommentDislikeExists = "Dislike već postoji";
-        public const string resNoFoundPost          = "Post nije pronađen"; 
+        public const string resNoFoundPost          = "Post nije pronađen";
+        public const string resDeleteLikeFailed     = "Neuspešno brisanje like-a";
+        public const string resDeleteDislikeFailed  = "Neuspešno brisanje dislike-a"; 
+        #endregion
+
+        #region 'Ok message'
+        public const string resDeletedDislike = "Dislike je uspešno obrisan!";
+        public const string resDeletedLike    = "Like je uspešno obrisan!";
         #endregion
 
         public const int TAKE_ELEMENT = 5;
