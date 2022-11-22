@@ -22,6 +22,13 @@ class  MainActivity : AppCompatActivity() {
         setupGoToRegisterButton();
         setupGoToSignInButton();
 
+        button.setOnClickListener(){
+
+            val intent = Intent (this, ChangeCredentialsActivity::class.java);
+            startActivity(intent);
+
+
+        }
 
     }
 
