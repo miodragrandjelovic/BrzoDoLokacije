@@ -1,5 +1,4 @@
-﻿using PyxisKapriBack.DAL.Interfaces;
-using PyxisKapriBack.LocationManager.Interfaces;
+﻿using PyxisKapriBack.DAL.Interfaces; 
 using PyxisKapriBack.Models;
 
 namespace PyxisKapriBack.DAL
@@ -7,7 +6,6 @@ namespace PyxisKapriBack.DAL
     public class LocationDAL : ILocationDAL
     {
         private Database _context;
-        private ILocationManager _locationManagaer; 
         private int page = 0;
         private List<Location> locations;
         public LocationDAL(Database context)
@@ -83,6 +81,10 @@ namespace PyxisKapriBack.DAL
         {
             return _context.GetLocation(locationName);
         }
+        public Location GetLocation(int locationID)
+        {
+            return _context.Locations.Where(location => location.Id == locationID).FirstOrDefault(); 
+        }
 
         public List<Location> GetNextSetOfLocations(int take = Constants.Constants.TAKE_ELEMENT)
         {
@@ -120,9 +122,16 @@ namespace PyxisKapriBack.DAL
             return locations; 
         }
 
-        public List<Location> GetAllAroundLocations(Location location)
+        public List<Location> GetAllAroundLocations(Location location, double distance = Constants.Constants.DISTANCE)
         {
-            return null; 
+            var closestLocations = _context.Locations.Where(loc => ((Math.Abs(location.Longitude - loc.Longitude) <= 0.2)
+                                                                || (Math.Abs(location.Latitude - loc.Latitude) <= 0.2))
+                                                                && (loc.Id != location.Id))
+                                                     .Include(loc => loc.City)
+                                                     .ToList();
+
+            closestLocations = LocationManager.LocationManager.GetAllAroundLocations(location, closestLocations, distance); 
+            return closestLocations; 
         }
 
         public bool AddLocation(Location location)
@@ -134,7 +143,6 @@ namespace PyxisKapriBack.DAL
             _context.SaveChanges();
 
             return true; 
-
         }
     }
 }

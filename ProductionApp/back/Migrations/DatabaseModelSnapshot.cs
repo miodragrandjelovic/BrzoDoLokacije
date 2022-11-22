@@ -38,7 +38,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Comment", b =>
@@ -72,7 +72,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.CommentDislike", b =>
@@ -93,7 +93,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CommentDislikes");
+                    b.ToTable("CommentDislikes", (string)null);
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.CommentLike", b =>
@@ -114,7 +114,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CommentLikes");
+                    b.ToTable("CommentLikes", (string)null);
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Country", b =>
@@ -130,7 +130,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Dislike", b =>
@@ -151,7 +151,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Dislikes");
+                    b.ToTable("Dislikes", (string)null);
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Follow", b =>
@@ -172,7 +172,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("FollowingId");
 
-                    b.ToTable("Follow");
+                    b.ToTable("Follow", (string)null);
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Image", b =>
@@ -192,7 +192,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Images");
+                    b.ToTable("Images", (string)null);
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Like", b =>
@@ -213,7 +213,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Likes");
+                    b.ToTable("Likes", (string)null);
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Location", b =>
@@ -245,7 +245,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("CityID");
 
-                    b.ToTable("Locations");
+                    b.ToTable("Locations", (string)null);
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Message", b =>
@@ -273,7 +273,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Post", b =>
@@ -306,7 +306,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Role", b =>
@@ -322,7 +322,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.User", b =>
@@ -377,7 +377,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.City", b =>

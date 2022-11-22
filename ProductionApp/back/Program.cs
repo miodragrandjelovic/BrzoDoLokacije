@@ -12,7 +12,6 @@ using PyxisKapriBack.Services.Interfaces;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 using PyxisKapriBack.LocationManager;
-using PyxisKapriBack.LocationManager.Interfaces;
 using PyxisKapriBack.UI.Interfaces;
 using PyxisKapriBack.UI;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -114,7 +113,6 @@ builder.Services.AddTransient<IUserUI, UserUI>();
     #endregion
 
     #region 'Managers'
-    builder.Services.AddTransient<ILocationManager, LocationManager>();
     builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
     builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();
     builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();

@@ -47,7 +47,7 @@
         #endregion
 
         public const int TAKE_ELEMENT = 5;
-
+        public const double DISTANCE = 1500; 
         // Comment status
     }
     public enum CommentState

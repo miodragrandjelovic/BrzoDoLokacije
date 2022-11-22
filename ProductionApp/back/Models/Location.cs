@@ -13,6 +13,8 @@
         public double Latitude { get; set; } = 0;
         [MaxLength(Constants.ModelConstants.LENGTH_DESCRIPTION)]
         public string Address { get; set; } = string.Empty;
+        [NotMapped]
+        public double Distance { get; set; }
         #region 'City'
         public int CityID { get; set; }
         public City City { get; set; }
