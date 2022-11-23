@@ -68,7 +68,7 @@ namespace PyxisKapriBack.Controllers
         }
 
         [HttpPut("UpdateUser")]
-        public async Task<IActionResult> UpdateUserCredentials(UserDTO user)
+        public async Task<IActionResult> UpdateUserCredentials([FromForm]UserDTO user)
         {
             var answer = userUI.UpdateUser(user);
             if(answer.StatusCode.Equals(StatusCodes.Status200OK))

@@ -16,16 +16,18 @@ namespace PyxisKapriBack.Services.Interfaces
         public bool CheckIfFolderExists(string path);
         public bool CreateFolder(string folderName);
 
-        public void AddFile(string path, IFormFile file);
+        public string AddFile(string path, IFormFile file);
 
         public IFormFile GetFile(string path, string fileName);
 
         public byte[] GetUserProfileImage(string path);
  
-        public bool UpdateFile(string path, IFormFile file);
-
-        public string GetDefaultPath(string folderName);
-
+        public bool UpdateFile(string path, string fileName, IFormFile file, out string newFileName);
+        public string GetDefaultPath();
+        public string GetProfileImagePath(string folderName);
         public string GetExtension(string image);
+        public bool CheckIfProfileImageExists(string path, string fileName);
+        public void CreateUserFolder(string folderName);
+
     }
 }

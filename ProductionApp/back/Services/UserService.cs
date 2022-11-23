@@ -16,14 +16,19 @@ namespace PyxisKapriBack.Services
         private readonly IRoleDAL roleDAL;
         private readonly IEncryptionManager manager;
         private readonly IJWTManagerRepository jwtManager;
+        private readonly IFileService fileService;
 
-        public UserService(IUserDAL userDAL, IHttpContextAccessor httpContextAccessor, IRoleDAL roleDAL,IEncryptionManager manager,IJWTManagerRepository jwtManager)
+        public UserService(IUserDAL userDAL, 
+            IHttpContextAccessor httpContextAccessor, 
+            IRoleDAL roleDAL,IEncryptionManager manager,
+            IJWTManagerRepository jwtManager,IFileService fileService)
         {
             this.userDAL = userDAL;
             this.httpContextAccessor = httpContextAccessor;
             this.roleDAL = roleDAL;
             this.manager = manager;
             this.jwtManager = jwtManager;
+            this.fileService = fileService;
         }
         public Response AddNewUser(User user)
         {
@@ -160,7 +165,18 @@ namespace PyxisKapriBack.Services
                 };
             }
 
-            loggedUser.ProfileImage = Convert.FromBase64String(user.ProfileImage);
+            // MENJANJE PROFILNE SLIKE
+            string newProfileImageName = string.Empty;
+            if (!fileService.CheckIfProfileImageExists(user.FolderPath, user.ProfileImage.FileName))
+            {
+                fileService.UpdateFile(user.FolderPath, user.FileName, user.ProfileImage, out newProfileImageName);
+                loggedUser.FileName = newProfileImageName;
+            }
+            else
+            {
+                loggedUser.FileName = user.FileName;
+            }
+            loggedUser.FolderPath = user.FolderPath;
             loggedUser.Username = user.Username;
             loggedUser.FirstName = user.FirstName;
             loggedUser.LastName = user.LastName;

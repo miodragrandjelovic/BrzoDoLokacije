@@ -4,7 +4,7 @@ namespace PyxisKapriBack.Services
 {
     public class FileService : IFileService
     {
-        private const string ROOT_FOLDER = "Images";
+
         private static Random _generator = new Random();
         public byte[] ImageToByteArray(Image image)
         {
@@ -37,8 +37,7 @@ namespace PyxisKapriBack.Services
 
         public string? GetDefaultProfileImage()
         {
-            Console.WriteLine(Directory.GetCurrentDirectory());
-            var path = Path.Combine(Directory.GetCurrentDirectory(), ROOT_FOLDER, "DefaultProfileImage");
+            var path = Path.Combine(Directory.GetCurrentDirectory(), Constants.Constants.ROOT_FOLDER, "DefaultProfileImage");
             var image = Directory.GetFiles(path).FirstOrDefault();
             if(!string.IsNullOrEmpty(image))
                 return image;
@@ -56,14 +55,13 @@ namespace PyxisKapriBack.Services
 
         public bool CreateFolder(string folderName)
         {
-            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), ROOT_FOLDER, folderName);
-
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), Constants.Constants.ROOT_FOLDER, folderName);
             Directory.CreateDirectory(folderPath);
             return true;
 
         }
         // umesto topFolder ide putanja iz baze
-        public void AddFile(string path, IFormFile file)
+        public string AddFile(string path, IFormFile file)
         {
             var extension = GetExtension(file.FileName);
             var imageName = "profileImage" + "." + extension;
@@ -74,6 +72,7 @@ namespace PyxisKapriBack.Services
                 file.CopyTo(fs);
             }
 
+            return filePath;
             
         }
 
@@ -113,33 +112,59 @@ namespace PyxisKapriBack.Services
             return ConvertImageToByte(GetDefaultProfileImage());
         }
 
-        public bool UpdateFile(string topFolder, IFormFile file)
+        public bool UpdateFile(string path,string fileName ,IFormFile file, out string newFileName)
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory(), topFolder, "profileImage.jpg");
+            bool succeed = false;
+            var imagePath = Path.Combine(Directory.GetCurrentDirectory(), path, fileName);
+            newFileName = file.FileName;
 
-            if (CheckIfFolderExists(path))
+            if (File.Exists(imagePath))
             {
-                Directory.Move(path,path);//izmeni
-                return true;
-            }
-            else
-            {
-                AddFile(topFolder,file);
-                return true;
+                File.Delete(imagePath);
             }
 
-            return false;
+            AddFile(path, file);
+            succeed = true;
+
+            return succeed;
+          
         }
 
-        public string GetDefaultPath(string folderName)
+        public string GetDefaultPath()
         {
-            var path = Path.Combine(Directory.GetCurrentDirectory (), ROOT_FOLDER,folderName);
+            var path = Path.Combine(Constants.Constants.ROOT_FOLDER, Constants.Constants.DEFAULT_IMAGE_PATH);
             return path;
         }
 
         public string GetExtension(string image)
         {
             return image.Split('.').Last();
+        }
+
+        public string GetProfileImagePath(string folderName)
+        {
+            var path = Path.Combine(Constants.Constants.ROOT_FOLDER, folderName);
+            return path;
+        }
+
+        public bool CheckIfProfileImageExists(string path, string fileName)
+        {
+            var fullPath = Path.Combine(Directory.GetCurrentDirectory(),path, fileName);
+            if (File.Exists(fullPath))
+                return true;
+            return false;
+        }
+
+        public void CreateUserFolder(string folderName)
+        {
+            if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), folderName)))
+            {
+                CreateFolder(folderName);
+                var defaultImagePath = Path.Combine(Directory.GetCurrentDirectory(), Constants.Constants.ROOT_FOLDER, Constants.Constants.DEFAULT_IMAGE_PATH);
+                var sourcePath = Directory.GetFiles(defaultImagePath, Constants.Constants.DEFAULT_IMAGE_NAME).FirstOrDefault();
+                var destPath = Path.Combine(GetProfileImagePath(folderName), Constants.Constants.DEFAULT_IMAGE_NAME);
+                File.Copy(sourcePath, destPath);
+            }
         }
     }
 }

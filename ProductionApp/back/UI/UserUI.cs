@@ -38,7 +38,9 @@ namespace PyxisKapriBack.UI
 
             var userDTO = new UserDTO
             {
-                ProfileImage = user.ProfileImage == null ? string.Empty : Convert.ToBase64String(user.ProfileImage),
+                //ProfileImage = user.ProfileImage == null ? string.Empty : Convert.ToBase64String(user.ProfileImage),
+                FolderPath = user.FolderPath,
+                FileName = user.FileName,
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -56,9 +58,10 @@ namespace PyxisKapriBack.UI
 
             var userDTO = new UserDTO
             {
-                ProfileImage = Convert.ToBase64String(fileService.GetUserProfileImage(user.FolderPath)),
+                //ProfileImage = Convert.ToBase64String(fileService.GetUserProfileImage(user.FolderPath)),
                                //user.ProfileImage == null ? string.Empty : Convert.ToBase64String(user.ProfileImage),
-                               
+                FolderPath = user.FolderPath,
+                FileName = user.FileName,
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -90,7 +93,9 @@ namespace PyxisKapriBack.UI
                     Username = user.Username,
                     FirstName= user.FirstName,
                     LastName = user.LastName,
-                    ProfileImage = Convert.ToBase64String(user.ProfileImage),
+                    //ProfileImage = Convert.ToBase64String(user.ProfileImage),
+                    FolderPath = user.FolderPath,
+                    FileName= user.FileName,
                     Email = user.Email
                 });
             }
