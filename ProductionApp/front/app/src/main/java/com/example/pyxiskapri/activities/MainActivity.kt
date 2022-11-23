@@ -24,7 +24,7 @@ class  MainActivity : AppCompatActivity() {
 
         button.setOnClickListener(){
 
-            val intent = Intent (this, ChangeCredentialsActivity::class.java);
+            val intent = Intent (this, NewUserProfileActivity::class.java);
             startActivity(intent);
 
 
