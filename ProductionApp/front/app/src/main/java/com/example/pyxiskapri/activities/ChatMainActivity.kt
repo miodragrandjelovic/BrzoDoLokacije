@@ -1,6 +1,7 @@
 package com.example.pyxiskapri.activities
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,6 +12,7 @@ import com.example.pyxiskapri.adapters.ChatFriendsAdapter
 import com.example.pyxiskapri.dtos.response.FriendResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.io.Resources
 import kotlinx.android.synthetic.main.activity_chat_main.*
 import kotlinx.android.synthetic.main.activity_chat_main.btn_home
 import kotlinx.android.synthetic.main.activity_chat_main.btn_newPost
@@ -28,6 +30,8 @@ class ChatMainActivity : AppCompatActivity() {
 
         apiClient = ApiClient()
 
+        setSwipeRefresh()
+
         setupNavButtons()
 
         setupFriendList()
@@ -38,6 +42,18 @@ class ChatMainActivity : AppCompatActivity() {
             fcv_chatMainDrawerNav.getFragment<DrawerNav>().showDrawer()
     }
 
+    private fun setSwipeRefresh(){
+
+        srl_home.setProgressBackgroundColorSchemeResource(R.color.red)
+        srl_home.setColorSchemeResources(R.color.white)
+
+        srl_chatMain.setOnRefreshListener {
+            et_friendSearch.setText("")
+            setupFriendList()
+
+            srl_chatMain.isRefreshing = false
+        }
+    }
 
 
     private fun setupNavButtons(){
@@ -48,14 +64,14 @@ class ChatMainActivity : AppCompatActivity() {
     private fun setupGoHomeButton(){
         btn_home.setOnClickListener {
             val intent = Intent (this, HomeActivity::class.java);
-            startActivity(intent);
+            startActivity(intent)
         }
     }
 
     private fun setupButtonNewPost(){
         btn_newPost.setOnClickListener {
             val intent = Intent (this, NewPostActivity::class.java);
-            startActivity(intent);
+            startActivity(intent)
         }
     }
 
