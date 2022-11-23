@@ -100,16 +100,16 @@ builder.Services.AddSwaggerGen(options => {
     builder.Services.AddTransient<IPlaceService, PlaceService>();
     builder.Services.AddTransient<IFollowService, FollowService>();
     builder.Services.AddTransient<ICommentService, CommentService>();
-
     builder.Services.AddTransient<ICommentLikeService, CommentLikeService>();
     builder.Services.AddTransient<ICommentDislikeService, CommentDislikeService>();
     #endregion
 
-#region 'UI - Dependencies'
-builder.Services.AddTransient<IUserUI, UserUI>();
+    #region 'UI - Dependencies'
+    builder.Services.AddTransient<IUserUI, UserUI>();
     builder.Services.AddTransient<IPostUI, PostUI>();
     builder.Services.AddTransient<IFollowUI, FollowUI>(); 
-    builder.Services.AddTransient<ICommentUI, CommentUI>(); 
+    builder.Services.AddTransient<ICommentUI, CommentUI>();
+    builder.Services.AddTransient<IPlaceUI, PlaceUI>(); 
     #endregion
 
     #region 'Managers'
