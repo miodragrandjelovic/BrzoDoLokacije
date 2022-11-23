@@ -79,6 +79,7 @@ class HomeActivity : AppCompatActivity() {
     private fun setupNavButtons(){
         setupButtonNewPost()
         setupButtonMessages()
+        setupButtonUserProfile()
     }
 
     private fun setupButtonNewPost(){
@@ -95,6 +96,12 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupButtonUserProfile() {
+        btn_UserProfile_bar.setOnClickListener(){
+            val intent = Intent (this, UserProfileActivity::class.java)
+            startActivity(intent);
+        }
+    }
 
 
 

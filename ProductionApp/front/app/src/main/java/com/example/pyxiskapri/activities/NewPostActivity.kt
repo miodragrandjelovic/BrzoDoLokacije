@@ -36,7 +36,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_new_post.*
+import kotlinx.android.synthetic.main.activity_new_post.btn_UserProfile_bar
+import kotlinx.android.synthetic.main.activity_new_post.btn_home
+import kotlinx.android.synthetic.main.activity_new_post.btn_messages
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -80,16 +84,25 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
         setupPickCoverImage()
         setupPickImagesButton()
 
-        setupGoHomeButton()
+        setupNavButtons()
 
         setupAddPostButton()
 
     }
 
+
     fun showDrawerMenu(view: View){
         if(view.id == R.id.btn_menu)
             fcv_drawerNavNewPost.getFragment<DrawerNav>().showDrawer()
     }
+
+    private fun setupNavButtons() {
+        setupGoHomeButton()
+        setupButtonMessages()
+        setupButtonUserProfile()
+    }
+
+
 
     private fun setupGoHomeButton(){
         btn_home.setOnClickListener {
@@ -97,6 +110,21 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             startActivity(intent);
         }
     }
+
+    private fun setupButtonMessages(){
+        btn_messages.setOnClickListener {
+            val intent = Intent (this, ChatMainActivity::class.java);
+            startActivity(intent);
+        }
+    }
+
+    private fun setupButtonUserProfile() {
+        btn_UserProfile_bar.setOnClickListener(){
+            val intent = Intent (this, UserProfileActivity::class.java)
+            startActivity(intent);
+        }
+    }
+
 
 
     @Throws(IOException::class)

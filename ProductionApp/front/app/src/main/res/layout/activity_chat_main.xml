@@ -85,6 +85,17 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
+            android:id="@+id/btn_home"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/home"
+            app:tint="#292D33" />
+
+        <ImageView
             android:id="@+id/btn_newPost"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
@@ -106,16 +117,6 @@
             app:srcCompat="@drawable/map"
             app:tint="#292D33" />
 
-        <ImageView
-            android:id="@+id/btn_home"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/home"
-            app:tint="#292D33" />
 
         <ImageView
             android:id="@+id/btn_messages"
@@ -138,6 +139,16 @@
             android:focusable="true"
             app:srcCompat="@drawable/notifications"
             app:tint="#292D33" />
+
+        <ImageView
+            android:id="@+id/btn_UserProfile_bar_c"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/avatarplaceholder_gray" />
 
     </LinearLayout>
 

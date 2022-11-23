@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_chat_main.*
 import kotlinx.android.synthetic.main.activity_chat_main.btn_home
 import kotlinx.android.synthetic.main.activity_chat_main.btn_newPost
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.activity_new_post.*
 
 class ChatMainActivity : AppCompatActivity() {
 
@@ -59,6 +60,7 @@ class ChatMainActivity : AppCompatActivity() {
     private fun setupNavButtons(){
         setupGoHomeButton()
         setupButtonNewPost()
+        setupButtonUserProfile()
     }
 
     private fun setupGoHomeButton(){
@@ -73,6 +75,15 @@ class ChatMainActivity : AppCompatActivity() {
             val intent = Intent (this, NewPostActivity::class.java);
             startActivity(intent)
         }
+    }
+
+    private fun setupButtonUserProfile() {
+
+        btn_UserProfile_bar_c.setOnClickListener(){
+            val intent = Intent (this, UserProfileActivity::class.java)
+            startActivity(intent);
+        }
+
     }
 
 
