@@ -57,4 +57,11 @@
         NONE = 0,
         LIKED = 1
     }
+    public enum SearchType
+    {
+        LOCATION, 
+        COORDINATES, 
+        CITY, 
+        COUNTRY
+    }
 }

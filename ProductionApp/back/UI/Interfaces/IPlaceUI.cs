@@ -1,6 +1,9 @@
-﻿namespace PyxisKapriBack.UI.Interfaces
+﻿using PyxisKapriBack.DTOComponents;
+
+namespace PyxisKapriBack.UI.Interfaces
 {
     public interface IPlaceUI
     {
+        public List<LocationDTO> GetAllAroundLocations(SearchDTO search, SearchType searchType); 
     }
 }

@@ -124,11 +124,7 @@ namespace PyxisKapriBack.DAL
 
         public List<Location> GetAllAroundLocations(Location location, double distance = Constants.Constants.DISTANCE)
         {
-            var closestLocations = _context.Locations.Where(loc => ((Math.Abs(location.Longitude - loc.Longitude) <= 0.2)
-                                                                || (Math.Abs(location.Latitude - loc.Latitude) <= 0.2))
-                                                                && (loc.Id != location.Id))
-                                                     .Include(loc => loc.City)
-                                                     .ToList();
+            var closestLocations = _context.Locations.Where(loc => loc.Id != location.Id).ToList();
 
             closestLocations = LocationManager.LocationManager.GetAllAroundLocations(location, closestLocations, distance); 
             return closestLocations; 

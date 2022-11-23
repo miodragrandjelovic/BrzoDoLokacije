@@ -52,6 +52,16 @@ namespace PyxisKapriBack.Services
             return locationsDTO; 
         }
 
+        public List<Location> GetAllAroundLocationsByCoordinates(double longitude, double latitude, double distance = 1500)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Location> GetAllAroundLocationsByName(string locationName, double distance = 1500)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Location> GetNextSetOfLocations(int take = Constants.Constants.TAKE_ELEMENT)
         {
             return _iLocationDAL.GetNextSetOfLocations(take);
