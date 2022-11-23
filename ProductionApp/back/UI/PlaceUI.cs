@@ -14,17 +14,21 @@ namespace PyxisKapriBack.UI
             this.iPlaceService = iPlaceService;
         }
 
-        public List<LocationDTO> GetAllAroundLocations(SearchDTO search, SearchType searchType)
+        public List<LocationDTO> GetAllAroundLocations(SearchDTO search)
         {
             List <LocationDTO> locationsDTO = null;  
             List<Location> locations = null;
-            switch (searchType)
+            double distance = Constants.Constants.DISTANCE; 
+            if (search.Distance > 0)
+                distance = search.Distance; 
+
+            switch (search.SearchType)
             {
                 case SearchType.LOCATION:
-                    locations = iPlaceService.GetAllAroundLocationsByName(search.Name, search.Distance);
+                    locationsDTO = iPlaceService.GetAllAroundLocationsByName(search.Name, distance);
                     break;
                 case SearchType.COORDINATES: 
-                    locations = iPlaceService.GetAllAroundLocationsByCoordinates(search.Longitude, search.Latitude, search.Distance);
+                    locationsDTO = iPlaceService.GetAllAroundLocationsByCoordinates(search.Longitude, search.Latitude, distance);
                     break;
                 case SearchType.CITY:
                     locations = null;

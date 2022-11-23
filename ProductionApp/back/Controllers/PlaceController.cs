@@ -38,10 +38,7 @@ namespace PyxisKapriBack.Controllers
         public async Task<IActionResult> GetAllAroundLocations(SearchDTO search)
         {
             var locations = new List<LocationDTO>();
-            if (search.Distance > 0)
-                locations = placeService.GetAllAroundLocations(search.Name, search.Distance);
-            else
-                locations = placeService.GetAllAroundLocations(search.Name); 
+            locations = placeUI.GetAllAroundLocations(search); 
 
             return Ok(locations);
         }

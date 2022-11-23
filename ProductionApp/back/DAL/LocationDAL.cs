@@ -1,4 +1,5 @@
-﻿using PyxisKapriBack.DAL.Interfaces; 
+﻿using PyxisKapriBack.DAL.Interfaces;
+using PyxisKapriBack.LocationManager.Interfaces;
 using PyxisKapriBack.Models;
 
 namespace PyxisKapriBack.DAL
@@ -6,11 +7,13 @@ namespace PyxisKapriBack.DAL
     public class LocationDAL : ILocationDAL
     {
         private Database _context;
+        private ILocationManager locationManager; 
         private int page = 0;
         private List<Location> locations;
-        public LocationDAL(Database context)
+        public LocationDAL(Database context, ILocationManager locationManager)
         {
             _context = context;
+            this.locationManager = locationManager;
         }
 
         public bool AddLocation(string locationName, string cityName, string countryName = Constants.Constants.UNKNWOWN)
@@ -124,10 +127,10 @@ namespace PyxisKapriBack.DAL
 
         public List<Location> GetAllAroundLocations(Location location, double distance = Constants.Constants.DISTANCE)
         {
-            var closestLocations = _context.Locations.Where(loc => loc.Id != location.Id).ToList();
-
-            closestLocations = LocationManager.LocationManager.GetAllAroundLocations(location, closestLocations, distance); 
-            return closestLocations; 
+            List<Location> locations;
+            locations = _context.Locations.ToList();
+            locations = locationManager.GetAllAroundLocations(location, locations, distance); 
+            return locations; 
         }
 
         public bool AddLocation(Location location)

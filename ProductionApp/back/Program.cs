@@ -15,6 +15,7 @@ using PyxisKapriBack.LocationManager;
 using PyxisKapriBack.UI.Interfaces;
 using PyxisKapriBack.UI;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using PyxisKapriBack.LocationManager.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -109,10 +110,11 @@ builder.Services.AddSwaggerGen(options => {
     builder.Services.AddTransient<IPostUI, PostUI>();
     builder.Services.AddTransient<IFollowUI, FollowUI>(); 
     builder.Services.AddTransient<ICommentUI, CommentUI>();
-    builder.Services.AddTransient<IPlaceUI, PlaceUI>(); 
+    builder.Services.AddTransient<IPlaceUI, PlaceUI>();
     #endregion
 
     #region 'Managers'
+    builder.Services.AddTransient<ILocationManager, LocationManager>(); 
     builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
     builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();
     builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
