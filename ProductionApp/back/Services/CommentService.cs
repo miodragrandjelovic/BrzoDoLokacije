@@ -2,7 +2,6 @@
 using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.Models;
 using PyxisKapriBack.Services.Interfaces;
-
 namespace PyxisKapriBack.Services
 {
     public class CommentService : ICommentService
@@ -124,17 +123,17 @@ namespace PyxisKapriBack.Services
             return commentDAL.GetCommentsPost(postId);  
         }
 
-        public int GetCommentStatus(int commentId)
+        public CommentState GetCommentStatus(int commentId)
         {
-            int status = Constants.Constants.NONE;
+            CommentState status = CommentState.NONE;
 
             var isLiked = commentLikeService.IsCommentLiked(commentId);
             var isDisliked = commentDislikeService.IsCommentDisliked(commentId);
 
             if (isLiked)
-                status = Constants.Constants.LIKED;
+                status = CommentState.LIKED;
             else if (isDisliked)
-                status = Constants.Constants.DISLIKED;
+                status = CommentState.DISLIKED; 
 
             return status;
         }

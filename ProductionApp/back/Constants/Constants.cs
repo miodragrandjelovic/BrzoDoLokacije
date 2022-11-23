@@ -36,13 +36,32 @@
         public const string resNoFoundComment       = "Nije pronađen komentar";
         public const string resNoFoundUser          = "Nije pronađen korisnik";
         public const string resCommentDislikeExists = "Dislike već postoji";
+        public const string resNoFoundPost          = "Post nije pronađen";
+        public const string resDeleteLikeFailed     = "Neuspešno brisanje like-a";
+        public const string resDeleteDislikeFailed  = "Neuspešno brisanje dislike-a";
+        public const string resPermissionDenied    = "Odbijen pristup!"; 
+        #endregion
+
+        #region 'Ok message'
+        public const string resDeletedDislike = "Dislike je uspešno obrisan!";
+        public const string resDeletedLike    = "Like je uspešno obrisan!";
         #endregion
 
         public const int TAKE_ELEMENT = 5;
-
+        public const double DISTANCE = 1500; 
         // Comment status
-        public const int NONE = 0;
-        public const int LIKED = 1;
-        public const int DISLIKED = -1;
+    }
+    public enum CommentState
+    {
+        DISLIKED = -1,
+        NONE = 0,
+        LIKED = 1
+    }
+    public enum SearchType
+    {
+        LOCATION, 
+        COORDINATES, 
+        CITY, 
+        COUNTRY
     }
 }

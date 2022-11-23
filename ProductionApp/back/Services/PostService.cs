@@ -12,13 +12,17 @@ namespace PyxisKapriBack.Services
         private readonly ILikeService likeService;
         private readonly IUserService userService;
         private readonly ILocationDAL locationDAL;
-
-        public PostService(IPostDAL postDAL, ILikeService likeService, IUserService userService, ILocationDAL locationDAL)
+        private readonly ICityDAL cityDAL;
+        private readonly ICountryDAL countryDAL; 
+        public PostService(IPostDAL postDAL, ILikeService likeService, IUserService userService, ILocationDAL locationDAL, 
+            ICityDAL cityDAL, ICountryDAL countryDAL)
         {
             this.postDAL = postDAL;
             this.likeService = likeService;
             this.userService = userService;
             this.locationDAL = locationDAL;
+            this.cityDAL = cityDAL;
+            this.countryDAL = countryDAL; 
         }
 
         public void AddPost(NewPostDTO post)
@@ -32,15 +36,42 @@ namespace PyxisKapriBack.Services
 
 
             var location = locationDAL.GetLocation(post.LocationName);
+            var city = cityDAL.GetCity(post.City);
+            var country = countryDAL.GetCountry(post.Country);
+            
+            if (country == null)
+                if (countryDAL.AddCountry(post.Country))
+                    country = countryDAL.GetCountry(post.Country);
+
+            if (city == null)
+                if (cityDAL.AddCity(post.City, post.Country))
+                    city = cityDAL.GetCity(post.City);
+
             if (location == null)
-                locationDAL.AddLocation(post.LocationName, post.City, post.Country);
+            {
+                location = new Location();
+                location.Longitude = post.Longitude;
+                location.Latitude = post.Latitude;
+                location.City = city; 
+                location.Address = post.Address;
+                location.Name = post.LocationName;
 
-            newPost.Location = locationDAL.GetLocation(post.LocationName);
-            newPost.Location.Latitude = post.Latitude;
-            newPost.Location.Longitude = post.Longitude;
-            newPost.Location.Address = post.Address;
+                locationDAL.AddLocation(location); 
+            }
+            else if((location.Longitude == 0) || (location.Latitude == 0))
+            {
+                location.Longitude = post.Longitude;
+                location.Latitude = post.Latitude;
+                locationDAL.UpdateLocation(location); 
+            }
+            else if (String.IsNullOrEmpty(location.Address))
+            {
+                location.Address = post.Address;
+                locationDAL.AddLocation(location);
+            }
 
-
+            newPost.Location = location;
+                
             if (post.Images.Count > 0)
             {
                 foreach (string image in post.Images)
@@ -61,7 +92,7 @@ namespace PyxisKapriBack.Services
                 return new Response
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
-                    Message = "Post doesn't exist!"
+                    Message = Constants.Constants.resNoFoundPost
                 };
 
             return new Response
@@ -81,13 +112,13 @@ namespace PyxisKapriBack.Services
             
             if (user == null)
             {
-                response.Message = "User not found!";
+                response.Message = Constants.Constants.resNoFoundUser;
                 return response;
             }
 
             if (post == null)
             {
-                response.Message = "Post not found";
+                response.Message = Constants.Constants.resNoFoundPost;
                 return response;
             }
             if(!user.Id.Equals(post.UserId))

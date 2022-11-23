@@ -12,10 +12,10 @@ using PyxisKapriBack.Services.Interfaces;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 using PyxisKapriBack.LocationManager;
-using PyxisKapriBack.LocationManager.Interfaces;
 using PyxisKapriBack.UI.Interfaces;
 using PyxisKapriBack.UI;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using PyxisKapriBack.LocationManager.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,20 +101,20 @@ builder.Services.AddSwaggerGen(options => {
     builder.Services.AddTransient<IPlaceService, PlaceService>();
     builder.Services.AddTransient<IFollowService, FollowService>();
     builder.Services.AddTransient<ICommentService, CommentService>();
-
     builder.Services.AddTransient<ICommentLikeService, CommentLikeService>();
     builder.Services.AddTransient<ICommentDislikeService, CommentDislikeService>();
     #endregion
 
-#region 'UI - Dependencies'
-builder.Services.AddTransient<IUserUI, UserUI>();
+    #region 'UI - Dependencies'
+    builder.Services.AddTransient<IUserUI, UserUI>();
     builder.Services.AddTransient<IPostUI, PostUI>();
     builder.Services.AddTransient<IFollowUI, FollowUI>(); 
-    builder.Services.AddTransient<ICommentUI, CommentUI>(); 
+    builder.Services.AddTransient<ICommentUI, CommentUI>();
+    builder.Services.AddTransient<IPlaceUI, PlaceUI>();
     #endregion
 
     #region 'Managers'
-    builder.Services.AddTransient<ILocationManager, LocationManager>();
+    builder.Services.AddTransient<ILocationManager, LocationManager>(); 
     builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
     builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();
     builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();

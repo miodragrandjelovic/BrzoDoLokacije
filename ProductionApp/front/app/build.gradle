@@ -70,7 +70,8 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
-
+    // SwipeDown to refresh
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
 
 

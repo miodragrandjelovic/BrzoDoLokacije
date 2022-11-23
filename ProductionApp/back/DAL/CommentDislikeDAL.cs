@@ -47,7 +47,8 @@ namespace PyxisKapriBack.DAL
         }
         public bool CheckIfUserDislike(int userID, int commentID)
         {
-            var dislike = _context.CommentDislikes.Where(dislike => dislike.UserId.Equals(userID) && dislike.CommentId.Equals(commentID));
+            CommentDislike dislike = _context.CommentDislikes.Where(dislike => dislike.UserId.Equals(userID) && dislike.CommentId.Equals(commentID))
+                                                  .FirstOrDefault();
             return dislike == null? false: true;
         }
 

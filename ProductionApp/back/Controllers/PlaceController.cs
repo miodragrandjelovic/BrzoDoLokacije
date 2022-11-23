@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.Services.Interfaces;
+using PyxisKapriBack.UI.Interfaces;
 
 namespace PyxisKapriBack.Controllers
 {
@@ -11,10 +13,12 @@ namespace PyxisKapriBack.Controllers
     public class PlaceController : ControllerBase
     {
         private readonly IPlaceService placeService;
+        private readonly IPlaceUI placeUI; 
 
-        public PlaceController(IPlaceService placeService)
+        public PlaceController(IPlaceService placeService, IPlaceUI placeUI)
         {
             this.placeService = placeService;
+            this.placeUI = placeUI;
         }
 
         [HttpPost("FilterLocations")]
@@ -27,6 +31,15 @@ namespace PyxisKapriBack.Controllers
         public async Task<IActionResult> GetNextLocations(int amountOfLocations)
         {
             var locations = placeService.GetNextSetOfLocations(amountOfLocations);
+            return Ok(locations);
+        }
+
+        [HttpPost("GetAllAroundLocations")]
+        public async Task<IActionResult> GetAllAroundLocations(SearchDTO search)
+        {
+            var locations = new List<LocationDTO>();
+            locations = placeUI.GetAllAroundLocations(search); 
+
             return Ok(locations);
         }
     }

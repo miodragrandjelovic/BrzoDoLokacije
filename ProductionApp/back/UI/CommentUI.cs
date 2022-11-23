@@ -79,7 +79,7 @@ namespace PyxisKapriBack.UI
                     CommentText = comment.Text,
                     DateOfCommenting = comment.DateCreated.ToString(),
                     Username = comment.User.Username,
-                    LikeStatus = commentService.GetCommentStatus(comment.Id),
+                    LikeStatus = (int)commentService.GetCommentStatus(comment.Id),
                     ProfileImage = Convert.ToBase64String(comment.User.ProfileImage),
                     LikeCount = commentLikeService.GetCommentLikeCount(comment.Id), 
                     DislikeCount = commentDislikeService.GetCommentDislikeCount(comment.Id)

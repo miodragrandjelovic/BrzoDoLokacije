@@ -7,12 +7,13 @@ namespace PyxisKapriBack.DAL
     public class LocationDAL : ILocationDAL
     {
         private Database _context;
-        private ILocationManager _locationManagaer; 
+        private ILocationManager locationManager; 
         private int page = 0;
         private List<Location> locations;
-        public LocationDAL(Database context)
+        public LocationDAL(Database context, ILocationManager locationManager)
         {
             _context = context;
+            this.locationManager = locationManager;
         }
 
         public bool AddLocation(string locationName, string cityName, string countryName = Constants.Constants.UNKNWOWN)
@@ -83,6 +84,10 @@ namespace PyxisKapriBack.DAL
         {
             return _context.GetLocation(locationName);
         }
+        public Location GetLocation(int locationID)
+        {
+            return _context.Locations.Where(location => location.Id == locationID).FirstOrDefault(); 
+        }
 
         public List<Location> GetNextSetOfLocations(int take = Constants.Constants.TAKE_ELEMENT)
         {
@@ -120,9 +125,23 @@ namespace PyxisKapriBack.DAL
             return locations; 
         }
 
-        public List<Location> GetAllAroundLocations(Location location)
+        public List<Location> GetAllAroundLocations(Location location, double distance = Constants.Constants.DISTANCE)
         {
-            return null; 
+            List<Location> locations;
+            locations = _context.Locations.ToList();
+            locations = locationManager.GetAllAroundLocations(location, locations, distance); 
+            return locations; 
+        }
+
+        public bool AddLocation(Location location)
+        {
+            if (location.City == null)
+                throw new Exception(Constants.Constants.resNoFoundCity); 
+
+            _context.Locations.Add(location);
+            _context.SaveChanges();
+
+            return true; 
         }
     }
 }

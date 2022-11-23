@@ -22,7 +22,6 @@ namespace PyxisKapriBack.Services
             try
             {
                 User user = userService.GetUser(userService.GetLoggedUser());
-                //Comment comment = commentService.GetComment(commentID);
 
                 if (user == null)
                     throw new Exception(Constants.Constants.resNoFoundUser);
@@ -32,15 +31,15 @@ namespace PyxisKapriBack.Services
                 {
                     var answer = commentDislikeDAL.DeleteDislikeFromComment(user.Username, comment.Id);
                     if (!answer)
-                        throw new Exception("Cannot delete dislike");
-                }// napravi u konstantama za forbiden
+                        throw new Exception(Constants.Constants.resPermissionDenied);
+                }
                 if (_iCommentLikeDAL.IsCommentLiked(user.Username, comment.Id))
                 {
                     var answer = _iCommentLikeDAL.DeleteLikeFromComment(user.Username, comment.Id);
                     if (answer)
-                        return ResponseService.CreateOkResponse("OK");
+                        return ResponseService.CreateOkResponse(Constants.Constants.resDeletedLike);
 
-                    return ResponseService.CreateErrorResponse("NOT OK");
+                    return ResponseService.CreateErrorResponse(Constants.Constants.resDeleteLikeFailed);
                 }
                 else
                 {

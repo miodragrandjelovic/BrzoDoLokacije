@@ -1,4 +1,5 @@
 ﻿using PyxisKapriBack.LocationManager.Interfaces;
+using PyxisKapriBack.Models;
 using System.Device.Location; 
 namespace PyxisKapriBack.LocationManager
 {
@@ -10,6 +11,23 @@ namespace PyxisKapriBack.LocationManager
             var coordinate2 = new GeoCoordinate(Latitude2, Longitude2);
             
             return coordinate1.GetDistanceTo(coordinate2);
-        } 
+        }
+
+        public List<Location> GetAllAroundLocations(Location location, List<Location> locations, double distance = Constants.Constants.DISTANCE)
+        {
+            var closest = new List<Location>();
+            double dist; 
+
+            foreach(Location loc in locations)
+            {
+                dist = GetDistance(location.Latitude, location.Longitude, loc.Latitude, loc.Longitude); 
+                if (dist <= distance)
+                {
+                    loc.Distance = dist; 
+                    closest.Add(loc);
+                }
+            }
+            return closest;
+        }
     }
 }

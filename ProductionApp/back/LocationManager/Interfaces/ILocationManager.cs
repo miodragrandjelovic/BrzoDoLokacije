@@ -1,7 +1,10 @@
-﻿namespace PyxisKapriBack.LocationManager.Interfaces
+﻿using PyxisKapriBack.Models;
+
+namespace PyxisKapriBack.LocationManager.Interfaces
 {
     public interface ILocationManager
     {
-        double GetDistance(double Latitude1, double Longitude1, double Latitude2, double Longitude2); 
+        public double GetDistance(double longitude1, double latitude1, double longitude2, double latitude2);
+        public List<Location> GetAllAroundLocations(Location location, List<Location> locations, double distance = Constants.Constants.DISTANCE); 
     }
 }

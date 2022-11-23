@@ -27,6 +27,53 @@ namespace PyxisKapriBack.Services
             return locationsDTO;
         }
 
+        public List<LocationDTO> GetAllAroundLocationsByName(string location, double distance = Constants.Constants.DISTANCE)
+        {
+            var _location = _iLocationDAL.GetLocation(location);
+
+            if (location == null)
+                return null; 
+
+            var locations = _iLocationDAL.GetAllAroundLocations(_location, distance);
+            if (locations == null)
+                return null;
+
+            var locationsDTO = new List<LocationDTO>(); 
+            foreach(Location loc in locations)
+            {
+                locationsDTO.Add(new LocationDTO
+                {
+                    Id = loc.Id,
+                    Name = loc.Name, 
+                    Distance = loc.Distance
+                }); 
+            }
+
+            return locationsDTO; 
+        }
+
+        public List<LocationDTO> GetAllAroundLocationsByCoordinates(double longitude, double latitude, double distance = 1500)
+        {
+            var location = new Location()
+            {
+                Longitude = longitude,
+                Latitude = latitude
+            }; 
+            var locations = _iLocationDAL.GetAllAroundLocations(location, distance);
+
+            var locationsDTO = new List<LocationDTO>();
+            foreach (Location loc in locations)
+            {
+                locationsDTO.Add(new LocationDTO
+                {
+                    Id = loc.Id,
+                    Name = loc.Name,
+                    Distance = loc.Distance
+                });
+            }
+
+            return locationsDTO; 
+        }
         public List<Location> GetNextSetOfLocations(int take = Constants.Constants.TAKE_ELEMENT)
         {
             return _iLocationDAL.GetNextSetOfLocations(take);

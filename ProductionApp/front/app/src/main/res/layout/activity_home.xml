@@ -25,8 +25,8 @@
             tools:layout_editor_absoluteX="16dp" />
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_home"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/navMenu"
@@ -34,7 +34,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent">
+
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/abl_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent">
@@ -46,9 +58,9 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <LinearLayout
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -64,18 +76,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
-                            android:text="Posts from people you follow:"
-                            android:textColor="@color/white"
                             android:fontFamily="@font/montserrat_regular"
-                            />
+                            android:text="Posts from people you follow:"
+                            android:textColor="@color/white" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rv_f_posts"
-                            android:layout_marginBottom="1dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="10dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="1dp"
                             android:orientation="horizontal"
                             tools:listitem="@layout/item_post_followed_profiles" />
                         <!--android:layout_marginTop="1dp"-->
@@ -197,27 +208,30 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:fillViewport="true"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/nsv_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_posts"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                app:layout_constraintBottom_toTopOf="@+id/iv_navBarBackground"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar"
-                tools:listitem="@layout/item_post" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_posts"
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        app:layout_constraintBottom_toTopOf="@+id/iv_navBarBackground"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                        tools:listitem="@layout/item_post" />
 
-        </androidx.core.widget.NestedScrollView>
+                </androidx.core.widget.NestedScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/navMenu"
@@ -232,6 +246,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_home"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/home"
+            app:tint="@color/red" />
 
         <ImageView
             android:id="@+id/btn_newPost"
@@ -255,16 +280,6 @@
             app:srcCompat="@drawable/map"
             app:tint="#292D33" />
 
-        <ImageView
-            android:id="@+id/btn_home"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/home"
-            app:tint="@color/red" />
 
         <ImageView
             android:id="@+id/btn_messages"
@@ -287,6 +302,16 @@
             android:focusable="true"
             app:srcCompat="@drawable/notifications"
             app:tint="#292D33" />
+
+        <ImageView
+            android:id="@+id/btn_UserProfile_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/avatarplaceholder_gray" />
 
     </LinearLayout>
 
