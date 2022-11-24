@@ -25,7 +25,6 @@ namespace PyxisKapriBack.Services.Interfaces
         public bool UpdateFile(string path, string fileName, IFormFile file, out string newFileName);
         public string GetDefaultPath();
         public string GetProfileImagePath(string folderName);
-        public string GetExtension(string image);
         public bool CheckIfProfileImageExists(string path, string fileName);
         public void CreateUserFolder(string folderName);
 

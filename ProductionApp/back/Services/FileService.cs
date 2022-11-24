@@ -63,9 +63,7 @@ namespace PyxisKapriBack.Services
         // umesto topFolder ide putanja iz baze
         public string AddFile(string path, IFormFile file)
         {
-            var extension = GetExtension(file.FileName);
-            var imageName = "profileImage" + "." + extension;
-            var filePath = Path.Combine(path,imageName);
+            var filePath = Path.Combine(path,file.FileName);
 
             using(FileStream fs = new FileStream(filePath, FileMode.Create))
             {
@@ -134,11 +132,6 @@ namespace PyxisKapriBack.Services
         {
             var path = Path.Combine(Constants.Constants.ROOT_FOLDER, Constants.Constants.DEFAULT_IMAGE_PATH);
             return path;
-        }
-
-        public string GetExtension(string image)
-        {
-            return image.Split('.').Last();
         }
 
         public string GetProfileImagePath(string folderName)

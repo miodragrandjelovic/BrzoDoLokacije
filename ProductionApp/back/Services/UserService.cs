@@ -167,16 +167,17 @@ namespace PyxisKapriBack.Services
 
             // MENJANJE PROFILNE SLIKE
             string newProfileImageName = string.Empty;
-            if (!fileService.CheckIfProfileImageExists(user.FolderPath, user.ProfileImage.FileName))
+            var folderPath = Path.Combine(Constants.Constants.ROOT_FOLDER, loggedUser.Username);
+            if (!fileService.CheckIfProfileImageExists(folderPath, user.ProfileImage.FileName))
             {
-                fileService.UpdateFile(user.FolderPath, user.FileName, user.ProfileImage, out newProfileImageName);
+                fileService.UpdateFile(folderPath, user.FileName, user.ProfileImage, out newProfileImageName);
                 loggedUser.FileName = newProfileImageName;
             }
             else
             {
                 loggedUser.FileName = user.FileName;
             }
-            loggedUser.FolderPath = user.FolderPath;
+            loggedUser.FolderPath = folderPath;
             loggedUser.Username = user.Username;
             loggedUser.FirstName = user.FirstName;
             loggedUser.LastName = user.LastName;
