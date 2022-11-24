@@ -1,4 +1,4 @@
-package com.example.pyxiskapri.activities
+package com.example.pyxiskapri.activities.UserProfile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -245,6 +245,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/ll_posts"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -258,14 +259,13 @@
                         android:fontFamily="@font/montserrat_regular"
                         android:text="Posts"
                         android:textAlignment="center"
-                        android:textColor="@color/red"
-                        android:textSize="16dp" />
+                        android:textColor="@color/white"
+                        android:textSize="15dp" />
 
                 </LinearLayout>
 
 
                 <LinearLayout
-                    android:id="@+id/ll_map"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -279,8 +279,8 @@
                         android:fontFamily="@font/montserrat_regular"
                         android:text="Map"
                         android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="15dp" />
+                        android:textColor="@color/red"
+                        android:textSize="16dp" />
 
                 </LinearLayout>
 
@@ -288,20 +288,15 @@
             </LinearLayout>
 
 
-            <com.example.pyxiskapri.custom_view_models.WrapGridView
-                android:id="@+id/gv_user_posts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginBottom="15dp"
-                android:horizontalSpacing="10dp"
-                android:numColumns="3"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="10dp"
+
+            <fragment
+                android:id="@+id/user_post_map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_fields"
-
                 />
 
 
