@@ -21,7 +21,7 @@ namespace PyxisKapriBack.Controllers
             this.postUI = postUI;
         }
         [HttpPost("NewPost")]
-        public async Task<IActionResult> CreatePost(NewPostDTO post)
+        public async Task<IActionResult> CreatePost([FromForm]NewPostDTO post)
         {   //izmena da vraca response
             postUI.AddPost(post);
             return Ok(

@@ -13,26 +13,42 @@ namespace PyxisKapriBack.Services
         private readonly IUserService userService;
         private readonly ILocationDAL locationDAL;
         private readonly ICityDAL cityDAL;
-        private readonly ICountryDAL countryDAL; 
+        private readonly ICountryDAL countryDAL;
+        private readonly IFileService fileService;
+
         public PostService(IPostDAL postDAL, ILikeService likeService, IUserService userService, ILocationDAL locationDAL, 
-            ICityDAL cityDAL, ICountryDAL countryDAL)
+            ICityDAL cityDAL, ICountryDAL countryDAL,IFileService fileService)
         {
             this.postDAL = postDAL;
             this.likeService = likeService;
             this.userService = userService;
             this.locationDAL = locationDAL;
             this.cityDAL = cityDAL;
-            this.countryDAL = countryDAL; 
+            this.countryDAL = countryDAL;
+            this.fileService = fileService;
         }
 
         public void AddPost(NewPostDTO post)
         {
-
+            var loggedUser = userService.GetUser(userService.GetLoggedUser());
+            var postPath = fileService.GetPostName();
             var newPost = new Post();
-            newPost.User = userService.GetUser(userService.GetLoggedUser());
+            newPost.User = loggedUser;
             newPost.CreatedDate = DateTime.Now;
             newPost.Description = post.Description;
-            newPost.CoverImage = Convert.FromBase64String(post.CoverImage);
+            newPost.CoverImageName = post.CoverImage.FileName;
+            newPost.PostPath = postPath;
+
+            var fullPath = Path.Combine(loggedUser.FolderPath, postPath);
+            var answer = fileService.CreateFolder(fullPath);
+            //if (!answer)
+            //    return new Response
+            //    {
+            //        StatusCode = StatusCodes.Status500InternalServerError,
+            //        Message = "Error while creating post folder!"
+            //    };
+            fileService.AddFile(fullPath, post.CoverImage);
+
 
 
             var location = locationDAL.GetLocation(post.LocationName);
@@ -74,10 +90,11 @@ namespace PyxisKapriBack.Services
                 
             if (post.Images.Count > 0)
             {
-                foreach (string image in post.Images)
+                foreach (var image in post.Images)
                 {
                     Image newImage = new Image();
-                    newImage.ImageData = Encoding.ASCII.GetBytes(image);
+                    newImage.ImageName = image.FileName;
+                    fileService.AddFile(fullPath, image);
                     newPost.Images.Add(newImage);
                 }
             }

@@ -28,5 +28,7 @@ namespace PyxisKapriBack.Services.Interfaces
         public bool CheckIfProfileImageExists(string path, string fileName);
         public void CreateUserFolder(string folderName);
 
+        public string GetPostName();
+
     }
 }

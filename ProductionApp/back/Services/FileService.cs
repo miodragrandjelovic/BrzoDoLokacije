@@ -55,9 +55,12 @@ namespace PyxisKapriBack.Services
 
         public bool CreateFolder(string folderName)
         {
-            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), Constants.Constants.ROOT_FOLDER, folderName);
-            Directory.CreateDirectory(folderPath);
-            return true;
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), folderName); 
+            DirectoryInfo info = Directory.CreateDirectory(folderPath);
+            if(info.Exists)
+                return true;
+
+            return false;
 
         }
         // umesto topFolder ide putanja iz baze
@@ -152,12 +155,19 @@ namespace PyxisKapriBack.Services
         {
             if (!Directory.Exists(Path.Combine(Directory.GetCurrentDirectory(), folderName)))
             {
-                CreateFolder(folderName);
+                var path = Path.Combine(Constants.Constants.ROOT_FOLDER,folderName);
+                CreateFolder(path);
                 var defaultImagePath = Path.Combine(Directory.GetCurrentDirectory(), Constants.Constants.ROOT_FOLDER, Constants.Constants.DEFAULT_IMAGE_PATH);
                 var sourcePath = Directory.GetFiles(defaultImagePath, Constants.Constants.DEFAULT_IMAGE_NAME).FirstOrDefault();
                 var destPath = Path.Combine(GetProfileImagePath(folderName), Constants.Constants.DEFAULT_IMAGE_NAME);
                 File.Copy(sourcePath, destPath);
             }
         }
+
+        public string GetPostName()
+        {
+            return Constants.Constants.POST_NAME + _generator.NextInt64();
+        }
+        
     }
 }

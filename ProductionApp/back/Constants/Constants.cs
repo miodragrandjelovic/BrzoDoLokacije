@@ -53,6 +53,7 @@
         public const string ROOT_FOLDER = "Images";
         public const string DEFAULT_IMAGE_PATH = "DefaultProfileImage";
         public const string DEFAULT_IMAGE_NAME = "default-image.png";
+        public const string POST_NAME = "Post";
     }
     public enum CommentState
     {
