@@ -1,6 +1,8 @@
 package com.example.pyxiskapri.utility
 
+import com.example.pyxiskapri.TransferModels.PostItemToOpenPost
 import com.example.pyxiskapri.dtos.response.FriendResponse
+import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.models.PostListItem
 import com.google.android.gms.maps.model.LatLng
 

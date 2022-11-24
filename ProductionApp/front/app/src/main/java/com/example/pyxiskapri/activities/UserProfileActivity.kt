@@ -5,22 +5,19 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.adapters.ImageGridAdapter
 import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.dtos.request.ChangePasswordRequest
-import com.example.pyxiskapri.dtos.request.EditUserRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.LoginResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
@@ -29,14 +26,25 @@ import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
+import com.example.pyxiskapri.utility.UtilityFunctions
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.modal_change_pass.*
 import kotlinx.android.synthetic.main.modal_confirm_password.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.Callback
+import retrofit2.Response
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.InputStream
+import java.net.URI
 
 class UserProfileActivity : AppCompatActivity() {
 
@@ -121,12 +129,10 @@ class UserProfileActivity : AppCompatActivity() {
                         tv_name1.text=response.body()!!.firstName
                         tv_name2.text=response.body()!!.lastName
 
-                        val picture=response.body()!!.profileImage
-                        if(picture!=null)
+                        if(response.body()!!.folderPath!="")
                         {
-                            oldProfileImage=response.body()!!.profileImage
-                            var imageData = android.util.Base64.decode(picture, android.util.Base64.DEFAULT)
-                            imageViewReal.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
+                            oldProfileImage = response.body()!!.folderPath.replace("\\", "//")
+                            Picasso.get().load(UtilityFunctions.getFullImagePath(oldProfileImage + "//" + response.body()!!.fileName)).into(imageViewReal)
                         }
 
 
@@ -224,6 +230,10 @@ class UserProfileActivity : AppCompatActivity() {
 
     }
 
+    private fun requestBodyFromString(value: String): RequestBody{
+        return value.toRequestBody("text/plain".toMediaTypeOrNull())
+    }
+
     private fun confirmButton()
     {
         ib_confirm.setOnClickListener()
@@ -248,6 +258,8 @@ class UserProfileActivity : AppCompatActivity() {
                     var encodedString =
                         android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
                     slika=encodedString
+
+
                 }
 
                 else if(this::oldProfileImage.isInitialized)
@@ -263,7 +275,7 @@ class UserProfileActivity : AppCompatActivity() {
                     et_email.setText(tv_email.text)
                 }
 
-                var editUserRequest= EditUserRequest(
+                /*var editUserRequest= EditUserRequest(
 
                     firstName = this.et_first_name.text.toString(),
                     lastName = this.et_last_name.text.toString(),
@@ -271,12 +283,33 @@ class UserProfileActivity : AppCompatActivity() {
                     email = this.et_email.text.toString(),
                     password = dialog.et_modul_password.text.toString(),
                     profileimage = slika
-                )
-
+                )*/
 
                 val context: Context = this
 
-                apiClient.getUserService(context).editUser(editUserRequest).enqueue(object : Callback<LoginResponse>{
+
+                var imageFile: File = UtilityFunctions.createTmpFileFromUri(this, profileImage, "profileImage")!!
+                imageFile.deleteOnExit()
+
+
+                var requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+                var multipartImage: MultipartBody.Part = MultipartBody.Part.createFormData("ProfileImage", imageFile.name, requestFile)
+
+
+                //imageFile.delete()
+
+
+                apiClient.getUserService(context).editUser(
+                    requestBodyFromString("NO_FOLDER_PATH"),
+                    requestBodyFromString("NO_FILE_NAME"),
+                    requestBodyFromString( this.et_username.text.toString()),
+                    requestBodyFromString( dialog.et_modul_password.text.toString()),
+                    requestBodyFromString( this.et_first_name.text.toString()),
+                    requestBodyFromString( this.et_last_name.text.toString()),
+                    requestBodyFromString( this.et_email.text.toString()),
+                    multipartImage
+                )
+                    .enqueue(object : Callback<LoginResponse>{
                     override fun onResponse(
                         call: Call<LoginResponse>,
                         response: Response<LoginResponse>
@@ -300,7 +333,7 @@ class UserProfileActivity : AppCompatActivity() {
                         }
 
                         if(response.code() == Constants.CODE_BAD_REQUEST)
-                            Toast.makeText(context, "The password is wrong, or username is taken!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "_BAD REQUEST MESSAGE HERE_", Toast.LENGTH_SHORT).show()
 
                         flag=0
                     }
@@ -350,10 +383,11 @@ class UserProfileActivity : AppCompatActivity() {
 
         ib_change_photo.setOnClickListener(){
 
-            val intent: Intent = Intent()
+            val intent: Intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             intent.action = Intent.ACTION_GET_CONTENT
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             startActivityForResult(Intent.createChooser(intent, "Select Images"), PICK_IMAGE_CODE)
 
         }
