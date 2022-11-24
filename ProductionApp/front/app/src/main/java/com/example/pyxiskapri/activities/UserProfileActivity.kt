@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
+import androidx.documentfile.provider.DocumentFile
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.dtos.request.ChangePasswordRequest
@@ -140,7 +141,7 @@ class UserProfileActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<GetUserResponse>, t: Throwable) {
-                    TODO("Not yet implemented")
+                    //TODO("Not yet implemented")
                 }
 
             })
@@ -285,21 +286,17 @@ class UserProfileActivity : AppCompatActivity() {
                     profileimage = slika
                 )*/
 
-                val context: Context = this
 
-
-                var imageFile: File = UtilityFunctions.createTmpFileFromUri(this, profileImage, "profileImage")!!
+                val imageFile: File = UtilityFunctions.createTmpFileFromUri(this, profileImage, "profilna", UtilityFunctions.getUriExtention(this, profileImage))!!
                 imageFile.deleteOnExit()
 
+                val imageAsRequestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
 
-                var requestFile = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
-                var multipartImage: MultipartBody.Part = MultipartBody.Part.createFormData("ProfileImage", imageFile.name, requestFile)
+                val multipartImage: MultipartBody.Part = MultipartBody.Part.createFormData("ProfileImage", imageFile.name, imageAsRequestBody)
 
+                val context: Context = this
 
-                //imageFile.delete()
-
-
-                apiClient.getUserService(context).editUser(
+                apiClient.getUserService(this).editUser(
                     requestBodyFromString("NO_FOLDER_PATH"),
                     requestBodyFromString("NO_FILE_NAME"),
                     requestBodyFromString( this.et_username.text.toString()),
@@ -309,7 +306,7 @@ class UserProfileActivity : AppCompatActivity() {
                     requestBodyFromString( this.et_email.text.toString()),
                     multipartImage
                 )
-                    .enqueue(object : Callback<LoginResponse>{
+                .enqueue(object : Callback<LoginResponse>{
                     override fun onResponse(
                         call: Call<LoginResponse>,
                         response: Response<LoginResponse>
