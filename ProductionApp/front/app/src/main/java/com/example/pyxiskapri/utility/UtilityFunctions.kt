@@ -10,4 +10,8 @@ object UtilityFunctions {
         return BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
     }
 
+    public fun getFullImagePath(imagePath: String): String{
+        return Constants.BASE_URL + "/" + imagePath
+    }
+
 }

@@ -8,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.TransferModels.PostItemToOpenPost
 import com.example.pyxiskapri.adapters.CommentAdapter
 import com.example.pyxiskapri.dtos.request.NewCommentRequest
 import com.example.pyxiskapri.dtos.response.CommentResponse
@@ -17,6 +18,7 @@ import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.*
 import com.google.android.gms.maps.model.LatLng
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_open_post.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,7 +31,7 @@ class OpenPostActivity : AppCompatActivity() {
 
     lateinit var activityTransferStorage: ActivityTransferStorage
 
-    private lateinit var postData: PostListItem
+    private lateinit var postData: PostItemToOpenPost
     private lateinit var postLocation: LatLng
 
     private lateinit var commentsAdapter: CommentAdapter
@@ -38,10 +40,7 @@ class OpenPostActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_open_post)
 
-        //collectActivityPassedData()
-        Log.d("postData", ActivityTransferStorage.postItemToOpenPost.toString())
         postData = ActivityTransferStorage.postItemToOpenPost
-
 
         sessionManager = SessionManager(this)
         apiClient = ApiClient()
@@ -192,14 +191,11 @@ class OpenPostActivity : AppCompatActivity() {
         if(postAdditionalData != null)
             postLocation = LatLng(postAdditionalData.latitude, postAdditionalData.longitude)
 
-        if(postData.ownerImage != "")
-        {
-            iv_ownerAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(postData.ownerImage))
-            tv_ownerUsername.text = postData.ownerUsername
-        }
+        iv_ownerAvatar.setImageBitmap(postData.ownerImage)
 
+        tv_ownerUsername.text = postData.ownerUsername
 
-        iv_coverImage.setImageBitmap(UtilityFunctions.base64ToBitmap(postData.coverImage))
+        iv_coverImage.setImageBitmap(postData.coverImage)
 
         tv_likeCount.text = postData.likeCount.toString()
         tv_viewCount.text = postData.viewCount.toString()

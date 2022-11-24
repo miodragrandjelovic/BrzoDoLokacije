@@ -29,6 +29,8 @@ import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
+import com.example.pyxiskapri.utility.UtilityFunctions
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.modal_change_pass.*
@@ -124,9 +126,8 @@ class UserProfileActivity : AppCompatActivity() {
                         val picture=response.body()!!.profileImage
                         if(picture!=null)
                         {
-                            oldProfileImage=response.body()!!.profileImage
-                            var imageData = android.util.Base64.decode(picture, android.util.Base64.DEFAULT)
-                            imageViewReal.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
+                            oldProfileImage = response.body()!!.profileImage
+                            val oldProfileBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(oldProfileImage)).into(imageViewReal)
                         }
 
 

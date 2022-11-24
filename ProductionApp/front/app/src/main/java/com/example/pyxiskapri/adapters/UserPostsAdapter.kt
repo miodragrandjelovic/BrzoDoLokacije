@@ -14,6 +14,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.Toast
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.TransferModels.PostItemToOpenPost
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
@@ -21,6 +22,8 @@ import com.example.pyxiskapri.models.ImageGridItem
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.UtilityFunctions
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.modal_confirm_delete.*
 import retrofit2.Call
@@ -59,19 +62,16 @@ class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: C
             removeImage(position)
         }
 
-        val picture=postsItem[position].coverImage
-        if(picture!=null)
-        {
-            var imageData = android.util.Base64.decode(picture, android.util.Base64.DEFAULT)
-            gvItemImage?.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
-        }
+        val coverBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(postsItem[position].coverImage)).get()
+        val ownerBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(postsItem[position].ownerImage)).get()
+
+        if(coverBitmap!=null)
+            gvItemImage?.setImageBitmap(coverBitmap)
 
 
         gvItemImage?.setOnClickListener(){
             val intent = Intent(context, OpenPostActivity::class.java)
-            Log.d("BASE 64", postsItem[position].coverImage)
-            //intent.putExtra("postData", currentPost)
-            ActivityTransferStorage.postItemToOpenPost = postsItem[position]
+            ActivityTransferStorage.postItemToOpenPost = PostItemToOpenPost(postsItem[position], ownerBitmap, coverBitmap)
             context.startActivity(intent)
 
             (context as Activity).finish()

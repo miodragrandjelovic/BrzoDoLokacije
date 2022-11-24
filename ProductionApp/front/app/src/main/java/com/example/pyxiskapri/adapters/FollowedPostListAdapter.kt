@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.TransferModels.PostItemToOpenPost
 import com.example.pyxiskapri.activities.ForeignProfileActivity
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.PostResponse
@@ -16,8 +17,10 @@ import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.shape.CornerFamily
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_post.view.*
 import kotlinx.android.synthetic.main.item_post_followed_profiles.view.*
+import kotlinx.android.synthetic.main.item_reply.view.*
 
 
 class FollowedPostListAdapter (private val postList: MutableList<PostListItem>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>(){
@@ -39,7 +42,8 @@ class FollowedPostListAdapter (private val postList: MutableList<PostListItem>) 
 
         val currentPost = postList[position]
         holder.itemView.apply {
-            profileImage.setImageBitmap(UtilityFunctions.base64ToBitmap(currentPost.ownerImage))
+            val profileBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.ownerImage)).get()
+            profileImage.setImageBitmap(profileBitmap)
             //tv_ownerUsername.text = currentPost.ownerUsername
             f_post_likes.text = currentPost.likeCount.toString()
             f_post_dislikes.text = currentPost.viewCount.toString()
@@ -53,14 +57,13 @@ class FollowedPostListAdapter (private val postList: MutableList<PostListItem>) 
                 .build()
 
 
-
-            imagePost.setImageBitmap(UtilityFunctions.base64ToBitmap(currentPost.coverImage))
+            var coverBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).get()
+            imagePost.setImageBitmap(coverBitmap)
 
             imagePost.setOnClickListener{
                     val intent = Intent(context, OpenPostActivity::class.java)
-                    Log.d("BASE 64", currentPost.coverImage)
                     //intent.putExtra("postData", currentPost)
-                    ActivityTransferStorage.postItemToOpenPost = currentPost
+                    ActivityTransferStorage.postItemToOpenPost = PostItemToOpenPost(currentPost, profileBitmap, coverBitmap)
                     context.startActivity(intent)
                 }
 
