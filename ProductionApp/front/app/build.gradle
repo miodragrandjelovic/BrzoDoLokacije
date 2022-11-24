@@ -76,5 +76,7 @@ dependencies {
     // Picasso (Get images from URL)
     implementation 'com.squareup.picasso:picasso:2.8'
 
+    implementation "commons-io:commons-io:2.7"
+
 
 }

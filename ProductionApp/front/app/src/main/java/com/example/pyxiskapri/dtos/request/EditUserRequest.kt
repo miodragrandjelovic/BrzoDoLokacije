@@ -16,6 +16,9 @@ data class EditUserRequest(
     var lastName: String,
     @SerializedName("email")
     var email: String,
-
+    @SerializedName("folderPath")
+    var folder: String,
+    @SerializedName("fileName")
+    var fileName: String
 
 )

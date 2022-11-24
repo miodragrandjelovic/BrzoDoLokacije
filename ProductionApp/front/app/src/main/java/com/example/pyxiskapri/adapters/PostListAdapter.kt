@@ -52,8 +52,8 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val currentPost = postList[position]
         holder.itemView.apply{
-            val ownerImage = Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.ownerImage)).get()
-            iv_ownerAvatar.setImageBitmap(ownerImage)
+            //val ownerImage = Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.ownerImage)).get()
+            //iv_ownerAvatar.setImageBitmap(ownerImage)
             tv_ownerUsername.text = currentPost.ownerUsername
             tv_likeCount.text = currentPost.likeCount.toString()
             tv_viewCount.text = currentPost.viewCount.toString()
@@ -64,13 +64,13 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
             else
                 iv_likeIcon.setColorFilter(ContextCompat.getColor(context, R.color.white), PorterDuff.Mode.SRC_IN);
 
-            val coverImage = Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).get()
+            //val coverImage = Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).get()
 
-            iv_coverImage.setImageBitmap(coverImage)
+            //iv_coverImage.setImageBitmap(coverImage)
 
             iv_postImage.setOnClickListener{
                 val intent = Intent(context, OpenPostActivity::class.java)
-                ActivityTransferStorage.postItemToOpenPost = PostItemToOpenPost(currentPost, ownerImage, coverImage)
+                //ActivityTransferStorage.postItemToOpenPost = PostItemToOpenPost(currentPost, ownerImage, coverImage)
                 context.startActivity(intent)
             }
 

@@ -12,6 +12,10 @@ data class GetUserResponse(
     @SerializedName("email")
     var email: String,
     @SerializedName("profileImage")
-    var profileImage: String
+    var profileImage: String,
+    @SerializedName("folderPath")
+    var folderPath: String,
+    @SerializedName("fileName")
+    var fileName: String
 
 )

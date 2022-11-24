@@ -9,18 +9,18 @@ data class PostItemToOpenPost(
     var id: Int = 0,
     var isLiked: Boolean = false,
     var ownerUsername: String = "",
-    var ownerImage: Bitmap,
-    var coverImage: Bitmap,
+    var ownerImage: String = "",
+    var coverImage: String = "",
     var likeCount: Int = 0,
     var viewCount: Int = 0
 ) : Serializable
 {
-    constructor(response: PostListItem, ownerImage: Bitmap, coverImage: Bitmap) : this(
+    constructor(response: PostListItem) : this(
         response.id,
         response.isLiked,
         response.ownerUsername,
-        ownerImage,
-        coverImage,
+        response.ownerImage,
+        response.coverImage,
         response.likeCount,
         response.viewCount
     )

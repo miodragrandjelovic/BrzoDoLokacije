@@ -31,7 +31,7 @@ class OpenPostActivity : AppCompatActivity() {
 
     lateinit var activityTransferStorage: ActivityTransferStorage
 
-    private lateinit var postData: PostItemToOpenPost
+    private lateinit var postData: PostListItem
     private lateinit var postLocation: LatLng
 
     private lateinit var commentsAdapter: CommentAdapter
@@ -191,11 +191,12 @@ class OpenPostActivity : AppCompatActivity() {
         if(postAdditionalData != null)
             postLocation = LatLng(postAdditionalData.latitude, postAdditionalData.longitude)
 
-        iv_ownerAvatar.setImageBitmap(postData.ownerImage)
+
+        Picasso.get().load(UtilityFunctions.getFullImagePath(postData.ownerImage)).into(iv_ownerAvatar)
 
         tv_ownerUsername.text = postData.ownerUsername
 
-        iv_coverImage.setImageBitmap(postData.coverImage)
+        Picasso.get().load(UtilityFunctions.getFullImagePath(postData.coverImage)).into(iv_coverImage)
 
         tv_likeCount.text = postData.likeCount.toString()
         tv_viewCount.text = postData.viewCount.toString()

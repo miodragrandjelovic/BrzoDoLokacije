@@ -42,8 +42,8 @@ class FollowedPostListAdapter (private val postList: MutableList<PostListItem>) 
 
         val currentPost = postList[position]
         holder.itemView.apply {
-            val profileBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.ownerImage)).get()
-            profileImage.setImageBitmap(profileBitmap)
+            //val profileBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.ownerImage)).get()
+            //profileImage.setImageBitmap(profileBitmap)
             //tv_ownerUsername.text = currentPost.ownerUsername
             f_post_likes.text = currentPost.likeCount.toString()
             f_post_dislikes.text = currentPost.viewCount.toString()
@@ -57,13 +57,13 @@ class FollowedPostListAdapter (private val postList: MutableList<PostListItem>) 
                 .build()
 
 
-            var coverBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).get()
-            imagePost.setImageBitmap(coverBitmap)
+            //var coverBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).get()
+            //imagePost.setImageBitmap(coverBitmap)
 
             imagePost.setOnClickListener{
                     val intent = Intent(context, OpenPostActivity::class.java)
                     //intent.putExtra("postData", currentPost)
-                    ActivityTransferStorage.postItemToOpenPost = PostItemToOpenPost(currentPost, profileBitmap, coverBitmap)
+                    //ActivityTransferStorage.postItemToOpenPost = PostItemToOpenPost(currentPost, profileBitmap, coverBitmap)
                     context.startActivity(intent)
                 }
 

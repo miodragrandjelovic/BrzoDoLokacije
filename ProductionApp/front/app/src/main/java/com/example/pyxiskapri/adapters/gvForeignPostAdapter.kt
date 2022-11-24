@@ -64,7 +64,7 @@ class gvForeignPostAdapter (var postsItem: MutableList<PostListItem>, var contex
 
         gvItemImage?.setOnClickListener(){
             val intent = Intent(context, OpenPostActivity::class.java)
-            ActivityTransferStorage.postItemToOpenPost = PostItemToOpenPost(postsItem[position], ownerBitmap, coverBitmap)
+            ActivityTransferStorage.postItemToOpenPost = postsItem[position]
             context.startActivity(intent)
 
             (context as Activity).finish()

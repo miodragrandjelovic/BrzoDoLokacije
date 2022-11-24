@@ -4,8 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.util.Log
+import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import com.example.pyxiskapri.TransferModels.PostItemToOpenPost
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
-import com.example.pyxiskapri.models.ImageGridItem
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
@@ -29,7 +27,7 @@ import kotlinx.android.synthetic.main.modal_confirm_delete.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.ArrayList
+
 
 class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: Context) : BaseAdapter() {
 
@@ -62,16 +60,11 @@ class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: C
             removeImage(position)
         }
 
-        val coverBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(postsItem[position].coverImage)).get()
-        val ownerBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(postsItem[position].ownerImage)).get()
-
-        if(coverBitmap!=null)
-            gvItemImage?.setImageBitmap(coverBitmap)
-
+        Picasso.get().load(UtilityFunctions.getFullImagePath(postsItem[position].coverImage)).into(gvItemImage)
 
         gvItemImage?.setOnClickListener(){
             val intent = Intent(context, OpenPostActivity::class.java)
-            ActivityTransferStorage.postItemToOpenPost = PostItemToOpenPost(postsItem[position], ownerBitmap, coverBitmap)
+            ActivityTransferStorage.postItemToOpenPost = postsItem[position]
             context.startActivity(intent)
 
             (context as Activity).finish()
