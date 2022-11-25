@@ -3,8 +3,6 @@ package com.example.pyxiskapri.adapters
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +10,6 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import androidx.core.view.isGone
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.TransferModels.PostItemToOpenPost
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.models.PostListItem
@@ -55,11 +52,7 @@ class gvForeignPostAdapter (var postsItem: MutableList<PostListItem>, var contex
         ibDelete?.isGone=true
 
 
-        val coverBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(postsItem[position].coverImage)).get()
-        val ownerBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(postsItem[position].ownerImage)).get()
-
-        if(coverBitmap!=null)
-            gvItemImage?.setImageBitmap(coverBitmap)
+        Picasso.get().load(UtilityFunctions.getFullImagePath(postsItem[position].coverImage)).into(gvItemImage)
 
 
         gvItemImage?.setOnClickListener(){

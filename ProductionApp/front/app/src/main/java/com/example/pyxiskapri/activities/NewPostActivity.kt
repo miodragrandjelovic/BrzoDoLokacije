@@ -31,16 +31,19 @@ import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.ImageGridItem
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
+import com.example.pyxiskapri.utility.UtilityFunctions
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_new_post.*
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
 import java.util.*
 
@@ -62,9 +65,8 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
     private lateinit var locationCity: String
     private lateinit var locationCountry: String
 
-    private lateinit var coverImage:Uri
     private lateinit var imageGridAdapter: ImageGridAdapter
-    var images:ArrayList<String> = arrayListOf()
+    private lateinit var coverImage:Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,52 +106,43 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
     private fun setupAddPostButton() {
         btn_addPost.setOnClickListener {
-            for (imageGridItem in imageGridAdapter.imageItems) {
-                val byteArray = readBytes(this, imageGridItem.uri)
-                images.add(byteArray!!.toString())
-            }
-            var bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), coverImage);
-            var outputStream = ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            var byteArray = outputStream.toByteArray();
-            var encodedCoverImage = android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
 
-            val newPostRequest = NewPostRequest(
-                description = et_description.text.toString(),
-                address = locationAddress,
-                locationName = "__LocationName__",
-                city = locationCity,
-                country = locationCountry,
-                longitude = selectedLocation.longitude,
-                latitude = selectedLocation.latitude,
-                coverImage = encodedCoverImage,
-                images = images
-            )
 
-            sendPostRequest(newPostRequest, this)
+            val partImagesList: ArrayList<MultipartBody.Part> = arrayListOf()
+            for (imageGridItem in imageGridAdapter.imageItems)
+                partImagesList.add(UtilityFunctions.uriToMultipartPart(this, coverImage, "Images", "images"))
+
+            val context: Context = this
+
+            apiClient.getPostService(this).addPost(
+                CoverImage = UtilityFunctions.uriToMultipartPart(this, coverImage, "CoverImage", "cover"),
+                Images = partImagesList,
+                Description = UtilityFunctions.requestBodyFromString(et_description.text.toString()),
+                Longitude = UtilityFunctions.requestBodyFromString(selectedLocation.longitude.toString()),
+                Latitude = UtilityFunctions.requestBodyFromString(selectedLocation.latitude.toString()),
+                LocationName = UtilityFunctions.requestBodyFromString("__LocationName__"),
+                Address = UtilityFunctions.requestBodyFromString(locationAddress),
+                City = UtilityFunctions.requestBodyFromString(locationCity),
+                Country = UtilityFunctions.requestBodyFromString(locationCountry)
+            ).enqueue(object :
+                Callback<MessageResponse> {
+                override fun onResponse(
+                    call: Call<MessageResponse>,
+                    response: Response<MessageResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        val intent = Intent(context, HomeActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+
+                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                    Toast.makeText(context, "Adding new post failed!", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
     }
-
-    private fun sendPostRequest(newPostRequest: NewPostRequest, context: Context){
-        apiClient.getPostService(context).addPost(newPostRequest).enqueue(object :
-            Callback<MessageResponse> {
-            override fun onResponse(
-                call: Call<MessageResponse>,
-                response: Response<MessageResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val intent = Intent(context, HomeActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-            }
-
-            override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                Toast.makeText(context, "Adding new post failed!", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
 
 
 

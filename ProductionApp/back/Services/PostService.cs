@@ -66,8 +66,8 @@ namespace PyxisKapriBack.Services
             if (location == null)
             {
                 location = new Location();
-                location.Longitude = post.Longitude;
-                location.Latitude = post.Latitude;
+                location.Longitude = Convert.ToDouble(post.Longitude);
+                location.Latitude = Convert.ToDouble(post.Latitude);
                 location.City = city; 
                 location.Address = post.Address;
                 location.Name = post.LocationName;
@@ -76,8 +76,8 @@ namespace PyxisKapriBack.Services
             }
             else if((location.Longitude == 0) || (location.Latitude == 0))
             {
-                location.Longitude = post.Longitude;
-                location.Latitude = post.Latitude;
+                location.Longitude = Convert.ToDouble(post.Longitude);
+                location.Latitude = Convert.ToDouble(post.Latitude);
                 locationDAL.UpdateLocation(location); 
             }
             else if (String.IsNullOrEmpty(location.Address))

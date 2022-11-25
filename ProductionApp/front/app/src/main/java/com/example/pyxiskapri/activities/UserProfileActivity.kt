@@ -133,7 +133,7 @@ class UserProfileActivity : AppCompatActivity() {
                         if(response.body()!!.folderPath!="")
                         {
                             oldProfileImage = response.body()!!.folderPath.replace("\\", "//")
-                            Picasso.get().load(UtilityFunctions.getFullImagePath(oldProfileImage + "//" + response.body()!!.fileName)).into(imageViewReal)
+                            Picasso.get().load(UtilityFunctions.getFullImagePath(oldProfileImage + "\\" + response.body()!!.fileName)).into(imageViewReal)
                         }
 
 
@@ -231,9 +231,7 @@ class UserProfileActivity : AppCompatActivity() {
 
     }
 
-    private fun requestBodyFromString(value: String): RequestBody{
-        return value.toRequestBody("text/plain".toMediaTypeOrNull())
-    }
+
 
     private fun confirmButton()
     {
@@ -276,35 +274,33 @@ class UserProfileActivity : AppCompatActivity() {
                     et_email.setText(tv_email.text)
                 }
 
-                /*var editUserRequest= EditUserRequest(
 
-                    firstName = this.et_first_name.text.toString(),
-                    lastName = this.et_last_name.text.toString(),
-                    username = this.et_username.text.toString(),
-                    email = this.et_email.text.toString(),
-                    password = dialog.et_modul_password.text.toString(),
-                    profileimage = slika
-                )*/
+//                var editUserRequest= EditUserRequest(
+//                    firstName = this.et_first_name.text.toString(),
+//                    lastName = this.et_last_name.text.toString(),
+//                    username = this.et_username.text.toString(),
+//                    email = this.et_email.text.toString(),
+//                    password = dialog.et_modul_password.text.toString(),
+//                    profileimage = slika
+//                )
+//
+//                val profileImageFile: File = UtilityFunctions.createTmpFileFromUri(this, profileImage, "profilna", UtilityFunctions.getUriExtention(this, profileImage))!!
+//                profileImageFile.deleteOnExit()
+//                val profileImageAsRequestBody = profileImageFile.asRequestBody("image/*".toMediaTypeOrNull())
+//                val multipartImage: MultipartBody.Part = MultipartBody.Part.createFormData("ProfileImage", profileImageFile.name, profileImageAsRequestBody)
 
-
-                val imageFile: File = UtilityFunctions.createTmpFileFromUri(this, profileImage, "profilna", UtilityFunctions.getUriExtention(this, profileImage))!!
-                imageFile.deleteOnExit()
-
-                val imageAsRequestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
-
-                val multipartImage: MultipartBody.Part = MultipartBody.Part.createFormData("ProfileImage", imageFile.name, imageAsRequestBody)
 
                 val context: Context = this
 
                 apiClient.getUserService(this).editUser(
-                    requestBodyFromString("NO_FOLDER_PATH"),
-                    requestBodyFromString("NO_FILE_NAME"),
-                    requestBodyFromString( this.et_username.text.toString()),
-                    requestBodyFromString( dialog.et_modul_password.text.toString()),
-                    requestBodyFromString( this.et_first_name.text.toString()),
-                    requestBodyFromString( this.et_last_name.text.toString()),
-                    requestBodyFromString( this.et_email.text.toString()),
-                    multipartImage
+                    UtilityFunctions.requestBodyFromString("NO_FOLDER_PATH"),
+                    UtilityFunctions.requestBodyFromString("NO_FILE_NAME"),
+                    UtilityFunctions.requestBodyFromString( this.et_username.text.toString()),
+                    UtilityFunctions.requestBodyFromString( dialog.et_modul_password.text.toString()),
+                    UtilityFunctions.requestBodyFromString( this.et_first_name.text.toString()),
+                    UtilityFunctions.requestBodyFromString( this.et_last_name.text.toString()),
+                    UtilityFunctions.requestBodyFromString( this.et_email.text.toString()),
+                    UtilityFunctions.uriToMultipartPart(this, profileImage, "ProfileImage", "profilna")
                 )
                 .enqueue(object : Callback<LoginResponse>{
                     override fun onResponse(

@@ -16,7 +16,6 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.TransferModels.PostItemToOpenPost
 import com.example.pyxiskapri.activities.ForeignProfileActivity
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.MessageResponse
@@ -52,8 +51,7 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val currentPost = postList[position]
         holder.itemView.apply{
-            //val ownerImage = Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.ownerImage)).get()
-            //iv_ownerAvatar.setImageBitmap(ownerImage)
+            Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.ownerImage)).into(iv_ownerAvatar)
             tv_ownerUsername.text = currentPost.ownerUsername
             tv_likeCount.text = currentPost.likeCount.toString()
             tv_viewCount.text = currentPost.viewCount.toString()
@@ -64,13 +62,12 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
             else
                 iv_likeIcon.setColorFilter(ContextCompat.getColor(context, R.color.white), PorterDuff.Mode.SRC_IN);
 
-            //val coverImage = Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).get()
+            Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).into(iv_postImage)
 
-            //iv_coverImage.setImageBitmap(coverImage)
 
             iv_postImage.setOnClickListener{
                 val intent = Intent(context, OpenPostActivity::class.java)
-                //ActivityTransferStorage.postItemToOpenPost = PostItemToOpenPost(currentPost, ownerImage, coverImage)
+                ActivityTransferStorage.postItemToOpenPost = currentPost
                 context.startActivity(intent)
             }
 

@@ -4,13 +4,26 @@ import com.example.pyxiskapri.dtos.request.NewPostRequest
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostAdditionalData
 import com.example.pyxiskapri.dtos.response.PostResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
 interface PostService {
 
+    @Multipart
     @POST("api/Post/NewPost")
-    fun addPost(@Body requestBody: NewPostRequest) : Call<MessageResponse>
+    fun addPost(
+        @Part CoverImage: MultipartBody.Part,
+        @Part Images: ArrayList<MultipartBody.Part>,
+        @Part("Description") Description: RequestBody,
+        @Part("Longitude") Longitude: RequestBody,
+        @Part("Latitude") Latitude: RequestBody,
+        @Part("LocationName") LocationName: RequestBody,
+        @Part("Address") Address: RequestBody,
+        @Part("City") City: RequestBody,
+        @Part("Country") Country: RequestBody
+    ) : Call<MessageResponse>
 
     @GET("api/Post/GetAllPosts")
     fun getAllPosts() : Call<ArrayList<PostResponse>>

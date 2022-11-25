@@ -13,7 +13,6 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.Toast
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.TransferModels.PostItemToOpenPost
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse

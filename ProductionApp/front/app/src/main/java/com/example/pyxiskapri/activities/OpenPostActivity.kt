@@ -8,7 +8,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.TransferModels.PostItemToOpenPost
 import com.example.pyxiskapri.adapters.CommentAdapter
 import com.example.pyxiskapri.dtos.request.NewCommentRequest
 import com.example.pyxiskapri.dtos.response.CommentResponse

@@ -1,26 +1,18 @@
 package com.example.pyxiskapri.adapters
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.TransferModels.PostItemToOpenPost
 import com.example.pyxiskapri.activities.ForeignProfileActivity
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.models.PostListItem
-import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
-import com.example.pyxiskapri.utility.UtilityFunctions
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.shape.CornerFamily
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_post.view.*
 import kotlinx.android.synthetic.main.item_post_followed_profiles.view.*
-import kotlinx.android.synthetic.main.item_reply.view.*
 
 
 class FollowedPostListAdapter (private val postList: MutableList<PostListItem>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>(){
