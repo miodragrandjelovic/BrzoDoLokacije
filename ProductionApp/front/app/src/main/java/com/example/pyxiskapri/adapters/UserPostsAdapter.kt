@@ -21,6 +21,7 @@ import com.example.pyxiskapri.models.ImageGridItem
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
+import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.modal_confirm_delete.*
 import retrofit2.Call
@@ -50,20 +51,27 @@ class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: C
 
         var view: View? = convertView
         if(view == null)
-            view = layoutInflater.inflate(R.layout.item_image, parent, false)
+            view = layoutInflater.inflate(R.layout.grid_view_layout, parent, false)
 
-        var gvItemImage = view?.findViewById<ImageView>(R.id.iv_image)
-        var ibDelete = view?.findViewById<ImageView>(R.id.ib_delete)
+        var gvItemImage = view?.findViewById<ShapeableImageView>(R.id.siv_imagePost)
+        var ibDelete = view?.findViewById<ImageView>(R.id.ib_delete_post)
 
         ibDelete?.setOnClickListener {
             removeImage(position)
         }
+
 
         val picture=postsItem[position].coverImage
         if(picture!=null)
         {
             var imageData = android.util.Base64.decode(picture, android.util.Base64.DEFAULT)
             gvItemImage?.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
+
+            val radius = context.resources.getDimension(com.example.pyxiskapri.R.dimen.corner_radius20dp)
+            gvItemImage?.shapeAppearanceModel = gvItemImage?.shapeAppearanceModel!!
+                .toBuilder().setAllCornerSizes(radius)
+                .build()
+
         }
 
 
