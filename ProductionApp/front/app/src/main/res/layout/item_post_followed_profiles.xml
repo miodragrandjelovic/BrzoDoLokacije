@@ -26,13 +26,15 @@
             android:scaleType="centerCrop"
             />
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_margin="10dp"
-            android:background="@drawable/circle"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            app:civ_border_color="@color/red"
+            app:civ_border_width="1dp"
+            />
 
     </FrameLayout>
 

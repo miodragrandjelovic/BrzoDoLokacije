@@ -64,7 +64,7 @@
 
 
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/shapeableImageView"
                 android:layout_marginTop="30dp"
                 android:layout_width="150dp"
@@ -75,7 +75,10 @@
                 android:scaleType="centerCrop"
                 android:backgroundTint="#00FFFFFF"
                 android:background="@drawable/circle"
-                app:srcCompat="@drawable/avatarplaceholder" />
+                app:srcCompat="@drawable/avatarplaceholder"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/red"
+                />
 
 
             <LinearLayout

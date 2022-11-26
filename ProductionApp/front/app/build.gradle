@@ -73,6 +73,9 @@ dependencies {
     // SwipeDown to refresh
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
+    // Circle image View
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
 
 
 }

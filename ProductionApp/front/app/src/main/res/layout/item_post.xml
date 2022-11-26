@@ -16,13 +16,15 @@
         android:layout_weight="0"
         android:orientation="horizontal">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_ownerAvatar"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_weight="0"
-            android:adjustViewBounds="true"
-            android:src="@drawable/avatarplaceholder" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatarplaceholder"
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/red"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
