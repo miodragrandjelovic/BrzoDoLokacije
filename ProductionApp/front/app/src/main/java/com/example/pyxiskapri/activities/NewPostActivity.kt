@@ -110,7 +110,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
             val partImagesList: ArrayList<MultipartBody.Part> = arrayListOf()
             for (imageGridItem in imageGridAdapter.imageItems)
-                partImagesList.add(UtilityFunctions.uriToMultipartPart(this, coverImage, "Images", "images"))
+                partImagesList.add(UtilityFunctions.uriToMultipartPart(this, imageGridItem.uri, "Images", "images"))
 
             val context: Context = this
 
@@ -124,8 +124,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
                 Address = UtilityFunctions.requestBodyFromString(locationAddress),
                 City = UtilityFunctions.requestBodyFromString(locationCity),
                 Country = UtilityFunctions.requestBodyFromString(locationCountry)
-            ).enqueue(object :
-                Callback<MessageResponse> {
+            ).enqueue(object : Callback<MessageResponse> {
                 override fun onResponse(
                     call: Call<MessageResponse>,
                     response: Response<MessageResponse>
@@ -138,7 +137,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
                 }
 
                 override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                    Toast.makeText(context, "Adding new post failed!", Toast.LENGTH_SHORT).show()
+                     Toast.makeText(context, "Adding new post failed!", Toast.LENGTH_SHORT).show()
                 }
             })
         }

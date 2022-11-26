@@ -43,7 +43,9 @@ object UtilityFunctions {
     }
     // Uzimanje ekstenzije Uri-ja
     fun getUriExtention(context: Context, uri: Uri): String{
-        return "." + (DocumentFile.fromSingleUri(context, uri)?.name ?: "").split('.')[1]
+        var fileName: String = DocumentFile.fromSingleUri(context, uri)?.name!!
+        var extention: String = fileName.split(".").last()
+        return ".$extention"
     }
     // Pretvara Uri slike u gotov MultipartBody.Part objekat koji je argument api zahteva
     fun uriToMultipartPart(context: Context, imageUri: Uri, partName: String, fileNamePrefix: String): MultipartBody.Part{
