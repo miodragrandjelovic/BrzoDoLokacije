@@ -23,12 +23,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.ImageGridAdapter
+import com.example.pyxiskapri.adapters.ImageUploadProgressAdapter
 import com.example.pyxiskapri.dtos.request.NewPostRequest
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.ImageGridItem
+import com.example.pyxiskapri.models.ProgressRequestBody
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
@@ -37,7 +41,10 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_new_post.*
+import kotlinx.android.synthetic.main.activity_new_post.btn_home
+import kotlinx.android.synthetic.main.dialog_images_upload_progress.*
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -67,6 +74,8 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
     private lateinit var imageGridAdapter: ImageGridAdapter
     private lateinit var coverImage:Uri
+
+    lateinit var uploadProgressAdapter: ImageUploadProgressAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,21 +110,35 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
     }
 
 
-    @Throws(IOException::class)
-    private fun readBytes(context: Context, uri: Uri): ByteArray? = context.contentResolver.openInputStream(uri)?.buffered()?.use { it.readBytes() }
+
+
 
     private fun setupAddPostButton() {
         btn_addPost.setOnClickListener {
 
+            // Dialog Setup
+            var dialog = Dialog(this)
+            dialog.setContentView(R.layout.dialog_images_upload_progress)
+            dialog.window?.setLayout(920, 1000)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setCancelable(false)
 
+            // RV i Dialog Setup
+            uploadProgressAdapter = ImageUploadProgressAdapter(arrayListOf())
+            dialog.rv_imagsUploadProgress.adapter = uploadProgressAdapter
+            dialog.rv_imagsUploadProgress.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+            dialog.show()
+
+            // Images Multipart.Body
             val partImagesList: ArrayList<MultipartBody.Part> = arrayListOf()
+            var imageIndex = 1
             for (imageGridItem in imageGridAdapter.imageItems)
-                partImagesList.add(UtilityFunctions.uriToMultipartPart(this, imageGridItem.uri, "Images", "images"))
+                partImagesList.add(UtilityFunctions.uriToProgressMultipartPart(this, imageIndex++, imageGridItem.uri, "Images", "postImage", uploadProgressAdapter.uploadListener))
 
             val context: Context = this
-
+            // Images Upload
             apiClient.getPostService(this).addPost(
-                CoverImage = UtilityFunctions.uriToMultipartPart(this, coverImage, "CoverImage", "cover"),
+                CoverImage = UtilityFunctions.uriToProgressMultipartPart(this, 0, coverImage, "CoverImage", "coverImage", uploadProgressAdapter.uploadListener),
                 Images = partImagesList,
                 Description = UtilityFunctions.requestBodyFromString(et_description.text.toString()),
                 Longitude = UtilityFunctions.requestBodyFromString(selectedLocation.longitude.toString()),
@@ -124,25 +147,24 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
                 Address = UtilityFunctions.requestBodyFromString(locationAddress),
                 City = UtilityFunctions.requestBodyFromString(locationCity),
                 Country = UtilityFunctions.requestBodyFromString(locationCountry)
-            ).enqueue(object : Callback<MessageResponse> {
-                override fun onResponse(
-                    call: Call<MessageResponse>,
-                    response: Response<MessageResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val intent = Intent(context, HomeActivity::class.java)
-                        startActivity(intent)
-                        finish()
+            ).enqueue(
+                object : Callback<MessageResponse> {
+                    override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            val intent = Intent(context, HomeActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                         Toast.makeText(context, "Adding new post failed!", Toast.LENGTH_SHORT).show()
                     }
                 }
-
-                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                     Toast.makeText(context, "Adding new post failed!", Toast.LENGTH_SHORT).show()
-                }
-            })
+            )
         }
     }
-
 
 
 

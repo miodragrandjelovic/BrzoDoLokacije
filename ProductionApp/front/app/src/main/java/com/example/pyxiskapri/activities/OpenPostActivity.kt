@@ -54,6 +54,7 @@ class OpenPostActivity : AppCompatActivity() {
             val intent = Intent(this, ForeignProfileActivity::class.java)
             intent.putExtra("username", tv_ownerUsername.text.toString())
             this.startActivity(intent)
+            finish()
         }
 
         iv_ownerAvatar.setOnClickListener()
@@ -61,6 +62,7 @@ class OpenPostActivity : AppCompatActivity() {
             val intent = Intent(this, ForeignProfileActivity::class.java)
             intent.putExtra("username", tv_ownerUsername.text.toString())
             this.startActivity(intent)
+            finish()
         }
 
         setupComments()
@@ -92,6 +94,7 @@ class OpenPostActivity : AppCompatActivity() {
         btn_newPost.setOnClickListener {
             val intent = Intent (this, NewPostActivity::class.java);
             startActivity(intent);
+            finish()
         }
     }
 
@@ -99,6 +102,7 @@ class OpenPostActivity : AppCompatActivity() {
         btn_home.setOnClickListener {
             val intent = Intent (this, HomeActivity::class.java);
             startActivity(intent);
+            finish()
         }
     }
 

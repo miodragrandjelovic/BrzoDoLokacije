@@ -10,14 +10,17 @@ import java.io.File
 import java.io.FileInputStream
 
 
-class ProgressRequestBody(private var file: File, private var content_type: String, private var listener: UploadCallbacks): RequestBody() {
+class ProgressRequestBody(private var fileId: Int, private var file: File, private var content_type: String, private var listener: UploadListener): RequestBody() {
 
     private val DEFAULT_BUFFER_SIZE = 2048
 
-    interface UploadCallbacks {
-        fun onProgressUpdate(percentage: Int)
-        fun onError()
-        fun onFinish()
+    interface UploadListener {
+        fun onUploadScheduled(fileId: Int, fileName: String)
+        fun onProgressUpdate(fileId: Int, percentage: Int)
+    }
+
+    init {
+        listener.onUploadScheduled(fileId, file.name)
     }
 
     override fun contentType(): MediaType? {
@@ -38,19 +41,19 @@ class ProgressRequestBody(private var file: File, private var content_type: Stri
             var read: Int
             val handler = Handler(Looper.getMainLooper())
             while (fileInputStream.read(buffer).also { read = it } != -1) {
-
                 // update progress on UI thread
                 handler.post(ProgressUpdater(uploaded, fileLength))
                 uploaded += read.toLong()
                 sink.write(buffer, 0, read)
             }
         }
+
     }
 
 
     private inner class ProgressUpdater(private val uploaded: Long, private val total: Long) : Runnable {
         override fun run() {
-            listener.onProgressUpdate((100 * uploaded / total).toInt())
+            listener.onProgressUpdate(fileId, (100 * uploaded / total).toInt())
         }
     }
 

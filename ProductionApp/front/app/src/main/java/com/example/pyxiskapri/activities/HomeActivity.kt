@@ -85,6 +85,7 @@ class HomeActivity : AppCompatActivity() {
         btn_newPost.setOnClickListener {
             val intent = Intent (this, NewPostActivity::class.java);
             startActivity(intent);
+            finish()
         }
     }
 
@@ -92,6 +93,7 @@ class HomeActivity : AppCompatActivity() {
         btn_messages.setOnClickListener {
             val intent = Intent (this, ChatMainActivity::class.java);
             startActivity(intent);
+            finish()
         }
     }
 

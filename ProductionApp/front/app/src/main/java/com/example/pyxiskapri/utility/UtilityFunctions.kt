@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.documentfile.provider.DocumentFile
+import com.example.pyxiskapri.models.ProgressRequestBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -54,5 +55,13 @@ object UtilityFunctions {
         val imageAsRequestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData(partName, imageFile.name, imageAsRequestBody)
     }
+    // Pretvara Uri slike u gotov MultipartBody.Part sa pratnjom progresa
+    fun uriToProgressMultipartPart(context: Context, imageId: Int, imageUri: Uri, partName: String, fileNamePrefix: String, listener: ProgressRequestBody.UploadListener): MultipartBody.Part{
+        val imageFile: File = createTmpFileFromUri(context, imageUri, fileNamePrefix, getUriExtention(context, imageUri))!!
+        imageFile.deleteOnExit()
+        val imageAsRequestBody = ProgressRequestBody(imageId, imageFile, "image/*", listener)
+        return MultipartBody.Part.createFormData(partName, imageFile.name, imageAsRequestBody)
+    }
+
 
 }

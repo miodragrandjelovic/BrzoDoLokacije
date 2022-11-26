@@ -53,6 +53,7 @@ class RegisterActivity : AppCompatActivity() {
         btn_signInHere.setOnClickListener{
             val intent = Intent (this, LoginActivity::class.java);
             startActivity(intent);
+            finish()
         };
     }
 
@@ -95,6 +96,7 @@ class RegisterActivity : AppCompatActivity() {
                     if(response.isSuccessful) {
                         val intent = Intent(context, LoginActivity::class.java)
                         startActivity(intent)
+                        finish()
                     }
 
                     if(response.code() == Constants.CODE_BAD_REQUEST)
