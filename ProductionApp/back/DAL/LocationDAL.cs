@@ -128,7 +128,7 @@ namespace PyxisKapriBack.DAL
         public List<Location> GetAllAroundLocations(Location location, double distance = Constants.Constants.DISTANCE)
         {
             List<Location> locations;
-            locations = _context.Locations.ToList();
+            locations = _context.Locations.Include(location => location.Posts).ToList();
             locations = locationManager.GetAllAroundLocations(location, locations, distance); 
             return locations; 
         }
