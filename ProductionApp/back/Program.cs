@@ -113,6 +113,7 @@ builder.Services.AddSwaggerGen(options => {
     builder.Services.AddTransient<IFollowUI, FollowUI>(); 
     builder.Services.AddTransient<ICommentUI, CommentUI>();
     builder.Services.AddTransient<IPlaceUI, PlaceUI>();
+    builder.Services.AddTransient<IMessageUI, MessageUI>();
     #endregion
 
     #region 'Managers'

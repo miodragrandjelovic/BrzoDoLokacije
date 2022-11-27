@@ -17,6 +17,7 @@ namespace PyxisKapriBack.DAL
             if (message == null)
                 throw new Exception(Constants.Constants.resNullValue);
 
+            message.Time = DateTime.Now; 
             _context.Messages.Add(message);
             _context.SaveChanges(); 
 
