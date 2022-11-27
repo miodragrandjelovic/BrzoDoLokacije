@@ -4,7 +4,7 @@ namespace PyxisKapriBack.DTOComponents
 {
     public class UserDTO
     {
-        public IFormFile ProfileImage { get; set; } = null;
+        public IFormFile? ProfileImage { get; set; } = null;
         public string FolderPath { get; set; } = string.Empty;
         public string FileName { get; set; } = string.Empty;
         public string Username { get; set; } = string.Empty;
@@ -13,7 +13,9 @@ namespace PyxisKapriBack.DTOComponents
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
 
+        public string IsImageChanged { get; set; } = "false";
 
-        
+
+
     }
 }

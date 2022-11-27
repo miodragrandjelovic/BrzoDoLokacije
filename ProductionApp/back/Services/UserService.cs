@@ -155,8 +155,8 @@ namespace PyxisKapriBack.Services
                     StatusCode = StatusCodes.Status403Forbidden,
                     Message = "Wrong password!"
                 };
-
-            if (userDAL.GetUser(user.Username) != null && !loggedUser.Id.Equals(GetUser(user.Username).Id))
+            var existedUser = userDAL.GetUser(user.Username);
+            if (existedUser != null && !loggedUser.Id.Equals(existedUser.Id))
             {
                 return new Response
                 {
@@ -164,20 +164,33 @@ namespace PyxisKapriBack.Services
                     Message = "Username already taken!"
                 };
             }
-
-            // MENJANJE PROFILNE SLIKE
+            
+            
+            
             string newProfileImageName = string.Empty;
             var folderPath = Path.Combine(Constants.Constants.ROOT_FOLDER, loggedUser.Username);
-            if (!fileService.CheckIfProfileImageExists(folderPath, user.ProfileImage.FileName))
+            // Menjanje foldera korisnika ukoliko je korisnik promenio username
+            
+            // MENJANJE PROFILNE SLIKE
+            if (Convert.ToBoolean(user.IsImageChanged) && !fileService.CheckIfProfileImageExists(folderPath, user.ProfileImage.FileName))
             {
                 fileService.UpdateFile(folderPath, user.FileName, user.ProfileImage, out newProfileImageName);
                 loggedUser.FileName = newProfileImageName;
             }
             else
             {
+                loggedUser.FolderPath = folderPath;
                 loggedUser.FileName = user.FileName;
             }
-            loggedUser.FolderPath = folderPath;
+
+            if (!loggedUser.Username.Equals(user.Username))
+            {
+                var destFolderPath = Path.Combine(Constants.Constants.ROOT_FOLDER, user.Username);
+                loggedUser.FolderPath = destFolderPath;
+                Directory.Move(folderPath, destFolderPath);
+            }
+
+            
             loggedUser.Username = user.Username;
             loggedUser.FirstName = user.FirstName;
             loggedUser.LastName = user.LastName;
