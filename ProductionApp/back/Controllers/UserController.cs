@@ -68,14 +68,22 @@ namespace PyxisKapriBack.Controllers
         }
 
         [HttpPut("UpdateUser")]
-        public async Task<IActionResult> UpdateUserCredentials([FromForm]UserDTO user)
+        public async Task<IActionResult> UpdateUserCredentials(UpdateUserDataDTO user)
         {
             var answer = userUI.UpdateUser(user);
             if(answer.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(new { token = answer.Message });
             return BadRequest(new { message = answer.Message });
         }
+        [HttpPut("UpdateProfileImage")]
+        public async Task<IActionResult> UpdateUserProfileImage([FromForm]UpdateUserImageDTO image)
+        {
+            var response = userUI.UpdateProfileImage(image);
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                return Ok(response);
 
+            return BadRequest(response);
+        }
         [HttpPut("ChangePassword")]
         public async Task<IActionResult> ChangeUserPassword(CredentialsDTO credentials)
         {

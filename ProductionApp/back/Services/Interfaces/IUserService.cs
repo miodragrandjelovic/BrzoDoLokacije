@@ -20,8 +20,8 @@ namespace PyxisKapriBack.Services.Interfaces
 
         List<Role> GetAvailableRolesForUser(string user);
 
-        Response UpdateUser(UserDTO user);
-
+        Response UpdateUser(UpdateUserDataDTO user);
+        Response UpdateProfileImage(UpdateUserImageDTO userImage);
         List<User> GetAllUsers();
         Response ChangeUserPassword(CredentialsDTO credentials);
     }

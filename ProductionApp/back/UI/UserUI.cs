@@ -38,9 +38,6 @@ namespace PyxisKapriBack.UI
 
             var userDTO = new UserDTO
             {
-                //ProfileImage = user.ProfileImage == null ? string.Empty : Convert.ToBase64String(user.ProfileImage),
-                FolderPath = user.FolderPath,
-                FileName = user.FileName,
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -58,10 +55,6 @@ namespace PyxisKapriBack.UI
 
             var userDTO = new UserDTO
             {
-                //ProfileImage = Convert.ToBase64String(fileService.GetUserProfileImage(user.FolderPath)),
-                               //user.ProfileImage == null ? string.Empty : Convert.ToBase64String(user.ProfileImage),
-                FolderPath = user.FolderPath,
-                FileName = user.FileName,
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -94,8 +87,6 @@ namespace PyxisKapriBack.UI
                     FirstName= user.FirstName,
                     LastName = user.LastName,
                     //ProfileImage = Convert.ToBase64String(user.ProfileImage),
-                    FolderPath = user.FolderPath,
-                    FileName= user.FileName,
                     Email = user.Email
                 });
             }
@@ -103,7 +94,7 @@ namespace PyxisKapriBack.UI
             return allUsers;
         }
 
-        public Response UpdateUser(UserDTO user)
+        public Response UpdateUser(UpdateUserDataDTO user)
         {
             return userService.UpdateUser(user);
         }
@@ -121,6 +112,11 @@ namespace PyxisKapriBack.UI
         public Response ChangeUserPassword(CredentialsDTO credentials)
         {
             return userService.ChangeUserPassword(credentials);
+        }
+
+        public Response UpdateProfileImage(UpdateUserImageDTO profileImage)
+        {
+            return userService.UpdateProfileImage(profileImage);
         }
     }
 }

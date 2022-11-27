@@ -21,7 +21,9 @@ namespace PyxisKapriBack.UI.Interfaces
         UserDTO GetUser();
         UserDTO GetUser(string username);
 
-        Response UpdateUser(UserDTO user);
+        Response UpdateUser(UpdateUserDataDTO user);
+
+        Response UpdateProfileImage(UpdateUserImageDTO profileImage);
 
         List<UserDTO> GetAllUsers();
 
