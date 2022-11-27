@@ -41,7 +41,8 @@ namespace PyxisKapriBack.UI
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email
+                Email = user.Email,
+                ProfileImagePath = Path.Combine(user.FolderPath, user.FileName)
             };
 
             return userDTO;
@@ -58,7 +59,8 @@ namespace PyxisKapriBack.UI
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email
+                Email = user.Email,
+                ProfileImagePath = Path.Combine(user.FolderPath, user.FileName)
             };
 
             return userDTO;
@@ -84,11 +86,12 @@ namespace PyxisKapriBack.UI
                 allUsers.Add(new UserDTO
                 {
                     Username = user.Username,
-                    FirstName= user.FirstName,
+                    FirstName = user.FirstName,
                     LastName = user.LastName,
                     //ProfileImage = Convert.ToBase64String(user.ProfileImage),
-                    Email = user.Email
-                });
+                    Email = user.Email,
+                    ProfileImagePath = Path.Combine(user.FolderPath, user.FileName)
+                }) ;
             }
 
             return allUsers;
