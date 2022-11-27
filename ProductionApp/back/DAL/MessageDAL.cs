@@ -40,6 +40,13 @@ namespace PyxisKapriBack.DAL
             return message; 
         }
 
+        public List<Message> GetMessages(string usernameSender, string usernameReceiver)
+        {
+            List<Message> messages = _context.Messages.Where(message => message.Sender.Username.Equals(usernameSender)
+                                    && message.Receiver.Username.Equals(usernameReceiver)).ToList();
+            return messages; 
+        }
+
         public bool UpdateMessage(Message message)
         {
             if (message == null)

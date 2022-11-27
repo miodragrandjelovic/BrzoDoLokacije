@@ -35,19 +35,25 @@ namespace PyxisKapriBack.DAL
         {
             return _context.Comments.Where(comment => comment.Id == CommentID).Include(comment => comment.User)
                                                                               .Include(comment => comment.Post)
-                                                                              .Include(comment => comment.Replies).FirstOrDefault(); 
+                                                                              .Include(comment => comment.Replies)
+                                                                              .FirstOrDefault(); 
         }
 
         public List<Comment> GetCommentsPost(int PostID)
         {
-            return _context.Comments.Where(comment => comment.PostId == PostID).Include(comment => comment.User).ToList(); 
+            return _context.Comments.Where(comment => comment.PostId == PostID)
+                                    .Include(comment => comment.User)
+                                    .OrderBy(comment => comment.DateCreated)
+                                    .ToList(); 
         }
 
         public List<Comment> GetReplies(int CommentID)
         {
-            return _context.Comments.Where(comment => comment.CommentParentId == CommentID).Include(comment => comment.User)
-                                                                                           .Include(comment => comment.Post)
-                                                                                           .ToList(); 
+            return _context.Comments.Where(comment => comment.CommentParentId == CommentID)
+                                    .Include(comment => comment.User)
+                                    .Include(comment => comment.Post)
+                                    .OrderBy(comment => comment.DateCreated)
+                                    .ToList(); 
         }
 
         public bool UpdateComment(Comment Comment)
