@@ -43,7 +43,9 @@ namespace PyxisKapriBack.DAL
         public List<Message> GetMessages(string usernameSender, string usernameReceiver)
         {
             List<Message> messages = _context.Messages.Where(message => message.Sender.Username.Equals(usernameSender)
-                                    && message.Receiver.Username.Equals(usernameReceiver)).ToList();
+                                    && message.Receiver.Username.Equals(usernameReceiver))
+                                    .OrderBy(message => message.Time)
+                                    .ToList();
             return messages; 
         }
 

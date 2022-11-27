@@ -102,6 +102,7 @@ builder.Services.AddSwaggerGen(options => {
     builder.Services.AddTransient<IPlaceService, PlaceService>();
     builder.Services.AddTransient<IFollowService, FollowService>();
     builder.Services.AddTransient<ICommentService, CommentService>();
+    builder.Services.AddTransient<IMessageService, MessageService>();
     builder.Services.AddTransient<ICommentLikeService, CommentLikeService>();
     builder.Services.AddTransient<ICommentDislikeService, CommentDislikeService>();
     #endregion
