@@ -1,5 +1,6 @@
 ﻿using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.Models;
+using PyxisKapriBack.Services;
 using PyxisKapriBack.Services.Interfaces;
 using PyxisKapriBack.UI.Interfaces;
 
@@ -77,11 +78,19 @@ namespace PyxisKapriBack.UI
         {
             User sender = userService.GetUser(message.UsernameSender);
             User receiver = userService.GetUser(message.UsernameReceiver);
+
+            if (sender == null)
+                return ResponseService.CreateErrorResponse(Constants.Constants.resNotFoundSender);
+
+            if (receiver == null)
+                return ResponseService.CreateErrorResponse(Constants.Constants.resNotFoundReceiver);
+            
             Message updatedMessage = new Message
             {
                 Id = message.Id,
+                Text = message.Text,
                 Sender = sender,
-                SenderId = sender.Id,
+                SenderId = sender.Id,                
                 Receiver = receiver,
                 ReceiverId = receiver.Id
             };

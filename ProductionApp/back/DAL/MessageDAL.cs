@@ -6,7 +6,7 @@ namespace PyxisKapriBack.DAL
     public class MessageDAL : IMessageDAL
     {
         private readonly Database _context;
-
+ 
         public MessageDAL(Database context)
         {
             _context = context;
@@ -37,7 +37,10 @@ namespace PyxisKapriBack.DAL
 
         public Message GetMessage(int messageId)
         {
-            Message message = _context.Messages.Where(message => (message.Id == messageId)).FirstOrDefault();
+            Message message = _context.Messages.Where(message => (message.Id == messageId))
+                                               .Include(message => message.Sender)
+                                               .Include(message => message.Receiver)
+                                               .FirstOrDefault();
             return message; 
         }
 
@@ -45,6 +48,8 @@ namespace PyxisKapriBack.DAL
         {
             List<Message> messages = _context.Messages.Where(message => message.Sender.Username.Equals(usernameSender)
                                     && message.Receiver.Username.Equals(usernameReceiver))
+                                    .Include(message => message.Sender)
+                                    .Include(message => message.Receiver)
                                     .OrderBy(message => message.Time)
                                     .ToList();
             return messages; 
@@ -54,6 +59,13 @@ namespace PyxisKapriBack.DAL
         {
             if (message == null)
                 throw new Exception(Constants.Constants.resNullValue);
+
+            if (message.Sender == null)
+                throw new Exception(Constants.Constants.resNotFoundSender);
+
+            if (message.Receiver == null)
+                throw new Exception(Constants.Constants.resNotFoundReceiver); 
+
             _context.Update(message);
             _context.SaveChanges();
 
