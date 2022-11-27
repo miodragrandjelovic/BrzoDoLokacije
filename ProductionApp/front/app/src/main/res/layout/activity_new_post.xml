@@ -17,6 +17,7 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -26,263 +27,520 @@
             tools:layout_editor_absoluteX="16dp" />
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:paddingLeft="20dp"
-        android:paddingEnd="20dp"
-        android:scrollbarAlwaysDrawHorizontalTrack="false"
-        android:scrollbarAlwaysDrawVerticalTrack="false"
-        android:scrollbars="none"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="75dp"
+        android:layout_marginTop="-10dp"
+        android:background="@drawable/followedusersbackground"
+        android:paddingBottom="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar3">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/iv_bar1"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:src="@drawable/ib_rounded"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_2"
+            app:layout_constraintStart_toEndOf="@+id/tv_1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_bar2"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:src="@drawable/ib_rounded"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_3"
+            app:layout_constraintStart_toEndOf="@+id/tv_2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_bar3"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:src="@drawable/ib_rounded"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_4"
+            app:layout_constraintStart_toEndOf="@+id/tv_3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_circle1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="40dp"
+            android:background="@drawable/circle_selected"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_circle2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="1"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_circle1"
+            app:layout_constraintEnd_toEndOf="@+id/iv_circle1"
+            app:layout_constraintStart_toStartOf="@+id/iv_circle1"
+            app:layout_constraintTop_toTopOf="@+id/iv_circle1" />
 
-            <LinearLayout
+        <TextView
+            android:id="@+id/tv_circleLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center"
+            android:text="Location"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_circle1"
+            app:layout_constraintStart_toStartOf="@+id/iv_circle1"
+            app:layout_constraintTop_toBottomOf="@+id/iv_circle1" />
+
+        <ImageView
+            android:id="@+id/iv_circle2"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_circle3"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_circle1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/circle" />
+
+        <TextView
+            android:id="@+id/tv_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:textColor="@color/gray"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_circle2"
+            app:layout_constraintEnd_toEndOf="@+id/iv_circle2"
+            app:layout_constraintStart_toStartOf="@+id/iv_circle2"
+            app:layout_constraintTop_toTopOf="@+id/iv_circle2" />
+
+        <TextView
+            android:id="@+id/tv_circleImages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center"
+            android:text="Images"
+            android:textAlignment="center"
+            android:textColor="#686F74"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_circle2"
+            app:layout_constraintStart_toStartOf="@+id/iv_circle2"
+            app:layout_constraintTop_toBottomOf="@+id/iv_circle2" />
+
+        <ImageView
+            android:id="@+id/iv_circle3"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_circle4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_circle2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/background_panel" />
+
+        <TextView
+            android:id="@+id/tv_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3"
+            android:textColor="@color/gray"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_circle3"
+            app:layout_constraintEnd_toEndOf="@+id/iv_circle3"
+            app:layout_constraintStart_toStartOf="@+id/iv_circle3"
+            app:layout_constraintTop_toTopOf="@+id/iv_circle3" />
+
+        <TextView
+            android:id="@+id/tv_circleCover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center"
+            android:text="Cover image"
+            android:textAlignment="center"
+            android:textColor="#686F74"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_circle3"
+            app:layout_constraintStart_toStartOf="@+id/iv_circle3"
+            app:layout_constraintTop_toBottomOf="@+id/iv_circle3" />
+
+        <ImageView
+            android:id="@+id/iv_circle4"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginEnd="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_circle3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/circle" />
+
+        <TextView
+            android:id="@+id/tv_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4"
+            android:textColor="@color/gray"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_circle4"
+            app:layout_constraintEnd_toEndOf="@+id/iv_circle4"
+            app:layout_constraintStart_toStartOf="@+id/iv_circle4"
+            app:layout_constraintTop_toTopOf="@+id/iv_circle4" />
+
+        <TextView
+            android:id="@+id/tv_circlePost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center"
+            android:text="Post"
+            android:textAlignment="center"
+            android:textColor="#686F74"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/iv_circle4"
+            app:layout_constraintStart_toStartOf="@+id/iv_circle4"
+            app:layout_constraintTop_toBottomOf="@+id/iv_circle4" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_locationCard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingStart="15dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="8dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardCornerRadius="10dp">
+
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_location"
+            style="@style/Theme.PyxisKapri"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/back_dark_rounded_border_red"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:singleLine="true"
+            android:text="Search locations..."
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:icon="?android:attr/actionModeWebSearchDrawable"
+            app:iconGravity="end"
+            app:iconTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/et_rounded_sharper"
+            android:backgroundTint="@color/dark_gray"
+            android:elevation="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tv_latitude"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:alpha="1"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="Lat: 0.00"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/tv_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:text="Description"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-
-                <EditText
-                    android:id="@+id/et_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/back_dark_rounded_border_red"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:gravity="top|start"
-                    android:hint="Describe what your pictures are all about"
-                    android:lines="5"
-                    android:maxLines="10"
-                    android:minLines="5"
-                    android:padding="10dp"
-                    android:scrollbars="vertical"
-                    android:textColor="@color/white"
-                    android:textColorHint="#878787"
-                    android:textSize="14sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_Locations"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:text="Location"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/btn_location"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/back_dark_rounded_border_red"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:singleLine="true"
-                    android:text="Select post location"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
-
-                <fragment
-                    android:id="@+id/map"
-                    android:name="com.google.android.gms.maps.SupportMapFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="420dp" />
-
-                <LinearLayout
-                    android:id="@+id/ll_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_latitude"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:alpha="0.6"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:text="Lat: 0.00"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:id="@+id/tv_longitude"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:alpha="0.6"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:text="Long: 0.00"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_coverImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:text="Cover image"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/cl_coverImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="360dp"
-                    android:background="@drawable/et_rounded"
-                    android:clickable="true"
-                    android:focusable="true">
-
-
-                    <ImageView
-                        android:id="@+id/iv_coverImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/back_dark_rounded_border_red"
-                        android:scaleType="centerCrop" />
-
-                    <ImageButton
-
-                        android:id="@+id/btn_coverImage"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-
-                        android:background="@null"
-                        android:scaleType="centerCrop"
-                        android:src="@android:drawable/stat_sys_upload_done"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_coverText"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.5"
-                        android:gravity="center"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:text="Image must be less then 20mb in size."
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/btn_coverImage" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_additionalImages"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:text="Additionals images"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-
-                <com.example.pyxiskapri.custom_view_models.WrapGridView
-                    android:id="@+id/gv_additionalImages"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/back_dark_rounded_border_red"
-                    android:gravity="center"
-                    android:horizontalSpacing="10dp"
-                    android:numColumns="3"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="10dp" />
-
-                <Button
-                    android:id="@+id/btn_pickImages"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:text="Pick Images" />
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp"
-                android:gravity="center">
-
-                <Button
-                    android:id="@+id/btn_addPost"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="40dp"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:text="Add post" />
-
-            </LinearLayout>
-
-
+            <TextView
+                android:id="@+id/tv_longitude"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:alpha="1"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="Long: 0.00"
+                android:textAlignment="textStart"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_imagesCard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingStart="15dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <TextView
+            android:id="@+id/tv_images"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Images"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/gv_additionalImages"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <com.example.pyxiskapri.custom_view_models.WrapGridView
+            android:id="@+id/gv_additionalImages"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/back_dark_rounded_border_red"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="3"
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_pickImages"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_images"
+            tools:listitem="@layout/item_image">
+
+        </com.example.pyxiskapri.custom_view_models.WrapGridView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_pickImages"
+            style="@style/Theme.PyxisKapri"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:background="@drawable/et_rounded_sharper"
+            android:backgroundTint="@color/red"
+            android:clickable="true"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Add Images"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_coverCard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingStart="15dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintDimensionRatio=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <TextView
+            android:id="@+id/tv_coverImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Cover image"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/cl_coverImage"
+            app:layout_constraintEnd_toEndOf="@+id/cl_coverImage"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_coverImage"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/et_rounded"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_coverImage">
+
+
+            <ImageView
+                android:id="@+id/iv_coverImage"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/back_dark_rounded_border_red"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+
+                android:id="@+id/btn_coverImage"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+
+                android:background="@drawable/addimage"
+                android:backgroundTint="@color/red"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_coverText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:alpha="0.5"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="Image must be less then 20mb in size."
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_coverImage" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_postCard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingStart="15dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Description"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/et_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <EditText
+            android:id="@+id/et_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/back_dark_rounded_border_red"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="top|start"
+            android:hint="Describe what your post is all about"
+            android:lines="5"
+            android:maxLines="10"
+            android:minLines="5"
+            android:padding="10dp"
+            android:scrollbars="vertical"
+            android:textColor="@color/white"
+            android:textColorHint="#878787"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_description"
+            tools:layout_editor_absoluteX="15dp" />
+
+        <Button
+            android:id="@+id/btn_addPost"
+            style="@style/Theme.PyxisKapri"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Add post"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_description" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/navMenu"
@@ -352,6 +610,76 @@
             android:focusable="true"
             app:srcCompat="@drawable/notifications"
             app:tint="#292D33" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/navMenu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/btn_cardBack"
+            style="@style/Theme.PyxisKapri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:backgroundTint="@color/transparent"
+            android:fontFamily="@font/montserrat_regular"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingLeft="25dp"
+            android:paddingTop="5dp"
+            android:paddingRight="25dp"
+            android:paddingBottom="5dp"
+            android:text="Back"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:cornerRadius="10dp"
+            app:icon="@drawable/icon_back"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
+            app:iconTint="@color/red"
+            app:strokeColor="@color/red"
+            app:strokeWidth="1dp" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_cardNext"
+            style="@style/Theme.PyxisKapri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:background="@drawable/et_rounded_sharper"
+            android:fontFamily="@font/montserrat_regular"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingLeft="25dp"
+            android:paddingTop="5dp"
+            android:paddingRight="25dp"
+            android:paddingBottom="5dp"
+            android:text="Next"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:icon="@drawable/icon_next"
+            app:iconGravity="textEnd"
+            app:iconPadding="10dp" />
 
     </LinearLayout>
 
