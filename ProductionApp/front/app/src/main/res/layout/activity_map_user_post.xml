@@ -63,7 +63,7 @@
 
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/shapeableImageView"
+                android:id="@+id/shapeableImageView_m"
                 android:layout_marginTop="30dp"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -89,7 +89,7 @@
 
 
                 <TextView
-                    android:id="@+id/tv_name1"
+                    android:id="@+id/tv_name1_m"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_regular"
@@ -101,7 +101,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/tv_name2"
+                    android:id="@+id/tv_name2_m"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
