@@ -172,7 +172,7 @@ namespace PyxisKapriBack.Services
             // Menjanje foldera korisnika ukoliko je korisnik promenio username
             
             // MENJANJE PROFILNE SLIKE
-            if (Convert.ToBoolean(user.IsImageChanged) && !fileService.CheckIfProfileImageExists(folderPath, user.ProfileImage.FileName))
+            if (user.ProfileImage != null && !fileService.CheckIfProfileImageExists(folderPath, user.ProfileImage.FileName))
             {
                 fileService.UpdateFile(folderPath, user.FileName, user.ProfileImage, out newProfileImageName);
                 loggedUser.FileName = newProfileImageName;
