@@ -17,7 +17,20 @@ namespace PyxisKapriBack.DAL
             if (message == null)
                 throw new Exception(Constants.Constants.resNullValue);
 
-            message.Time = DateTime.Now; 
+            if (message == null)
+                throw new Exception(Constants.Constants.resNullValue);
+
+            if (message.Sender == null)
+                throw new Exception(Constants.Constants.resNotFoundSender);
+
+            if (message.Receiver == null)
+                throw new Exception(Constants.Constants.resNotFoundReceiver);
+
+            if (message.Text == null)
+                throw new Exception(Constants.Constants.resEmptyTextMessage);
+
+            if (message.Sender.Username.Equals(message.Receiver.Username))
+                throw new Exception(Constants.Constants.resSameSenderAndReceiver); 
             _context.Messages.Add(message);
             _context.SaveChanges(); 
 

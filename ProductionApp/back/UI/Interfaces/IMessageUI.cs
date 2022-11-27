@@ -8,8 +8,8 @@ namespace PyxisKapriBack.UI.Interfaces
         public Response UpdateMessage(MessageDTO message); 
         public Response DeleteMessage(int messageId);
         public MessageDTO GetMessage(int messageId);
-        public Response AddMessage(MessageDTO message); 
+        public Response AddMessage(MessageDTO message);
 
-        public List<MessageDTO> GetMessages(string usernameSender, string usernameReceiver);
+        public List<MessageDTO> GetMessages(string usernamReceiver); 
     }
 }

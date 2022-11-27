@@ -42,7 +42,9 @@
         public const string resNoFoundPost          = "Post nije pronađen";
         public const string resDeleteLikeFailed     = "Neuspešno brisanje like-a";
         public const string resDeleteDislikeFailed  = "Neuspešno brisanje dislike-a";
-        public const string resPermissionDenied     = "Odbijen pristup!"; 
+        public const string resPermissionDenied     = "Odbijen pristup!";
+        public const string resEmptyTextMessage     = "Nije unet tekst poruke!";
+        public const string resSameSenderAndReceiver = "Poslato je isto korisničko ime za pošiljaoca i primaoca"; 
         #endregion
 
         #region 'Ok message'

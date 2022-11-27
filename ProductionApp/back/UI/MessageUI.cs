@@ -26,7 +26,8 @@ namespace PyxisKapriBack.UI
                 Sender = sender,
                 Receiver = receiver,
                 SenderId = sender.Id,
-                ReceiverId = receiver.Id
+                ReceiverId = receiver.Id, 
+                Time = DateTime.Now
             };
 
             return messageService.AddMessage(newMessage); 
@@ -53,9 +54,10 @@ namespace PyxisKapriBack.UI
             return messageDTO; 
         }
 
-        public List<MessageDTO> GetMessages(string usernameSender, string usernameReceiver)
+        public List<MessageDTO> GetMessages(string usernameReceiver)
         {
             List<MessageDTO> messagesDTO = new List<MessageDTO>();
+            String usernameSender = userService.GetLoggedUser(); 
             List<Message> messages = messageService.GetMessages(usernameSender, usernameReceiver);
 
             foreach(var message in messages)
@@ -79,21 +81,10 @@ namespace PyxisKapriBack.UI
             User sender = userService.GetUser(message.UsernameSender);
             User receiver = userService.GetUser(message.UsernameReceiver);
 
-            if (sender == null)
-                return ResponseService.CreateErrorResponse(Constants.Constants.resNotFoundSender);
+            Message updatedMessage = messageService.GetMessage((int)message.Id);
 
-            if (receiver == null)
-                return ResponseService.CreateErrorResponse(Constants.Constants.resNotFoundReceiver);
+            updatedMessage.Text = message.Text; 
             
-            Message updatedMessage = new Message
-            {
-                Id = message.Id,
-                Text = message.Text,
-                Sender = sender,
-                SenderId = sender.Id,                
-                Receiver = receiver,
-                ReceiverId = receiver.Id
-            };
             return messageService.UpdateMessage(updatedMessage); 
         }
 

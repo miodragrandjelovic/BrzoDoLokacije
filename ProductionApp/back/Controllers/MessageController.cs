@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.UI.Interfaces;
 
@@ -7,6 +8,7 @@ using PyxisKapriBack.UI.Interfaces;
 namespace PyxisKapriBack.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize(Roles = "User,Admin")]
     [ApiController]
     public class MessageController : ControllerBase
     {
@@ -56,7 +58,16 @@ namespace PyxisKapriBack.Controllers
                 return Ok(message);
 
             return BadRequest(message);
+        }
 
+        [HttpGet("GetChat/{usernameReceiver}")]
+        public async Task<IActionResult> GetChat(String usernameReceiver)
+        {
+            var messages = messageUI.GetMessages(usernameReceiver);
+            if (messages == null)
+                return NotFound(); 
+
+            return Ok(messages);
         }
     }
 }
