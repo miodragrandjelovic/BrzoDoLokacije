@@ -61,7 +61,7 @@ namespace PyxisKapriBack.UI
                 CommentText = comment.Text,
                 DateOfCommenting = comment.DateCreated.ToString(),
                 Username = comment.User.Username,
-                ProfileImage = Convert.ToBase64String(comment.User.ProfileImage)
+                ProfileImagePath = Path.Combine(comment.User.FolderPath, comment.User.FirstName)
             };
         }
 
@@ -80,7 +80,7 @@ namespace PyxisKapriBack.UI
                     DateOfCommenting = comment.DateCreated.ToString(),
                     Username = comment.User.Username,
                     LikeStatus = (int)commentService.GetCommentStatus(comment.Id),
-                    ProfileImage = Convert.ToBase64String(comment.User.ProfileImage),
+                    ProfileImagePath = Path.Combine(comment.User.FolderPath,comment.User.FirstName),
                     LikeCount = commentLikeService.GetCommentLikeCount(comment.Id), 
                     DislikeCount = commentDislikeService.GetCommentDislikeCount(comment.Id)
                 });
@@ -99,7 +99,7 @@ namespace PyxisKapriBack.UI
             {
                 usersDTO.Add(new UserShortDTO
                 {
-                    ProfileImage = user.ProfileImage == null ? string.Empty : Convert.ToBase64String(user.ProfileImage),
+                    ProfileImage = Path.Combine(user.FolderPath, user.FirstName),
                     Username = user.Username,
                     FirstName = user.FirstName,
                     LastName = user.LastName
@@ -118,7 +118,7 @@ namespace PyxisKapriBack.UI
             {
                 usersDTO.Add(new UserShortDTO
                 {
-                    ProfileImage = user.ProfileImage == null ? string.Empty : Convert.ToBase64String(user.ProfileImage),
+                    ProfileImage = Path.Combine(user.FolderPath, user.FirstName),
                     Username = user.Username,
                     FirstName = user.FirstName,
                     LastName = user.LastName
