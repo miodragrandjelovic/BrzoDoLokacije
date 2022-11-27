@@ -17,13 +17,21 @@
         tools:layout_editor_absoluteX="15dp"
         tools:layout_editor_absoluteY="307dp">
 
-        <ImageView
-            android:id="@+id/iv_dialogUserAvatar"
+
+        <androidx.cardview.widget.CardView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginRight="10dp"
             android:layout_weight="0"
-            tools:srcCompat="@tools:sample/avatars" />
+            app:cardCornerRadius="100dp">
+
+            <ImageView
+                android:id="@+id/iv_dialogUserAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+        </androidx.cardview.widget.CardView>
 
         <EditText
             android:id="@+id/et_dialogNewCommentText"
