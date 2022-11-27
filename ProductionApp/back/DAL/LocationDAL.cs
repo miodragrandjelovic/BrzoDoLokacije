@@ -136,7 +136,7 @@ namespace PyxisKapriBack.DAL
         public bool AddLocation(Location location)
         {
             if (location.City == null)
-                throw new Exception(Constants.Constants.resNoFoundCity); 
+                throw new Exception(Constants.Constants.resNotFoundCity); 
 
             _context.Locations.Add(location);
             _context.SaveChanges();

@@ -28,9 +28,10 @@
         public const int NUMBER_OF_POSTS = 5;
 
         #region 'Error Messages'
-        public const string resNoFoundCountry       = "Država nije pronađena";
-        public const string resNoFoundCity          = "Grad nije pronađen";
-        public const string resNoFoundLocation      = "Lokacija nije pronađena";
+        public const string resNotFoundCountry       = "Država nije pronađena";
+        public const string resNotFoundCity          = "Grad nije pronađen";
+        public const string resNotFoundLocation      = "Lokacija nije pronađena";
+        public const string resNotFoundMessage       = "Poruka nije pronađena"; 
         public const string resDeleteFailed         = "Neuspešno brisanje {0}";
         public const string resNullValue            = "Poslata je NULL vrednost za argument";
         public const string resNoFoundComment       = "Nije pronađen komentar";
@@ -39,7 +40,7 @@
         public const string resNoFoundPost          = "Post nije pronađen";
         public const string resDeleteLikeFailed     = "Neuspešno brisanje like-a";
         public const string resDeleteDislikeFailed  = "Neuspešno brisanje dislike-a";
-        public const string resPermissionDenied    = "Odbijen pristup!"; 
+        public const string resPermissionDenied     = "Odbijen pristup!"; 
         #endregion
 
         #region 'Ok message'

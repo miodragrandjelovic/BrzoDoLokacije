@@ -88,6 +88,7 @@ builder.Services.AddSwaggerGen(options => {
     builder.Services.AddTransient<IDislikeDAL, DislikeDAL>();
     builder.Services.AddTransient<IFollowDAL, FollowDAL>();
 
+    builder.Services.AddTransient< IMessageDAL, MessageDAL>();
     builder.Services.AddTransient<ICommentLikeDAL, CommentLikeDAL>();
     builder.Services.AddTransient<ICommentDislikeDAL, CommentDislikeDAL>();
 #endregion
