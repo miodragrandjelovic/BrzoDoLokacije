@@ -16,14 +16,18 @@ namespace PyxisKapriBack.LocationManager
         public List<Location> GetAllAroundLocations(Location location, List<Location> locations, double distance = Constants.Constants.DISTANCE)
         {
             var closest = new List<Location>();
-            double dist; 
+            double dist;
+            if (location == null)
+                return closest; 
 
             foreach(Location loc in locations)
             {
+                if ((loc.Latitude == null) || (loc.Longitude == null))
+                    continue; 
                 dist = GetDistance(location.Latitude, location.Longitude, loc.Latitude, loc.Longitude); 
                 if (dist <= distance)
                 {
-                    loc.Distance = dist; 
+                    loc.Distance = Math.Round(dist,2); 
                     closest.Add(loc);
                 }
             }

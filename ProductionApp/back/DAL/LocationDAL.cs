@@ -128,7 +128,7 @@ namespace PyxisKapriBack.DAL
         public List<Location> GetAllAroundLocations(Location location, double distance = Constants.Constants.DISTANCE)
         {
             List<Location> locations;
-            locations = _context.Locations.ToList();
+            locations = _context.Locations.Include(location => location.Posts).ToList();
             locations = locationManager.GetAllAroundLocations(location, locations, distance); 
             return locations; 
         }
@@ -136,7 +136,7 @@ namespace PyxisKapriBack.DAL
         public bool AddLocation(Location location)
         {
             if (location.City == null)
-                throw new Exception(Constants.Constants.resNoFoundCity); 
+                throw new Exception(Constants.Constants.resNotFoundCity); 
 
             _context.Locations.Add(location);
             _context.SaveChanges();
