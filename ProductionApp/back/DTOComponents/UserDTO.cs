@@ -9,8 +9,9 @@ namespace PyxisKapriBack.DTOComponents
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-
         public string ProfileImagePath { get; set; } = string.Empty;
+        public int UserFollowersCount { get; set; } = 0;    
+        public int UserFollowingCount { get; set; } = 0;
 
 
 

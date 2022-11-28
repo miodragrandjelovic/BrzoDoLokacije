@@ -109,7 +109,7 @@ namespace PyxisKapriBack.UI
 
             foreach (var image in post.Images)
             {
-                var fullPath = Path.Combine(post.PostPath, image.ImageName);
+                var fullPath = Path.Combine(post.User.FolderPath, post.PostPath, image.ImageName);
                 images.Add(fullPath); 
             }
             return new AdditionalPostData

@@ -60,7 +60,9 @@ namespace PyxisKapriBack.UI
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                ProfileImagePath = Path.Combine(user.FolderPath, user.FileName)
+                ProfileImagePath = Path.Combine(user.FolderPath, user.FileName),
+                UserFollowersCount = user.Followers != null ? user.Followers.Count : 0,
+                UserFollowingCount = user.Following != null ? user.Following.Count : 0,
             };
 
             return userDTO;
