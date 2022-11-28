@@ -14,7 +14,10 @@
         public List<Comment>? Comments { get; set; }
         public string CoverImageName { get; set; } = string.Empty;
         public string PostPath { get; set; } = string.Empty;
-        public List<Image> Images { get; set; } = new List<Image>(); 
+        public List<Image> Images { get; set; } = new List<Image>();
+
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
 
         #region 'User'
         public int UserId { get; set; }

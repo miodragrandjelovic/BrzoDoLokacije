@@ -38,9 +38,12 @@ namespace PyxisKapriBack.Services
             newPost.Description = post.Description;
             newPost.CoverImageName = post.CoverImage.FileName;
             newPost.PostPath = postPath;
+            newPost.Longitude = Convert.ToDouble(post.Longitude);
+            newPost.Latitude = Convert.ToDouble(post.Latitude); 
 
             var fullPath = Path.Combine(loggedUser.FolderPath, postPath);
             var answer = fileService.CreateFolder(fullPath);
+
             //if (!answer)
             //    return new Response
             //    {
@@ -68,24 +71,18 @@ namespace PyxisKapriBack.Services
                 location = new Location();
                 location.Longitude = Convert.ToDouble(post.Longitude);
                 location.Latitude = Convert.ToDouble(post.Latitude);
-                location.City = city; 
+                location.City = city;
                 location.Address = post.Address;
                 location.Name = post.LocationName;
 
-                locationDAL.AddLocation(location); 
-            }
-            else if((location.Longitude == 0) || (location.Latitude == 0))
-            {
-                location.Longitude = Convert.ToDouble(post.Longitude);
-                location.Latitude = Convert.ToDouble(post.Latitude);
-                locationDAL.UpdateLocation(location); 
-            }
-            else if (String.IsNullOrEmpty(location.Address))
-            {
-                location.Address = post.Address;
                 locationDAL.AddLocation(location);
             }
-
+            else {
+                if (String.IsNullOrEmpty(location.Address))
+                    location.Address = post.Address;
+                if (String.IsNullOrEmpty(location.Name))
+                    location.Name = post.LocationName; 
+            }
             newPost.Location = location;
                 
             if (post.Images.Count > 0)
@@ -98,8 +95,6 @@ namespace PyxisKapriBack.Services
                     newPost.Images.Add(newImage);
                 }
             }
-
-
             postDAL.AddPost(newPost);
         }
         public Response DeletePost(int postID)
