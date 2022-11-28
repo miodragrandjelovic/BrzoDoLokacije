@@ -17,6 +17,7 @@ import com.example.pyxiskapri.activities.NewPostActivity
 import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
+import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.google.android.material.imageview.ShapeableImageView
@@ -42,6 +43,8 @@ class NewUserProfileActivity : AppCompatActivity(){
     lateinit var sessionManager: SessionManager
 
     lateinit var userPostAdapter:UserPostsAdapter
+
+    lateinit var cover_image : String
 
     override fun onRestart() {
         super.onRestart()
@@ -132,6 +135,10 @@ class NewUserProfileActivity : AppCompatActivity(){
                 override fun onResponse(call: Call<ArrayList<PostResponse>>, response: Response<ArrayList<PostResponse>>) {
                     if(response.isSuccessful) {
 
+                        cover_image = response.body()!![0].coverImage
+                        var imageBitmap = android.util.Base64.decode(cover_image, android.util.Base64.DEFAULT)
+                        coverImage.setImageBitmap(BitmapFactory.decodeByteArray(imageBitmap, 0, imageBitmap.size))
+
                         post_number.text=response.body()!!.size.toString()
                         userPostAdapter.setPostList(response.body()!!)
                     }
@@ -164,7 +171,9 @@ class NewUserProfileActivity : AppCompatActivity(){
         menu_btn.setOnClickListener() {
 
             view.settings.setOnClickListener() {
+
                 val intent = Intent(this, ChangeCredentialsActivity::class.java);
+                ActivityTransferStorage.coverImage = cover_image
                 startActivity(intent);
             }
 

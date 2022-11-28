@@ -22,6 +22,7 @@ import com.example.pyxiskapri.dtos.request.EditUserRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.LoginResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
+import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
@@ -56,6 +57,10 @@ class ChangeCredentialsActivity : AppCompatActivity() {
         apiClient=ApiClient()
         sessionManager= SessionManager(this)
 
+
+        var cover_image = ActivityTransferStorage.coverImage
+        var imageBitmap = android.util.Base64.decode(cover_image, android.util.Base64.DEFAULT)
+        coverImage_c.setImageBitmap(BitmapFactory.decodeByteArray(imageBitmap, 0, imageBitmap.size))
 
         setupGetUser()
         tv_change_pass.setOnClickListener(){
