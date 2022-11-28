@@ -21,21 +21,22 @@ namespace PyxisKapriBack.Controllers
             this.postUI = postUI;
         }
         [HttpPost("NewPost")]
-        public async Task<IActionResult> CreatePost([FromForm]NewPostDTO post)
+        public async Task<IActionResult> CreatePost([FromForm] NewPostDTO post)
         {   //izmena da vraca response
             postUI.AddPost(post);
             return Ok(
-                new{
+                new
+                {
                     message = "Uspesno dodat novi post"
                 }
             );
         }
         [HttpPut("SetLike/{postId}")]
         public async Task<IActionResult> SetLikeOnPost(int postId)
-        {   
+        {
             var response = postUI.SetLikeOnPost(postId);
             var message = new { message = response.Message };
-            if(response.StatusCode.Equals(StatusCodes.Status200OK))
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(message);
 
             return BadRequest(message);
@@ -55,7 +56,7 @@ namespace PyxisKapriBack.Controllers
         {
             var response = postUI.DeleteUserPost(postId);
             var message = new { message = response.Message };
-            if(response.StatusCode.Equals(StatusCodes.Status200OK))
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(message);
             return BadRequest(message);
         }
@@ -81,7 +82,7 @@ namespace PyxisKapriBack.Controllers
         {
             var post = postUI.GetPost(id);
             if (post == null)
-                return BadRequest(new {message = "Error"});
+                return BadRequest(new { message = "Error" });
             return Ok(post);
         }
 
@@ -95,14 +96,15 @@ namespace PyxisKapriBack.Controllers
         [HttpGet("GetFollowingPosts")]
         public async Task<IActionResult> GetFollowingPosts()
         {
-            var posts = postUI.GetFollowingPosts();
+            SortType sortType = SortType.DATE;
+            var posts = postUI.GetFollowingPosts(sortType);
             return Ok(posts);
         }
 
         [HttpGet("GetRecommendedPosts")]
-        public async Task<IActionResult> GetRecommendedPosts()
+        public async Task<IActionResult> GetRecommendedPosts(int sortType = 0)
         {
-            var posts = postUI.GetRecommendedPosts();
+            var posts = postUI.GetRecommendedPosts((SortType)sortType);
             return Ok(posts);
         }
     }

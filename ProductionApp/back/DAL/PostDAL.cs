@@ -87,29 +87,7 @@ namespace PyxisKapriBack.DAL
                                                                        .ToList();
         }
 
-        public List<Post> GetFollowingPosts(string username)
-        {
-            var _user = _iUserDAL.GetUser(username);
-            if (_user == null)
-                return null;
-            List<int> users = _context.Follow.Where(follow => follow.FollowerId == _user.Id)
-                                                          .Select(follow => follow.Following)
-                                                          .Select(user => user.Id)
-                                                          .ToList(); 
-
-            List<Post> posts = _context.Posts.Where(post => users.Contains(post.UserId))
-                                             .Include(post => post.User)
-                                             .Include(post => post.Dislikes)
-                                             .Include(post => post.Likes)
-                                             .Include(post => post.Comments)
-                                             .Include(post => post.Images)
-                                             .Include(post => post.Location)
-                                             .OrderByDescending(post => post.CreatedDate)
-                                             .ToList();
-            return posts; 
-        }
-
-        public List<Post> GetRecommendedPosts(string username)
+        public List<Post> GetFollowingPosts(string username, SortType sortType = SortType.DATE)
         {
             var _user = _iUserDAL.GetUser(username);
             if (_user == null)
@@ -118,17 +96,67 @@ namespace PyxisKapriBack.DAL
                                                           .Select(follow => follow.Following)
                                                           .Select(user => user.Id)
                                                           .ToList();
-            users.Add(_user.Id); 
-            List<Post> posts = _context.Posts.Where(post => !users.Contains(post.UserId))
+
+            /*   List<Post> posts = _context.Posts.Where(post => users.Contains(post.UserId))
+                                                .Include(post => post.User)
+                                                .Include(post => post.Dislikes)
+                                                .Include(post => post.Likes)
+                                                .Include(post => post.Comments)
+                                                .Include(post => post.Images)
+                                                .Include(post => post.Location)
+                                                .OrderByDescending(post => post.CreatedDate)
+                                                .ToList();*/
+            IQueryable<Post> posts = _context.Posts.Where(post => users.Contains(post.UserId))
+                                                .Include(post => post.User)
+                                                .Include(post => post.Dislikes)
+                                                .Include(post => post.Likes)
+                                                .Include(post => post.Comments)
+                                                .Include(post => post.Images)
+                                                .Include(post => post.Location); 
+
+            return SortListByCriteria(posts, sortType); 
+        }
+
+        public List<Post> GetRecommendedPosts(string username, SortType sortType = SortType.DATE)
+        { 
+            var _user = _iUserDAL.GetUser(username);
+            if (_user == null)
+                return null;
+            List<int> users = _context.Follow.Where(follow => follow.FollowerId == _user.Id)
+                                                          .Select(follow => follow.Following)
+                                                          .Select(user => user.Id)
+                                                          .ToList();
+            users.Add(_user.Id);
+            /*List<Post> posts = _context.Posts.Where(post => !users.Contains(post.UserId))
                                              .Include(post => post.User)
                                              .Include(post => post.Dislikes)
                                              .Include(post => post.Likes)
                                              .Include(post => post.Comments)
                                              .Include(post => post.Images)
                                              .Include(post => post.Location)
-                                             .OrderByDescending(post => post.CreatedDate)
-                                             .ToList();
-            return posts;
+                                             .ToList();*/
+
+            IQueryable<Post> posts = _context.Posts.Where(post => !users.Contains(post.UserId))
+                                             .Include(post => post.User)
+                                             .Include(post => post.Dislikes)
+                                             .Include(post => post.Likes)
+                                             .Include(post => post.Comments)
+                                             .Include(post => post.Images)
+                                             .Include(post => post.Location); 
+
+            return SortListByCriteria(posts, sortType);
+        }
+
+        List<Post> SortListByCriteria(IQueryable<Post> orderedQueryable, SortType sortType = SortType.DATE)
+        {
+            if (sortType == SortType.DATE)
+                orderedQueryable = orderedQueryable.OrderByDescending(post => post.CreatedDate);
+            else if (sortType == SortType.COUNT_COMMENTS)
+                orderedQueryable = orderedQueryable.OrderByDescending(post => post.Comments.Count);
+            else if (sortType == SortType.COUNT_LIKES)
+                orderedQueryable = orderedQueryable.OrderByDescending(post => post.Likes.Count);
+
+            return orderedQueryable.ToList(); 
         }
     }
 }

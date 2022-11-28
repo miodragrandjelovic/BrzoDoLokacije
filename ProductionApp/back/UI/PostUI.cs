@@ -56,9 +56,9 @@ namespace PyxisKapriBack.UI
             return allPosts;
         }
 
-        public List<PostDTO> GetFollowingPosts()
+        public List<PostDTO> GetFollowingPosts(SortType sortType = SortType.DATE)
         {
-            var posts = postService.GetFollowingPosts(userService.GetLoggedUser());
+            var posts = postService.GetFollowingPosts(userService.GetLoggedUser(), sortType);
 
             var allPosts = new List<PostDTO>();
 
@@ -78,9 +78,9 @@ namespace PyxisKapriBack.UI
             }
             return allPosts;
         }
-        public List<PostDTO> GetRecommendedPosts()
+        public List<PostDTO> GetRecommendedPosts(SortType sortType = SortType.DATE)
         {
-            var posts = postService.GetRecommendedPosts(userService.GetLoggedUser());
+            var posts = postService.GetRecommendedPosts(userService.GetLoggedUser(), sortType);
 
             var allPosts = new List<PostDTO>();
 

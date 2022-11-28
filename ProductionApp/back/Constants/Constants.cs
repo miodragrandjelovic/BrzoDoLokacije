@@ -73,4 +73,12 @@
         CITY, 
         COUNTRY
     }
+
+    public enum SortType
+    {
+        DATE, 
+        COUNT_LIKES, 
+        COUNT_COMMENTS, 
+        COUNT_VIEWS
+    }
 }

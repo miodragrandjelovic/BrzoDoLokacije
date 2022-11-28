@@ -174,13 +174,13 @@ namespace PyxisKapriBack.Services
         {
             return likeService.AddLike(postID);
         }
-        public List<Post> GetFollowingPosts(string username)
+        public List<Post> GetFollowingPosts(string username, SortType sortType = SortType.DATE)
         {
-            return postDAL.GetFollowingPosts(username); 
+            return postDAL.GetFollowingPosts(username, sortType); 
         }
-        public List<Post> GetRecommendedPosts(string username)
+        public List<Post> GetRecommendedPosts(string username, SortType sortType = SortType.DATE)
         {
-            return postDAL.GetRecommendedPosts(username); 
+            return postDAL.GetRecommendedPosts(username, sortType); 
         }
     }
 }
