@@ -143,13 +143,13 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             }
 
             2 -> {
-                return true
-            }
-
-            3 -> {
                 if(::coverImage.isInitialized)
                     if(!Uri.EMPTY.equals(coverImage))
                         return true
+            }
+
+            3 -> {
+                return true
             }
 
             4 -> {
@@ -252,32 +252,32 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             // IMAGES CARD
             2 -> {
                 turnOnCardIndicator(iv_circle1, tv_1, tv_circleLocation)
-                turnOnCardIndicator(iv_circle2, tv_2, tv_circleImages)
+                turnOnCardIndicator(iv_circle2, tv_2, tv_circleCover)
                 iv_circle2.setImageResource(R.drawable.circle_selected)
                 iv_bar1.setColorFilter(red)
-                btn_cardBack.visibility = View.VISIBLE
-                btn_cardNext.visibility = View.VISIBLE
-                cl_imagesCard.visibility = View.VISIBLE
-            }
-
-            // COVER CARD
-            3 -> {
-                turnOnCardIndicator(iv_circle1, tv_1, tv_circleLocation)
-                turnOnCardIndicator(iv_circle2, tv_2, tv_circleImages)
-                turnOnCardIndicator(iv_circle3, tv_3, tv_circleCover)
-                iv_circle3.setImageResource(R.drawable.circle_selected)
-                iv_bar1.setColorFilter(red)
-                iv_bar2.setColorFilter(red)
                 btn_cardBack.visibility = View.VISIBLE
                 btn_cardNext.visibility = View.VISIBLE
                 cl_coverCard.visibility = View.VISIBLE
             }
 
+            // COVER CARD
+            3 -> {
+                turnOnCardIndicator(iv_circle1, tv_1, tv_circleLocation)
+                turnOnCardIndicator(iv_circle2, tv_2, tv_circleCover)
+                turnOnCardIndicator(iv_circle3, tv_3, tv_circleImages)
+                iv_circle3.setImageResource(R.drawable.circle_selected)
+                iv_bar1.setColorFilter(red)
+                iv_bar2.setColorFilter(red)
+                btn_cardBack.visibility = View.VISIBLE
+                btn_cardNext.visibility = View.VISIBLE
+                cl_imagesCard.visibility = View.VISIBLE
+            }
+
             // POST CARD
             4 -> {
                 turnOnCardIndicator(iv_circle1, tv_1, tv_circleLocation)
-                turnOnCardIndicator(iv_circle2, tv_2, tv_circleImages)
-                turnOnCardIndicator(iv_circle3, tv_3, tv_circleCover)
+                turnOnCardIndicator(iv_circle2, tv_2, tv_circleCover)
+                turnOnCardIndicator(iv_circle3, tv_3, tv_circleImages)
                 turnOnCardIndicator(iv_circle4, tv_4, tv_circlePost)
                 iv_circle4.setImageResource(R.drawable.circle_selected)
                 iv_bar1.setColorFilter(red)
@@ -491,12 +491,12 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             dialog.window?.setLayout(920, 1000)
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog.setCancelable(false)
+            dialog.show()
 
             // RV i Dialog Setup
             val uploadProgressAdapter = ImageUploadProgressAdapter(arrayListOf())
             dialog.rv_imagsUploadProgress.adapter = uploadProgressAdapter
             dialog.rv_imagsUploadProgress.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
-            dialog.show()
 
             // Images Multipart.Body
             val partImagesList: ArrayList<MultipartBody.Part> = arrayListOf()
@@ -523,6 +523,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
                         if (response.isSuccessful) {
                             val intent = Intent(context, HomeActivity::class.java)
                             startActivity(intent)
+                            dialog.dismiss()
                             finish()
                         }
                     }

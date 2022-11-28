@@ -42,9 +42,9 @@ class ProgressRequestBody(private var fileId: Int, private var file: File, priva
             val handler = Handler(Looper.getMainLooper())
             while (fileInputStream.read(buffer).also { read = it } != -1) {
                 // update progress on UI thread
-                handler.post(ProgressUpdater(uploaded, fileLength))
                 uploaded += read.toLong()
                 sink.write(buffer, 0, read)
+                handler.post(ProgressUpdater(uploaded, fileLength))
             }
         }
 

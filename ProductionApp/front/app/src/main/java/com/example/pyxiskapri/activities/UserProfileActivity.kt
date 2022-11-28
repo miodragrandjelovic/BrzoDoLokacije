@@ -19,6 +19,7 @@ import androidx.documentfile.provider.DocumentFile
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.dtos.request.ChangePasswordRequest
+import com.example.pyxiskapri.dtos.request.EditUserRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.LoginResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
@@ -54,7 +55,7 @@ class UserProfileActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
 
     private val PICK_IMAGE_CODE=1
-    lateinit var profileImage: Uri
+    var profileImage: Uri = Uri.EMPTY
     lateinit var oldProfileImage:String
 
     lateinit var userPostAdapter:UserPostsAdapter
@@ -118,23 +119,23 @@ class UserProfileActivity : AppCompatActivity() {
                 ) {
                     if(response.isSuccessful)
                     {
-                        tv_first_name.text=response.body()!!.firstName
-                        tv_last_name.text=response.body()!!.lastName
+                        val currentUser = response.body()!!
+
+                        tv_first_name.text=currentUser.firstName
+                        tv_last_name.text=currentUser.lastName
 
                         Log.d("USERNAME PRE: ", tv_userName.text.toString())
-                        tv_userName.text=response.body()!!.username
+                        tv_userName.text=currentUser.username
                         Log.d("USERNAME POSLE: ", tv_userName.text.toString())
 
-                        tv_email.text=response.body()!!.email
+                        tv_email.text=currentUser.email
 
-                        tv_name1.text=response.body()!!.firstName
-                        tv_name2.text=response.body()!!.lastName
+                        tv_name1.text=currentUser.firstName
+                        tv_name2.text=currentUser.lastName
 
-                        if(response.body()!!.folderPath!="")
-                        {
-                            oldProfileImage = response.body()!!.folderPath.replace("\\", "//")
-                            Picasso.get().load(UtilityFunctions.getFullImagePath(oldProfileImage + "\\" + response.body()!!.fileName)).into(imageViewReal)
-                        }
+                        oldProfileImage = currentUser.profileImage
+                        Log.d("oldProfileImage", oldProfileImage)
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(oldProfileImage)).into(imageViewReal)
 
 
                     }
@@ -245,100 +246,31 @@ class UserProfileActivity : AppCompatActivity() {
 
             dialog.btn_confirm_password.setOnClickListener(){
 
-
-                var slika=""
-
-                if(this::profileImage.isInitialized) {
-                    var bitmap =
-                        MediaStore.Images.Media.getBitmap(this.contentResolver, profileImage);
-                    var outputStream = ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                    var byteArray = outputStream.toByteArray();
-                    var encodedString =
-                        android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
-                    slika=encodedString
+                var editUserRequest = EditUserRequest(
+                    et_username.text.toString(),
+                    dialog.et_modul_password.text.toString(),
+                    et_first_name.text.toString(),
+                    et_last_name.text.toString(),
+                    et_email.text.toString()
+                )
 
 
-                }
+                val context: Context = this
 
-                else if(this::oldProfileImage.isInitialized)
-                {
-                   slika=oldProfileImage
-                }
+                if(profileImage == Uri.EMPTY)
+                    changeUserData(context, editUserRequest)
+                else
+                    changeUserImage(context)
 
-                if(flag==0)
-                {
+
+                if(flag == 0) {
                     et_first_name.setText(tv_first_name.text)
                     et_last_name.setText(tv_last_name.text)
                     et_username.setText(tv_userName.text)
                     et_email.setText(tv_email.text)
                 }
 
-
-//                var editUserRequest= EditUserRequest(
-//                    firstName = this.et_first_name.text.toString(),
-//                    lastName = this.et_last_name.text.toString(),
-//                    username = this.et_username.text.toString(),
-//                    email = this.et_email.text.toString(),
-//                    password = dialog.et_modul_password.text.toString(),
-//                    profileimage = slika
-//                )
-//
-//                val profileImageFile: File = UtilityFunctions.createTmpFileFromUri(this, profileImage, "profilna", UtilityFunctions.getUriExtention(this, profileImage))!!
-//                profileImageFile.deleteOnExit()
-//                val profileImageAsRequestBody = profileImageFile.asRequestBody("image/*".toMediaTypeOrNull())
-//                val multipartImage: MultipartBody.Part = MultipartBody.Part.createFormData("ProfileImage", profileImageFile.name, profileImageAsRequestBody)
-
-
-                val context: Context = this
-
-                apiClient.getUserService(this).editUser(
-                    UtilityFunctions.requestBodyFromString("NO_FOLDER_PATH"),
-                    UtilityFunctions.requestBodyFromString("NO_FILE_NAME"),
-                    UtilityFunctions.requestBodyFromString( this.et_username.text.toString()),
-                    UtilityFunctions.requestBodyFromString( dialog.et_modul_password.text.toString()),
-                    UtilityFunctions.requestBodyFromString( this.et_first_name.text.toString()),
-                    UtilityFunctions.requestBodyFromString( this.et_last_name.text.toString()),
-                    UtilityFunctions.requestBodyFromString( this.et_email.text.toString()),
-                    UtilityFunctions.uriToMultipartPart(this, profileImage, "ProfileImage", "profilna")
-                )
-                .enqueue(object : Callback<LoginResponse>{
-                    override fun onResponse(
-                        call: Call<LoginResponse>,
-                        response: Response<LoginResponse>
-                    ) {
-                        if(response.isSuccessful)
-                        {
-                            Log.d("",response.body()?.token.toString())
-                            sessionManager.clearToken()
-                            sessionManager.saveToken(response.body()?.token.toString())
-
-                            Toast.makeText(context,"Credentials changed successfully!",Toast.LENGTH_LONG).show()
-
-                            tv_first_name.text=et_first_name.text.toString()
-                            tv_last_name.text=et_last_name.text.toString()
-                            tv_userName.text=et_username.text.toString()
-                            tv_email.text=et_email.text.toString()
-
-                            tv_name1.text=et_first_name.text.toString()
-                            tv_name2.text=et_last_name.text.toString()
-
-                        }
-
-                        if(response.code() == Constants.CODE_BAD_REQUEST)
-                            Toast.makeText(context, "_BAD REQUEST MESSAGE HERE_", Toast.LENGTH_SHORT).show()
-
-                        flag=0
-                    }
-
-                    override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                        Toast.makeText(context,"Something went wrong, try again.",Toast.LENGTH_LONG).show()
-                    }
-
-
-                })
-
-
+                profileImage = Uri.EMPTY
 
                 dialog.dismiss()
             }
@@ -362,17 +294,72 @@ class UserProfileActivity : AppCompatActivity() {
 
         }
 
+    }
 
 
+    private fun changeUserData(context: Context, editUserRequest: EditUserRequest){
+        apiClient.getUserService(this).editUserData(editUserRequest)
+            .enqueue(object : Callback<LoginResponse>{
+                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                    if(response.isSuccessful)
+                    {
+                        Log.d("",response.body()?.token.toString())
+                        sessionManager.clearToken()
+                        sessionManager.saveToken(response.body()?.token.toString())
+
+                        Toast.makeText(context,"Credentials changed successfully!",Toast.LENGTH_LONG).show()
+
+                        tv_first_name.text=et_first_name.text.toString()
+                        tv_last_name.text=et_last_name.text.toString()
+                        tv_userName.text=et_username.text.toString()
+                        tv_email.text=et_email.text.toString()
+
+                        tv_name1.text=et_first_name.text.toString()
+                        tv_name2.text=et_last_name.text.toString()
+
+                    }
+
+                    if(response.code() == Constants.CODE_BAD_REQUEST)
+                        Toast.makeText(context, "_BAD REQUEST MESSAGE HERE_", Toast.LENGTH_SHORT).show()
+
+                    flag=0
+                }
+
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    Toast.makeText(context,"Something went wrong, try again.",Toast.LENGTH_LONG).show()
+                }
+
+
+            })
+    }
+
+    private fun changeUserImage(context: Context){
+        apiClient.getUserService(this).editUserImage(
+            UtilityFunctions.uriToMultipartPart(context, profileImage, "ProfileImage", "profile_image")
+        )
+            .enqueue(object : Callback<MessageResponse>{
+                override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
+                    if(response.isSuccessful)
+                        Toast.makeText(context,"Profile image changed successfully!",Toast.LENGTH_LONG).show()
+
+                    if(response.code() == Constants.CODE_BAD_REQUEST)
+                        Toast.makeText(context, "_BAD REQUEST MESSAGE HERE_", Toast.LENGTH_SHORT).show()
+
+                    flag=0
+                }
+
+                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                    Toast.makeText(context,"Something went wrong, try again.",Toast.LENGTH_LONG).show()
+                }
+
+
+            })
     }
 
 
 
 
-
-
     private fun setupChangePhoto() {
-
 
         ib_change_photo.setOnClickListener(){
 

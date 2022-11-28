@@ -15,11 +15,6 @@ import java.io.File
 
 object UtilityFunctions {
 
-    fun base64ToBitmap(base64Image: String) : Bitmap {
-        val imageData = android.util.Base64.decode(base64Image, android.util.Base64.DEFAULT)
-        return BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
-    }
-
     fun getFullImagePath(imagePath: String): String{
         return Constants.BASE_URL + "/" + imagePath
     }

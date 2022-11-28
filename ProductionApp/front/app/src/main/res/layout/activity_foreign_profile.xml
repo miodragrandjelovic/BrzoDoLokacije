@@ -75,9 +75,8 @@
                     android:id="@+id/f_imageViewReal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:background="@color/black"
-                    app:srcCompat="@drawable/avatarplaceholder" />
+                    android:background="@color/dark_gray"
+                    android:scaleType="centerCrop" />
 
             </androidx.cardview.widget.CardView>
 

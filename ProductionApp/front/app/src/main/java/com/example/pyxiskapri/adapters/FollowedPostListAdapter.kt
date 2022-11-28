@@ -10,8 +10,11 @@ import com.example.pyxiskapri.activities.ForeignProfileActivity
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.models.PostListItem
+import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.UtilityFunctions
 import com.google.android.material.imageview.ShapeableImageView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_post_followed_profiles.view.*
 
 
@@ -21,11 +24,7 @@ class FollowedPostListAdapter (private val postList: MutableList<PostListItem>) 
 
     lateinit var apiClient: ApiClient
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): PostListAdapter.PostViewHolder {
-
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostListAdapter.PostViewHolder {
         apiClient = ApiClient()
         return PostListAdapter.PostViewHolder( LayoutInflater.from(parent.context).inflate(R.layout.item_post_followed_profiles, parent, false))
     }
@@ -34,28 +33,22 @@ class FollowedPostListAdapter (private val postList: MutableList<PostListItem>) 
 
         val currentPost = postList[position]
         holder.itemView.apply {
-            //val profileBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.ownerImage)).get()
-            //profileImage.setImageBitmap(profileBitmap)
-            //tv_ownerUsername.text = currentPost.ownerUsername
+            Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.ownerImage)).into(profileImage)
             f_post_likes.text = currentPost.likeCount.toString()
             f_post_dislikes.text = currentPost.viewCount.toString()
 
 
-            val imageView: ShapeableImageView = findViewById(com.example.pyxiskapri.R.id.imagePost)
+            val imageView: ShapeableImageView = findViewById(R.id.imagePost)
             val radius = resources.getDimension(com.example.pyxiskapri.R.dimen.corner_radius)
             imageView.shapeAppearanceModel = imageView.shapeAppearanceModel
                 .toBuilder().setAllCornerSizes(radius)
-                //.setTopRightCorner(CornerFamily.ROUNDED,10.0)
                 .build()
 
-
-            //var coverBitmap = Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).get()
-            //imagePost.setImageBitmap(coverBitmap)
+            Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).into(imagePost)
 
             imagePost.setOnClickListener{
                     val intent = Intent(context, OpenPostActivity::class.java)
-                    //intent.putExtra("postData", currentPost)
-                    //ActivityTransferStorage.postItemToOpenPost = PostItemToOpenPost(currentPost, profileBitmap, coverBitmap)
+                    ActivityTransferStorage.postItemToOpenPost = currentPost
                     context.startActivity(intent)
                 }
 

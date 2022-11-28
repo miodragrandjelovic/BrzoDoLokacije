@@ -148,11 +148,11 @@ class HomeActivity : AppCompatActivity() {
 
                         if(response.body()!!.size==0)
                         {
-                            ll_follow.isGone=true
+                            rv_f_posts.isGone=true
                         }
                         else
                         {
-                            ll_follow.isGone=false
+                            rv_f_posts.isGone=false
                             followedPostListAdapter.setFollowedPostList(response.body()!!)
                         }
 

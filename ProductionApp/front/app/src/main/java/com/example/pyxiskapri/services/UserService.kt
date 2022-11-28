@@ -21,28 +21,12 @@ interface UserService {
     @POST("api/Auth/register")
     fun register(@Body requestBody: RegisterRequest) : Call<MessageResponse>
 
-
-//    "FolderPath", "TEST"
-//    "FileName", "TEST"
-//    "Username", this.et_username.text.toString()
-//    "Password", dialog.et_modul_password.text.toString()
-//    "FirstName", this.et_first_name.text.toString()
-//    "LastName", this.et_last_name.text.toString()
-//    "Email", this.et_email.text.toString()
-//    "ProfileImage", imageFile.name, imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+    @PUT("api/User/UpdateUser")
+    fun editUserData(@Body requestBody: EditUserRequest) : Call<LoginResponse>
 
     @Multipart
-    @PUT("api/User/UpdateUser")
-    fun editUser(
-        @Part("FolderPath") FolderPath: RequestBody,
-        @Part("FileName") fileName: RequestBody,
-        @Part("Username") username: RequestBody,
-        @Part("Password") password: RequestBody,
-        @Part("FirstName") firstName: RequestBody,
-        @Part("LastName") lastName: RequestBody,
-        @Part("Email") email: RequestBody,
-        @Part profileImage: MultipartBody.Part
-    ) : Call<LoginResponse>
+    @PUT("api/User/UpdateProfileImage")
+    fun editUserImage(@Part profileImage: MultipartBody.Part) : Call<MessageResponse>
 
     @GET("api/User/GetUser")
     fun getUser() : Call<GetUserResponse>

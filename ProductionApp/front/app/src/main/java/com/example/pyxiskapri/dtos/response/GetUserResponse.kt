@@ -9,13 +9,11 @@ data class GetUserResponse(
     var lastName: String,
     @SerializedName("username")
     var username: String,
+    @SerializedName("password")
+    var password: String,
     @SerializedName("email")
     var email: String,
-    @SerializedName("profileImage")
+    @SerializedName("profileImagePath")
     var profileImage: String,
-    @SerializedName("folderPath")
-    var folderPath: String,
-    @SerializedName("fileName")
-    var fileName: String
 
 )
