@@ -21,7 +21,9 @@ import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.models.CommentExpandableListItem
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.UtilityFunctions
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_comment.view.*
+import kotlinx.android.synthetic.main.item_friend_in_chat.view.*
 import kotlinx.android.synthetic.main.item_reply.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -121,7 +123,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
 
         view?.apply {
             // Header
-            iv_commenterAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(comment.commenterImage))
+            Picasso.get().load(UtilityFunctions.getFullImagePath(comment.commenterImage)).into(iv_commenterAvatar)
             tv_commenterUsername.text = comment.commenterUsername
             tv_commentDate.text = comment.creationDate
 
@@ -255,7 +257,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
 
         view?.apply {
             // Header
-            iv_replierAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(reply.commenterImage))
+            Picasso.get().load(UtilityFunctions.getFullImagePath(reply.commenterImage)).into(iv_replierAvatar)
             tv_replierUsername.text = reply.commenterUsername
             tv_replyDate.text = reply.creationDate
 

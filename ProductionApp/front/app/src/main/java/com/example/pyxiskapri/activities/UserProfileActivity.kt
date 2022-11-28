@@ -5,19 +5,20 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
+import androidx.documentfile.provider.DocumentFile
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.adapters.ImageGridAdapter
 import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.dtos.request.ChangePasswordRequest
 import com.example.pyxiskapri.dtos.request.EditUserRequest
@@ -29,14 +30,25 @@ import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
+import com.example.pyxiskapri.utility.UtilityFunctions
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.modal_change_pass.*
 import kotlinx.android.synthetic.main.modal_confirm_password.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
-import retrofit2.Response
 import retrofit2.Callback
+import retrofit2.Response
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.InputStream
+import java.net.URI
 
 class UserProfileActivity : AppCompatActivity() {
 
@@ -45,7 +57,7 @@ class UserProfileActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
 
     private val PICK_IMAGE_CODE=1
-    lateinit var profileImage: Uri
+    var profileImage: Uri = Uri.EMPTY
     lateinit var oldProfileImage:String
 
     lateinit var userPostAdapter:UserPostsAdapter
@@ -109,32 +121,30 @@ class UserProfileActivity : AppCompatActivity() {
                 ) {
                     if(response.isSuccessful)
                     {
-                        tv_first_name.text=response.body()!!.firstName
-                        tv_last_name.text=response.body()!!.lastName
+                        val currentUser = response.body()!!
+
+                        tv_first_name.text=currentUser.firstName
+                        tv_last_name.text=currentUser.lastName
 
                         Log.d("USERNAME PRE: ", tv_userName.text.toString())
-                        tv_userName.text=response.body()!!.username
+                        tv_userName.text=currentUser.username
                         Log.d("USERNAME POSLE: ", tv_userName.text.toString())
 
-                        tv_email.text=response.body()!!.email
+                        tv_email.text=currentUser.email
 
-                        tv_name1.text=response.body()!!.firstName
-                        tv_name2.text=response.body()!!.lastName
+                        tv_name1.text=currentUser.firstName
+                        tv_name2.text=currentUser.lastName
 
-                        val picture=response.body()!!.profileImage
-                        if(picture!=null)
-                        {
-                            oldProfileImage=response.body()!!.profileImage
-                            var imageData = android.util.Base64.decode(picture, android.util.Base64.DEFAULT)
-                            imageViewReal.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
-                        }
+                        oldProfileImage = currentUser.profileImage
+                        Log.d("oldProfileImage", oldProfileImage)
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(oldProfileImage)).into(imageViewReal)
 
 
                     }
                 }
 
                 override fun onFailure(call: Call<GetUserResponse>, t: Throwable) {
-                    TODO("Not yet implemented")
+                    //TODO("Not yet implemented")
                 }
 
             })
@@ -178,6 +188,7 @@ class UserProfileActivity : AppCompatActivity() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.modal_change_pass)
+        dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
         dialog.show()
         dialog.btn_save_new_pass.setOnClickListener(){
@@ -224,6 +235,8 @@ class UserProfileActivity : AppCompatActivity() {
 
     }
 
+
+
     private fun confirmButton()
     {
         ib_confirm.setOnClickListener()
@@ -233,86 +246,35 @@ class UserProfileActivity : AppCompatActivity() {
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setCancelable(true)
             dialog.setContentView(R.layout.modal_confirm_password)
+            dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
             dialog.btn_confirm_password.setOnClickListener(){
 
+                var editUserRequest = EditUserRequest(
+                    et_username.text.toString(),
+                    dialog.et_modul_password.text.toString(),
+                    et_first_name.text.toString(),
+                    et_last_name.text.toString(),
+                    et_email.text.toString()
+                )
 
-                var slika=""
 
-                if(this::profileImage.isInitialized) {
-                    var bitmap =
-                        MediaStore.Images.Media.getBitmap(this.contentResolver, profileImage);
-                    var outputStream = ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                    var byteArray = outputStream.toByteArray();
-                    var encodedString =
-                        android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
-                    slika=encodedString
-                }
+                val context: Context = this
 
-                else if(this::oldProfileImage.isInitialized)
-                {
-                   slika=oldProfileImage
-                }
+                if(profileImage == Uri.EMPTY)
+                    changeUserData(context, editUserRequest)
+                else
+                    changeUserImage(context)
 
-                if(flag==0)
-                {
+
+                if(flag == 0) {
                     et_first_name.setText(tv_first_name.text)
                     et_last_name.setText(tv_last_name.text)
                     et_username.setText(tv_userName.text)
                     et_email.setText(tv_email.text)
                 }
 
-                var editUserRequest= EditUserRequest(
-
-                    firstName = this.et_first_name.text.toString(),
-                    lastName = this.et_last_name.text.toString(),
-                    username = this.et_username.text.toString(),
-                    email = this.et_email.text.toString(),
-                    password = dialog.et_modul_password.text.toString(),
-                    profileimage = slika
-                )
-
-
-                val context: Context = this
-
-                apiClient.getUserService(context).editUser(editUserRequest).enqueue(object : Callback<LoginResponse>{
-                    override fun onResponse(
-                        call: Call<LoginResponse>,
-                        response: Response<LoginResponse>
-                    ) {
-                        if(response.isSuccessful)
-                        {
-                            Log.d("",response.body()?.token.toString())
-                            sessionManager.clearToken()
-                            sessionManager.saveToken(response.body()?.token.toString())
-
-                            Toast.makeText(context,"Credentials changed successfully!",Toast.LENGTH_LONG).show()
-
-                            tv_first_name.text=et_first_name.text.toString()
-                            tv_last_name.text=et_last_name.text.toString()
-                            tv_userName.text=et_username.text.toString()
-                            tv_email.text=et_email.text.toString()
-
-                            tv_name1.text=et_first_name.text.toString()
-                            tv_name2.text=et_last_name.text.toString()
-
-                        }
-
-                        if(response.code() == Constants.CODE_BAD_REQUEST)
-                            Toast.makeText(context, "The password is wrong, or username is taken!", Toast.LENGTH_SHORT).show()
-
-                        flag=0
-                    }
-
-                    override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                        Toast.makeText(context,"Something went wrong, try again.",Toast.LENGTH_LONG).show()
-                    }
-
-
-                })
-
-
+                profileImage = Uri.EMPTY
 
                 dialog.dismiss()
             }
@@ -336,24 +298,80 @@ class UserProfileActivity : AppCompatActivity() {
 
         }
 
-
-
     }
 
 
+    private fun changeUserData(context: Context, editUserRequest: EditUserRequest){
+        apiClient.getUserService(this).editUserData(editUserRequest)
+            .enqueue(object : Callback<LoginResponse>{
+                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                    if(response.isSuccessful)
+                    {
+                        Log.d("",response.body()?.token.toString())
+                        sessionManager.clearToken()
+                        sessionManager.saveToken(response.body()?.token.toString())
+
+                        Toast.makeText(context,"Credentials changed successfully!",Toast.LENGTH_LONG).show()
+
+                        tv_first_name.text=et_first_name.text.toString()
+                        tv_last_name.text=et_last_name.text.toString()
+                        tv_userName.text=et_username.text.toString()
+                        tv_email.text=et_email.text.toString()
+
+                        tv_name1.text=et_first_name.text.toString()
+                        tv_name2.text=et_last_name.text.toString()
+
+                    }
+
+                    if(response.code() == Constants.CODE_BAD_REQUEST)
+                        Toast.makeText(context, "_BAD REQUEST MESSAGE HERE_", Toast.LENGTH_SHORT).show()
+
+                    flag=0
+                }
+
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    Toast.makeText(context,"Something went wrong, try again.",Toast.LENGTH_LONG).show()
+                }
+
+
+            })
+    }
+
+    private fun changeUserImage(context: Context){
+        apiClient.getUserService(this).editUserImage(
+            UtilityFunctions.uriToMultipartPart(context, profileImage, "ProfileImage", "profile_image")
+        )
+            .enqueue(object : Callback<MessageResponse>{
+                override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
+                    if(response.isSuccessful)
+                        Toast.makeText(context,"Profile image changed successfully!",Toast.LENGTH_LONG).show()
+
+                    if(response.code() == Constants.CODE_BAD_REQUEST)
+                        Toast.makeText(context, "_BAD REQUEST MESSAGE HERE_", Toast.LENGTH_SHORT).show()
+
+                    flag=0
+                }
+
+                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                    Toast.makeText(context,"Something went wrong, try again.",Toast.LENGTH_LONG).show()
+                }
+
+
+            })
+    }
 
 
 
 
     private fun setupChangePhoto() {
 
-
         ib_change_photo.setOnClickListener(){
 
-            val intent: Intent = Intent()
+            val intent: Intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             intent.action = Intent.ACTION_GET_CONTENT
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             startActivityForResult(Intent.createChooser(intent, "Select Images"), PICK_IMAGE_CODE)
 
         }

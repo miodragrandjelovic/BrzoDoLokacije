@@ -86,6 +86,7 @@ class HomeActivity : AppCompatActivity() {
         btn_newPost.setOnClickListener {
             val intent = Intent (this, NewPostActivity::class.java);
             startActivity(intent);
+            finish()
         }
     }
 
@@ -93,6 +94,7 @@ class HomeActivity : AppCompatActivity() {
         btn_messages.setOnClickListener {
             val intent = Intent (this, ChatMainActivity::class.java);
             startActivity(intent);
+            finish()
         }
     }
 
@@ -153,11 +155,11 @@ class HomeActivity : AppCompatActivity() {
 
                         if(response.body()!!.size==0)
                         {
-                            ll_follow.isGone=true
+                            rv_f_posts.isGone=true
                         }
                         else
                         {
-                            ll_follow.isGone=false
+                            rv_f_posts.isGone=false
                             followedPostListAdapter.setFollowedPostList(response.body()!!)
                         }
 

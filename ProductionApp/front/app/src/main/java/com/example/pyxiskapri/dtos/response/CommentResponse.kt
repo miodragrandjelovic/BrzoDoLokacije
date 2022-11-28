@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class CommentResponse(
     @SerializedName("id")
     var id: Int,
-    @SerializedName("profileImage")
+    @SerializedName("profileImagePath")
     var commenterImage: String,
     @SerializedName("username")
     var commenterUsername: String,

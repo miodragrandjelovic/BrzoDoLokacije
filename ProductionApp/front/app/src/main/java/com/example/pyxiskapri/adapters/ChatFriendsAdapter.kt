@@ -13,7 +13,9 @@ import com.example.pyxiskapri.activities.ChattingActivity
 import com.example.pyxiskapri.dtos.response.FriendResponse
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.UtilityFunctions
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_friend_in_chat.view.*
+import okhttp3.FormBody
 
 class ChatFriendsAdapter(private var friendsList: ArrayList<FriendResponse>, private var context: Context): RecyclerView.Adapter<ChatFriendsAdapter.ChatFriendViewHolder>() {
     class ChatFriendViewHolder(friendView: View) : RecyclerView.ViewHolder(friendView)
@@ -33,7 +35,7 @@ class ChatFriendsAdapter(private var friendsList: ArrayList<FriendResponse>, pri
                 context.startActivity(intent)
             }
 
-            iv_friendAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(currentFriend.friendImage))
+            Picasso.get().load(UtilityFunctions.getFullImagePath(currentFriend.friendImage)).into(iv_friendAvatar)
             iv_friendAvatar.setOnClickListener {
                 openFriendAccount()
             }

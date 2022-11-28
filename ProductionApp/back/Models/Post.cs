@@ -12,7 +12,8 @@
         public List<Like>? Likes { get; set; }
         public List<Dislike>? Dislikes { get; set; }
         public List<Comment>? Comments { get; set; }
-        public byte[] CoverImage { get; set; }
+        public string CoverImageName { get; set; } = string.Empty;
+        public string PostPath { get; set; } = string.Empty;
         public List<Image> Images { get; set; } = new List<Image>(); 
 
         #region 'User'

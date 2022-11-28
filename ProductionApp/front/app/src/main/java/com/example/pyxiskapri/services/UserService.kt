@@ -8,6 +8,8 @@ import com.example.pyxiskapri.dtos.response.LoginResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.google.gson.JsonObject
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.*
@@ -20,7 +22,11 @@ interface UserService {
     fun register(@Body requestBody: RegisterRequest) : Call<MessageResponse>
 
     @PUT("api/User/UpdateUser")
-    fun editUser(@Body requestBody: EditUserRequest) : Call<LoginResponse>
+    fun editUserData(@Body requestBody: EditUserRequest) : Call<LoginResponse>
+
+    @Multipart
+    @PUT("api/User/UpdateProfileImage")
+    fun editUserImage(@Part profileImage: MultipartBody.Part) : Call<MessageResponse>
 
     @GET("api/User/GetUser")
     fun getUser() : Call<GetUserResponse>

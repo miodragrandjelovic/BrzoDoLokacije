@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.location.Geocoder
@@ -15,22 +17,26 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.ListView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.ImageGridAdapter
+import com.example.pyxiskapri.adapters.ImageUploadProgressAdapter
 import com.example.pyxiskapri.dtos.request.NewPostRequest
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.ImageGridItem
+import com.example.pyxiskapri.models.ProgressRequestBody
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
+import com.example.pyxiskapri.utility.UtilityFunctions
+import com.google.android.gms.common.util.Hex
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -41,34 +47,56 @@ import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_new_post.btn_UserProfile_bar
 import kotlinx.android.synthetic.main.activity_new_post.btn_home
 import kotlinx.android.synthetic.main.activity_new_post.btn_messages
+import kotlinx.android.synthetic.main.activity_new_post.btn_home
+import kotlinx.android.synthetic.main.activity_user_profile.view.*
+import kotlinx.android.synthetic.main.dialog_images_upload_progress.*
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
 import java.util.*
 
 
 class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
-    private val PICK_IMAGES_CODE: Int = 0
-    private val PICK_COVER_IMAGE_CODE: Int = 1
 
+    // API, SESIJE...
     private lateinit var sessionManager: SessionManager
     private lateinit var apiClient: ApiClient
 
+    // MAP API, GEOCODER...
     private lateinit var map: GoogleMap
     private lateinit var geocoder: Geocoder
+
+
+    // UI
+    private var selectedCard: Int = 1
+
+    // CARD LOCATION
+    private val INVALID_LOCATION_VALUE : LatLng = LatLng(-123456789.0, -123456789.0)
     private var locationList: ArrayList<String> = ArrayList<String>()
-
-
-    private lateinit var selectedLocation: LatLng
+    private var selectedLocation: LatLng = INVALID_LOCATION_VALUE
     private lateinit var locationAddress: String
     private lateinit var locationCity: String
     private lateinit var locationCountry: String
 
-    private lateinit var coverImage:Uri
+    // CARD IMAGES
+    private val PICK_IMAGES_CODE: Int = 0
     private lateinit var imageGridAdapter: ImageGridAdapter
-    var images:ArrayList<String> = arrayListOf()
+
+    // CARD COVER
+    private val PICK_COVER_IMAGE_CODE: Int = 1
+    private lateinit var coverImage: Uri
+
+
+    // CARD POST
+    lateinit var uploadProgressAdapter: ImageUploadProgressAdapter
+
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,8 +114,10 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
         setupNavButtons()
 
-        setupAddPostButton()
+        setupCardUIButtons()
+        updateCardUI()
 
+        setupAddPostButton()
     }
 
 
@@ -102,7 +132,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
         setupButtonUserProfile()
     }
 
-
+    // NAV BUTTONS
 
     private fun setupGoHomeButton(){
         btn_home.setOnClickListener {
@@ -127,143 +157,166 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
 
 
-    @Throws(IOException::class)
-    private fun readBytes(context: Context, uri: Uri): ByteArray? = context.contentResolver.openInputStream(uri)?.buffered()?.use { it.readBytes() }
 
-    private fun setupAddPostButton() {
-        btn_addPost.setOnClickListener {
-            for (imageGridItem in imageGridAdapter.imageItems) {
-                val byteArray = readBytes(this, imageGridItem.uri)
-                images.add(byteArray!!.toString())
+    // UI CONTROL
+
+    private fun checkCurrentCardIsValid(cardNumber: Int): Boolean{
+        when(cardNumber){
+            1 -> {
+                if(INVALID_LOCATION_VALUE != selectedLocation)
+                    return true
             }
-            var bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), coverImage);
-            var outputStream = ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            var byteArray = outputStream.toByteArray();
-            var encodedCoverImage = android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT);
 
-            val newPostRequest = NewPostRequest(
-                description = et_description.text.toString(),
-                address = locationAddress,
-                locationName = "__LocationName__",
-                city = locationCity,
-                country = locationCountry,
-                longitude = selectedLocation.longitude,
-                latitude = selectedLocation.latitude,
-                coverImage = encodedCoverImage,
-                images = images
-            )
+            2 -> {
+                if(::coverImage.isInitialized)
+                    if(!Uri.EMPTY.equals(coverImage))
+                        return true
+            }
 
-            sendPostRequest(newPostRequest, this)
+            3 -> {
+                return true
+            }
+
+            4 -> {
+                // TAG CHECK
+                if(et_description != null)
+                    return true
+            }
+
         }
+        return false
     }
 
-    private fun sendPostRequest(newPostRequest: NewPostRequest, context: Context){
-        apiClient.getPostService(context).addPost(newPostRequest).enqueue(object :
-            Callback<MessageResponse> {
-            override fun onResponse(
-                call: Call<MessageResponse>,
-                response: Response<MessageResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val intent = Intent(context, HomeActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-            }
+    private fun setupCardUIButtons(){
+        btn_cardBack.setOnClickListener{
 
-            override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                Toast.makeText(context, "Adding new post failed!", Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-
-
-
-
-    private fun setupImageGridAdapter() {
-        imageGridAdapter = ImageGridAdapter(mutableListOf(), this)
-        gv_additionalImages.adapter = imageGridAdapter
-    }
-
-    private fun setupPickImagesButton() {
-        btn_pickImages.setOnClickListener {
-            val intent: Intent = Intent()
-            intent.type = "image/*"
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "Select Images"), PICK_IMAGES_CODE)
-        }
-    }
-
-    private fun setupPickCoverImage() {
-
-        btn_coverImage.setOnClickListener(){
-                val intent: Intent = Intent()
-                intent.type = "image/*"
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                intent.action = Intent.ACTION_GET_CONTENT
-                startActivityForResult(Intent.createChooser(intent, "Select Cover Images"), PICK_COVER_IMAGE_CODE)
-            }
-
-        cl_coverImage.setOnClickListener(){
-            val intent: Intent = Intent()
-            intent.type = "image/*"
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "Select Cover Images"), PICK_COVER_IMAGE_CODE)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == PICK_IMAGES_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                // Multiple images chosen
-                if (data!!.clipData != null) {
-                    val count = data.clipData!!.itemCount
-                    for (index in 0 until count)
-                        imageGridAdapter.imageItems.add(ImageGridItem(data.clipData!!.getItemAt(index).uri))
-                }
-
-                // Single image chosen
-                else {
-                    val imageUri = data.data
-                    if (imageUri != null)
-                        imageGridAdapter.imageItems.add(ImageGridItem(imageUri))
-                }
-
-            }
-            imageGridAdapter.notifyDataSetChanged()
+            selectedCard--
+            updateCardUI()
         }
 
-        if(requestCode == PICK_COVER_IMAGE_CODE)  {
-            if(data == null)
-                return
-
-            if (data.clipData != null) {
-                iv_coverImage.setImageURI(data.clipData!!.getItemAt(0).uri)
-                coverImage=data.clipData!!.getItemAt(0).uri
+        btn_cardNext.setOnClickListener {
+            if(checkCurrentCardIsValid(selectedCard)) {
+                selectedCard++
+                updateCardUI()
             }
-            else {
-                val imageUri = data.data
-                if (imageUri != null) {
-                    iv_coverImage.setImageURI(imageUri)
-                    coverImage=imageUri
-                }
-            }
+        }
 
-            tv_coverText.isVisible = false
-            btn_coverImage.isVisible = false
+        iv_circle1.setOnClickListener {
 
         }
     }
 
+    private fun resetAllUIComponents(){
+        val lightGray = Color.parseColor("#FF686F74")
+        val barGray = Color.parseColor("#FF393D40")
+        val darkGray = Color.parseColor("#FF1B1B1E")
+
+        // Bars
+        iv_bar1.setColorFilter(barGray)
+        iv_bar2.setColorFilter(barGray)
+        iv_bar3.setColorFilter(barGray)
+
+        // 1
+        iv_circle1.setImageResource(R.drawable.circle)
+        iv_circle1.setColorFilter(lightGray)
+        tv_1.setTextColor(darkGray)
+        tv_circleLocation.setTextColor(lightGray)
+
+        // 2
+        iv_circle2.setImageResource(R.drawable.circle)
+        iv_circle2.setColorFilter(lightGray)
+        tv_2.setTextColor(darkGray)
+        tv_circleImages.setTextColor(lightGray)
+
+        // 3
+        iv_circle3.setImageResource(R.drawable.circle)
+        iv_circle3.setColorFilter(lightGray)
+        tv_3.setTextColor(darkGray)
+        tv_circleCover.setTextColor(lightGray)
+
+        // 4
+        iv_circle4.setImageResource(R.drawable.circle)
+        iv_circle4.setColorFilter(lightGray)
+        tv_4.setTextColor(darkGray)
+        tv_circlePost.setTextColor(lightGray)
+
+        // CARDS
+        cl_locationCard.visibility = View.GONE
+        cl_imagesCard.visibility = View.GONE
+        cl_coverCard.visibility = View.GONE
+        cl_postCard.visibility = View.GONE
+
+        // BUTTONS
+        btn_cardBack.visibility = View.GONE
+        btn_cardNext.visibility = View.GONE
+    }
+
+    private fun turnOnCardIndicator(circle: ImageView, number: TextView, label: TextView){
+        circle.setColorFilter(Color.parseColor("#FFCC2045"))
+        number.setTextColor(Color.WHITE)
+        label.setTextColor(Color.WHITE)
+        tv_circleLocation.setTextColor(Color.WHITE)
+    }
+
+
+    private fun updateCardUI(){
+        resetAllUIComponents()
+
+        val red: Int = Color.parseColor("#FFCC2045")
+
+        when(selectedCard){
+
+            // LOCATION CARD
+            1 -> {
+                turnOnCardIndicator(iv_circle1, tv_1, tv_circleLocation)
+                iv_circle1.setImageResource(R.drawable.circle_selected)
+                btn_cardNext.visibility = View.VISIBLE
+                cl_locationCard.visibility = View.VISIBLE
+            }
+
+            // IMAGES CARD
+            2 -> {
+                turnOnCardIndicator(iv_circle1, tv_1, tv_circleLocation)
+                turnOnCardIndicator(iv_circle2, tv_2, tv_circleCover)
+                iv_circle2.setImageResource(R.drawable.circle_selected)
+                iv_bar1.setColorFilter(red)
+                btn_cardBack.visibility = View.VISIBLE
+                btn_cardNext.visibility = View.VISIBLE
+                cl_coverCard.visibility = View.VISIBLE
+            }
+
+            // COVER CARD
+            3 -> {
+                turnOnCardIndicator(iv_circle1, tv_1, tv_circleLocation)
+                turnOnCardIndicator(iv_circle2, tv_2, tv_circleCover)
+                turnOnCardIndicator(iv_circle3, tv_3, tv_circleImages)
+                iv_circle3.setImageResource(R.drawable.circle_selected)
+                iv_bar1.setColorFilter(red)
+                iv_bar2.setColorFilter(red)
+                btn_cardBack.visibility = View.VISIBLE
+                btn_cardNext.visibility = View.VISIBLE
+                cl_imagesCard.visibility = View.VISIBLE
+            }
+
+            // POST CARD
+            4 -> {
+                turnOnCardIndicator(iv_circle1, tv_1, tv_circleLocation)
+                turnOnCardIndicator(iv_circle2, tv_2, tv_circleCover)
+                turnOnCardIndicator(iv_circle3, tv_3, tv_circleImages)
+                turnOnCardIndicator(iv_circle4, tv_4, tv_circlePost)
+                iv_circle4.setImageResource(R.drawable.circle_selected)
+                iv_bar1.setColorFilter(red)
+                iv_bar2.setColorFilter(red)
+                iv_bar3.setColorFilter(red)
+                btn_cardBack.visibility = View.VISIBLE
+                cl_postCard.visibility = View.VISIBLE
+            }
+        }
+    }
 
 
 
+    // MAP
 
     private fun setupMap(){
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -360,4 +413,153 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
         }
     }
+
+
+
+
+    // IMAGES + COVER IMAGE
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGES_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                // Multiple images chosen
+                if (data!!.clipData != null) {
+                    val count = data.clipData!!.itemCount
+                    for (index in 0 until count)
+                        imageGridAdapter.imageItems.add(ImageGridItem(data.clipData!!.getItemAt(index).uri))
+                }
+
+                // Single image chosen
+                else {
+                    val imageUri = data.data
+                    if (imageUri != null)
+                        imageGridAdapter.imageItems.add(ImageGridItem(imageUri))
+                }
+
+            }
+            imageGridAdapter.notifyDataSetChanged()
+        }
+
+        if(requestCode == PICK_COVER_IMAGE_CODE)  {
+            if(data == null)
+                return
+
+            if (data.clipData != null) {
+                iv_coverImage.setImageURI(data.clipData!!.getItemAt(0).uri)
+                coverImage=data.clipData!!.getItemAt(0).uri
+            }
+            else {
+                val imageUri = data.data
+                if (imageUri != null) {
+                    iv_coverImage.setImageURI(imageUri)
+                    coverImage=imageUri
+                }
+            }
+
+            tv_coverText.isVisible = false
+            btn_coverImage.isVisible = false
+
+        }
+    }
+
+    private fun setupImageGridAdapter() {
+        imageGridAdapter = ImageGridAdapter(mutableListOf(), this)
+        gv_additionalImages.adapter = imageGridAdapter
+    }
+
+    private fun setupPickImagesButton() {
+        btn_pickImages.setOnClickListener {
+            val intent: Intent = Intent()
+            intent.type = "image/*"
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select Images"), PICK_IMAGES_CODE)
+        }
+    }
+
+    private fun setupPickCoverImage() {
+
+        btn_coverImage.setOnClickListener(){
+                val intent: Intent = Intent()
+                intent.type = "image/*"
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                intent.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(Intent.createChooser(intent, "Select Cover Images"), PICK_COVER_IMAGE_CODE)
+            }
+
+        cl_coverImage.setOnClickListener(){
+            val intent: Intent = Intent()
+            intent.type = "image/*"
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select Cover Images"), PICK_COVER_IMAGE_CODE)
+        }
+    }
+
+
+
+
+
+    // UPLOAD POST
+
+    private fun setupAddPostButton() {
+        btn_addPost.setOnClickListener {
+
+            if(!checkCurrentCardIsValid(selectedCard))
+                return@setOnClickListener
+
+            // Dialog Setup
+            val dialog = Dialog(this)
+            dialog.setContentView(R.layout.dialog_images_upload_progress)
+            dialog.window?.setLayout(920, 1000)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setCancelable(false)
+            dialog.show()
+
+            // RV i Dialog Setup
+            val uploadProgressAdapter = ImageUploadProgressAdapter(arrayListOf())
+            dialog.rv_imagsUploadProgress.adapter = uploadProgressAdapter
+            dialog.rv_imagsUploadProgress.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+
+            // Images Multipart.Body
+            val partImagesList: ArrayList<MultipartBody.Part> = arrayListOf()
+            var imageIndex = 1
+            for (imageGridItem in imageGridAdapter.imageItems)
+                partImagesList.add(UtilityFunctions.uriToProgressMultipartPart(this, imageIndex++, imageGridItem.uri, "Images", "postImage", uploadProgressAdapter.uploadListener))
+
+            val context: Context = this
+            // Images Upload
+            apiClient.getPostService(this).addPost(
+                CoverImage = UtilityFunctions.uriToProgressMultipartPart(this, 0, coverImage, "CoverImage", "coverImage", uploadProgressAdapter.uploadListener),
+                Images = partImagesList,
+                Description = UtilityFunctions.requestBodyFromString(et_description.text.toString()),
+                Longitude = UtilityFunctions.requestBodyFromString(selectedLocation.longitude.toString()),
+                Latitude = UtilityFunctions.requestBodyFromString(selectedLocation.latitude.toString()),
+                LocationName = UtilityFunctions.requestBodyFromString("__LocationName__"),
+                Address = UtilityFunctions.requestBodyFromString(locationAddress),
+                City = UtilityFunctions.requestBodyFromString(locationCity),
+                Country = UtilityFunctions.requestBodyFromString(locationCountry)
+            ).enqueue(
+                object : Callback<MessageResponse> {
+                    override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            val intent = Intent(context, HomeActivity::class.java)
+                            startActivity(intent)
+                            dialog.dismiss()
+                            finish()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                        Toast.makeText(context, "Adding new post failed!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            )
+        }
+    }
+
+
 }

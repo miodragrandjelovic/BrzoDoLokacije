@@ -12,6 +12,7 @@
         public byte[] Password { get; set; }
         public byte[] PasswordKey { get; set; }
         public string FolderPath { get; set; } = string.Empty;
+        public string FileName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public byte[]? ProfileImage { get; set; }
         public List<Post>? Posts { get; set; }

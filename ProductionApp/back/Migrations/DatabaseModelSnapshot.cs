@@ -38,7 +38,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Comment", b =>
@@ -72,7 +72,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.CommentDislike", b =>
@@ -93,7 +93,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CommentDislikes", (string)null);
+                    b.ToTable("CommentDislikes");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.CommentLike", b =>
@@ -114,7 +114,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CommentLikes", (string)null);
+                    b.ToTable("CommentLikes");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Country", b =>
@@ -130,7 +130,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Dislike", b =>
@@ -151,7 +151,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Dislikes", (string)null);
+                    b.ToTable("Dislikes");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Follow", b =>
@@ -172,7 +172,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("FollowingId");
 
-                    b.ToTable("Follow", (string)null);
+                    b.ToTable("Follow");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Image", b =>
@@ -181,9 +181,9 @@ namespace PyxisKapriBack.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("ImageData")
+                    b.Property<string>("ImageName")
                         .IsRequired()
-                        .HasColumnType("longblob");
+                        .HasColumnType("longtext");
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
@@ -192,7 +192,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Images", (string)null);
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Like", b =>
@@ -213,7 +213,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Likes", (string)null);
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Location", b =>
@@ -245,7 +245,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("CityID");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Message", b =>
@@ -273,7 +273,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Post", b =>
@@ -282,9 +282,9 @@ namespace PyxisKapriBack.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("CoverImage")
+                    b.Property<string>("CoverImageName")
                         .IsRequired()
-                        .HasColumnType("longblob");
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime(6)");
@@ -297,6 +297,10 @@ namespace PyxisKapriBack.Migrations
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
 
+                    b.Property<string>("PostPath")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -306,7 +310,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts", (string)null);
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.Role", b =>
@@ -322,7 +326,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.User", b =>
@@ -336,6 +340,10 @@ namespace PyxisKapriBack.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -377,7 +385,7 @@ namespace PyxisKapriBack.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("PyxisKapriBack.Models.City", b =>

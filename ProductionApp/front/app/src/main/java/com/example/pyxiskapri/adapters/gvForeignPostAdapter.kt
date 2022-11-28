@@ -3,8 +3,6 @@ package com.example.pyxiskapri.adapters
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +15,8 @@ import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.UtilityFunctions
+import com.squareup.picasso.Picasso
 
 
 class gvForeignPostAdapter (var postsItem: MutableList<PostListItem>, var context: Context) : BaseAdapter() {
@@ -52,19 +52,11 @@ class gvForeignPostAdapter (var postsItem: MutableList<PostListItem>, var contex
         ibDelete?.isGone=true
 
 
-
-        val picture=postsItem[position].coverImage
-        if(picture!=null)
-        {
-            var imageData = android.util.Base64.decode(picture, android.util.Base64.DEFAULT)
-            gvItemImage?.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
-        }
+        Picasso.get().load(UtilityFunctions.getFullImagePath(postsItem[position].coverImage)).into(gvItemImage)
 
 
         gvItemImage?.setOnClickListener(){
             val intent = Intent(context, OpenPostActivity::class.java)
-            Log.d("BASE 64", postsItem[position].coverImage)
-            //intent.putExtra("postData", currentPost)
             ActivityTransferStorage.postItemToOpenPost = postsItem[position]
             context.startActivity(intent)
 

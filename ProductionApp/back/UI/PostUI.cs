@@ -43,11 +43,11 @@ namespace PyxisKapriBack.UI
                 allPosts.Add(new PostDTO
                 {
                     Id = post.Id,
-                    CoverImage = Convert.ToBase64String(post.CoverImage),
+                    FullProfileImagePath = Path.Combine(post.User.FolderPath,post.User.FileName),
                     NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
                     NumberOfViews = 0,
                     Username = post.User.Username,
-                    ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
+                    FullCoverImagePath = Path.Combine(post.User.FolderPath,post.PostPath,post.CoverImageName),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
                     //DateCreated = post.CreatedDate,
 
@@ -67,11 +67,11 @@ namespace PyxisKapriBack.UI
                 allPosts.Add(new PostDTO
                 {
                     Id = post.Id,
-                    CoverImage = Convert.ToBase64String(post.CoverImage),
+                    FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
                     NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
                     NumberOfViews = 0,
                     Username = post.User.Username,
-                    ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
+                    FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
                     //DateCreated = post.CreatedDate
                 });
@@ -89,11 +89,11 @@ namespace PyxisKapriBack.UI
                 allPosts.Add(new PostDTO
                 {
                     Id = post.Id,
-                    CoverImage = Convert.ToBase64String(post.CoverImage),
+                    FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
                     NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
                     NumberOfViews = 0,
                     Username = post.User.Username,
-                    ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
+                    FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
                     //DateCreated = post.CreatedDate
                 });
@@ -108,7 +108,10 @@ namespace PyxisKapriBack.UI
             var images = new List<string>();
 
             foreach (var image in post.Images)
-                images.Add(Convert.ToBase64String(image.ImageData));
+            {
+                var fullPath = Path.Combine(post.User.FolderPath, post.PostPath, image.ImageName);
+                images.Add(fullPath); 
+            }
             return new AdditionalPostData
             {
                 Description = post.Description,
@@ -151,11 +154,11 @@ namespace PyxisKapriBack.UI
                 postsDTO.Add(new PostDTO
                 {
                     Id = post.Id,
-                    CoverImage = Convert.ToBase64String(post.CoverImage),
+                    FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
                     NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
                     NumberOfViews = 0,
                     Username = post.User.Username.ToString(),
-                    ProfileImage = Convert.ToBase64String(post.User.ProfileImage),
+                    FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
                     //DateCreated = post.CreatedDate
                 }) ;
             }

@@ -13,14 +13,15 @@ class  MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main)
 
         sessionManager = SessionManager(this)
 
         ActivityControl.handleUserSignedIn(this, this, sessionManager, savedInstanceState)
 
-        setupGoToRegisterButton();
-        setupGoToSignInButton();
+        setupGoToRegisterButton()
+        setupGoToSignInButton()
+
 
 
     }
@@ -35,6 +36,7 @@ class  MainActivity : AppCompatActivity() {
         btn_goToRegister.setOnClickListener{
             val intent = Intent (this, RegisterActivity::class.java);
             startActivity(intent);
+            finish()
         };
     }
 
@@ -42,6 +44,7 @@ class  MainActivity : AppCompatActivity() {
         btn_goToSignIn.setOnClickListener{
             val intent = Intent (this, LoginActivity::class.java);
             startActivity(intent);
+            finish()
         };
     }
 

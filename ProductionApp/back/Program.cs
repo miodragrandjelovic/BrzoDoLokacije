@@ -16,6 +16,7 @@ using PyxisKapriBack.UI.Interfaces;
 using PyxisKapriBack.UI;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using PyxisKapriBack.LocationManager.Interfaces;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -151,6 +152,11 @@ app.UseCors();
 
 app.MapControllers();
 
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "Images")),
+    RequestPath = "/Images"
+});
 
 app.Run();

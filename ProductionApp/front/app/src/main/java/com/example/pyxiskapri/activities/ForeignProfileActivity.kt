@@ -20,7 +20,9 @@ import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
+import com.example.pyxiskapri.utility.UtilityFunctions
 import com.google.gson.JsonObject
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_foreign_profile.*
 import kotlinx.android.synthetic.main.activity_user_profile.fcv_drawerNavUserProfile
 import kotlinx.android.synthetic.main.modal_confirm_follow.*
@@ -230,8 +232,7 @@ class ForeignProfileActivity : AppCompatActivity() {
                     val picture=response.body()!!.profileImage
                     if(picture!=null)
                     {
-                        var imageData = android.util.Base64.decode(picture, android.util.Base64.DEFAULT)
-                        f_imageViewReal.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(picture)).into(f_imageViewReal)
                     }
 
 

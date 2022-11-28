@@ -1,12 +1,18 @@
 package com.example.pyxiskapri.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
+import android.os.AsyncTask
 import android.util.Log
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
@@ -18,10 +24,18 @@ import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.UtilityFunctions
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_new_post.view.*
+import kotlinx.android.synthetic.main.fragment_drawer_nav.view.*
 import kotlinx.android.synthetic.main.item_post.view.*
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.http.Url
+import java.net.URL
 import java.util.*
 
 class PostListAdapter(private val postList: MutableList<PostListItem>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
@@ -37,7 +51,7 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val currentPost = postList[position]
         holder.itemView.apply{
-            iv_ownerAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(currentPost.ownerImage))
+            Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.ownerImage)).into(iv_ownerAvatar)
             tv_ownerUsername.text = currentPost.ownerUsername
             tv_likeCount.text = currentPost.likeCount.toString()
             tv_viewCount.text = currentPost.viewCount.toString()
@@ -48,11 +62,11 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
             else
                 iv_likeIcon.setColorFilter(ContextCompat.getColor(context, R.color.white), PorterDuff.Mode.SRC_IN);
 
-            iv_postImage.setImageBitmap(UtilityFunctions.base64ToBitmap(currentPost.coverImage))
+            Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).into(iv_postImage)
+
 
             iv_postImage.setOnClickListener{
                 val intent = Intent(context, OpenPostActivity::class.java)
-                Log.d("BASE 64", currentPost.coverImage)
                 ActivityTransferStorage.postItemToOpenPost = currentPost
                 context.startActivity(intent)
             }
