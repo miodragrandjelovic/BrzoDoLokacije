@@ -38,15 +38,9 @@ class FollowedPostListAdapter (private val postList: MutableList<PostListItem>) 
             f_post_dislikes.text = currentPost.viewCount.toString()
 
 
-            val imageView: ShapeableImageView = findViewById(R.id.imagePost)
-            val radius = resources.getDimension(com.example.pyxiskapri.R.dimen.corner_radius)
-            imageView.shapeAppearanceModel = imageView.shapeAppearanceModel
-                .toBuilder().setAllCornerSizes(radius)
-                .build()
+            Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).into(iv_coverImage)
 
-            Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).into(imagePost)
-
-            imagePost.setOnClickListener{
+            iv_coverImage.setOnClickListener{
                     val intent = Intent(context, OpenPostActivity::class.java)
                     ActivityTransferStorage.postItemToOpenPost = currentPost
                     context.startActivity(intent)

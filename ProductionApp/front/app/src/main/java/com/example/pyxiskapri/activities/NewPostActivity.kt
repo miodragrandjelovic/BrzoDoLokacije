@@ -44,10 +44,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_new_post.*
-import kotlinx.android.synthetic.main.activity_new_post.btn_UserProfile_bar
 import kotlinx.android.synthetic.main.activity_new_post.btn_home
 import kotlinx.android.synthetic.main.activity_new_post.btn_messages
-import kotlinx.android.synthetic.main.activity_new_post.btn_home
 import kotlinx.android.synthetic.main.activity_user_profile.view.*
 import kotlinx.android.synthetic.main.dialog_images_upload_progress.*
 import okhttp3.MultipartBody
@@ -129,7 +127,6 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
     private fun setupNavButtons() {
         setupGoHomeButton()
         setupButtonMessages()
-        setupButtonUserProfile()
     }
 
     // NAV BUTTONS
@@ -144,13 +141,6 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
     private fun setupButtonMessages(){
         btn_messages.setOnClickListener {
             val intent = Intent (this, ChatMainActivity::class.java);
-            startActivity(intent);
-        }
-    }
-
-    private fun setupButtonUserProfile() {
-        btn_UserProfile_bar.setOnClickListener(){
-            val intent = Intent (this, UserProfileActivity::class.java)
             startActivity(intent);
         }
     }

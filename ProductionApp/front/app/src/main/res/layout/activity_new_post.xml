@@ -545,7 +545,7 @@
     <LinearLayout
         android:id="@+id/navMenu"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="54dp"
         android:background="@drawable/navmenubackground"
         android:clickable="true"
         android:gravity="center_vertical"
@@ -555,17 +555,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/btn_home"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/home"
-            app:tint="#292D33" />
 
         <ImageView
             android:id="@+id/btn_newPost"
@@ -591,6 +580,17 @@
 
 
         <ImageView
+            android:id="@+id/btn_home"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/home"
+            app:tint="#292D33" />
+
+        <ImageView
             android:id="@+id/btn_messages"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
@@ -611,16 +611,6 @@
             android:focusable="true"
             app:srcCompat="@drawable/notifications"
             app:tint="#292D33" />
-
-        <ImageView
-            android:id="@+id/btn_UserProfile_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/avatarplaceholder_gray" />
 
     </LinearLayout>
 

@@ -66,11 +66,11 @@
                         android:id="@+id/rv_f_posts"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:background="@drawable/followedusersbackground"
                         android:orientation="horizontal"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
+                        android:visibility="visible"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="4"
                         tools:listitem="@layout/item_post_followed_profiles" />
@@ -78,6 +78,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:orientation="horizontal"
                         android:paddingStart="10dp"
@@ -216,7 +217,7 @@
     <LinearLayout
         android:id="@+id/navMenu"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="54dp"
         android:background="@drawable/navmenubackground"
         android:clickable="true"
         android:gravity="center_vertical"
@@ -226,17 +227,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/btn_home"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/home"
-            app:tint="@color/red" />
 
         <ImageView
             android:id="@+id/btn_newPost"
@@ -262,6 +252,17 @@
 
 
         <ImageView
+            android:id="@+id/btn_home"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/home"
+            app:tint="@color/red" />
+
+        <ImageView
             android:id="@+id/btn_messages"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
@@ -282,16 +283,6 @@
             android:focusable="true"
             app:srcCompat="@drawable/notifications"
             app:tint="#292D33" />
-
-        <ImageView
-            android:id="@+id/btn_UserProfile_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/avatarplaceholder_gray" />
 
     </LinearLayout>
 

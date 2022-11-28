@@ -9,15 +9,12 @@ import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.activities.UserProfile.NewUserProfileActivity
 import com.example.pyxiskapri.adapters.FollowedPostListAdapter
 import com.example.pyxiskapri.adapters.PostListAdapter
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
-import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.io.Resources
-import kotlinx.android.synthetic.main.activity_chat_main.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_home.btn_messages
 import kotlinx.android.synthetic.main.activity_home.btn_newPost
@@ -80,7 +77,6 @@ class HomeActivity : AppCompatActivity() {
     private fun setupNavButtons(){
         setupButtonNewPost()
         setupButtonMessages()
-        setupButtonUserProfile()
     }
 
     private fun setupButtonNewPost(){
@@ -98,14 +94,6 @@ class HomeActivity : AppCompatActivity() {
             finish()
         }
     }
-
-    private fun setupButtonUserProfile() {
-        btn_UserProfile_bar.setOnClickListener(){
-            val intent = Intent (this, NewUserProfileActivity::class.java)
-            startActivity(intent);
-        }
-    }
-
 
 
     private fun setPostsRV(){

@@ -45,8 +45,8 @@ class ChatMainActivity : AppCompatActivity() {
 
     private fun setSwipeRefresh(){
 
-        srl_home.setProgressBackgroundColorSchemeResource(R.color.red)
-        srl_home.setColorSchemeResources(R.color.white)
+        srl_chatMain.setProgressBackgroundColorSchemeResource(R.color.red)
+        srl_chatMain.setColorSchemeResources(R.color.white)
 
         srl_chatMain.setOnRefreshListener {
             et_friendSearch.setText("")
@@ -60,7 +60,6 @@ class ChatMainActivity : AppCompatActivity() {
     private fun setupNavButtons(){
         setupGoHomeButton()
         setupButtonNewPost()
-        setupButtonUserProfile()
     }
 
     private fun setupGoHomeButton(){
@@ -75,15 +74,6 @@ class ChatMainActivity : AppCompatActivity() {
             val intent = Intent (this, NewPostActivity::class.java);
             startActivity(intent)
         }
-    }
-
-    private fun setupButtonUserProfile() {
-
-        btn_UserProfile_bar_c.setOnClickListener(){
-            val intent = Intent (this, UserProfileActivity::class.java)
-            startActivity(intent);
-        }
-
     }
 
 

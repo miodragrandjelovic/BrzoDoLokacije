@@ -38,7 +38,7 @@
     <LinearLayout
         android:id="@+id/navMenu"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="54dp"
         android:background="@drawable/navmenubackground"
         android:clickable="true"
         android:gravity="center_vertical"
