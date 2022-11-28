@@ -56,7 +56,7 @@ namespace PyxisKapriBack.Services
             if (city == null)
                 if (cityDAL.AddCity(post.City, post.Country))
                     city = cityDAL.GetCity(post.City);
-
+            
             if (location == null)
             {
                 location = new Location();
@@ -64,15 +64,22 @@ namespace PyxisKapriBack.Services
                 location.Latitude = Convert.ToDouble(post.Latitude);
                 location.City = city;
                 location.Address = post.Address;
-                location.Name = post.LocationName;
+
+                if (String.IsNullOrEmpty(post.LocationName))
+                    location.Name = Constants.Constants.UNKNWOWN; 
+                else 
+                    location.Name = post.LocationName;
 
                 locationDAL.AddLocation(location);
             }
             else {
                 if (String.IsNullOrEmpty(location.Address))
                     location.Address = post.Address;
+
                 if (String.IsNullOrEmpty(location.Name))
-                    location.Name = post.LocationName;
+                    if (String.IsNullOrEmpty(post.LocationName))
+                        location.Name = post.LocationName; 
+
                 if ((location.Longitude == 0) || (location.Latitude == 0))
                 {
                     location.Longitude = Convert.ToDouble(post.Longitude);
