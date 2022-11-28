@@ -150,13 +150,12 @@ class ChangeCredentialsActivity : AppCompatActivity() {
                     username = this.et_username_n.text.toString(),
                     email = this.et_email_n.text.toString(),
                     password = dialog.et_modul_password.text.toString(),
-                    profileimage = slika
                 )
 
 
                 val context: Context = this
 
-                apiClient.getUserService(context).editUser(editUserRequest)
+                apiClient.getUserService(context).editUserData(editUserRequest)
                     .enqueue(object : Callback<LoginResponse> {
                         override fun onResponse(
                             call: Call<LoginResponse>,

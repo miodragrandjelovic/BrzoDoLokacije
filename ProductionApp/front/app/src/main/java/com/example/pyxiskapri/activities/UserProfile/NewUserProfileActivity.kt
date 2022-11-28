@@ -20,7 +20,9 @@ import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
+import com.example.pyxiskapri.utility.UtilityFunctions
 import com.google.android.material.imageview.ShapeableImageView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_new_user_profile.*
 import kotlinx.android.synthetic.main.activity_new_user_profile.tv_name1
 import kotlinx.android.synthetic.main.activity_new_user_profile.tv_name2
@@ -101,12 +103,15 @@ class NewUserProfileActivity : AppCompatActivity(){
                         tv_name1.text=response.body()!!.firstName
                         tv_name2.text=response.body()!!.lastName
 
+                        followers_count.text = response.body()!!.followersCount.toString()
+                        following_count.text = response.body()!!.followingCount.toString()
+
+
 
                         val picture=response.body()!!.profileImage
                         if(picture!=null)
                         {
-                            var imageData = android.util.Base64.decode(picture, android.util.Base64.DEFAULT)
-                            shapeableImageView.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
+                            Picasso.get().load(UtilityFunctions.getFullImagePath(picture)).into(shapeableImageView)
                         }
 
 
@@ -135,11 +140,14 @@ class NewUserProfileActivity : AppCompatActivity(){
                 override fun onResponse(call: Call<ArrayList<PostResponse>>, response: Response<ArrayList<PostResponse>>) {
                     if(response.isSuccessful) {
 
-                        cover_image = response.body()!![0].coverImage
-                        var imageBitmap = android.util.Base64.decode(cover_image, android.util.Base64.DEFAULT)
-                        coverImage.setImageBitmap(BitmapFactory.decodeByteArray(imageBitmap, 0, imageBitmap.size))
-
                         post_number.text=response.body()!!.size.toString()
+
+                        if(response.body()!![0].coverImage == null)
+                            return
+
+                        cover_image = response.body()!![0].coverImage
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(cover_image)).into(coverImage)
+
                         userPostAdapter.setPostList(response.body()!!)
                     }
 
