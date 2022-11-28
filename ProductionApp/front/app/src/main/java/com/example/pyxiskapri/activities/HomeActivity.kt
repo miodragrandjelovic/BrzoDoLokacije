@@ -9,6 +9,7 @@ import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.activities.UserProfile.NewUserProfileActivity
 import com.example.pyxiskapri.adapters.FollowedPostListAdapter
 import com.example.pyxiskapri.adapters.PostListAdapter
 import com.example.pyxiskapri.dtos.response.PostResponse
@@ -100,7 +101,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setupButtonUserProfile() {
         btn_UserProfile_bar.setOnClickListener(){
-            val intent = Intent (this, UserProfileActivity::class.java)
+            val intent = Intent (this, NewUserProfileActivity::class.java)
             startActivity(intent);
         }
     }

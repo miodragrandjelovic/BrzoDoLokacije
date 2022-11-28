@@ -15,6 +15,9 @@ interface ActivityTransferStorage {
 
         @JvmStatic
         lateinit var chatToChatting: FriendResponse
+
+        @JvmStatic
+        lateinit var coverImage: String
     }
 
 }

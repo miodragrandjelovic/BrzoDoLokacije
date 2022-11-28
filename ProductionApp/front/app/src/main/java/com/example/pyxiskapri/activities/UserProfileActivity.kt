@@ -66,8 +66,6 @@ class UserProfileActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        //setupUserPostAdapter()
-        //setupGetUser()
         setupGetUserPosts()
     }
 

@@ -26,27 +26,15 @@
             android:scaleType="centerCrop"/>
 
 
-        <ImageView
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:background="@drawable/shadow"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profileImage"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_margin="10dp"
             android:scaleType="centerCrop"
-            android:outlineProvider="background"/>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_margin="8dp"
-            app:cardCornerRadius="100dp">
-
-            <ImageView
-                android:id="@+id/profileImage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/circle"
-                android:scaleType="centerCrop" />
-
-        </androidx.cardview.widget.CardView>
+            app:civ_border_color="@color/red"
+            app:civ_border_width="1dp"
+            />
 
     </FrameLayout>
 
