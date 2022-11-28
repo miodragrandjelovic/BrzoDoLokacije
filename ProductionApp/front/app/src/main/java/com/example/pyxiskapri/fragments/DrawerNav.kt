@@ -6,6 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.MainActivity
+import com.example.pyxiskapri.activities.UserProfile.NewUserProfileActivity
 import com.example.pyxiskapri.activities.UserProfileActivity
 import com.example.pyxiskapri.models.UserData
 import com.example.pyxiskapri.utility.SessionManager
@@ -56,7 +57,7 @@ class DrawerNav : Fragment() {
             }
 
             btn_UserProfile.setOnClickListener {
-                val intent = Intent (requireContext(), UserProfileActivity::class.java)
+                val intent = Intent (requireContext(), NewUserProfileActivity::class.java)
                 startActivity(intent);
             }
 

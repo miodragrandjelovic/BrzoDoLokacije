@@ -16,17 +16,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/iv_coverImage"
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop">
-        </ImageView>
+            android:background="@color/red"
+            app:cardCornerRadius="15dp">
+
+            <ImageView
+                android:id="@+id/iv_coverImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:background="@color/red">
+            </ImageView>
+
+        </androidx.cardview.widget.CardView>
 
         <ImageView
             android:layout_width="62dp"
             android:layout_height="62dp"
-            android:background="@drawable/shadow"/>
+            android:background="@drawable/shadow"
+            android:elevation="5dp"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
@@ -34,7 +45,8 @@
             android:layout_height="46dp"
             android:layout_margin="8dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/avatarplaceholder"/>
+            android:src="@drawable/avatarplaceholder"
+            android:elevation="5dp"/>
 
 
 
