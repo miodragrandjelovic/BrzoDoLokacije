@@ -43,16 +43,7 @@ namespace PyxisKapriBack.Services
 
             var fullPath = Path.Combine(loggedUser.FolderPath, postPath);
             var answer = fileService.CreateFolder(fullPath);
-
-            //if (!answer)
-            //    return new Response
-            //    {
-            //        StatusCode = StatusCodes.Status500InternalServerError,
-            //        Message = "Error while creating post folder!"
-            //    };
             fileService.AddFile(fullPath, post.CoverImage);
-
-
 
             var location = locationDAL.GetLocation(post.LocationName);
             var city = cityDAL.GetCity(post.City);
@@ -81,7 +72,15 @@ namespace PyxisKapriBack.Services
                 if (String.IsNullOrEmpty(location.Address))
                     location.Address = post.Address;
                 if (String.IsNullOrEmpty(location.Name))
-                    location.Name = post.LocationName; 
+                    location.Name = post.LocationName;
+                if ((location.Longitude == 0) || (location.Latitude == 0))
+                {
+                    location.Longitude = Convert.ToDouble(post.Longitude);
+                    location.Latitude = Convert.ToDouble(post.Latitude);
+                }
+                if (location.City == null)
+                    location.City = city; 
+                locationDAL.UpdateLocation(location);
             }
             newPost.Location = location;
                 
