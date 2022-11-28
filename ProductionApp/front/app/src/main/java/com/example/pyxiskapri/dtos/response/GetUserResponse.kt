@@ -15,5 +15,9 @@ data class GetUserResponse(
     var email: String,
     @SerializedName("profileImagePath")
     var profileImage: String,
+    @SerializedName("userFollowersCount")
+    var followersCount: Int,
+    @SerializedName("userFollowingCount")
+    var followingCount: Int
 
 )

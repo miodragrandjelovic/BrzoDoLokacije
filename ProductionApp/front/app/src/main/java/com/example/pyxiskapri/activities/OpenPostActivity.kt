@@ -1,12 +1,17 @@
 package com.example.pyxiskapri.activities
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.pyxiskapri.R
@@ -25,6 +30,8 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_open_post.*
 import kotlinx.android.synthetic.main.activity_open_post.btn_home
 import kotlinx.android.synthetic.main.activity_open_post.btn_newPost
+import kotlinx.android.synthetic.main.dialog_full_image.*
+import kotlinx.android.synthetic.main.item_post_image.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -197,10 +204,7 @@ class OpenPostActivity : AppCompatActivity() {
             tv_postDescription.text = postAdditionalData.postDescription
             postLocation = LatLng(postAdditionalData.latitude, postAdditionalData.longitude)
 
-            val imagePairs: MutableList<Pair<String, String>> =mutableListOf()
-            for(image in postAdditionalData.additionalImages)
-                imagePairs.add(Pair(postData.ownerUsername, image))
-            postImagesAdapter = PostImagesAdapter(imagePairs)
+            postImagesAdapter = PostImagesAdapter(postAdditionalData.additionalImages)
             rv_additionalImages.adapter = postImagesAdapter
             rv_additionalImages.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
         }
@@ -210,6 +214,29 @@ class OpenPostActivity : AppCompatActivity() {
         tv_ownerUsername.text = postData.ownerUsername
 
         Picasso.get().load(UtilityFunctions.getFullImagePath(postData.coverImage)).into(iv_coverImage)
+
+        iv_coverImage.setOnClickListener {
+            val dialog = Dialog(this)
+
+            val layoutParams = WindowManager.LayoutParams()
+            layoutParams.copyFrom(dialog.window?.attributes)
+            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+            layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
+
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(false)
+            dialog.setContentView(R.layout.dialog_full_image)
+            dialog.window?.attributes = layoutParams
+
+            dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
+            dialog.show()
+
+            Picasso.get().load(UtilityFunctions.getFullImagePath(postData.coverImage)).into(dialog.iv_fullImage)
+
+            dialog.btn_closeDialog.setOnClickListener {
+                dialog.dismiss()
+            }
+        }
 
         tv_likeCount.text = postData.likeCount.toString()
         tv_viewCount.text = postData.viewCount.toString()
