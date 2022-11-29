@@ -49,7 +49,7 @@ namespace PyxisKapriBack.UI
                     Username = post.User.Username,
                     FullCoverImagePath = Path.Combine(post.User.FolderPath,post.PostPath,post.CoverImageName),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
-                    //DateCreated = post.CreatedDate,
+                    DateCreated = post.CreatedDate.ToString("g")
 
                 });
             }
