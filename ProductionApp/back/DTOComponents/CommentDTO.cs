@@ -12,6 +12,7 @@
         public int LikeCount { get; set; } = 0;
         public int DislikeCount { get; set; } = 0;
         public int ReplyCount { get; set; } = 0;    
+        public List<CommentDTO> ReplyComments { get; set; } 
 
 
     }

@@ -23,7 +23,7 @@ namespace PyxisKapriBack.Services
         public Response AddComment(NewCommentDTO comment)
         {
             var loggedUser = userService.GetUser(userService.GetLoggedUser());
-
+            Comment newComment = new Comment();
             if (loggedUser == null)
                 return new Response
                 {
@@ -37,15 +37,30 @@ namespace PyxisKapriBack.Services
                     StatusCode = StatusCodes.Status404NotFound,
                     Message = "Post not found"
                 };
-            var newComment = new Comment
+            // Reply on existed comment
+            if (comment.CommentParentId > 0)
             {
-                PostId = comment.PostId,
-                Post = post,
-                DateCreated = DateTime.Now,
-                Text = comment.Comment,
-                UserId = loggedUser.Id,
-                User = loggedUser,
-            };
+                newComment.PostId = comment.PostId;
+                newComment.Post = post;
+                newComment.DateCreated = DateTime.Now;
+                newComment.Text = comment.Comment;
+                newComment.UserId = loggedUser.Id;
+                newComment.User = loggedUser;
+                newComment.CommentParentId = comment.CommentParentId;
+            }
+            // New comment
+            else
+            {
+                newComment = new Comment
+                {
+                    PostId = comment.PostId,
+                    Post = post,
+                    DateCreated = DateTime.Now,
+                    Text = comment.Comment,
+                    UserId = loggedUser.Id,
+                    User = loggedUser,
+                };
+            }
             var succeed = commentDAL.AddComment(newComment);
             if (!succeed)
             {
@@ -136,6 +151,11 @@ namespace PyxisKapriBack.Services
                 status = CommentState.DISLIKED; 
 
             return status;
+        }
+
+        public List<Comment> GetReplysOnComment(int commentId)
+        {
+            return commentDAL.GetReplies(commentId);
         }
     }
 }

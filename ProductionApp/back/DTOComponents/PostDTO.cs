@@ -11,5 +11,8 @@
         public int NumberOfLikes { get; set; } = 0;
         public int NumberOfViews { get; set; } = 0;
         public bool IsLiked { get; set; } = false;
+        public string DateCreated { get; set; } = string.Empty;
+
+
     }
 }

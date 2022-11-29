@@ -50,6 +50,26 @@ namespace PyxisKapriBack.UI
             return commentLikeService.DeleteLikeFromComment(commentID);
         }
 
+        public List<CommentDTO> GetReplysOnComment(List<Comment> comments)
+        {
+            var replys = new List<CommentDTO>();
+            foreach (var comment in comments)
+            {
+                replys.Add(new CommentDTO
+                {
+                    Id = comment.Id,
+                    CommentText = comment.Text,
+                    DateOfCommenting = comment.DateCreated.ToString(),
+                    Username = comment.User.Username,
+                    LikeStatus = (int)commentService.GetCommentStatus(comment.Id),
+                    ProfileImagePath = Path.Combine(comment.User.FolderPath, comment.User.FileName),
+                    LikeCount = commentLikeService.GetCommentLikeCount(comment.Id),
+                    DislikeCount = commentDislikeService.GetCommentDislikeCount(comment.Id),
+                });
+            }
+            return replys;
+        }
+
         public CommentDTO GetComment(int commentId)
         {
             var comment = commentService.GetComment(commentId);
@@ -61,7 +81,8 @@ namespace PyxisKapriBack.UI
                 CommentText = comment.Text,
                 DateOfCommenting = comment.DateCreated.ToString(),
                 Username = comment.User.Username,
-                ProfileImagePath = Path.Combine(comment.User.FolderPath, comment.User.FileName)
+                ProfileImagePath = Path.Combine(comment.User.FolderPath, comment.User.FileName),
+                
             };
         }
 
@@ -73,20 +94,28 @@ namespace PyxisKapriBack.UI
 
             foreach (var comment in comments)
             {
-                commentsDTO.Add(new CommentDTO
+                // If parent is null that means that is a comment not a reply
+                if (comment.CommentParentId == null)
                 {
-                    Id = comment.Id,
-                    CommentText = comment.Text,
-                    DateOfCommenting = comment.DateCreated.ToString(),
-                    Username = comment.User.Username,
-                    LikeStatus = (int)commentService.GetCommentStatus(comment.Id),
-                    ProfileImagePath = Path.Combine(comment.User.FolderPath,comment.User.FileName),
-                    LikeCount = commentLikeService.GetCommentLikeCount(comment.Id), 
-                    DislikeCount = commentDislikeService.GetCommentDislikeCount(comment.Id)
-                });
+
+                    var replys = GetReplysOnComment(commentService.GetReplysOnComment(comment.Id));
+                    commentsDTO.Add(new CommentDTO
+                    {
+                        Id = comment.Id,
+                        CommentText = comment.Text,
+                        DateOfCommenting = comment.DateCreated.ToString(),
+                        Username = comment.User.Username,
+                        LikeStatus = (int)commentService.GetCommentStatus(comment.Id),
+                        ProfileImagePath = Path.Combine(comment.User.FolderPath, comment.User.FileName),
+                        LikeCount = commentLikeService.GetCommentLikeCount(comment.Id),
+                        DislikeCount = commentDislikeService.GetCommentDislikeCount(comment.Id),
+                        ReplyCount = replys != null ? replys.Count() : 0,
+                        ReplyComments = replys
+                    });
+                }
             }
 
-            return commentsDTO;
+                return commentsDTO;
         }
 
         public List<UserShortDTO> GetUsersWhoDisliked(int commentID)

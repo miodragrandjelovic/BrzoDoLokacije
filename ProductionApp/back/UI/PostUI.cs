@@ -73,7 +73,7 @@ namespace PyxisKapriBack.UI
                     Username = post.User.Username,
                     FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
-                    //DateCreated = post.CreatedDate
+                    DateCreated = post.CreatedDate.ToString("g")
                 });
             }
             return allPosts;
@@ -95,7 +95,7 @@ namespace PyxisKapriBack.UI
                     Username = post.User.Username,
                     FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
-                    //DateCreated = post.CreatedDate
+                    DateCreated = post.CreatedDate.ToString("g")
                 });
             }
             return allPosts;
@@ -120,7 +120,8 @@ namespace PyxisKapriBack.UI
                 Address = post.Location.Address,
                 City = string.Empty,
                 Country = string.Empty,
-                Images = images
+                Images = images,
+                NumberOfComments = post.Comments != null ? post.Comments.Count() : 0,
             };
 
            
@@ -159,7 +160,7 @@ namespace PyxisKapriBack.UI
                     NumberOfViews = 0,
                     Username = post.User.Username.ToString(),
                     FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
-                    //DateCreated = post.CreatedDate
+                    DateCreated = post.CreatedDate.ToString("g")
                 }) ;
             }
 
