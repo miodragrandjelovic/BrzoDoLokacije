@@ -86,22 +86,21 @@ namespace PyxisKapriBack.Controllers
             return Ok(post);
         }
 
-        [HttpGet("GetAllPosts")]
+        [HttpGet("GetAllPosts/{sortType}")]
         public async Task<IActionResult> GetAllPosts(int sortType = 0)
         {
             var posts = postUI.GetAllPosts((SortType)sortType);
             return Ok(posts);
         }
 
-        [HttpGet("GetFollowingPosts")]
-        public async Task<IActionResult> GetFollowingPosts()
+        [HttpGet("GetFollowingPosts/{sortType}")]
+        public async Task<IActionResult> GetFollowingPosts(int sortType = 0)
         {
-            SortType sortType = SortType.DATE;
-            var posts = postUI.GetFollowingPosts(sortType);
+            var posts = postUI.GetFollowingPosts((SortType)sortType);
             return Ok(posts);
         }
 
-        [HttpGet("GetRecommendedPosts")]
+        [HttpGet("GetRecommendedPosts/{sortType}")]
         public async Task<IActionResult> GetRecommendedPosts(int sortType = 0)
         {
             var posts = postUI.GetRecommendedPosts((SortType)sortType);
