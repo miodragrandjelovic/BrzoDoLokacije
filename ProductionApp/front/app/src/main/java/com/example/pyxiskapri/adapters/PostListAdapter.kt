@@ -26,8 +26,15 @@ import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_new_post.view.*
+import kotlinx.android.synthetic.main.activity_open_post.view.*
 import kotlinx.android.synthetic.main.fragment_drawer_nav.view.*
 import kotlinx.android.synthetic.main.item_post.view.*
+import kotlinx.android.synthetic.main.item_post.view.btn_like
+import kotlinx.android.synthetic.main.item_post.view.iv_likeIcon
+import kotlinx.android.synthetic.main.item_post.view.iv_ownerAvatar
+import kotlinx.android.synthetic.main.item_post.view.tv_likeCount
+import kotlinx.android.synthetic.main.item_post.view.tv_ownerUsername
+import kotlinx.android.synthetic.main.item_post.view.tv_viewCount
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
