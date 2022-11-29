@@ -16,6 +16,7 @@
         public string PostPath { get; set; } = string.Empty;
         public List<Image> Images { get; set; } = new List<Image>();
 
+        public List<View> Views { get; set; } = new List<View>();
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
 

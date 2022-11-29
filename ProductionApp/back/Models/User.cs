@@ -18,6 +18,7 @@
         public List<Post>? Posts { get; set; }
         public List<Like>? Likes { get; set; }
         public List<Dislike>? Dislikes { get; set; }
+        public List<View>? Views { get; set; }
         public List<Comment>? Comments { get; set; }
         public List<CommentLike>? CommentLikes { get; set; }
         public List<CommentDislike>? CommentDislikes { get; set; }
