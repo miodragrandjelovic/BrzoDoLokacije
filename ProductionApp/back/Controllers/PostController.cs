@@ -87,9 +87,9 @@ namespace PyxisKapriBack.Controllers
         }
 
         [HttpGet("GetAllPosts")]
-        public async Task<IActionResult> GetAllPosts()
+        public async Task<IActionResult> GetAllPosts(int sortType = 0)
         {
-            var posts = postUI.GetAllPosts();
+            var posts = postUI.GetAllPosts((SortType)sortType);
             return Ok(posts);
         }
 

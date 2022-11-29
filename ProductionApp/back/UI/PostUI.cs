@@ -32,9 +32,9 @@ namespace PyxisKapriBack.UI
             return postService.DeleteUserPost(postID);
         }
 
-        public List<PostDTO> GetAllPosts()
+        public List<PostDTO> GetAllPosts(SortType sortType = SortType.DATE)
         {
-            var posts = postService.GetAllPosts();
+            var posts = postService.GetAllPosts(sortType);
 
             var allPosts = new List<PostDTO>();
 

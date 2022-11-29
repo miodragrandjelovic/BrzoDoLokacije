@@ -11,7 +11,7 @@ namespace PyxisKapriBack.Services.Interfaces
         Post GetPost(int PostID);
         Response SetLikeOnPost(int postID);
         Response DeleteUserPost(int postID);
-        List<Post> GetAllPosts();
+        List<Post> GetAllPosts(SortType sortType = SortType.DATE);
         List<Post> GetFollowingPosts(string username, SortType sortType = SortType.DATE);
         List<Post> GetRecommendedPosts(string username, SortType sortType = SortType.DATE);
 

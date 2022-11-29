@@ -153,9 +153,9 @@ namespace PyxisKapriBack.Services
             return response;
 
         }
-        public List<Post> GetAllPosts()
+        public List<Post> GetAllPosts(SortType sortType = SortType.DATE)
         {
-            return postDAL.GetPosts(userService.GetLoggedUser());
+            return postDAL.GetPosts(userService.GetLoggedUser(), sortType);
         }
         public Post GetPost(int PostID)
         {

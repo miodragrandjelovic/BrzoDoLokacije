@@ -72,19 +72,19 @@ namespace PyxisKapriBack.DAL
                                                                        .ToList(); 
         }
 
-        public List<Post> GetPosts(string username)
+        public List<Post> GetPosts(string username, SortType sortType = SortType.DATE)
         {
             User user = _iUserDAL.GetUser(username);
             if (user == null)
-                return null; 
-            return _context.Posts.Where(post => post.UserId != user.Id).Include(post => post.User)
+                return null;
+
+            var posts = _context.Posts.Where(post => post.UserId != user.Id).Include(post => post.User)
                                                                        .Include(post => post.Dislikes)
                                                                        .Include(post => post.Likes)
                                                                        .Include(post => post.Comments)
                                                                        .Include(post => post.Images)
-                                                                       .Include(post => post.Location)
-                                                                       .OrderByDescending(post => post.CreatedDate)
-                                                                       .ToList();
+                                                                       .Include(post => post.Location);
+            return SortListByCriteria(posts, sortType); 
         }
 
         public List<Post> GetFollowingPosts(string username, SortType sortType = SortType.DATE)
@@ -97,15 +97,6 @@ namespace PyxisKapriBack.DAL
                                                           .Select(user => user.Id)
                                                           .ToList();
 
-            /*   List<Post> posts = _context.Posts.Where(post => users.Contains(post.UserId))
-                                                .Include(post => post.User)
-                                                .Include(post => post.Dislikes)
-                                                .Include(post => post.Likes)
-                                                .Include(post => post.Comments)
-                                                .Include(post => post.Images)
-                                                .Include(post => post.Location)
-                                                .OrderByDescending(post => post.CreatedDate)
-                                                .ToList();*/
             IQueryable<Post> posts = _context.Posts.Where(post => users.Contains(post.UserId))
                                                 .Include(post => post.User)
                                                 .Include(post => post.Dislikes)
@@ -127,14 +118,6 @@ namespace PyxisKapriBack.DAL
                                                           .Select(user => user.Id)
                                                           .ToList();
             users.Add(_user.Id);
-            /*List<Post> posts = _context.Posts.Where(post => !users.Contains(post.UserId))
-                                             .Include(post => post.User)
-                                             .Include(post => post.Dislikes)
-                                             .Include(post => post.Likes)
-                                             .Include(post => post.Comments)
-                                             .Include(post => post.Images)
-                                             .Include(post => post.Location)
-                                             .ToList();*/
 
             IQueryable<Post> posts = _context.Posts.Where(post => !users.Contains(post.UserId))
                                              .Include(post => post.User)
