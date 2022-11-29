@@ -11,6 +11,8 @@ data class PostResponse(
     var ownerImage: String,
     @SerializedName("fullCoverImagePath")
     var coverImage: String,
+    @SerializedName("dateCreated")
+    var postDate: String,
     @SerializedName("numberOfLikes")
     var likeCount: Int,
     @SerializedName("numberOfViews")

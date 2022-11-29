@@ -75,115 +75,160 @@
                         tools:itemCount="4"
                         tools:listitem="@layout/item_post_followed_profiles" />
 
-                    <LinearLayout
+                    <HorizontalScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="10dp"
-                        android:orientation="horizontal"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp">
+                        android:fillViewport="true"
+                        android:scrollbars="none">
 
                         <LinearLayout
-                            android:id="@+id/btn_categoryPopular"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/ib_rounded"
-                            android:backgroundTint="@color/red"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp">
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                            <ImageView
-                                android:id="@+id/iv_categoryPopular"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="3dp"
-                                android:adjustViewBounds="true"
-                                app:srcCompat="@drawable/popular" />
-
-                            <TextView
-                                android:id="@+id/tv_categoryPopular"
+                            <LinearLayout
+                                android:id="@+id/btn_sortPopular"
                                 android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_gravity="left|center_vertical"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:gravity="center_vertical"
-                                android:text="Popular"
-                                android:textColor="@color/white" />
-                        </LinearLayout>
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="0"
+                                android:background="@drawable/ib_rounded"
+                                android:backgroundTint="@color/red"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="5dp"
+                                android:paddingRight="10dp"
+                                android:paddingBottom="5dp">
 
-                        <LinearLayout
-                            android:id="@+id/btn_categoryNewest"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/ib_rounded"
-                            android:backgroundTint="@color/dark_gray"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp">
+                                <ImageView
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:adjustViewBounds="true"
+                                    app:srcCompat="@drawable/popular" />
 
-                            <ImageView
-                                android:id="@+id/iv_categoryNewest"
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:layout_marginEnd="3dp"
-                                android:adjustViewBounds="true"
-                                app:srcCompat="@drawable/star" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="left|center_vertical"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:gravity="center_vertical"
+                                    android:text="Popular"
+                                    android:textColor="@color/white" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/tv_commentsCount"
+                            <LinearLayout
+                                android:id="@+id/btn_sortNewest"
                                 android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_gravity="left|center_vertical"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:gravity="center_vertical"
-                                android:text="Trending"
-                                android:textColor="@color/white" />
-                        </LinearLayout>
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="0"
+                                android:background="@drawable/ib_rounded"
+                                android:backgroundTint="@color/dark_gray"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="5dp"
+                                android:paddingRight="10dp"
+                                android:paddingBottom="5dp">
 
-                        <LinearLayout
-                            android:id="@+id/btn_categoryFollowing"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/ib_rounded"
-                            android:backgroundTint="@color/dark_gray"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp">
+                                <ImageView
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:adjustViewBounds="true"
+                                    app:srcCompat="@drawable/star" />
 
-                            <ImageView
-                                android:id="@+id/iv_categoryFollowing"
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:layout_marginEnd="3dp"
-                                android:adjustViewBounds="true"
-                                app:srcCompat="@drawable/following" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="left|center_vertical"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:gravity="center_vertical"
+                                    android:text="Newest"
+                                    android:textColor="@color/white" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/tv_categoryFollowing"
+                            <LinearLayout
+                                android:id="@+id/btn_sortDiscussed"
                                 android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_gravity="left|center_vertical"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:gravity="center_vertical"
-                                android:text="Trending"
-                                android:textColor="@color/white" />
-                        </LinearLayout>
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="0"
+                                android:background="@drawable/ib_rounded"
+                                android:backgroundTint="@color/dark_gray"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="5dp"
+                                android:paddingRight="10dp"
+                                android:paddingBottom="5dp">
 
-                    </LinearLayout>
+                                <ImageView
+                                    android:id="@+id/iv_sortDiscussed"
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:adjustViewBounds="true"
+                                    android:background="@drawable/discussed" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="left|center_vertical"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:gravity="center_vertical"
+                                    android:text="Discussed"
+                                    android:textColor="@color/white" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/btn_sortNoticed"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="0"
+                                android:background="@drawable/ib_rounded"
+                                android:backgroundTint="@color/dark_gray"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="5dp"
+                                android:paddingRight="10dp"
+                                android:paddingBottom="5dp">
+
+                                <ImageView
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:adjustViewBounds="true"
+                                    android:background="@drawable/noticed" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="left|center_vertical"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:gravity="center_vertical"
+                                    android:text="Noticed"
+                                    android:textColor="@color/white" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
 
                 </LinearLayout>
 

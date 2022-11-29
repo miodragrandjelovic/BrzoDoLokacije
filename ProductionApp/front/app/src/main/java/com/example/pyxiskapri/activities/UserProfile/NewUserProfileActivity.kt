@@ -158,7 +158,7 @@ class NewUserProfileActivity : AppCompatActivity(){
                         post_number.text=response.body()!!.size.toString()
                         changeCredentialsInformation.postsNumber=response.body()!!.size.toString()
 
-                        if(response.body()!![0].coverImage == null)
+                        if(response.body()?.size == 0)
                             return
 
                         var cover_image = response.body()!![0].coverImage

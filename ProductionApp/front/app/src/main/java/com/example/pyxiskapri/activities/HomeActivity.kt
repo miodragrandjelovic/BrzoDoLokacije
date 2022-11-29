@@ -2,9 +2,13 @@ package com.example.pyxiskapri.activities
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColor
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -24,6 +28,8 @@ import retrofit2.Response
 
 class HomeActivity : AppCompatActivity() {
 
+    private var selectedSortType: Int = 0
+
     private lateinit var sessionManager: SessionManager
     private lateinit var apiClient: ApiClient
 
@@ -39,6 +45,8 @@ class HomeActivity : AppCompatActivity() {
         apiClient = ApiClient()
 
         setSwipeRefresh()
+
+        setupSortButtons()
 
         setPostsRV()
         setFollowedPostsRV()
@@ -63,10 +71,10 @@ class HomeActivity : AppCompatActivity() {
             setFollowedPostsRV()
             fillPostsRV()
             fillFollowedPostsRv()
-
             srl_home.isRefreshing = false
         }
     }
+
 
 
     fun showDrawerMenu(view: View){
@@ -96,6 +104,50 @@ class HomeActivity : AppCompatActivity() {
     }
 
 
+    private fun clearButtonStates(){
+        btn_sortPopular.backgroundTintList = this.resources.getColorStateList(R.color.dark_gray)
+        btn_sortNewest.backgroundTintList = this.resources.getColorStateList(R.color.dark_gray)
+        btn_sortDiscussed.backgroundTintList = this.resources.getColorStateList(R.color.dark_gray)
+        btn_sortNoticed.backgroundTintList = this.resources.getColorStateList(R.color.dark_gray)
+    }
+
+    private fun setupSortButtons(){
+        btn_sortPopular.setOnClickListener{
+            clearButtonStates()
+            selectedSortType = 0
+            setPostsRV()
+            fillPostsRV()
+            btn_sortPopular.backgroundTintList = this.resources.getColorStateList(R.color.red)
+        }
+
+        btn_sortNewest.setOnClickListener{
+            clearButtonStates()
+            selectedSortType = 1
+            setPostsRV()
+            fillPostsRV()
+            btn_sortNewest.backgroundTintList = this.resources.getColorStateList(R.color.red)
+        }
+
+        btn_sortDiscussed.setOnClickListener{
+            clearButtonStates()
+            selectedSortType = 2
+            setPostsRV()
+            fillPostsRV()
+            btn_sortDiscussed.backgroundTintList = this.resources.getColorStateList(R.color.red)
+        }
+
+        btn_sortNoticed.setOnClickListener{
+            clearButtonStates()
+            selectedSortType = 3
+            setPostsRV()
+            fillPostsRV()
+            btn_sortNoticed.backgroundTintList = this.resources.getColorStateList(R.color.red)
+        }
+
+    }
+
+
+
     private fun setPostsRV(){
 
         postListAdapter = PostListAdapter(mutableListOf())
@@ -114,7 +166,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun fillPostsRV(){
 
-        apiClient.getPostService(this).getAllPosts()
+        apiClient.getPostService(this).getAllPosts(selectedSortType)
             .enqueue(object : Callback<ArrayList<PostResponse>> {
                 override fun onResponse( call: Call<ArrayList<PostResponse>>, response: Response<ArrayList<PostResponse>>) {
                     if(response.isSuccessful) {
@@ -124,7 +176,7 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 override fun onFailure(call: Call<ArrayList<PostResponse>>, t: Throwable) {
-
+                    Log.d("TEST", "TEST")
                 }
 
             })

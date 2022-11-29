@@ -10,6 +10,7 @@ data class PostListItem(
     var isLiked: Boolean = false,
     var ownerUsername: String = "",
     var ownerImage: String = "",
+    var postDate: String = "",
     var coverImage: String = "",
     var likeCount: Int = 0,
     var viewCount: Int = 0
@@ -20,6 +21,7 @@ data class PostListItem(
         response.isLiked,
         response.ownerUsername,
         response.ownerImage,
+        response.postDate,
         response.coverImage,
         response.likeCount,
         response.viewCount

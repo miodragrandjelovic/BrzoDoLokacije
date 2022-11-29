@@ -25,8 +25,8 @@ interface PostService {
         @Part("Country") Country: RequestBody
     ) : Call<MessageResponse>
 
-    @GET("api/Post/GetAllPosts")
-    fun getAllPosts() : Call<ArrayList<PostResponse>>
+    @GET("api/Post/GetAllPosts/{sortType}")
+    fun getAllPosts(@Path(value = "sortType") sortType: Int) : Call<ArrayList<PostResponse>>
 
     @GET("api/Post/GetUserPosts/{username}")
     fun getUserPosts(@Path(value = "username") username: String) : Call<ArrayList<PostResponse>>

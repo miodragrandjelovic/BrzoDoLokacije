@@ -20,7 +20,9 @@ data class CommentResponse(
     @SerializedName("dislikeCount")
     var dislikeCount: Int = 0,
     @SerializedName("replyCount")
-    var replyCount: Int = 0
+    var replyCount: Int = 0,
+    @SerializedName("replyComments")
+    var replies: ArrayList<CommentResponse>
 
 
 )

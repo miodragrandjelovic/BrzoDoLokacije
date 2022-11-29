@@ -24,7 +24,7 @@ data class CommentExpandableListItem(
         likeCount = comment.likeCount,
         dislikeCount = comment.dislikeCount,
         replyCount = comment.replyCount,
-        replyList = arrayListOf()
+        replyList = comment.replies
     )
 
 }

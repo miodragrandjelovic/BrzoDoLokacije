@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import android.view.Window
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.graphics.drawable.toDrawable
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.MessageResponse
@@ -95,6 +97,7 @@ class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: C
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.modal_confirm_delete)
+        dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
         dialog.show()
 

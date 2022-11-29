@@ -15,9 +15,6 @@ interface CommentService {
     @POST("api/Comment/AddNewCommentOnPost")
     fun addNewComment(@Body requestBody: NewCommentRequest) : Call<MessageResponse>
 
-    @POST("api/Comment/AddNewReplyOnComment")
-    fun addNewReply(@Body requestBody: NewReplyRequest) : Call<MessageResponse>
-
     @PUT("api/Comment/ChangeLikeState/{commentId}")
     fun likeComment(@Path(value = "commentId") id: Int): Call<MessageResponse>
 

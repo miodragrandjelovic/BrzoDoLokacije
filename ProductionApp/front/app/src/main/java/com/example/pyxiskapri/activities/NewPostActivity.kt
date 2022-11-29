@@ -5,56 +5,42 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.ImageGridAdapter
 import com.example.pyxiskapri.adapters.ImageUploadProgressAdapter
-import com.example.pyxiskapri.dtos.request.NewPostRequest
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.ImageGridItem
-import com.example.pyxiskapri.models.ProgressRequestBody
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
-import com.google.android.gms.common.util.Hex
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_new_post.btn_home
 import kotlinx.android.synthetic.main.activity_new_post.btn_messages
-import kotlinx.android.synthetic.main.activity_user_profile.view.*
 import kotlinx.android.synthetic.main.dialog_images_upload_progress.*
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.IOException
 import java.util.*
 
 
@@ -527,7 +513,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
                 Description = UtilityFunctions.requestBodyFromString(et_description.text.toString()),
                 Longitude = UtilityFunctions.requestBodyFromString(selectedLocation.longitude.toString()),
                 Latitude = UtilityFunctions.requestBodyFromString(selectedLocation.latitude.toString()),
-                LocationName = UtilityFunctions.requestBodyFromString("__LocationName__"),
+                LocationName = UtilityFunctions.requestBodyFromString("_naziv_lokacije_"),
                 Address = UtilityFunctions.requestBodyFromString(locationAddress),
                 City = UtilityFunctions.requestBodyFromString(locationCity),
                 Country = UtilityFunctions.requestBodyFromString(locationCountry)

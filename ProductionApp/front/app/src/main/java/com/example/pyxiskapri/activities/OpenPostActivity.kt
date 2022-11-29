@@ -204,6 +204,10 @@ class OpenPostActivity : AppCompatActivity() {
             tv_postDescription.text = postAdditionalData.postDescription
             postLocation = LatLng(postAdditionalData.latitude, postAdditionalData.longitude)
 
+            tv_commentsCount.text = buildString {
+                append(postAdditionalData.commentCount.toString())
+                    .append(" comments") }
+
             postImagesAdapter = PostImagesAdapter(postAdditionalData.additionalImages)
             rv_additionalImages.adapter = postImagesAdapter
             rv_additionalImages.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
@@ -212,6 +216,8 @@ class OpenPostActivity : AppCompatActivity() {
         Picasso.get().load(UtilityFunctions.getFullImagePath(postData.ownerImage)).into(iv_ownerAvatar)
 
         tv_ownerUsername.text = postData.ownerUsername
+
+        tv_postDate.text = postData.postDate
 
         Picasso.get().load(UtilityFunctions.getFullImagePath(postData.coverImage)).into(iv_coverImage)
 
@@ -247,6 +253,8 @@ class OpenPostActivity : AppCompatActivity() {
         else
             iv_likeIcon.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_IN);
 
+
+
         // REPORT CHECK
     }
 
@@ -261,7 +269,7 @@ class OpenPostActivity : AppCompatActivity() {
 
 
     private fun setupComments(){
-        commentsAdapter = CommentAdapter(arrayListOf(), this)
+        commentsAdapter = CommentAdapter(arrayListOf(), postData.id, this)
         elv_comments.setAdapter(commentsAdapter)
 
         requestComments()
@@ -306,6 +314,7 @@ class OpenPostActivity : AppCompatActivity() {
 
         var newComment = NewCommentRequest(
             postId = postData.id,
+            parentId = 0,
             commentText = et_newCommentText.text.toString()
         )
 
