@@ -11,19 +11,27 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.activities.ChatMainActivity
 import com.example.pyxiskapri.activities.HomeActivity
 import com.example.pyxiskapri.activities.MainActivity
 import com.example.pyxiskapri.activities.NewPostActivity
 import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
+import com.example.pyxiskapri.fragments.DrawerNav
+import com.example.pyxiskapri.models.ChangeCredentialsInformation
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_change_credentials.*
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_new_user_profile.*
+import kotlinx.android.synthetic.main.activity_new_user_profile.btn_home
+import kotlinx.android.synthetic.main.activity_new_user_profile.btn_messages
+import kotlinx.android.synthetic.main.activity_new_user_profile.btn_newPost
 import kotlinx.android.synthetic.main.activity_new_user_profile.tv_name1
 import kotlinx.android.synthetic.main.activity_new_user_profile.tv_name2
 import kotlinx.android.synthetic.main.activity_user_profile.*
@@ -46,7 +54,9 @@ class NewUserProfileActivity : AppCompatActivity(){
 
     lateinit var userPostAdapter:UserPostsAdapter
 
-    lateinit var cover_image : String
+    //lateinit var cover_image : String
+
+    var changeCredentialsInformation = ChangeCredentialsInformation("","")
 
     override fun onRestart() {
         super.onRestart()
@@ -84,8 +94,13 @@ class NewUserProfileActivity : AppCompatActivity(){
     private fun setupNavButtons() {
         setupHome()
         setupAddPost()
+        setupButtonMessages()
     }
 
+    fun showDrawerMenu(view: View){
+        if(view.id == R.id.btn_menu)
+            fcv_drawerNav_n.getFragment<DrawerNav>().showDrawer()
+    }
 
 
     private fun setupGetUser() {
@@ -141,11 +156,13 @@ class NewUserProfileActivity : AppCompatActivity(){
                     if(response.isSuccessful) {
 
                         post_number.text=response.body()!!.size.toString()
+                        changeCredentialsInformation.postsNumber=response.body()!!.size.toString()
 
                         if(response.body()!![0].coverImage == null)
                             return
 
-                        cover_image = response.body()!![0].coverImage
+                        var cover_image = response.body()!![0].coverImage
+                        changeCredentialsInformation.coverImage=cover_image
                         Picasso.get().load(UtilityFunctions.getFullImagePath(cover_image)).into(coverImage)
 
                         userPostAdapter.setPostList(response.body()!!)
@@ -181,7 +198,7 @@ class NewUserProfileActivity : AppCompatActivity(){
             view.settings.setOnClickListener() {
 
                 val intent = Intent(this, ChangeCredentialsActivity::class.java);
-                ActivityTransferStorage.coverImage = cover_image
+                ActivityTransferStorage.changeCredentialsInformation = changeCredentialsInformation
                 startActivity(intent);
             }
 
@@ -217,6 +234,13 @@ class NewUserProfileActivity : AppCompatActivity(){
         btn_newPost.setOnClickListener(){
             val intent = Intent (this, NewPostActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun setupButtonMessages() {
+        btn_messages.setOnClickListener {
+            val intent = Intent (this, ChatMainActivity::class.java);
+            startActivity(intent);
         }
     }
 

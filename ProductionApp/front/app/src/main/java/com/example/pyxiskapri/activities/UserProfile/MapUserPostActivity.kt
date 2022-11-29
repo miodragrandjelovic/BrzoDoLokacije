@@ -10,13 +10,21 @@ import android.view.View
 import android.widget.PopupWindow
 import android.widget.Toast
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.activities.ChatMainActivity
+import com.example.pyxiskapri.activities.HomeActivity
 import com.example.pyxiskapri.activities.MainActivity
+import com.example.pyxiskapri.activities.NewPostActivity
 import com.example.pyxiskapri.dtos.response.GetUserResponse
+import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
+import com.example.pyxiskapri.utility.UtilityFunctions
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_change_credentials.*
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_map_user_post.*
 import kotlinx.android.synthetic.main.activity_new_user_profile.*
 import kotlinx.android.synthetic.main.activity_new_user_profile.menu_btn
@@ -63,9 +71,15 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
         popup()
 
         postsActivity()
+        setupNavButtons()
 
 
 
+    }
+
+    fun showDrawerMenu(view: View){
+        if(view.id == R.id.btn_menu)
+            fcv_drawerNav_m.getFragment<DrawerNav>().showDrawer()
     }
 
     private fun postsActivity() {
@@ -95,12 +109,13 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
                         tv_name1_m.text=response.body()!!.firstName
                         tv_name2_m.text=response.body()!!.lastName
 
+                        followers_count_m.text = response.body()!!.followersCount.toString()
+                        following_count_m.text = response.body()!!.followingCount.toString()
 
                         val picture=response.body()!!.profileImage
                         if(picture!=null)
                         {
-                            var imageData = android.util.Base64.decode(picture, android.util.Base64.DEFAULT)
-                            shapeableImageView_m.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
+                            Picasso.get().load(UtilityFunctions.getFullImagePath(picture)).into(shapeableImageView_m)
                         }
 
 
@@ -151,6 +166,33 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         geocoder = Geocoder(this, Locale.getDefault())
+    }
+
+    private fun setupNavButtons(){
+        setupButtonHome()
+        setupButtonNewPost()
+        setupButtonMessages()
+    }
+
+    private fun setupButtonHome() {
+        btn_home_m.setOnClickListener(){
+            val intent = Intent (this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun setupButtonNewPost() {
+        btn_newPost_m.setOnClickListener(){
+            val intent = Intent (this, NewPostActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun setupButtonMessages() {
+        btn_messages_m.setOnClickListener {
+            val intent = Intent (this, ChatMainActivity::class.java);
+            startActivity(intent);
+        }
     }
 
 }
