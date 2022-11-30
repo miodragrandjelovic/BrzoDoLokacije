@@ -24,6 +24,10 @@ class  MainActivity : AppCompatActivity() {
         setupGoToSignInButton()
 
 
+        button.setOnClickListener(){
+            val intent = Intent (this, ForeignProfileGridActivity::class.java);
+            startActivity(intent);
+        }
 
     }
 
