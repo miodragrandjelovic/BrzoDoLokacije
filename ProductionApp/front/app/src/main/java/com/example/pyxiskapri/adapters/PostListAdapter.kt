@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.ForeignProfileActivity
+import com.example.pyxiskapri.activities.ForeignProfileGridActivity
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
@@ -84,7 +85,7 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
 
             btn_ForeignUser.setOnClickListener(){
 
-                val intent = Intent(context, ForeignProfileActivity::class.java)
+                val intent = Intent(context, ForeignProfileGridActivity::class.java)
                 intent.putExtra("username", tv_ownerUsername.text.toString())
                 context.startActivity(intent)
             }

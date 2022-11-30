@@ -54,7 +54,7 @@
                 android:id="@+id/shapeableImageView_fg"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/circle"
                 android:backgroundTint="#00FFFFFF"
                 android:scaleType="centerCrop"
@@ -68,102 +68,19 @@
                 app:layout_constraintVertical_chainStyle="packed"
                 app:srcCompat="@drawable/avatarplaceholder" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="10dp"
-                android:orientation="vertical"
-                android:gravity="center"
-                app:layout_constraintLeft_toRightOf="@id/shapeableImageView_fg"
-                app:layout_constraintTop_toTopOf="@+id/shapeableImageView_fg"
-                app:layout_constraintBottom_toBottomOf="@+id/shapeableImageView_fg">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        android:id="@+id/ib_message"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:background="@null"
-                        android:layout_gravity="center"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/messages" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Chat"
-                        android:textColor="@color/white"
-                        android:gravity="center"
-                        />
 
 
 
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        android:id="@+id/ib_follow"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:background="@null"
-                        android:textAlignment="center"
-                        android:foregroundGravity="center"
-                        android:layout_gravity="center"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/add" />
-
-
-                    <ImageButton
-                        android:id="@+id/ib_following"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:background="@null"
-                        android:textAlignment="center"
-                        android:foregroundGravity="center"
-                        android:layout_gravity="center"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/added"
-                        android:visibility="gone"
-                        />
-
-                    <TextView
-                        android:id="@+id/tv_follow_ing"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Following"
-                        android:textColor="@color/white"
-                        android:foregroundGravity="center"
-                        android:layout_gravity="center"
-                        android:textAlignment="center"
-                        />
-
-
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ll_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+                app:layout_constraintBottom_toTopOf="@+id/ll_buttons_fg"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -194,12 +111,93 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_buttons_fg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+                app:layout_constraintTop_toBottomOf="@id/ll_name">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginRight="30dp"
+                    >
+
+                    <ImageButton
+                        android:id="@+id/ib_message"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/messages" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Chat"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/ib_follow"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:foregroundGravity="center"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/add"
+                        android:textAlignment="center" />
+
+
+                    <ImageButton
+                        android:id="@+id/ib_following"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:foregroundGravity="center"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/added"
+                        android:textAlignment="center"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tv_follow_ing"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:foregroundGravity="center"
+                        android:text="Following"
+                        android:textAlignment="center"
+                        android:textColor="@color/white" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="5dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -376,7 +374,7 @@
 
 
             <com.example.pyxiskapri.custom_view_models.WrapGridView
-                android:id="@+id/gv_n_user_posts"
+                android:id="@+id/gv_fg_user_posts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"

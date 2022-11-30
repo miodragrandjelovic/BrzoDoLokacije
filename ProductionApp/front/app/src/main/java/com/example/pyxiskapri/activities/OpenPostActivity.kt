@@ -65,7 +65,7 @@ class OpenPostActivity : AppCompatActivity() {
         setupOpenMapButton()
 
         ll_user_btn.setOnClickListener(){
-            val intent = Intent(this, ForeignProfileActivity::class.java)
+            val intent = Intent(this, ForeignProfileGridActivity::class.java)
             intent.putExtra("username", tv_ownerUsername.text.toString())
             this.startActivity(intent)
             finish()
@@ -73,7 +73,7 @@ class OpenPostActivity : AppCompatActivity() {
 
         iv_ownerAvatar.setOnClickListener()
         {
-            val intent = Intent(this, ForeignProfileActivity::class.java)
+            val intent = Intent(this, ForeignProfileGridActivity::class.java)
             intent.putExtra("username", tv_ownerUsername.text.toString())
             this.startActivity(intent)
             finish()
