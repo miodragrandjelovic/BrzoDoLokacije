@@ -84,7 +84,7 @@
 
 
                 <TextView
-                    android:id="@+id/tv_name1_fg"
+                    android:id="@+id/tv_name1_fm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_regular"
@@ -96,7 +96,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/tv_name2_fg"
+                    android:id="@+id/tv_name2_fm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -151,7 +151,7 @@
                 android:orientation="vertical">
 
                 <ImageButton
-                    android:id="@+id/ib_follow"
+                    android:id="@+id/ib_follow_fm"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center"
@@ -163,7 +163,7 @@
 
 
                 <ImageButton
-                    android:id="@+id/ib_following"
+                    android:id="@+id/ib_following_fm"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_gravity="center"
@@ -175,7 +175,7 @@
                     android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/tv_follow_ing"
+                    android:id="@+id/tv_follow_ing_fm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

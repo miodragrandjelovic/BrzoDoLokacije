@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.activity_foreign_profile_grid.ib_follow
 import kotlinx.android.synthetic.main.activity_foreign_profile_grid.ib_following
 import kotlinx.android.synthetic.main.activity_foreign_profile_grid.tv_follow_ing
 import kotlinx.android.synthetic.main.activity_new_user_profile.*
+import kotlinx.android.synthetic.main.activity_open_post.*
 import kotlinx.android.synthetic.main.modal_confirm_follow.*
 import kotlinx.android.synthetic.main.modal_confirm_unfollow.*
 import retrofit2.Call
@@ -51,6 +52,7 @@ class ForeignProfileGridActivity : AppCompatActivity() {
 
         ll_map_f.setOnClickListener(){
             val intent = Intent (this, ForeignProfileMapActivity::class.java);
+            intent.putExtra("username", username)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent);
         }
