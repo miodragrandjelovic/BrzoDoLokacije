@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.CommentAdapter
 import com.example.pyxiskapri.adapters.PostImagesAdapter
@@ -28,10 +27,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_open_post.*
+import kotlinx.android.synthetic.main.activity_open_post.btn_discover
 import kotlinx.android.synthetic.main.activity_open_post.btn_home
+import kotlinx.android.synthetic.main.activity_open_post.btn_messages
 import kotlinx.android.synthetic.main.activity_open_post.btn_newPost
 import kotlinx.android.synthetic.main.dialog_full_image.*
-import kotlinx.android.synthetic.main.item_post_image.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -58,7 +58,6 @@ class OpenPostActivity : AppCompatActivity() {
         apiClient = ApiClient()
 
         setupNavButtons()
-        setupPostButtons()
 
         requestPostData()
 
@@ -100,30 +99,31 @@ class OpenPostActivity : AppCompatActivity() {
     }
 
     private fun setupNavButtons(){
-        setupButtonNewPost()
-        setupButtonHome()
-    }
-
-    private fun setupButtonNewPost(){
+        // NEW POST
         btn_newPost.setOnClickListener {
             val intent = Intent (this, NewPostActivity::class.java);
             startActivity(intent);
-            finish()
         }
-    }
 
-    private fun setupButtonHome(){
+        // MAPS
+        btn_discover.setOnClickListener {
+            val intent = Intent (this, MapActivity::class.java);
+            startActivity(intent);
+        }
+
+        // HOME
         btn_home.setOnClickListener {
             val intent = Intent (this, HomeActivity::class.java);
             startActivity(intent);
-            finish()
         }
-    }
 
-    private fun setupPostButtons(){
-        btn_like.setOnClickListener{
-            setRemoveLike()
+        // MESSAGES
+        btn_messages.setOnClickListener {
+            val intent = Intent (this, ChatMainActivity::class.java);
+            startActivity(intent);
         }
+
+        // NOTIFICATIONS
     }
 
     private fun setRemoveLike(){
