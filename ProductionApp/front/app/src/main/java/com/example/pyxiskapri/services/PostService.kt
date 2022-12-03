@@ -1,8 +1,8 @@
 package com.example.pyxiskapri.services
 
-import com.example.pyxiskapri.dtos.request.NewPostRequest
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostAdditionalData
+import com.example.pyxiskapri.dtos.response.PostOnMapResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -46,6 +46,8 @@ interface PostService {
     @GET("api/Post/GetFollowingPosts")
     fun getFollowingPosts() : Call<ArrayList<PostResponse>>
 
+    @GET("api/Post/GetUserPostsForMap/{username}")
+    fun PostOnMap(@Path(value = "username") username: String) : Call<ArrayList<PostOnMapResponse>>
 
 
 }
