@@ -28,7 +28,7 @@ import retrofit2.Response
 
 class HomeActivity : AppCompatActivity() {
 
-    private var selectedSortType: Int = 0
+    private var selectedSortType: Int = 1
 
     private lateinit var sessionManager: SessionManager
     private lateinit var apiClient: ApiClient
@@ -83,24 +83,25 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupNavButtons(){
-        setupButtonNewPost()
-        setupButtonMessages()
-    }
-
-    private fun setupButtonNewPost(){
+        // NEW POST
         btn_newPost.setOnClickListener {
             val intent = Intent (this, NewPostActivity::class.java);
             startActivity(intent);
-            finish()
         }
-    }
 
-    private fun setupButtonMessages(){
+        // MAPS
+        btn_discover.setOnClickListener {
+            val intent = Intent (this, MapActivity::class.java);
+            startActivity(intent);
+        }
+
+        // MESSAGES
         btn_messages.setOnClickListener {
             val intent = Intent (this, ChatMainActivity::class.java);
             startActivity(intent);
-            finish()
         }
+
+        // NOTIFICATIONS
     }
 
 
@@ -108,40 +109,40 @@ class HomeActivity : AppCompatActivity() {
         btn_sortPopular.backgroundTintList = this.resources.getColorStateList(R.color.dark_gray)
         btn_sortNewest.backgroundTintList = this.resources.getColorStateList(R.color.dark_gray)
         btn_sortDiscussed.backgroundTintList = this.resources.getColorStateList(R.color.dark_gray)
-        btn_sortNoticed.backgroundTintList = this.resources.getColorStateList(R.color.dark_gray)
     }
 
     private fun setupSortButtons(){
-        btn_sortPopular.setOnClickListener{
+        btn_sortNewest.setOnClickListener{
+            if(selectedSortType == 0)
+                return@setOnClickListener
+
             clearButtonStates()
             selectedSortType = 0
-            setPostsRV()
-            fillPostsRV()
-            btn_sortPopular.backgroundTintList = this.resources.getColorStateList(R.color.red)
-        }
-
-        btn_sortNewest.setOnClickListener{
-            clearButtonStates()
-            selectedSortType = 1
             setPostsRV()
             fillPostsRV()
             btn_sortNewest.backgroundTintList = this.resources.getColorStateList(R.color.red)
         }
 
+        btn_sortPopular.setOnClickListener{
+            if(selectedSortType == 1)
+                return@setOnClickListener
+
+            clearButtonStates()
+            selectedSortType = 1
+            setPostsRV()
+            fillPostsRV()
+            btn_sortPopular.backgroundTintList = this.resources.getColorStateList(R.color.red)
+        }
+
         btn_sortDiscussed.setOnClickListener{
+            if(selectedSortType == 2)
+                return@setOnClickListener
+
             clearButtonStates()
             selectedSortType = 2
             setPostsRV()
             fillPostsRV()
             btn_sortDiscussed.backgroundTintList = this.resources.getColorStateList(R.color.red)
-        }
-
-        btn_sortNoticed.setOnClickListener{
-            clearButtonStates()
-            selectedSortType = 3
-            setPostsRV()
-            fillPostsRV()
-            btn_sortNoticed.backgroundTintList = this.resources.getColorStateList(R.color.red)
         }
 
     }

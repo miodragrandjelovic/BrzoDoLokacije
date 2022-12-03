@@ -106,5 +106,15 @@ namespace PyxisKapriBack.Controllers
             var posts = postUI.GetRecommendedPosts((SortType)sortType);
             return Ok(posts);
         }
+
+        [HttpGet("GetUsersPostOnMap/{username}")]
+        public async Task<IActionResult> GetPostsOnMap(string username)
+        {
+            var posts = postUI.GetPostsOnMap(username);
+            if (posts != null)
+                return Ok(posts);
+
+            return BadRequest();
+        }
     }
 }

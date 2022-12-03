@@ -43,7 +43,7 @@ interface PostService {
     @DELETE("api/Post/DeleteUserPost/{postId}")
     fun removePost(@Path(value= "postId") postId: Int) : Call<MessageResponse>
 
-    @GET("api/Post/GetFollowingPosts")
+    @GET("api/Post/GetFollowingPosts/0")
     fun getFollowingPosts() : Call<ArrayList<PostResponse>>
 
     @GET("api/Post/GetUserPostsForMap/{username}")

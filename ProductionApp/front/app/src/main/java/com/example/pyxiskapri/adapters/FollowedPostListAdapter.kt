@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.ForeignProfileActivity
+import com.example.pyxiskapri.activities.ForeignProfileGridActivity
 import com.example.pyxiskapri.activities.OpenPostActivity
+import com.example.pyxiskapri.activities.UserProfile.NewUserProfileActivity
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
@@ -15,6 +17,7 @@ import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item_post.view.*
 import kotlinx.android.synthetic.main.item_post_followed_profiles.view.*
 
 
@@ -48,8 +51,7 @@ class FollowedPostListAdapter (private val postList: MutableList<PostListItem>) 
 
 
             profileImage.setOnClickListener(){
-
-                val intent = Intent(context, ForeignProfileActivity::class.java)
+                val intent = Intent(context, ForeignProfileGridActivity::class.java)
                 intent.putExtra("username", currentPost.ownerUsername)
                 context.startActivity(intent)
             }

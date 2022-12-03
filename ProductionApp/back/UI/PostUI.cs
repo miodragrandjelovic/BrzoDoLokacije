@@ -176,5 +176,26 @@ namespace PyxisKapriBack.UI
         {
             return postService.SetLikeOnPost(postID);
         }
+
+        public List<PostOnMapDTO> GetPostsOnMap(string username)
+        {
+            var posts = postService.GetUserPosts(username);
+
+            var postDTO = new List<PostOnMapDTO>();
+
+            foreach (var post in posts)
+            {
+                postDTO.Add(new PostOnMapDTO
+                {
+                    Id = post.Id,
+                    CoverImagePath = Path.Combine(Constants.Constants.ROOT_FOLDER, username, post.PostPath, post.CoverImageName),
+                    Latitude = post.Latitude,
+                    Longitude = post.Longitude,
+                    numberOfLikes = post.Likes != null ? post.Likes.Count : 0
+                }); ;
+            }
+
+            return postDTO;
+        }
     }
 }
