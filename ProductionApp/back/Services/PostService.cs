@@ -190,9 +190,22 @@ namespace PyxisKapriBack.Services
         {
             return postDAL.GetFollowingPosts(username, sortType); 
         }
-        public List<Post> GetRecommendedPosts(string username, SortType sortType = SortType.DATE)
+        public Response GetRecommendedPosts(string username, SortType sortType = SortType.DATE)
         {
-            return postDAL.GetRecommendedPosts(username, sortType); 
+            var response = new Response();
+            try
+            {
+                response.StatusCode = StatusCodes.Status200OK;
+                response.Message = "Found posts";
+                response.Data = postDAL.GetRecommendedPosts(username, sortType).Cast<object>().ToList();
+            }
+            catch (Exception e)
+            {
+                response.StatusCode = StatusCodes.Status500InternalServerError;
+                response.Message = e.Message;
+            }
+
+            return response;
         }
     }
 }

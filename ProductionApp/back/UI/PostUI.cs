@@ -78,27 +78,12 @@ namespace PyxisKapriBack.UI
             }
             return allPosts;
         }
-        public List<PostDTO> GetRecommendedPosts(SortType sortType = SortType.DATE)
+        public Response GetRecommendedPosts(SortType sortType = SortType.DATE)
         {
-            var posts = postService.GetRecommendedPosts(userService.GetLoggedUser(), sortType);
-
-            var allPosts = new List<PostDTO>();
-
-            foreach (var post in posts)
-            {
-                allPosts.Add(new PostDTO
-                {
-                    Id = post.Id,
-                    FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
-                    NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
-                    NumberOfViews = 0,
-                    Username = post.User.Username,
-                    FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
-                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
-                    DateCreated = post.CreatedDate.ToString("g")
-                });
-            }
-            return allPosts;
+            Response response = postService.GetRecommendedPosts(userService.GetLoggedUser(), sortType); 
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                response.Data = createPostDTOList(response.Data.Cast<Post>().ToList()).Cast<object>().ToList();
+            return response;
         }
         public AdditionalPostData GetPost(int PostID)
         {
@@ -185,7 +170,8 @@ namespace PyxisKapriBack.UI
                     NumberOfViews = 0,
                     Username = post.User.Username.ToString(),
                     FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
-                    DateCreated = post.CreatedDate.ToString("g")
+                    DateCreated = post.CreatedDate.ToString("g"),
+                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
                 });
             }
 

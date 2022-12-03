@@ -13,7 +13,6 @@ namespace PyxisKapriBack.Services.Interfaces
         Response DeleteUserPost(int postID);
         List<Post> GetAllPosts(SortType sortType = SortType.DATE);
         List<Post> GetFollowingPosts(string username, SortType sortType = SortType.DATE);
-        List<Post> GetRecommendedPosts(string username, SortType sortType = SortType.DATE);
-
+        Response GetRecommendedPosts(string username, SortType sortType = SortType.DATE);
     }
 }

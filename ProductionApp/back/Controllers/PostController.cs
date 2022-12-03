@@ -108,8 +108,13 @@ namespace PyxisKapriBack.Controllers
         [HttpGet("GetRecommendedPosts/{sortType}")]
         public async Task<IActionResult> GetRecommendedPosts(int sortType = 0)
         {
-            var posts = postUI.GetRecommendedPosts((SortType)sortType);
-            return Ok(posts);
+            var response = postUI.GetRecommendedPosts((SortType)sortType);
+            var message = new { message = response.Message };
+
+            if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
+                return BadRequest(message);
+
+            return Ok(response.Data.Cast<PostDTO>().ToList());
         }
 
         [HttpGet("GetUsersPostOnMap/{username}")]
