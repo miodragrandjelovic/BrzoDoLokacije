@@ -27,5 +27,17 @@ namespace PyxisKapriBack.Controllers
             };
             return Ok(message);
         }
+
+
+        [HttpGet("image/{path}")]
+        public async Task<IActionResult> Get(string path)
+        {
+            var response = client.SendPathToService(path).Result;
+            var message = new
+            {
+                message = response
+            };
+            return Ok(message);
+        }
     }
 }

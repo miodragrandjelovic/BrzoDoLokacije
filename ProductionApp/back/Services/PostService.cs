@@ -45,6 +45,8 @@ namespace PyxisKapriBack.Services
             var answer = fileService.CreateFolder(fullPath);
             fileService.AddFile(fullPath, post.CoverImage);
 
+            // poziv py servisa za kompresiju slika
+
             var location = locationDAL.GetLocation(post.LocationName);
             var city = cityDAL.GetCity(post.City);
             var country = countryDAL.GetCountry(post.Country);

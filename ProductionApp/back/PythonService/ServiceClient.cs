@@ -34,6 +34,22 @@ namespace PyxisKapriBack.PythonService
             }
         }
 
+        public async Task<string> SendPathToService(string path)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://127.0.0.1:8000/image/"+path);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+
+                var content = await response.Content.ReadAsStringAsync();
+
+                Console.WriteLine(content);
+                return JsonConvert.DeserializeObject<string>(content);
+            }
+        }
+
 
 
     }

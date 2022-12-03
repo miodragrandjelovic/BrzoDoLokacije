@@ -17,6 +17,8 @@ using PyxisKapriBack.UI;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using PyxisKapriBack.LocationManager.Interfaces;
 using Microsoft.Extensions.FileProviders;
+using PyxisKapriBack.PythonService;
+using PyxisKapriBack.Chat;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +57,13 @@ builder.Services.AddAuthentication(item =>
 
         }; 
     });
+
+// Add PythonHttpClient
+
+builder.Services.AddHttpClient<ServiceClient>();
+
+// Add SignalR
+builder.Services.AddSignalR();
 
 // Add services to the container.
 builder.Services.Configure<KestrelServerOptions>(builder.Configuration.GetSection("Kestrel"));
@@ -149,6 +158,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCors();
+
+app.MapHub<ChatHub>("/chat");
 
 app.MapControllers();
 
