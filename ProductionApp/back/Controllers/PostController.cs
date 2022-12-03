@@ -129,5 +129,17 @@ namespace PyxisKapriBack.Controllers
             return Ok(response.Data.Cast<PostOnMapDTO>().ToList());
 
         }
+
+        [HttpPost("GetPostsBySearch")]
+        public async Task<IActionResult> GetPostsBySearch(string search, int sortType = 0)
+        {
+            var response = postUI.GetPostsBySearch(search, (SortType)sortType);
+            var message = new { message = response.Message };
+
+            if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
+                return BadRequest(message);
+
+            return Ok(response.Data.Cast<PostDTO>().ToList());
+        }
     }
 }

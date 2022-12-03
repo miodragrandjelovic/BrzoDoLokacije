@@ -17,5 +17,6 @@ namespace PyxisKapriBack.UI.Interfaces
         List<PostDTO> GetFollowingPosts(SortType sortType = SortType.DATE);
         Response GetRecommendedPosts(SortType sortType = SortType.DATE);
         Response GetPostsOnMap(string username);
+        Response GetPostsBySearch(string search, SortType sortType = SortType.DATE); 
     }
 }

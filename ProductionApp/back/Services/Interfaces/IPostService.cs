@@ -14,5 +14,6 @@ namespace PyxisKapriBack.Services.Interfaces
         List<Post> GetAllPosts(SortType sortType = SortType.DATE);
         List<Post> GetFollowingPosts(string username, SortType sortType = SortType.DATE);
         Response GetRecommendedPosts(string username, SortType sortType = SortType.DATE);
+        Response GetPostsBySearch(String search, SortType sortType = SortType.DATE);
     }
 }

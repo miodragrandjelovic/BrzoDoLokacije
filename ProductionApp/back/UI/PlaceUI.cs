@@ -14,6 +14,11 @@ namespace PyxisKapriBack.UI
             this.iPlaceService = iPlaceService;
         }
 
+        public List<LocationDTO> FilterLocations(string location)
+        {
+            return iPlaceService.FilterLocations(location);
+        }
+
         public List<LocationDTO> GetAllAroundLocations(SearchDTO search)
         {
             List <LocationDTO> locationsDTO = null;  
@@ -42,6 +47,11 @@ namespace PyxisKapriBack.UI
             }
 
             return locationsDTO; 
+        }
+
+        public List<LocationDTO> GetNextSetOfLocations(int amountOfLocations)
+        {
+            throw new NotImplementedException();
         }
     }
 }

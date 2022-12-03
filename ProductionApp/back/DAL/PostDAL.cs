@@ -6,10 +6,12 @@ namespace PyxisKapriBack.DAL
     {
         private readonly Database _context;
         private readonly IUserDAL _iUserDAL; 
-        public PostDAL(Database context, IUserDAL iUserDAL)
+        private readonly ILocationDAL locationDAL;
+        public PostDAL(Database context, IUserDAL iUserDAL, ILocationDAL ilocationDAL)
         {
             _context = context;
             _iUserDAL = iUserDAL;
+            locationDAL = ilocationDAL;
         }
         public void AddPost(Post post)
         {
@@ -143,6 +145,24 @@ namespace PyxisKapriBack.DAL
                 orderedQueryable = orderedQueryable.OrderByDescending(post => post.Likes.Count);
 
             return orderedQueryable.ToList(); 
+        }
+
+        public List<Post> GetPostsBySearch(String search, SortType sortType = SortType.DATE)
+        {
+            List<Location> locations = locationDAL.FilterLocations(search);
+            List<int> locationsId = locations.Select(location => location.Id).ToList();
+
+            IQueryable<Post> posts = _context.Posts.Where(post => locationsId.Contains(post.LocationId))
+                                             .Include(post => post.User)
+                                             .Include(post => post.Dislikes)
+                                             .Include(post => post.Likes)
+                                             .Include(post => post.Comments)
+                                             .Include(post => post.Images)
+                                             .Include(post => post.Location)
+                                             .Include(post => post.Location.City)
+                                             .Include(post => post.Location.City.Country);
+
+            return SortListByCriteria(posts, sortType);
         }
     }
 }

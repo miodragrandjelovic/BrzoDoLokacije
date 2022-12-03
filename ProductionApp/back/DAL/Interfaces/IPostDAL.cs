@@ -11,7 +11,7 @@ namespace PyxisKapriBack.DAL.Interfaces
         List<Post> GetPostsForLocation(int LocationID);
         List<Post> GetPosts(String username, SortType sortType = SortType.DATE);
         List<Post> GetFollowingPosts(string username, SortType sortType = SortType.DATE);
-        List<Post> GetRecommendedPosts(string username, SortType sortType = SortType.DATE); 
-
+        List<Post> GetRecommendedPosts(string username, SortType sortType = SortType.DATE);
+        List<Post> GetPostsBySearch(String search, SortType sortType = SortType.DATE); 
     }
 }

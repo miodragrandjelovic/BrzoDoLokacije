@@ -170,9 +170,9 @@ namespace PyxisKapriBack.Services
             var response = new Response();
             try
             {
+                response.Data = postDAL.GetUserPosts(username).Cast<object>().ToList();
                 response.StatusCode = StatusCodes.Status200OK;
                 response.Message = "Found posts"; 
-                response.Data = postDAL.GetUserPosts(username).Cast<object>().ToList();
             }
             catch(Exception e)
             {
@@ -195,9 +195,10 @@ namespace PyxisKapriBack.Services
             var response = new Response();
             try
             {
-                response.StatusCode = StatusCodes.Status200OK;
-                response.Message = "Found posts";
                 response.Data = postDAL.GetRecommendedPosts(username, sortType).Cast<object>().ToList();
+                response.Message = "Found posts";
+                response.StatusCode = StatusCodes.Status200OK;
+               
             }
             catch (Exception e)
             {
@@ -206,6 +207,25 @@ namespace PyxisKapriBack.Services
             }
 
             return response;
+        }
+
+        public Response GetPostsBySearch(String search, SortType sortType = SortType.DATE)
+        {
+            var response = new Response();
+
+            try
+            {
+                response.Data = postDAL.GetPostsBySearch(search, sortType).Cast<object>().ToList(); 
+                response.Message = "Found posts";
+                response.StatusCode = StatusCodes.Status200OK;
+             }
+            catch(Exception e)
+            {
+                response.Message = "Found posts";
+                response.StatusCode = StatusCodes.Status500InternalServerError;
+            }
+
+            return response; 
         }
     }
 }

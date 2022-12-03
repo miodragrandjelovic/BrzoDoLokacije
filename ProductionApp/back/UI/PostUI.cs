@@ -159,7 +159,8 @@ namespace PyxisKapriBack.UI
         private List<PostDTO> createPostDTOList(List<Post> posts)
         {
             var postsDTO = new List<PostDTO>();
-
+            if (posts == null)
+                return null; 
             foreach (var post in posts)
             {
                 postsDTO.Add(new PostDTO
@@ -177,11 +178,34 @@ namespace PyxisKapriBack.UI
 
             return postsDTO;
         }
+        private List<PostDTO> createPostDTOListWithLocation(List<Post> posts)
+        {
+            var postsDTO = new List<PostDTO>();
+            if (posts == null)
+                return null;
+            foreach (var post in posts)
+            {
+                postsDTO.Add(new PostDTO
+                {
+                    Id = post.Id,
+                    FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
+                    NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
+                    DateCreated = post.CreatedDate.ToString("g"),
+                    Location = post.Location.Name, 
+                    City = post.Location.City.Name, 
+                    Country = post.Location.City.Country.Name
+                });
+            }
+
+            return postsDTO;
+        }
+
 
         private List<PostOnMapDTO> createPostOnMapDTO(List<Post> posts, String username)
         {
             var postsDTO = new List<PostOnMapDTO>();
-
+            if (posts == null)
+                return null;
             foreach (var post in posts)
             {
                 postsDTO.Add(new PostOnMapDTO
@@ -195,6 +219,14 @@ namespace PyxisKapriBack.UI
             }
 
             return postsDTO; 
+        }
+
+        public Response GetPostsBySearch(string search, SortType sortType = SortType.DATE)
+        {
+            Response response = postService.GetPostsBySearch(search, sortType);
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                response.Data = createPostDTOListWithLocation(response.Data.Cast<Post>().ToList()).Cast<object>().ToList();
+            return response;
         }
     }
 }
