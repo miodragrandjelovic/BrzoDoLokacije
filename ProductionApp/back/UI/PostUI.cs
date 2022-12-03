@@ -145,9 +145,34 @@ namespace PyxisKapriBack.UI
             return postsDTO;
         }
 
-        public List<PostDTO> GetUserPosts(string username)
+        public Response GetUserPosts(string username)
         {
-            var posts = postService.GetUserPosts(username);
+            Response response = postService.GetUserPosts(username);
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                response.Data = createPostDTOList(response.Data.Cast<Post>().ToList()).Cast<object>().ToList(); 
+            return response;
+        }
+
+        public Response RemoveLikeFromPost(int postID)
+        {
+            return likeService.DeleteLike(postID);
+        }
+
+        public Response SetLikeOnPost(int postID)
+        {
+            return postService.SetLikeOnPost(postID);
+        }
+
+        public Response GetPostsOnMap(string username)
+        {
+            Response response = postService.GetUserPosts(username);
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                response.Data = createPostOnMapDTO(response.Data.Cast<Post>().ToList(), username).Cast<object>().ToList();
+            return response;
+        }
+
+        private List<PostDTO> createPostDTOList(List<Post> posts)
+        {
             var postsDTO = new List<PostDTO>();
 
             foreach (var post in posts)
@@ -161,41 +186,29 @@ namespace PyxisKapriBack.UI
                     Username = post.User.Username.ToString(),
                     FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
                     DateCreated = post.CreatedDate.ToString("g")
-                }) ;
+                });
             }
 
             return postsDTO;
         }
 
-        public Response RemoveLikeFromPost(int postID)
+        private List<PostOnMapDTO> createPostOnMapDTO(List<Post> posts, String username)
         {
-            return likeService.DeleteLike(postID);
-        }
-
-        public Response SetLikeOnPost(int postID)
-        {
-            return postService.SetLikeOnPost(postID);
-        }
-
-        public List<PostOnMapDTO> GetPostsOnMap(string username)
-        {
-            var posts = postService.GetUserPosts(username);
-
-            var postDTO = new List<PostOnMapDTO>();
+            var postsDTO = new List<PostOnMapDTO>();
 
             foreach (var post in posts)
             {
-                postDTO.Add(new PostOnMapDTO
+                postsDTO.Add(new PostOnMapDTO
                 {
                     Id = post.Id,
                     CoverImagePath = Path.Combine(Constants.Constants.ROOT_FOLDER, username, post.PostPath, post.CoverImageName),
                     Latitude = post.Latitude,
                     Longitude = post.Longitude,
                     numberOfLikes = post.Likes != null ? post.Likes.Count : 0
-                }); ;
+                });
             }
 
-            return postDTO;
+            return postsDTO; 
         }
     }
 }

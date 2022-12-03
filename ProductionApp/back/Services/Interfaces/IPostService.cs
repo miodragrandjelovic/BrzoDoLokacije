@@ -4,7 +4,7 @@ namespace PyxisKapriBack.Services.Interfaces
 {
     public interface IPostService
     {
-        List<Post> GetUserPosts(string username);
+        Response GetUserPosts(string username); 
         List<Post> GetPostsForLocation(int LocationID);
         void AddPost(NewPostDTO post);
         Response DeletePost(int postID);
@@ -14,7 +14,6 @@ namespace PyxisKapriBack.Services.Interfaces
         List<Post> GetAllPosts(SortType sortType = SortType.DATE);
         List<Post> GetFollowingPosts(string username, SortType sortType = SortType.DATE);
         List<Post> GetRecommendedPosts(string username, SortType sortType = SortType.DATE);
-
 
     }
 }

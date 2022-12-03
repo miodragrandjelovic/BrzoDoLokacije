@@ -61,7 +61,10 @@ namespace PyxisKapriBack.DAL
 
         public List<Post> GetUserPosts(string username)
         {
-            User user = _iUserDAL.GetUser(username); 
+            User user = _iUserDAL.GetUser(username);
+            if (user == null)
+                throw new Exception(Constants.Constants.resNoFoundUser); 
+
             return _context.Posts.Where(post => post.UserId == user.Id).Include(post => post.User)
                                                                        .Include(post => post.Dislikes)
                                                                        .Include(post => post.Likes)
@@ -76,7 +79,7 @@ namespace PyxisKapriBack.DAL
         {
             User user = _iUserDAL.GetUser(username);
             if (user == null)
-                return null;
+                throw new Exception(Constants.Constants.resNoFoundUser);
 
             var posts = _context.Posts.Where(post => post.UserId != user.Id).Include(post => post.User)
                                                                        .Include(post => post.Dislikes)
@@ -91,7 +94,7 @@ namespace PyxisKapriBack.DAL
         {
             var _user = _iUserDAL.GetUser(username);
             if (_user == null)
-                return null;
+                throw new Exception(Constants.Constants.resNoFoundUser);
             List<int> users = _context.Follow.Where(follow => follow.FollowerId == _user.Id)
                                                           .Select(follow => follow.Following)
                                                           .Select(user => user.Id)
@@ -112,7 +115,7 @@ namespace PyxisKapriBack.DAL
         { 
             var _user = _iUserDAL.GetUser(username);
             if (_user == null)
-                return null;
+                throw new Exception(Constants.Constants.resNoFoundUser);
             List<int> users = _context.Follow.Where(follow => follow.FollowerId == _user.Id)
                                                           .Select(follow => follow.Following)
                                                           .Select(user => user.Id)

@@ -5,7 +5,7 @@ namespace PyxisKapriBack.UI.Interfaces
 {
     public interface IPostUI
     {
-        List<PostDTO> GetUserPosts(string username);
+        Response GetUserPosts(string username);
         List<PostDTO> GetPostsForLocation(int LocationID);
         void AddPost(NewPostDTO post);
         Response DeletePost(int postID);
@@ -16,6 +16,6 @@ namespace PyxisKapriBack.UI.Interfaces
         Response RemoveLikeFromPost(int postID);
         List<PostDTO> GetFollowingPosts(SortType sortType = SortType.DATE);
         List<PostDTO> GetRecommendedPosts(SortType sortType = SortType.DATE);
-        List<PostOnMapDTO> GetPostsOnMap(string username);
+        Response GetPostsOnMap(string username);
     }
 }

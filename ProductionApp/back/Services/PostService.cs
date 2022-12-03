@@ -165,11 +165,23 @@ namespace PyxisKapriBack.Services
         {
             return postDAL.GetPostsForLocation(LocationID);
         }
-        public List<Post> GetUserPosts(string username)
+        public Response GetUserPosts(string username)
         {
-            return postDAL.GetUserPosts(username);
-        }
+            var response = new Response();
+            try
+            {
+                response.StatusCode = StatusCodes.Status200OK;
+                response.Message = "Found posts"; 
+                response.Data = postDAL.GetUserPosts(username).Cast<object>().ToList();
+            }
+            catch(Exception e)
+            {
+                response.StatusCode = StatusCodes.Status500InternalServerError;
+                response.Message = e.Message; 
+            }
 
+            return response; 
+        }
         public Response SetLikeOnPost(int postID)
         {
             return likeService.AddLike(postID);
