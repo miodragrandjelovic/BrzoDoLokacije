@@ -23,6 +23,11 @@ class  MainActivity : AppCompatActivity() {
         setupGoToRegisterButton()
         setupGoToSignInButton()
 
+        button.setOnClickListener(){
+            val intent = Intent (this, ForeignProfileMapActivity::class.java);
+            startActivity(intent);
+        }
+
     }
 
 

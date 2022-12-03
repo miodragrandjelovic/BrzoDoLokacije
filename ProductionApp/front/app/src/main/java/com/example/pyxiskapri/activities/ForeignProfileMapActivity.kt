@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -16,9 +17,17 @@ import com.example.pyxiskapri.dtos.request.AddFollowRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.fragments.DrawerNav
+import com.example.pyxiskapri.models.ClusterMarker
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.maps.android.clustering.ClusterManager
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_foreign_profile_grid.*
 import kotlinx.android.synthetic.main.activity_foreign_profile_map.*
@@ -27,19 +36,24 @@ import kotlinx.android.synthetic.main.modal_confirm_unfollow.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
-class ForeignProfileMapActivity : AppCompatActivity() {
+class ForeignProfileMapActivity : AppCompatActivity() , OnMapReadyCallback , GoogleMap.OnInfoWindowClickListener{
 
-    lateinit var apiClient: ApiClient
-    lateinit var sessionManager: SessionManager
+  //  lateinit var apiClient: ApiClient
+  //  lateinit var sessionManager: SessionManager
 
-    lateinit var username:String
+  //  lateinit var username:String
+
+    private lateinit var mMap: GoogleMap
+    private lateinit var mClusterManager: ClusterManager<ClusterMarker>
+    private lateinit var geocoder: Geocoder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_foreign_profile_map)
 
-        ll_posts_fm.setOnClickListener(){
+        /*ll_posts_fm.setOnClickListener(){
             val intent = Intent (this, ForeignProfileGridActivity::class.java);
             intent.putExtra("username", username)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
@@ -66,14 +80,62 @@ class ForeignProfileMapActivity : AppCompatActivity() {
 
         ib_following_fm.setOnClickListener(){
             unfollowProfile()
-        }
+        }*/
 
+
+        ///////////////////////////// MAPA
+
+        setupMap()
+
+
+    }
+
+    private fun setupMap() {
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fm) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        setUpClusterer()
+        mMap.setOnInfoWindowClickListener(this);
+    }
+
+    private fun setUpClusterer() {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(51.503186, -0.126446), 4f))
+        geocoder = Geocoder(this, Locale.getDefault())
+        mClusterManager = ClusterManager(this, mMap)
+        mMap.setOnCameraIdleListener(mClusterManager)
+        mMap.setOnMarkerClickListener(mClusterManager)
+        addItems()
+    }
+
+    private fun addItems() {
+        var lat = 51.5145160
+        var lng = -0.1270060
+        for (i in 0..9) {
+            val offset = i / 60.0
+            lat = lat + offset
+            lng = lng + offset
+            val title = "This is the title"
+            val snippet = "and this is the snippet."
+            val offsetItem = ClusterMarker(lat, lng, title, snippet)
+            mClusterManager.addItem(offsetItem)
+        }
+    }
+
+    override fun onInfoWindowClick(p0: Marker) {
+        Toast.makeText(
+            this, "Info window clicked",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     fun showDrawerMenu(view: View){
         if(view.id == R.id.btn_menu)
             fcv_drawerNav_fm.getFragment<DrawerNav>().showDrawer()
     }
+/*
 
     private fun followProfile() {
 
@@ -295,5 +357,9 @@ class ForeignProfileMapActivity : AppCompatActivity() {
             startActivity(intent);
         }
     }
+*/
+
+
+
 
 }
