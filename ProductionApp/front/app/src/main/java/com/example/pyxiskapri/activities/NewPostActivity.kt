@@ -1,20 +1,25 @@
 package com.example.pyxiskapri.activities
 
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.icu.text.Transliterator
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
+import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -33,10 +38,18 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_new_post.*
+import kotlinx.android.synthetic.main.activity_new_post.btn_discover
 import kotlinx.android.synthetic.main.activity_new_post.btn_home
 import kotlinx.android.synthetic.main.activity_new_post.btn_messages
+import kotlinx.android.synthetic.main.activity_new_post.btn_newPost
 import kotlinx.android.synthetic.main.dialog_images_upload_progress.*
+import kotlinx.android.synthetic.main.dialog_location_search.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -44,6 +57,7 @@ import retrofit2.Response
 import java.util.*
 
 
+@Suppress("DEPRECATION")
 class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
     // API, SESIJE...
@@ -78,10 +92,11 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
     // CARD POST
     lateinit var uploadProgressAdapter: ImageUploadProgressAdapter
 
+    lateinit var listAdapter: ArrayAdapter<String>
 
 
 
-
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_post)
@@ -110,25 +125,32 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             fcv_drawerNavNewPost.getFragment<DrawerNav>().showDrawer()
     }
 
-    private fun setupNavButtons() {
-        setupGoHomeButton()
-        setupButtonMessages()
-    }
+    private fun setupNavButtons(){
+        // NEW POST
+        btn_newPost.setOnClickListener {
+            val intent = Intent (this, NewPostActivity::class.java);
+            startActivity(intent);
+        }
 
-    // NAV BUTTONS
+        // MAPS
+        btn_discover.setOnClickListener {
+            val intent = Intent (this, MapActivity::class.java);
+            startActivity(intent);
+        }
 
-    private fun setupGoHomeButton(){
+        // HOME
         btn_home.setOnClickListener {
             val intent = Intent (this, HomeActivity::class.java);
             startActivity(intent);
         }
-    }
 
-    private fun setupButtonMessages(){
+        // MESSAGES
         btn_messages.setOnClickListener {
             val intent = Intent (this, ChatMainActivity::class.java);
             startActivity(intent);
         }
+
+        // NOTIFICATIONS
     }
 
 
@@ -361,31 +383,34 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             dialog.show()
 
             var editText: EditText = dialog.findViewById(R.id.edit_text)
-            var listView: ListView =dialog.findViewById(R.id.list_view)
+            var listView: ListView = dialog.findViewById(R.id.list_view)
 
             var listAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.item_search_text, locationList)
 
             var fetchedAddresses: MutableList<Address> = mutableListOf()
 
             listView.adapter = listAdapter
-            editText.doOnTextChanged { _, _, _, _ ->
+
+            dialog.btn_searchLocations.setOnClickListener{
                 listAdapter.clear()
 
                 if(editText.text.toString() != "") {
-                    fetchedAddresses = geocoder.getFromLocationName(editText.text.toString(), 6)!!
-                    for (address in fetchedAddresses)
-                        listAdapter.add(address.getAddressLine(0))
+                    fetchedAddresses = geocoder.getFromLocationName(editText.text.toString(), 8)!!
+                    if (fetchedAddresses.size != 0) {
+                        for (address in fetchedAddresses)
+                            listAdapter.add(address.getAddressLine(0))
+
+                        listAdapter.notifyDataSetChanged()
+                    } else
+                        Toast.makeText(this, "No locations found!", Toast.LENGTH_LONG).show()
                 }
 
-
-                listAdapter.notifyDataSetChanged()
             }
 
-            listView.onItemClickListener =
-                OnItemClickListener { _, _, position, _ ->
+            listView.onItemClickListener = OnItemClickListener { _, _, position, _ ->
                     addMarker(fetchedAddresses[position])
                     dialog.dismiss()
-                }
+            }
 
         }
     }

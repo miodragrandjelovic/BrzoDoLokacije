@@ -57,6 +57,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
+
     // Okhttp3 for the POST requests
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     //retrofit
@@ -81,6 +82,6 @@ dependencies {
     // Circle image View
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-
+    implementation 'com.google.android.libraries.places:places:2.7.0'
 
 }
