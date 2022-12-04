@@ -45,51 +45,11 @@ namespace PyxisKapriBack.Services
             var answer = fileService.CreateFolder(fullPath);
             fileService.AddFile(fullPath, post.CoverImage);
 
-            var location = locationDAL.GetLocation(post.LocationName);
-            var city = cityDAL.GetCity(post.City);
-            var country = countryDAL.GetCountry(post.Country);
-            
-            if (country == null)
-                if (countryDAL.AddCountry(post.Country))
-                    country = countryDAL.GetCountry(post.Country);
+            // poziv py servisa za kompresiju slika
 
-            if (city == null)
-                if (cityDAL.AddCity(post.City, post.Country))
-                    city = cityDAL.GetCity(post.City);
-            
-            if (location == null)
-            {
-                location = new Location();
-                location.Longitude = Convert.ToDouble(post.Longitude);
-                location.Latitude = Convert.ToDouble(post.Latitude);
-                location.City = city;
-                location.Address = post.Address;
 
-                if (String.IsNullOrEmpty(post.LocationName))
-                    location.Name = Constants.Constants.UNKNWOWN; 
-                else 
-                    location.Name = post.LocationName;
-
-                locationDAL.AddLocation(location);
-            }
-            else {
-                if (String.IsNullOrEmpty(location.Address))
-                    location.Address = post.Address;
-
-                if (String.IsNullOrEmpty(location.Name))
-                    if (String.IsNullOrEmpty(post.LocationName))
-                        location.Name = post.LocationName; 
-
-                if ((location.Longitude == 0) || (location.Latitude == 0))
-                {
-                    location.Longitude = Convert.ToDouble(post.Longitude);
-                    location.Latitude = Convert.ToDouble(post.Latitude);
-                }
-                if (location.City == null)
-                    location.City = city; 
-                locationDAL.UpdateLocation(location);
-            }
-            newPost.Location = location;
+            newPost.Location = FixLocation(post.Address, post.LocationName, post.City, post.Country, 
+                                           Convert.ToDouble(post.Longitude), Convert.ToDouble(post.Latitude)); 
                 
             if (post.Images.Count > 0)
             {
@@ -118,6 +78,64 @@ namespace PyxisKapriBack.Services
                 StatusCode = StatusCodes.Status200OK,
                 Message = "Post deleted succesffuly!"
             };
+        }
+        private Location FixLocation(string address, string locationName, string cityName, string countryName, double longitude, double latitude)
+        {
+            var location = locationDAL.GetLocation(locationName);
+            if(location == null)
+                location = locationDAL.GetLocation(address);
+
+            var city = cityDAL.GetCity(cityName);
+            var country = countryDAL.GetCountry(countryName);
+
+            if (country == null)
+                if (countryDAL.AddCountry(countryName))
+                    country = countryDAL.GetCountry(countryName);
+
+            if (city == null)
+                if (cityDAL.AddCity(cityName, countryName))
+                    city = cityDAL.GetCity(cityName);
+
+            if (location == null)
+            {
+                location = new Location();
+                location.Longitude = Convert.ToDouble(longitude);
+                location.Latitude = Convert.ToDouble(latitude);
+                location.City = city;
+                location.Address = address;
+
+                if (String.IsNullOrEmpty(locationName))
+                {
+                    if (String.IsNullOrEmpty(address))
+                        location.Name = Constants.Constants.UNKNWOWN;
+                    else
+                        location.Name = address;
+                }
+                else
+                    location.Name =locationName;
+
+                locationDAL.AddLocation(location);
+            }
+            else
+            {
+                if (String.IsNullOrEmpty(location.Address))
+                    location.Address = address;
+
+                if (String.IsNullOrEmpty(location.Name) && (!String.IsNullOrEmpty(locationName)))
+                    location.Name = locationName;
+
+                if ((location.Longitude == 0) || (location.Latitude == 0))
+                {
+                    location.Longitude = Convert.ToDouble(longitude);
+                    location.Latitude = Convert.ToDouble(latitude);
+                }
+
+                if (location.City == null)
+                    location.City = city;
+                locationDAL.UpdateLocation(location);
+            }
+
+            return location; 
         }
         public Response DeleteUserPost(int postID)
         {
@@ -165,11 +183,23 @@ namespace PyxisKapriBack.Services
         {
             return postDAL.GetPostsForLocation(LocationID);
         }
-        public List<Post> GetUserPosts(string username)
+        public Response GetUserPosts(string username)
         {
-            return postDAL.GetUserPosts(username);
-        }
+            var response = new Response();
+            try
+            {
+                response.Data = postDAL.GetUserPosts(username).Cast<object>().ToList();
+                response.StatusCode = StatusCodes.Status200OK;
+                response.Message = "Found posts"; 
+            }
+            catch(Exception e)
+            {
+                response.StatusCode = StatusCodes.Status500InternalServerError;
+                response.Message = e.Message; 
+            }
 
+            return response; 
+        }
         public Response SetLikeOnPost(int postID)
         {
             return likeService.AddLike(postID);
@@ -178,9 +208,42 @@ namespace PyxisKapriBack.Services
         {
             return postDAL.GetFollowingPosts(username, sortType); 
         }
-        public List<Post> GetRecommendedPosts(string username, SortType sortType = SortType.DATE)
+        public Response GetRecommendedPosts(string username, SortType sortType = SortType.DATE)
         {
-            return postDAL.GetRecommendedPosts(username, sortType); 
+            var response = new Response();
+            try
+            {
+                response.Data = postDAL.GetRecommendedPosts(username, sortType).Cast<object>().ToList();
+                response.Message = "Found posts";
+                response.StatusCode = StatusCodes.Status200OK;
+               
+            }
+            catch (Exception e)
+            {
+                response.StatusCode = StatusCodes.Status500InternalServerError;
+                response.Message = e.Message;
+            }
+
+            return response;
+        }
+
+        public Response GetPostsBySearch(String search, SortType sortType = SortType.DATE)
+        {
+            var response = new Response();
+
+            try
+            {
+                response.Data = postDAL.GetPostsBySearch(search, sortType).Cast<object>().ToList(); 
+                response.Message = "Found posts";
+                response.StatusCode = StatusCodes.Status200OK;
+             }
+            catch(Exception e)
+            {
+                response.Message = "Found posts";
+                response.StatusCode = StatusCodes.Status500InternalServerError;
+            }
+
+            return response; 
         }
     }
 }

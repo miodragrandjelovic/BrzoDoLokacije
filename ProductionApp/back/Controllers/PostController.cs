@@ -73,8 +73,13 @@ namespace PyxisKapriBack.Controllers
         [HttpGet("GetUserPosts/{username}")]
         public async Task<IActionResult> GetUserPosts(string username)
         {
-            var posts = postUI.GetUserPosts(username);
-            return Ok(posts);
+            var response = postUI.GetUserPosts(username);
+            var message = new { message = response.Message };
+
+            if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
+                return BadRequest(message);
+
+            return Ok(response.Data.Cast<PostDTO>().ToList());
         }
 
         [HttpGet("GetPostById/{id}")]
@@ -103,18 +108,38 @@ namespace PyxisKapriBack.Controllers
         [HttpGet("GetRecommendedPosts/{sortType}")]
         public async Task<IActionResult> GetRecommendedPosts(int sortType = 0)
         {
-            var posts = postUI.GetRecommendedPosts((SortType)sortType);
-            return Ok(posts);
+            var response = postUI.GetRecommendedPosts((SortType)sortType);
+            var message = new { message = response.Message };
+
+            if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
+                return BadRequest(message);
+
+            return Ok(response.Data.Cast<PostDTO>().ToList());
         }
 
         [HttpGet("GetUsersPostOnMap/{username}")]
         public async Task<IActionResult> GetPostsOnMap(string username)
         {
-            var posts = postUI.GetPostsOnMap(username);
-            if (posts != null)
-                return Ok(posts);
+            var response = postUI.GetPostsOnMap(username);
+            var message = new { message = response.Message };
 
-            return BadRequest();
+            if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
+                return BadRequest(message);
+
+            return Ok(response.Data.Cast<PostOnMapDTO>().ToList());
+
+        }
+
+        [HttpPost("GetPostsBySearch")]
+        public async Task<IActionResult> GetPostsBySearch(string search, int sortType = 0)
+        {
+            var response = postUI.GetPostsBySearch(search, (SortType)sortType);
+            var message = new { message = response.Message };
+
+            if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
+                return BadRequest(message);
+
+            return Ok(response.Data.Cast<PostDTO>().ToList());
         }
     }
 }

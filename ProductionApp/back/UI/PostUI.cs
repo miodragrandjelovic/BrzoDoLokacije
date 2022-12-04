@@ -78,27 +78,12 @@ namespace PyxisKapriBack.UI
             }
             return allPosts;
         }
-        public List<PostDTO> GetRecommendedPosts(SortType sortType = SortType.DATE)
+        public Response GetRecommendedPosts(SortType sortType = SortType.DATE)
         {
-            var posts = postService.GetRecommendedPosts(userService.GetLoggedUser(), sortType);
-
-            var allPosts = new List<PostDTO>();
-
-            foreach (var post in posts)
-            {
-                allPosts.Add(new PostDTO
-                {
-                    Id = post.Id,
-                    FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
-                    NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
-                    NumberOfViews = 0,
-                    Username = post.User.Username,
-                    FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
-                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
-                    DateCreated = post.CreatedDate.ToString("g")
-                });
-            }
-            return allPosts;
+            Response response = postService.GetRecommendedPosts(userService.GetLoggedUser(), sortType); 
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                response.Data = createPostDTOList(response.Data.Cast<Post>().ToList()).Cast<object>().ToList();
+            return response;
         }
         public AdditionalPostData GetPost(int PostID)
         {
@@ -145,26 +130,12 @@ namespace PyxisKapriBack.UI
             return postsDTO;
         }
 
-        public List<PostDTO> GetUserPosts(string username)
+        public Response GetUserPosts(string username)
         {
-            var posts = postService.GetUserPosts(username);
-            var postsDTO = new List<PostDTO>();
-
-            foreach (var post in posts)
-            {
-                postsDTO.Add(new PostDTO
-                {
-                    Id = post.Id,
-                    FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
-                    NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
-                    NumberOfViews = 0,
-                    Username = post.User.Username.ToString(),
-                    FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
-                    DateCreated = post.CreatedDate.ToString("g")
-                }) ;
-            }
-
-            return postsDTO;
+            Response response = postService.GetUserPosts(username);
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                response.Data = createPostDTOList(response.Data.Cast<Post>().ToList()).Cast<object>().ToList(); 
+            return response;
         }
 
         public Response RemoveLikeFromPost(int postID)
@@ -177,25 +148,85 @@ namespace PyxisKapriBack.UI
             return postService.SetLikeOnPost(postID);
         }
 
-        public List<PostOnMapDTO> GetPostsOnMap(string username)
+        public Response GetPostsOnMap(string username)
         {
-            var posts = postService.GetUserPosts(username);
+            Response response = postService.GetUserPosts(username);
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                response.Data = createPostOnMapDTO(response.Data.Cast<Post>().ToList(), username).Cast<object>().ToList();
+            return response;
+        }
 
-            var postDTO = new List<PostOnMapDTO>();
-
+        private List<PostDTO> createPostDTOList(List<Post> posts)
+        {
+            var postsDTO = new List<PostDTO>();
+            if (posts == null)
+                return null; 
             foreach (var post in posts)
             {
-                postDTO.Add(new PostOnMapDTO
+                postsDTO.Add(new PostDTO
+                {
+                    Id = post.Id,
+                    FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
+                    NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
+                    NumberOfViews = 0,
+                    Username = post.User.Username.ToString(),
+                    FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
+                    DateCreated = post.CreatedDate.ToString("g"),
+                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
+                });
+            }
+
+            return postsDTO;
+        }
+        private List<PostDTO> createPostDTOListWithLocation(List<Post> posts)
+        {
+            var postsDTO = new List<PostDTO>();
+            if (posts == null)
+                return null;
+            foreach (var post in posts)
+            {
+                postsDTO.Add(new PostDTO
+                {
+                    Id = post.Id,
+                    FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
+                    NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
+                    DateCreated = post.CreatedDate.ToString("g"),
+                    Location = post.Location.Name, 
+                    City = post.Location.City.Name, 
+                    Country = post.Location.City.Country.Name
+                });
+            }
+
+            return postsDTO;
+        }
+
+
+        private List<PostOnMapDTO> createPostOnMapDTO(List<Post> posts, String username)
+        {
+            var postsDTO = new List<PostOnMapDTO>();
+            if (posts == null)
+                return null;
+            foreach (var post in posts)
+            {
+                postsDTO.Add(new PostOnMapDTO
                 {
                     Id = post.Id,
                     CoverImagePath = Path.Combine(Constants.Constants.ROOT_FOLDER, username, post.PostPath, post.CoverImageName),
                     Latitude = post.Latitude,
                     Longitude = post.Longitude,
                     numberOfLikes = post.Likes != null ? post.Likes.Count : 0
-                }); ;
+                });
             }
 
-            return postDTO;
+            return postsDTO; 
+        }
+
+        public Response GetPostsBySearch(string search, SortType sortType = SortType.DATE)
+        {
+            Response response = postService.GetPostsBySearch(search, sortType);
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                response.Data = createPostDTOListWithLocation(response.Data.Cast<Post>().ToList()).Cast<object>().ToList();
+            return response;
         }
     }
 }

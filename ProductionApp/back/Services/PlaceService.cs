@@ -21,7 +21,9 @@ namespace PyxisKapriBack.Services
 
             foreach (var location  in locations)
             {
-                locationsDTO.Add(new LocationDTO { Id = location.Id, Name = location.Name });
+                locationsDTO.Add(new LocationDTO { 
+                    Id = location.Id, 
+                    Name = location.Name });
             }
 
             return locationsDTO;
@@ -34,22 +36,7 @@ namespace PyxisKapriBack.Services
             if (location == null)
                 return null; 
 
-            var locations = _iLocationDAL.GetAllAroundLocations(_location, distance);
-            if (locations == null)
-                return null;
-
-            var locationsDTO = new List<LocationDTO>(); 
-            foreach(Location loc in locations)
-            {
-                locationsDTO.Add(new LocationDTO
-                {
-                    Id = loc.Id,
-                    Name = loc.Name, 
-                    Distance = loc.Distance
-                }); 
-            }
-
-            return locationsDTO; 
+            return createLocationDTOList(_iLocationDAL.GetAllAroundLocations(_location, distance)); 
         }
 
         public List<LocationDTO> GetAllAroundLocationsByCoordinates(double longitude, double latitude, double distance = 1500)
@@ -77,6 +64,21 @@ namespace PyxisKapriBack.Services
         public List<Location> GetNextSetOfLocations(int take = Constants.Constants.TAKE_ELEMENT)
         {
             return _iLocationDAL.GetNextSetOfLocations(take);
+        }
+
+        public List<LocationDTO> createLocationDTOList(List<Location> locations)
+        {
+            var locationsDTO = new List<LocationDTO>();
+            foreach (Location loc in locations)
+            {
+                locationsDTO.Add(new LocationDTO
+                {
+                    Id = loc.Id,
+                    Name = loc.Name,
+                    Distance = loc.Distance
+                });
+            }
+            return locationsDTO; 
         }
     }
 }
