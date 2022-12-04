@@ -175,5 +175,19 @@ namespace PyxisKapriBack.Controllers
 
             return Ok(Convert.ToBase64String(image));
         }
+
+        [HttpGet("SearchFollower/{search}")]
+        public async Task<IActionResult> SearchFollowers(string search)
+        {
+            var followers = followUI.SearchFollowers(search);
+            return Ok(followers);
+        }
+
+        [HttpGet("SearchFollowing/{search}")]
+        public async Task<IActionResult> SearchFollowing(string search)
+        {
+            var followers = followUI.SearchFollowing(search);
+            return Ok(followers);
+        }
     }
 }

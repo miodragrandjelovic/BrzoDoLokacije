@@ -67,5 +67,32 @@ namespace PyxisKapriBack.UI
         {
             return _iFollowService.IsFollowed(_iUserService.GetLoggedUser(), followingUsername); 
         }
+
+        public List<UserShortDTO> SearchFollowers(string search)
+        {
+            return createListUserShortDTO(_iFollowService.SearchFollowers(_iUserService.GetLoggedUser(), search));
+        }
+
+        public List<UserShortDTO> SearchFollowing(string search)
+        {
+            return createListUserShortDTO(_iFollowService.SearchFollowing(_iUserService.GetLoggedUser(), search)); 
+        }
+
+        public List<UserShortDTO> createListUserShortDTO(List<User> list)
+        {
+            var listUserShortDTO = new List<UserShortDTO>();
+
+            foreach (var item in list)
+            {
+                listUserShortDTO.Add(new UserShortDTO
+                {
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    Username = item.Username,
+                    ProfileImage = item.FolderPath + item.FileName
+                });
+            }
+            return listUserShortDTO;
+        }
     }
 }
