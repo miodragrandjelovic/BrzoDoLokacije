@@ -10,6 +10,7 @@ namespace PyxisKapriBack.UI.Interfaces
         void AddPost(NewPostDTO post);
         Response DeletePost(int postID);
         AdditionalPostData GetPost(int PostID);
+        PostDTO GetPostById(int postID);
         Response SetLikeOnPost(int postID);
         Response DeleteUserPost(int postID);
         List<PostDTO> GetAllPosts(SortType sortType = SortType.DATE);
@@ -17,6 +18,6 @@ namespace PyxisKapriBack.UI.Interfaces
         List<PostDTO> GetFollowingPosts(SortType sortType = SortType.DATE);
         Response GetRecommendedPosts(SortType sortType = SortType.DATE);
         Response GetPostsOnMap(string username);
-        Response GetPostsBySearch(string search, SortType sortType = SortType.DATE); 
+        Response GetPostsBySearch(string search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT); 
     }
 }

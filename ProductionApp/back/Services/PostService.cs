@@ -3,6 +3,7 @@ using PyxisKapriBack.Services.Interfaces;
 using PyxisKapriBack.Models;
 using PyxisKapriBack.DTOComponents;
 using System.Text;
+using PyxisKapriBack.PythonService;
 
 namespace PyxisKapriBack.Services
 {
@@ -15,9 +16,10 @@ namespace PyxisKapriBack.Services
         private readonly ICityDAL cityDAL;
         private readonly ICountryDAL countryDAL;
         private readonly IFileService fileService;
+        private readonly ServiceClient client;
 
         public PostService(IPostDAL postDAL, ILikeService likeService, IUserService userService, ILocationDAL locationDAL, 
-            ICityDAL cityDAL, ICountryDAL countryDAL,IFileService fileService)
+            ICityDAL cityDAL, ICountryDAL countryDAL,IFileService fileService,ServiceClient client)
         {
             this.postDAL = postDAL;
             this.likeService = likeService;
@@ -26,6 +28,7 @@ namespace PyxisKapriBack.Services
             this.cityDAL = cityDAL;
             this.countryDAL = countryDAL;
             this.fileService = fileService;
+            this.client = client;
         }
 
         public void AddPost(NewPostDTO post)
@@ -44,7 +47,7 @@ namespace PyxisKapriBack.Services
             var fullPath = Path.Combine(loggedUser.FolderPath, postPath);
             var answer = fileService.CreateFolder(fullPath);
             fileService.AddFile(fullPath, post.CoverImage);
-
+            client.SendPathToService(Path.Combine(Directory.GetCurrentDirectory(), fullPath, post.CoverImage.FileName).ToString());
             // poziv py servisa za kompresiju slika
 
 
@@ -59,6 +62,7 @@ namespace PyxisKapriBack.Services
                     newImage.ImageName = image.FileName;
                     fileService.AddFile(fullPath, image);
                     newPost.Images.Add(newImage);
+                    client.SendPathToService(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName).ToString());
                 }
             }
             postDAL.AddPost(newPost);
@@ -227,13 +231,13 @@ namespace PyxisKapriBack.Services
             return response;
         }
 
-        public Response GetPostsBySearch(String search, SortType sortType = SortType.DATE)
+        public Response GetPostsBySearch(String search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT)
         {
             var response = new Response();
 
             try
             {
-                response.Data = postDAL.GetPostsBySearch(search, sortType).Cast<object>().ToList(); 
+                response.Data = postDAL.GetPostsBySearch(search, sortType).Take(countOfResult).Cast<object>().ToList(); 
                 response.Message = "Found posts";
                 response.StatusCode = StatusCodes.Status200OK;
              }

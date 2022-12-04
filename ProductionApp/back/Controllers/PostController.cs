@@ -83,7 +83,7 @@ namespace PyxisKapriBack.Controllers
         }
 
         [HttpGet("GetPostById/{id}")]
-        public async Task<IActionResult> GetPostById(int id)
+        public async Task<IActionResult> GetAdditionalPostData(int id)
         {
             var post = postUI.GetPost(id);
             if (post == null)
@@ -131,15 +131,24 @@ namespace PyxisKapriBack.Controllers
         }
 
         [HttpPost("GetPostsBySearch")]
-        public async Task<IActionResult> GetPostsBySearch(string search, int sortType = 0)
+        public async Task<IActionResult> GetPostsBySearch(string search, int sortType = 0, int countOfResult = 5)
         {
-            var response = postUI.GetPostsBySearch(search, (SortType)sortType);
+            var response = postUI.GetPostsBySearch(search, (SortType)sortType, countOfResult);
             var message = new { message = response.Message };
 
             if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
                 return BadRequest(message);
 
             return Ok(response.Data.Cast<PostDTO>().ToList());
+        }
+        [HttpGet("GetPost/{id}")]
+        public async Task<IActionResult> GetPostById(int id)
+        {
+            var post = postUI.GetPostById(id);
+            if (post == null)
+                return BadRequest();
+
+            return Ok(post);
         }
     }
 }
