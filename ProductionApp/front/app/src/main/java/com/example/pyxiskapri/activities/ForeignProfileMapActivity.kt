@@ -96,7 +96,7 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mCustomMarkerView = (getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.view_custom_marker, null)
 
-        mMarkerImageView = mCustomMarkerView.findViewById(R.id.profile_image)
+        mMarkerImageView = mCustomMarkerView.findViewById(R.id.cover_image)
 
         numberOfLikes = mCustomMarkerView.findViewById(R.id.number_of_likes)
 
