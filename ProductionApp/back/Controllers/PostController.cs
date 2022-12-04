@@ -83,7 +83,7 @@ namespace PyxisKapriBack.Controllers
         }
 
         [HttpGet("GetPostById/{id}")]
-        public async Task<IActionResult> GetPostById(int id)
+        public async Task<IActionResult> GetAdditionalPostData(int id)
         {
             var post = postUI.GetPost(id);
             if (post == null)
@@ -140,6 +140,15 @@ namespace PyxisKapriBack.Controllers
                 return BadRequest(message);
 
             return Ok(response.Data.Cast<PostDTO>().ToList());
+        }
+        [HttpGet("GetPost/{id}")]
+        public async Task<IActionResult> GetPostById(int id)
+        {
+            var post = postUI.GetPostById(id);
+            if (post == null)
+                return BadRequest();
+
+            return Ok(post);
         }
     }
 }

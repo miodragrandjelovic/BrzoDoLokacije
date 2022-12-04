@@ -10,6 +10,7 @@ namespace PyxisKapriBack.UI.Interfaces
         void AddPost(NewPostDTO post);
         Response DeletePost(int postID);
         AdditionalPostData GetPost(int PostID);
+        PostDTO GetPostById(int postID);
         Response SetLikeOnPost(int postID);
         Response DeleteUserPost(int postID);
         List<PostDTO> GetAllPosts(SortType sortType = SortType.DATE);

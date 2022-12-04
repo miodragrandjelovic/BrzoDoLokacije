@@ -228,5 +228,23 @@ namespace PyxisKapriBack.UI
                 response.Data = createPostDTOListWithLocation(response.Data.Cast<Post>().ToList()).Cast<object>().ToList();
             return response;
         }
+
+        public PostDTO GetPostById(int postID)
+        {
+            var post = postService.GetPost(postID);
+            if (post != null)
+                return new PostDTO
+                {
+                    Id = post.Id,
+                    FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
+                    NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
+                    NumberOfViews = 0,
+                    Username = post.User.Username,
+                    FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
+                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
+                    DateCreated = post.CreatedDate.ToString("g")
+                };
+            return null;
+        }
     }
 }

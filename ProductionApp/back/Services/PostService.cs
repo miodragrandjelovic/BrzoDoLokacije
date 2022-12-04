@@ -47,37 +47,9 @@ namespace PyxisKapriBack.Services
             var fullPath = Path.Combine(loggedUser.FolderPath, postPath);
             var answer = fileService.CreateFolder(fullPath);
             fileService.AddFile(fullPath, post.CoverImage);
-
+            client.SendPathToService(Path.Combine(Directory.GetCurrentDirectory(), fullPath, post.CoverImage.FileName).ToString());
             // poziv py servisa za kompresiju slika
-<<<<<<< Updated upstream
 
-=======
-            client.SendPathToService(Path.Combine(Directory.GetCurrentDirectory(),fullPath, post.CoverImage.FileName).ToString());
-            var location = locationDAL.GetLocation(post.LocationName);
-            var city = cityDAL.GetCity(post.City);
-            var country = countryDAL.GetCountry(post.Country);
-            
-            if (country == null)
-                if (countryDAL.AddCountry(post.Country))
-                    country = countryDAL.GetCountry(post.Country);
-
-            if (city == null)
-                if (cityDAL.AddCity(post.City, post.Country))
-                    city = cityDAL.GetCity(post.City);
-            
-            if (location == null)
-            {
-                location = new Location();
-                location.Longitude = Convert.ToDouble(post.Longitude);
-                location.Latitude = Convert.ToDouble(post.Latitude);
-                location.City = city;
-                location.Address = post.Address;
-
-                if (String.IsNullOrEmpty(post.LocationName))
-                    location.Name = Constants.Constants.UNKNWOWN; 
-                else 
-                    location.Name = post.LocationName;
->>>>>>> Stashed changes
 
             newPost.Location = FixLocation(post.Address, post.LocationName, post.City, post.Country, 
                                            Convert.ToDouble(post.Longitude), Convert.ToDouble(post.Latitude)); 
