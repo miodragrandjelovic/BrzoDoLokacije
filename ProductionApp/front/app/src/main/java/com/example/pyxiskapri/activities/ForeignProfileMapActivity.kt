@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toDrawable
@@ -55,6 +56,7 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     lateinit var mCustomMarkerView:View
     lateinit var mMarkerImageView: ImageView
+    lateinit var numberOfLikes: TextView
 
     private lateinit var map: GoogleMap
     private lateinit var geocoder: Geocoder
@@ -96,6 +98,8 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mMarkerImageView = mCustomMarkerView.findViewById(R.id.profile_image)
 
+        numberOfLikes = mCustomMarkerView.findViewById(R.id.number_of_likes)
+
 
         setupMap()
 
@@ -115,11 +119,14 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         geocoder = Geocoder(this, Locale.getDefault())
+        addCustomMarkerFromURL();
     }
 
-    private fun getMarkerBitmapFromView(view: View, bitmap: Bitmap?): Bitmap? {
+    private fun getMarkerBitmapFromView(view: View, bitmap: Bitmap?, likes:Int): Bitmap? {
 
         mMarkerImageView?.setImageBitmap(bitmap)
+        numberOfLikes.text=likes.toString()
+
         view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
         view.buildDrawingCache()
@@ -158,7 +165,7 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
                             map.addMarker( MarkerOptions().position(location)
                                 .icon( BitmapDescriptorFactory.fromBitmap(
-                                    getMarkerBitmapFromView(mCustomMarkerView, bitmap)!!)))
+                                    getMarkerBitmapFromView(mCustomMarkerView, bitmap,post.numberOfLikes)!!)))
 
                         }
 

@@ -46,7 +46,7 @@ interface PostService {
     @GET("api/Post/GetFollowingPosts/0")
     fun getFollowingPosts() : Call<ArrayList<PostResponse>>
 
-    @GET("api/Post/GetUserPostsForMap/{username}")
+    @GET("api/Post/GetUsersPostOnMap/{username}")
     fun PostOnMap(@Path(value = "username") username: String) : Call<ArrayList<PostOnMapResponse>>
 
 
