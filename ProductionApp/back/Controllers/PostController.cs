@@ -131,9 +131,9 @@ namespace PyxisKapriBack.Controllers
         }
 
         [HttpPost("GetPostsBySearch")]
-        public async Task<IActionResult> GetPostsBySearch(string search, int sortType = 0)
+        public async Task<IActionResult> GetPostsBySearch(string search, int sortType = 0, int countOfResult = 5)
         {
-            var response = postUI.GetPostsBySearch(search, (SortType)sortType);
+            var response = postUI.GetPostsBySearch(search, (SortType)sortType, countOfResult);
             var message = new { message = response.Message };
 
             if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))

@@ -221,9 +221,9 @@ namespace PyxisKapriBack.UI
             return postsDTO; 
         }
 
-        public Response GetPostsBySearch(string search, SortType sortType = SortType.DATE)
+        public Response GetPostsBySearch(string search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT)
         {
-            Response response = postService.GetPostsBySearch(search, sortType);
+            Response response = postService.GetPostsBySearch(search, sortType, countOfResult);
             if (response.StatusCode.Equals(StatusCodes.Status200OK))
                 response.Data = createPostDTOListWithLocation(response.Data.Cast<Post>().ToList()).Cast<object>().ToList();
             return response;

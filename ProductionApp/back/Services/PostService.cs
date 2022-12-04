@@ -227,13 +227,13 @@ namespace PyxisKapriBack.Services
             return response;
         }
 
-        public Response GetPostsBySearch(String search, SortType sortType = SortType.DATE)
+        public Response GetPostsBySearch(String search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT)
         {
             var response = new Response();
 
             try
             {
-                response.Data = postDAL.GetPostsBySearch(search, sortType).Cast<object>().ToList(); 
+                response.Data = postDAL.GetPostsBySearch(search, sortType).Take(countOfResult).Cast<object>().ToList(); 
                 response.Message = "Found posts";
                 response.StatusCode = StatusCodes.Status200OK;
              }
