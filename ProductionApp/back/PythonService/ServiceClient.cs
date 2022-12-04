@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using PyxisKapriBack.PythonService.Models;
 using System.Net.Http.Headers;
+using System.Text;
 
 namespace PyxisKapriBack.PythonService
 {
@@ -36,18 +38,16 @@ namespace PyxisKapriBack.PythonService
 
         public async Task<string> SendPathToService(string path)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://127.0.0.1:8000/image/"+path);
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            var model = new ImageDataModel{
+                ImagePath = path
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-            using (var response = await client.SendAsync(request))
-            {
-                response.EnsureSuccessStatusCode();
+            HttpResponseMessage httpResponse = await client.PostAsync("http://127.0.0.1:8000/image", content);
 
-                var content = await response.Content.ReadAsStringAsync();
+            var result = await httpResponse.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<string>(result);
 
-                Console.WriteLine(content);
-                return JsonConvert.DeserializeObject<string>(content);
-            }
         }
 
 

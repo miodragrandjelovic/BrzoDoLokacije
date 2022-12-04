@@ -3,6 +3,7 @@ using PyxisKapriBack.Services.Interfaces;
 using PyxisKapriBack.Models;
 using PyxisKapriBack.DTOComponents;
 using System.Text;
+using PyxisKapriBack.PythonService;
 
 namespace PyxisKapriBack.Services
 {
@@ -15,9 +16,10 @@ namespace PyxisKapriBack.Services
         private readonly ICityDAL cityDAL;
         private readonly ICountryDAL countryDAL;
         private readonly IFileService fileService;
+        private readonly ServiceClient client;
 
         public PostService(IPostDAL postDAL, ILikeService likeService, IUserService userService, ILocationDAL locationDAL, 
-            ICityDAL cityDAL, ICountryDAL countryDAL,IFileService fileService)
+            ICityDAL cityDAL, ICountryDAL countryDAL,IFileService fileService,ServiceClient client)
         {
             this.postDAL = postDAL;
             this.likeService = likeService;
@@ -26,6 +28,7 @@ namespace PyxisKapriBack.Services
             this.cityDAL = cityDAL;
             this.countryDAL = countryDAL;
             this.fileService = fileService;
+            this.client = client;
         }
 
         public void AddPost(NewPostDTO post)
@@ -46,7 +49,35 @@ namespace PyxisKapriBack.Services
             fileService.AddFile(fullPath, post.CoverImage);
 
             // poziv py servisa za kompresiju slika
+<<<<<<< Updated upstream
 
+=======
+            client.SendPathToService(Path.Combine(Directory.GetCurrentDirectory(),fullPath, post.CoverImage.FileName).ToString());
+            var location = locationDAL.GetLocation(post.LocationName);
+            var city = cityDAL.GetCity(post.City);
+            var country = countryDAL.GetCountry(post.Country);
+            
+            if (country == null)
+                if (countryDAL.AddCountry(post.Country))
+                    country = countryDAL.GetCountry(post.Country);
+
+            if (city == null)
+                if (cityDAL.AddCity(post.City, post.Country))
+                    city = cityDAL.GetCity(post.City);
+            
+            if (location == null)
+            {
+                location = new Location();
+                location.Longitude = Convert.ToDouble(post.Longitude);
+                location.Latitude = Convert.ToDouble(post.Latitude);
+                location.City = city;
+                location.Address = post.Address;
+
+                if (String.IsNullOrEmpty(post.LocationName))
+                    location.Name = Constants.Constants.UNKNWOWN; 
+                else 
+                    location.Name = post.LocationName;
+>>>>>>> Stashed changes
 
             newPost.Location = FixLocation(post.Address, post.LocationName, post.City, post.Country, 
                                            Convert.ToDouble(post.Longitude), Convert.ToDouble(post.Latitude)); 
@@ -59,6 +90,7 @@ namespace PyxisKapriBack.Services
                     newImage.ImageName = image.FileName;
                     fileService.AddFile(fullPath, image);
                     newPost.Images.Add(newImage);
+                    client.SendPathToService(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName).ToString());
                 }
             }
             postDAL.AddPost(newPost);
