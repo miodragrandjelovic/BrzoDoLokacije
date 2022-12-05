@@ -42,6 +42,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_foreign_profile_grid.*
 import kotlinx.android.synthetic.main.activity_foreign_profile_map.*
+import kotlinx.android.synthetic.main.activity_map_user_post.*
 import kotlinx.android.synthetic.main.activity_new_user_profile.*
 import kotlinx.android.synthetic.main.modal_confirm_follow.*
 import kotlinx.android.synthetic.main.modal_confirm_unfollow.*
@@ -60,7 +61,6 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     lateinit var mCustomMarkerView:View
     lateinit var mMarkerImageView: ImageView
-    lateinit var numberOfLikes: TextView
 
     private lateinit var map: GoogleMap
     private lateinit var geocoder: Geocoder
@@ -182,9 +182,11 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
                 response: Response<ArrayList<PostOnMapResponse>>
             ) {
 
+                post_number_fm.text = response.body()!!.size.toString()
+
                 for(post: PostOnMapResponse in response.body()!!)
                 {
-                    val location: LatLng = LatLng(post.latitude,post.longitude)
+                    var location: LatLng = LatLng(post.latitude,post.longitude)
 
 
                     Picasso.get().load(UtilityFunctions.getFullImagePath(post.coverImage)).into(object : com.squareup.picasso.Target{

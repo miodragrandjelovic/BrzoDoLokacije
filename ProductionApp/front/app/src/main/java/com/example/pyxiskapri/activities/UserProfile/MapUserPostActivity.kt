@@ -1,27 +1,36 @@
 package com.example.pyxiskapri.activities.UserProfile
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
+import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.location.Geocoder
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.activities.ChatMainActivity
-import com.example.pyxiskapri.activities.HomeActivity
-import com.example.pyxiskapri.activities.MainActivity
-import com.example.pyxiskapri.activities.NewPostActivity
+import com.example.pyxiskapri.activities.*
 import com.example.pyxiskapri.dtos.response.GetUserResponse
+import com.example.pyxiskapri.dtos.response.PostOnMapResponse
+import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
+import com.example.pyxiskapri.models.PostListItem
+import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_change_credentials.*
 import kotlinx.android.synthetic.main.activity_home.*
@@ -29,18 +38,26 @@ import kotlinx.android.synthetic.main.activity_map_user_post.*
 import kotlinx.android.synthetic.main.activity_new_user_profile.*
 import kotlinx.android.synthetic.main.activity_new_user_profile.menu_btn
 import kotlinx.android.synthetic.main.popup_menu.view.*
+import okhttp3.internal.wait
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
+
 class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
+
+    lateinit var apiClient: ApiClient
+    lateinit var sessionManager: SessionManager
+
+    lateinit var mCustomMarkerView:View
+    lateinit var mMarkerImageView: ImageView
 
     private lateinit var map: GoogleMap
     private lateinit var geocoder: Geocoder
 
-    lateinit var apiClient: ApiClient
-    lateinit var sessionManager: SessionManager
+
+
 
     /////////////////////////////////
 
@@ -74,8 +91,136 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
         setupNavButtons()
 
 
+        mCustomMarkerView = (getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.view_custom_marker, null)
+
+        mMarkerImageView = mCustomMarkerView.findViewById(R.id.cover_image)
+
+
 
     }
+
+
+    private fun setupMap(){
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.user_post_map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+        geocoder = Geocoder(this, Locale.getDefault())
+
+        addCustomMarkerFromURL();
+
+        map.setOnMarkerClickListener{marker ->
+
+            var context = this
+
+            var tag= marker.tag as? Int
+            apiClient.getPostService(context).GetOnePostById(tag!!).enqueue(object : Callback<PostResponse>{
+                override fun onResponse(
+                    call: Call<PostResponse>,
+                    response: Response<PostResponse>
+                ) {
+                    val intent = Intent(context, OpenPostActivity::class.java)
+                    ActivityTransferStorage.postItemToOpenPost = PostListItem(response.body()!!)
+                    context.startActivity(intent)
+
+                    (context as Activity).finish()
+                }
+
+                override fun onFailure(call: Call<PostResponse>, t: Throwable) {
+                    Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
+                }
+            })
+
+            true
+        }
+
+    }
+
+
+
+    private fun getMarkerBitmapFromView(view: View, bitmap: Bitmap?): Bitmap? {
+
+        mMarkerImageView?.setImageBitmap(bitmap)
+
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+        view.buildDrawingCache()
+        val returnedBitmap = Bitmap.createBitmap(
+            view.measuredWidth, view.measuredHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(returnedBitmap)
+        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN)
+        val drawable = view.background
+        drawable?.draw(canvas)
+        view.draw(canvas)
+        return returnedBitmap
+    }
+
+    private fun addCustomMarkerFromURL() {
+        if (map == null) {
+            return
+        }
+
+        var context:Context = this
+
+
+
+        var username = SessionManager(this).fetchUserData()?.username
+        apiClient.getPostService(context).PostOnMap(username!!).enqueue(object : Callback<ArrayList<PostOnMapResponse>>{
+            override fun onResponse(
+                call: Call<ArrayList<PostOnMapResponse>>,
+                response: Response<ArrayList<PostOnMapResponse>>
+            ) {
+
+                post_number_um.text = response.body()!!.size.toString()
+                Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(coverImage_m)
+
+                for (post: PostOnMapResponse in response.body()!!) {
+
+                    var location = LatLng(post.latitude, post.longitude)
+
+
+
+                    Picasso.get().load(UtilityFunctions.getFullImagePath(post.coverImage)).into(object : com.squareup.picasso.Target{
+                        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+
+                            var marker = map.addMarker( MarkerOptions().position(location)
+                                .icon( BitmapDescriptorFactory.fromBitmap(
+                                    getMarkerBitmapFromView(mCustomMarkerView, bitmap)!!)))
+
+                            marker?.tag=post.postId
+
+                        }
+
+                        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+
+                        }
+
+                        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+
+                        }
+
+                    })
+
+
+
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<PostOnMapResponse>>, t: Throwable) {
+
+                Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
+            }
+
+        })
+
+    }
+
+
 
     fun showDrawerMenu(view: View){
         if(view.id == R.id.btn_menu)
@@ -111,6 +256,7 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         followers_count_m.text = response.body()!!.followersCount.toString()
                         following_count_m.text = response.body()!!.followingCount.toString()
+
 
                         val picture=response.body()!!.profileImage
                         if(picture!=null)
@@ -157,16 +303,6 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-
-    private fun setupMap(){
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.user_post_map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-    }
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-        geocoder = Geocoder(this, Locale.getDefault())
-    }
 
     private fun setupNavButtons(){
         setupButtonHome()

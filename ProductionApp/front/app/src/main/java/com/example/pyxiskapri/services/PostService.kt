@@ -50,6 +50,9 @@ interface PostService {
     @GET("api/Post/GetUsersPostOnMap/{username}")
     fun PostOnMap(@Path(value = "username") username: String) : Call<ArrayList<PostOnMapResponse>>
 
+    @GET("api/Post/GetCurrentUserPostsOnMap")
+    fun PostOnMapUser() : Call<ArrayList<PostOnMapResponse>>
+
     @GET("api/Post/GetPost/{id}")
     fun GetOnePostById(@Path(value = "id") id: Int) : Call<PostResponse>
 

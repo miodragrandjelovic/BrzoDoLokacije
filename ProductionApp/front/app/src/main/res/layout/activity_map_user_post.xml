@@ -11,7 +11,7 @@
     <FrameLayout
         android:id="@+id/fl_Image"
         android:layout_width="match_parent"
-        android:layout_height="355dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -19,20 +19,22 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="355dp">
+            android:layout_height="wrap_content">
 
 
             <ImageView
                 android:id="@+id/coverImage_m"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginTop="55dp"
-                android:alpha="0.2"
-                android:src="@drawable/kragujevac"
+                android:layout_height="0dp"
+                android:layout_marginTop="-50dp"
+                android:alpha="0.1"
+                android:background="@color/black"
                 android:scaleType="centerCrop"
+                android:src="@drawable/kragujevac"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 
             <ImageView
@@ -65,14 +67,19 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/shapeableImageView_m"
-                android:layout_marginTop="30dp"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:background="@drawable/avatarplaceholder"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/circle"
+                android:backgroundTint="#00FFFFFF"
+                android:scaleType="centerCrop"
+                app:civ_border_width="2dp"
+                app:layout_constraintBottom_toTopOf="@+id/ll_name"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar"
-                app:civ_border_width="2dp"
+                app:layout_constraintVertical_chainStyle="packed"
                 app:civ_border_color="@color/red"
                 />
 
@@ -81,10 +88,13 @@
                 android:id="@+id/ll_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/shapeableImageView_m">
 
@@ -96,7 +106,7 @@
                     android:fontFamily="@font/montserrat_regular"
                     android:text="Petar"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
 
 
                     />
@@ -109,7 +119,7 @@
                     android:fontFamily="@font/montserrat_regular"
                     android:text="Petrovic"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="24sp" />
 
             </LinearLayout>
 
@@ -118,12 +128,12 @@
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_name">
+                app:layout_constraintStart_toStartOf="parent">
 
 
                 <LinearLayout
@@ -142,6 +152,7 @@
 
 
                     <TextView
+                        android:id="@+id/post_number_um"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -222,20 +233,24 @@
 
     </FrameLayout>
 
-    <ScrollView
+   <!-- <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fl_Image"
         app:layout_constraintBottom_toTopOf="@id/navMenu"
-        >
+        >-->
 
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fl_Image"
+            app:layout_constraintBottom_toTopOf="@id/navMenu"
             >
 
 
@@ -294,7 +309,7 @@
 
 
 
-            <fragment
+           <fragment
                 android:id="@+id/user_post_map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
@@ -311,7 +326,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </ScrollView>
+<!--    </ScrollView>-->
 
 
 
