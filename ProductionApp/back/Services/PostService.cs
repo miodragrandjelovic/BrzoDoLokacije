@@ -251,10 +251,12 @@ namespace PyxisKapriBack.Services
 
             try
             {
+                if (countOfResult == 0)
+                    countOfResult = Constants.Constants.TAKE_ELEMENT; 
                 response.Data = postDAL.GetPostsBySearch(search, sortType).Take(countOfResult).Cast<object>().ToList(); 
                 response.Message = "Found posts";
                 response.StatusCode = StatusCodes.Status200OK;
-             }
+            }
             catch(Exception e)
             {
                 response.Message = "Found posts";

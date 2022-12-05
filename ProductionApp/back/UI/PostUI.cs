@@ -230,7 +230,7 @@ namespace PyxisKapriBack.UI
         {
             Response response = postService.GetPostsBySearch(search, sortType, countOfResult);
             if (response.StatusCode.Equals(StatusCodes.Status200OK))
-                response.Data = createPostDTOListWithLocation(response.Data.Cast<Post>().ToList()).Cast<object>().ToList();
+                response.Data = createPostOnMapDTO(response.Data.Cast<Post>().ToList(), userService.GetLoggedUser()).Cast<object>().ToList();
             return response;
         }
 

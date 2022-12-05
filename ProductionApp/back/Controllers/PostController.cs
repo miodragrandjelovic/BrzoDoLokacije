@@ -130,15 +130,15 @@ namespace PyxisKapriBack.Controllers
 
         }
         [HttpPost("GetPostsBySearch")]
-        public async Task<IActionResult> GetPostsBySearch(string search, int sortType = 0, int countOfResult = 5)
+        public async Task<IActionResult> GetPostsBySearch(SearchDTO search)
         {
-            var response = postUI.GetPostsBySearch(search, (SortType)sortType, countOfResult);
+            var response = postUI.GetPostsBySearch(search.Search, search.SortType, search.CountOfResult);
             var message = new { message = response.Message };
 
             if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
                 return BadRequest(message);
 
-            return Ok(response.Data.Cast<PostDTO>().ToList());
+            return Ok(response.Data.Cast<PostOnMapDTO>().ToList());
         }
         [HttpGet("GetPost/{id}")]
         public async Task<IActionResult> GetPostById(int id)
