@@ -36,17 +36,20 @@ namespace PyxisKapriBack.Services
             var loggedUser = userService.GetUser(userService.GetLoggedUser());
             var postPath = fileService.GetPostName();
             var newPost = new Post();
+            
             newPost.User = loggedUser;
             newPost.CreatedDate = DateTime.Now;
             newPost.Description = post.Description;
             newPost.CoverImageName = post.CoverImage.FileName;
             newPost.PostPath = postPath;
             newPost.Longitude = Convert.ToDouble(post.Longitude);
-            newPost.Latitude = Convert.ToDouble(post.Latitude); 
+            newPost.Latitude = Convert.ToDouble(post.Latitude);
+            newPost.FullLocation = post.LocationName; 
 
             var fullPath = Path.Combine(loggedUser.FolderPath, postPath);
             var answer = fileService.CreateFolder(fullPath);
             fileService.AddFile(fullPath, post.CoverImage);
+
             //var response = client.DoFacesExistOnImage(Path.Combine(Directory.GetCurrentDirectory(), fullPath, post.CoverImage.FileName)).Result;
             //if(response == true)
             //    Console.WriteLine("Pronadjena lica");
@@ -56,7 +59,7 @@ namespace PyxisKapriBack.Services
 
             newPost.Location = FixLocation(post.Address, post.LocationName, post.City, post.Country, 
                                            Convert.ToDouble(post.Longitude), Convert.ToDouble(post.Latitude)); 
-                
+            
             if (post.Images.Count > 0)
             {
                 foreach (var image in post.Images)
