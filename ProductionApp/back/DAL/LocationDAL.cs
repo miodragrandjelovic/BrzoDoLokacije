@@ -117,8 +117,17 @@ namespace PyxisKapriBack.DAL
             return true; 
         }
 
-        public List<Location> FilterLocations(string filter)
+        public List<String> FilterLocations(string filter)
         {
+            return _context.Posts.Where(post => post.FullLocation.Contains(filter))
+                                 .Select(post => post.FullLocation)
+                                 .Distinct()
+                                 .ToList();
+        }
+
+        /*public List<Location> FilterLocations(string filter)
+        {
+            return _context.Posts.Where(post => post.FullLocation.Contains(filter)).Select(post => post.FullLocation).Distinct().ToList()
             var locationsByCountry = FilterLocationsByCountry(filter);
             var locationsByCity = FilterLocationsByCity(filter);
             var locationsByName = FilterLocationsByName(filter);
@@ -132,7 +141,7 @@ namespace PyxisKapriBack.DAL
                 allLocations.Add(item);
             locations = allLocations.Distinct().ToList();
             return locations; 
-        }
+        }*/
 
         public List<Location> GetAllAroundLocations(Location location, double distance = Constants.Constants.DISTANCE)
         {

@@ -149,7 +149,9 @@ namespace PyxisKapriBack.DAL
 
         public List<Post> GetPostsBySearch(String search, SortType sortType = SortType.DATE)
         {
-            List<Location> locations = locationDAL.FilterLocations(search);
+
+            IQueryable<Post> posts = _context.Posts.Where(post => post.FullLocation.Contains(search));
+            /*List<Location> locations = locationDAL.FilterLocations(search);
             List<int> locationsId = locations.Select(location => location.Id).ToList();
 
             IQueryable<Post> posts = _context.Posts.Where(post => locationsId.Contains(post.LocationId))
@@ -160,7 +162,7 @@ namespace PyxisKapriBack.DAL
                                              .Include(post => post.Images)
                                              .Include(post => post.Location)
                                              .Include(post => post.Location.City)
-                                             .Include(post => post.Location.City.Country);
+                                             .Include(post => post.Location.City.Country);*/
 
             return SortListByCriteria(posts, sortType);
         }

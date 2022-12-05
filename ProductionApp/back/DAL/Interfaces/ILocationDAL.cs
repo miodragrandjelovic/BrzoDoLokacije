@@ -9,8 +9,9 @@ namespace PyxisKapriBack.DAL.Interfaces
         public bool UpdateLocation(Location location);
         public bool DeleteLocation(string locationName);
         public Location GetLocation(string locationName);
-        public Location GetLocation(int locationID); 
-        public List<Location> FilterLocations(string filter);
+        public Location GetLocation(int locationID);
+        //public List<Location> FilterLocations(string filter);
+        public List<String> FilterLocations(string filter); 
         public List<Location> FilterLocationsByCity(string filter);
         public List<Location> FilterLocationsByCountry(string filter);
         public List<Location> FilterLocationsByName(string filter); 

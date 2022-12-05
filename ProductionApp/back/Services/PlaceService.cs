@@ -21,10 +21,10 @@ namespace PyxisKapriBack.Services
 
             foreach (var location  in locations)
             {
-                locationsDTO.Add(new LocationDTO {
-                    Id = location.Id,
-                    Name = String.Concat(location.Name, ", ", location.City.Name, ", ", location.City.Country.Name) 
-                }); ;
+                locationsDTO.Add(new LocationDTO
+                {
+                    Name = location
+                });
             }
 
             return locationsDTO;
