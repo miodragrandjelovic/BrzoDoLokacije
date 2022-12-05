@@ -1,5 +1,6 @@
 package com.example.pyxiskapri.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import com.example.pyxiskapri.dtos.response.LocationResponse
 import com.example.pyxiskapri.models.LocationListItem
 import kotlinx.android.synthetic.main.item_location.view.*
 
-class LocationListAdapter(private val locationList: MutableList<LocationListItem>, private val onItemClicked: (id: Int, name: String) -> Unit) : RecyclerView.Adapter<LocationListAdapter.LocationViewHolder>() {
+class LocationListAdapter(private val locationList: ArrayList<LocationListItem>, private val onItemClicked: (id: Int, name: String) -> Unit) : RecyclerView.Adapter<LocationListAdapter.LocationViewHolder>() {
     class LocationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
@@ -18,10 +19,10 @@ class LocationListAdapter(private val locationList: MutableList<LocationListItem
 
     override fun onBindViewHolder(holder: LocationViewHolder, position: Int) {
         holder.itemView.apply{
-            tv_location.text = locationList[position].locationName
+            tv_location.text = locationList[position].name
 
-            tv_location.setOnClickListener{
-                onItemClicked(locationList[position].id, locationList[position].locationName)
+            this.setOnClickListener{
+                onItemClicked(locationList[position].id, locationList[position].name)
             }
         }
 
@@ -31,7 +32,8 @@ class LocationListAdapter(private val locationList: MutableList<LocationListItem
         return locationList.size
     }
 
-    public fun setLocations(locationResponseList: MutableList<LocationResponse>){
+    @SuppressLint("NotifyDataSetChanged")
+    public fun setLocations(locationResponseList: ArrayList<LocationResponse>){
         locationList.clear()
         for(response: LocationResponse in locationResponseList)
             locationList.add(LocationListItem(response))
