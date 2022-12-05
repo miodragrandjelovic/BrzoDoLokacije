@@ -2,10 +2,7 @@ package com.example.pyxiskapri.services
 
 import com.example.pyxiskapri.dtos.request.MapSearchRequest
 import com.example.pyxiskapri.dtos.request.NewPostRequest
-import com.example.pyxiskapri.dtos.response.MessageResponse
-import com.example.pyxiskapri.dtos.response.PostAdditionalData
-import com.example.pyxiskapri.dtos.response.PostOnMapResponse
-import com.example.pyxiskapri.dtos.response.PostResponse
+import com.example.pyxiskapri.dtos.response.*
 import com.example.pyxiskapri.models.PostListItem
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -50,13 +47,11 @@ interface PostService {
     fun getFollowingPosts() : Call<ArrayList<PostResponse>>
 
     @GET("api/Post/GetUsersPostOnMap/{username}")
-    fun PostOnMap(@Path(value = "username") username: String) : Call<ArrayList<PostOnMapResponse>>
-
-    @GET("api/Post/GetCurrentUserPostsOnMap")
-    fun PostOnMapUser() : Call<ArrayList<PostOnMapResponse>>
+    fun PostOnMap(@Path(value = "username") username: String) : Call<ArrayList<CustomMarkerResponse>>
 
     @GET("api/Post/GetPost/{id}")
     fun GetOnePostById(@Path(value = "id") id: Int) : Call<PostResponse>
+
     @POST("api/Post/GetPostsBySearch")
     fun getPostsBySearch(@Body searchRequest: MapSearchRequest) : Call<ArrayList<PostOnMapResponse>>
 

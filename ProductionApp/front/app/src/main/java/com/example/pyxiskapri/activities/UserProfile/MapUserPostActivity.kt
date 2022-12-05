@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.*
+import com.example.pyxiskapri.dtos.response.CustomMarkerResponse
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.PostOnMapResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
@@ -170,16 +171,16 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         var username = SessionManager(this).fetchUserData()?.username
-        apiClient.getPostService(context).PostOnMap(username!!).enqueue(object : Callback<ArrayList<PostOnMapResponse>>{
+        apiClient.getPostService(context).PostOnMap(username!!).enqueue(object : Callback<ArrayList<CustomMarkerResponse>>{
             override fun onResponse(
-                call: Call<ArrayList<PostOnMapResponse>>,
-                response: Response<ArrayList<PostOnMapResponse>>
+                call: Call<ArrayList<CustomMarkerResponse>>,
+                response: Response<ArrayList<CustomMarkerResponse>>
             ) {
 
                 post_number_um.text = response.body()!!.size.toString()
                 Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(coverImage_m)
 
-                for (post: PostOnMapResponse in response.body()!!) {
+                for (post: CustomMarkerResponse in response.body()!!) {
 
                     var location = LatLng(post.latitude, post.longitude)
 
@@ -211,7 +212,7 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
 
-            override fun onFailure(call: Call<ArrayList<PostOnMapResponse>>, t: Throwable) {
+            override fun onFailure(call: Call<ArrayList<CustomMarkerResponse>>, t: Throwable) {
 
                 Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
             }

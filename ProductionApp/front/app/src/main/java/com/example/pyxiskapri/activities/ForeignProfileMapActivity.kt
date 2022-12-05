@@ -23,10 +23,7 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isGone
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.dtos.request.AddFollowRequest
-import com.example.pyxiskapri.dtos.response.GetUserResponse
-import com.example.pyxiskapri.dtos.response.MessageResponse
-import com.example.pyxiskapri.dtos.response.PostOnMapResponse
-import com.example.pyxiskapri.dtos.response.PostResponse
+import com.example.pyxiskapri.dtos.response.*
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
@@ -176,15 +173,15 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         var context:Context = this
 
-        apiClient.getPostService(context).PostOnMap(username).enqueue(object : Callback<ArrayList<PostOnMapResponse>>{
+        apiClient.getPostService(context).PostOnMap(username).enqueue(object : Callback<ArrayList<CustomMarkerResponse>>{
             override fun onResponse(
-                call: Call<ArrayList<PostOnMapResponse>>,
-                response: Response<ArrayList<PostOnMapResponse>>
+                call: Call<ArrayList<CustomMarkerResponse>>,
+                response: Response<ArrayList<CustomMarkerResponse>>
             ) {
 
                 post_number_fm.text = response.body()!!.size.toString()
 
-                for(post: PostOnMapResponse in response.body()!!)
+                for(post: CustomMarkerResponse in response.body()!!)
                 {
                     var location: LatLng = LatLng(post.latitude,post.longitude)
 
@@ -215,7 +212,7 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
             }
 
-            override fun onFailure(call: Call<ArrayList<PostOnMapResponse>>, t: Throwable) {
+            override fun onFailure(call: Call<ArrayList<CustomMarkerResponse>>, t: Throwable) {
 
                 Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
             }
