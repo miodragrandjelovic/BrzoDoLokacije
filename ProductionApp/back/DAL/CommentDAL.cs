@@ -25,7 +25,7 @@ namespace PyxisKapriBack.DAL
         {
             Comment comment = GetComment(CommentID);
             if (comment == null)
-                throw new Exception("Comment does not exist!"); 
+                throw new Exception(Constants.Constants.resNoFoundComment); 
             _context.Comments.Remove(comment);
             _context.SaveChanges();
             return true; 
