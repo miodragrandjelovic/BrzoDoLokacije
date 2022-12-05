@@ -5,6 +5,7 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
+
 android {
     namespace 'com.example.pyxiskapri'
     compileSdk 33
@@ -84,5 +85,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     implementation 'com.google.android.libraries.places:places:2.7.0'
+
+
 
 }

@@ -1,39 +1,66 @@
 package com.example.pyxiskapri.activities
 
+import android.R.attr
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
+import android.location.Geocoder
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isGone
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.dtos.request.AddFollowRequest
-import com.example.pyxiskapri.dtos.response.GetUserResponse
-import com.example.pyxiskapri.dtos.response.MessageResponse
+import com.example.pyxiskapri.dtos.response.*
 import com.example.pyxiskapri.fragments.DrawerNav
+import com.example.pyxiskapri.models.PostListItem
+import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_foreign_profile_grid.*
 import kotlinx.android.synthetic.main.activity_foreign_profile_map.*
+import kotlinx.android.synthetic.main.activity_map_user_post.*
+import kotlinx.android.synthetic.main.activity_new_user_profile.*
 import kotlinx.android.synthetic.main.modal_confirm_follow.*
 import kotlinx.android.synthetic.main.modal_confirm_unfollow.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
-class ForeignProfileMapActivity : AppCompatActivity() {
+
+class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     lateinit var apiClient: ApiClient
     lateinit var sessionManager: SessionManager
 
     lateinit var username:String
+
+    lateinit var mCustomMarkerView:View
+    lateinit var mMarkerImageView: ImageView
+
+    private lateinit var map: GoogleMap
+    private lateinit var geocoder: Geocoder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,12 +95,140 @@ class ForeignProfileMapActivity : AppCompatActivity() {
             unfollowProfile()
         }
 
+        mCustomMarkerView = (getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.view_custom_marker, null)
+
+        mMarkerImageView = mCustomMarkerView.findViewById(R.id.cover_image)
+
+
+
+        setupMap()
+
     }
+
 
     fun showDrawerMenu(view: View){
         if(view.id == R.id.btn_menu)
             fcv_drawerNav_fm.getFragment<DrawerNav>().showDrawer()
     }
+
+    private fun setupMap(){
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fm) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+        geocoder = Geocoder(this, Locale.getDefault())
+        addCustomMarkerFromURL();
+
+        map.setOnMarkerClickListener{marker ->
+
+            var context = this
+
+            var tag= marker.tag as? Int
+            apiClient.getPostService(context).GetOnePostById(tag!!).enqueue(object : Callback<PostResponse>{
+                override fun onResponse(
+                    call: Call<PostResponse>,
+                    response: Response<PostResponse>
+                ) {
+                    val intent = Intent(context, OpenPostActivity::class.java)
+                    ActivityTransferStorage.postItemToOpenPost = PostListItem(response.body()!!)
+                    context.startActivity(intent)
+
+                    (context as Activity).finish()
+                }
+
+                override fun onFailure(call: Call<PostResponse>, t: Throwable) {
+                    Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
+                }
+            })
+
+            true
+        }
+    }
+
+    private fun getMarkerBitmapFromView(view: View, bitmap: Bitmap?): Bitmap? {
+
+        mMarkerImageView?.setImageBitmap(bitmap)
+
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+        view.buildDrawingCache()
+        val returnedBitmap = Bitmap.createBitmap(
+            view.measuredWidth, view.measuredHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(returnedBitmap)
+        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN)
+        val drawable = view.background
+        drawable?.draw(canvas)
+        view.draw(canvas)
+        return returnedBitmap
+    }
+
+    private fun addCustomMarkerFromURL() {
+        if (map == null) {
+            return
+        }
+
+        var context:Context = this
+
+        apiClient.getPostService(context).PostOnMap(username).enqueue(object : Callback<ArrayList<CustomMarkerResponse>>{
+            override fun onResponse(
+                call: Call<ArrayList<CustomMarkerResponse>>,
+                response: Response<ArrayList<CustomMarkerResponse>>
+            ) {
+
+                post_number_fm.text = response.body()!!.size.toString()
+
+                for(post: CustomMarkerResponse in response.body()!!)
+                {
+                    var location: LatLng = LatLng(post.latitude,post.longitude)
+
+
+                    Picasso.get().load(UtilityFunctions.getFullImagePath(post.coverImage)).into(object : com.squareup.picasso.Target{
+                        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+
+                            var marker = map.addMarker( MarkerOptions().position(location)
+                                .icon( BitmapDescriptorFactory.fromBitmap(
+                                    getMarkerBitmapFromView(mCustomMarkerView, bitmap)!!)))
+
+                            marker?.tag=post.postId
+
+                        }
+
+                        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+
+                        }
+
+                        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+
+                        }
+
+                    })
+
+
+                }
+
+            }
+
+            override fun onFailure(call: Call<ArrayList<CustomMarkerResponse>>, t: Throwable) {
+
+                Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
+            }
+
+        })
+
+
+        //ovde ide pikasso da se uzme picture
+        //I generalno ceo api zahtev da uzme location
+
+
+
+
+
+    }
+
 
     private fun followProfile() {
 

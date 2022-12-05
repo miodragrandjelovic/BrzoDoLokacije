@@ -39,5 +39,13 @@ namespace PyxisKapriBack.Controllers
             };
             return Ok(message);
         }
+        [HttpGet("face-detect")]
+        public async Task<IActionResult> DoFacesExists()
+        {
+            var response = client.DoFacesExistOnImage(@"path").Result;
+            if(response == true)
+                return Ok("Lica na slici postoje.");
+            return Ok("Lica na slici ne postoje");
+        }
     }
 }

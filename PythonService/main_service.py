@@ -3,6 +3,7 @@ from os import path
 from tkinter.tix import Tree
 from fastapi import FastAPI
 import image_compression
+import face_detect
 from pathlib import Path
 
 from fastapi import Request
@@ -13,12 +14,12 @@ app = FastAPI()
 class ImageDataModel(BaseModel):
     ImagePath:str
 
-class ResponseModel:
-    Status:int
-    Content:str
-    def __init__(self,status,content) -> None:
-        self.Status = status
-        self.Content = content
+class Response:
+    StatusCode:int
+    Message:str
+    def __init__(self,status,message) -> None:
+        self.StatusCode = status
+        self.Message = message
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__)
@@ -33,10 +34,19 @@ def get_image_path(request:ImageDataModel):
 
     try:
         image_compression.compress_img(request.ImagePath)
-        return ResponseModel(0,"Image comperssion succesfful.").toJSON()
+        return Response(0,"Image comperssion succesfful.")
     except:
-        return ResponseModel(0,"Error image compression").toJSON()
+        return Response(1,"Error image compression")
 
 
 
+@app.post("/face-detect")
+def get_image_path(request:ImageDataModel):
+
+    faces_on_image = face_detect.is_face_exists(request.ImagePath)
+    if(faces_on_image):
+        # 1 ukoliko postoje
+        return Response(1,"Faces on image found.")
+    # 0 ukoliko ne postoje
+    return Response(0,"No faces found on image.")
 

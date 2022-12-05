@@ -47,6 +47,9 @@ namespace PyxisKapriBack.Services
             var fullPath = Path.Combine(loggedUser.FolderPath, postPath);
             var answer = fileService.CreateFolder(fullPath);
             fileService.AddFile(fullPath, post.CoverImage);
+            //var response = client.DoFacesExistOnImage(Path.Combine(Directory.GetCurrentDirectory(), fullPath, post.CoverImage.FileName)).Result;
+            //if(response == true)
+            //    Console.WriteLine("Pronadjena lica");
             client.SendPathToService(Path.Combine(Directory.GetCurrentDirectory(), fullPath, post.CoverImage.FileName).ToString());
             // poziv py servisa za kompresiju slika
 
@@ -58,11 +61,19 @@ namespace PyxisKapriBack.Services
             {
                 foreach (var image in post.Images)
                 {
-                    Image newImage = new Image();
-                    newImage.ImageName = image.FileName;
                     fileService.AddFile(fullPath, image);
-                    newPost.Images.Add(newImage);
-                    client.SendPathToService(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName).ToString());
+                    bool exists = client.DoFacesExistOnImage(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName)).Result;
+                    if (exists == true)
+                        File.Delete(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName));
+                    else
+                    {
+                        Image newImage = new Image();
+                        newImage.ImageName = image.FileName;
+                        
+                        newPost.Images.Add(newImage);
+
+                        client.SendPathToService(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName).ToString());
+                    }
                 }
             }
             postDAL.AddPost(newPost);

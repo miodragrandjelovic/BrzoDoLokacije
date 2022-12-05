@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PyxisKapriBack.Models;
 using PyxisKapriBack.PythonService.Models;
 using System.Net.Http.Headers;
 using System.Text;
@@ -50,6 +51,25 @@ namespace PyxisKapriBack.PythonService
 
         }
 
+        public async Task<bool> DoFacesExistOnImage(string path)
+        {
+            var model = new ImageDataModel
+            {
+                ImagePath = path
+            };
+            var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+            HttpResponseMessage httpResponse = await client.PostAsync("http://127.0.0.1:8000/face-detect", content);
+
+            var response = await httpResponse.Content.ReadAsStringAsync();
+
+            Response data = JsonConvert.DeserializeObject<Response>(response);
+            if (data != null && data.StatusCode == 1)
+                return true;
+
+            return false;
+
+        }
 
 
     }
