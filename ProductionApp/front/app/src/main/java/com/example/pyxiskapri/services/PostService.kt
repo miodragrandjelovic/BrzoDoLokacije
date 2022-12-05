@@ -4,6 +4,7 @@ import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostAdditionalData
 import com.example.pyxiskapri.dtos.response.PostOnMapResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
+import com.example.pyxiskapri.models.PostListItem
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -48,6 +49,9 @@ interface PostService {
 
     @GET("api/Post/GetUsersPostOnMap/{username}")
     fun PostOnMap(@Path(value = "username") username: String) : Call<ArrayList<PostOnMapResponse>>
+
+    @GET("api/Post/GetPost/{id}")
+    fun GetOnePostById(@Path(value = "id") id: Int) : Call<PostResponse>
 
 
 }

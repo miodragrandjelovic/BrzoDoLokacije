@@ -1,6 +1,7 @@
 package com.example.pyxiskapri.activities
 
 import android.R.attr
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -25,7 +26,10 @@ import com.example.pyxiskapri.dtos.request.AddFollowRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostOnMapResponse
+import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
+import com.example.pyxiskapri.models.PostListItem
+import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
@@ -98,7 +102,6 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mMarkerImageView = mCustomMarkerView.findViewById(R.id.cover_image)
 
-        numberOfLikes = mCustomMarkerView.findViewById(R.id.number_of_likes)
 
 
         setupMap()
@@ -120,12 +123,36 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
         map = googleMap
         geocoder = Geocoder(this, Locale.getDefault())
         addCustomMarkerFromURL();
+
+        map.setOnMarkerClickListener{marker ->
+
+            var context = this
+
+            var tag= marker.tag as? Int
+            apiClient.getPostService(context).GetOnePostById(tag!!).enqueue(object : Callback<PostResponse>{
+                override fun onResponse(
+                    call: Call<PostResponse>,
+                    response: Response<PostResponse>
+                ) {
+                    val intent = Intent(context, OpenPostActivity::class.java)
+                    ActivityTransferStorage.postItemToOpenPost = PostListItem(response.body()!!)
+                    context.startActivity(intent)
+
+                    (context as Activity).finish()
+                }
+
+                override fun onFailure(call: Call<PostResponse>, t: Throwable) {
+                    Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
+                }
+            })
+
+            true
+        }
     }
 
-    private fun getMarkerBitmapFromView(view: View, bitmap: Bitmap?, likes:Int): Bitmap? {
+    private fun getMarkerBitmapFromView(view: View, bitmap: Bitmap?): Bitmap? {
 
         mMarkerImageView?.setImageBitmap(bitmap)
-        numberOfLikes.text=likes.toString()
 
         view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
@@ -163,9 +190,11 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
                     Picasso.get().load(UtilityFunctions.getFullImagePath(post.coverImage)).into(object : com.squareup.picasso.Target{
                         override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
 
-                            map.addMarker( MarkerOptions().position(location)
+                            var marker = map.addMarker( MarkerOptions().position(location)
                                 .icon( BitmapDescriptorFactory.fromBitmap(
-                                    getMarkerBitmapFromView(mCustomMarkerView, bitmap,post.numberOfLikes)!!)))
+                                    getMarkerBitmapFromView(mCustomMarkerView, bitmap)!!)))
+
+                            marker?.tag=post.postId
 
                         }
 
