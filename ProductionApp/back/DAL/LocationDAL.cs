@@ -54,7 +54,10 @@ namespace PyxisKapriBack.DAL
                 locations = _context.Locations.Where(location => (!location.Name.Equals(Constants.Constants.UNKNWOWN))).ToList(); 
             else
                 locations = _context.Locations.Where(location => (location.Name.ToLower().Contains(filter.ToLower())) &&
-                                                             (!location.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
+                                                             (!location.Name.Equals(Constants.Constants.UNKNWOWN)))
+                                              .Include(loc => loc.City)
+                                              .Include(city => city.City.Country)
+                                              .ToList();
             return locations.Take(Constants.Constants.TAKE_ELEMENT).ToList(); 
         }
 
@@ -65,7 +68,10 @@ namespace PyxisKapriBack.DAL
                 locations = _context.Locations.Where(location => (!location.City.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
             else 
                 locations = _context.Locations.Where(location => location.City.Name.ToLower().Contains(filter.ToLower()) &&
-                                                             (!location.City.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
+                                                             (!location.City.Name.Equals(Constants.Constants.UNKNWOWN)))
+                                              .Include(loc => loc.City)
+                                              .Include(city => city.City.Country)
+                                              .ToList();
             return locations;
         }
 
@@ -76,7 +82,10 @@ namespace PyxisKapriBack.DAL
                 locations = _context.Locations.Where(location => (!location.City.Country.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
             else 
                 locations = _context.Locations.Where(location => location.City.Country.Name.ToLower().Contains(filter.ToLower()) &&
-                                                             (!location.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
+                                                             (!location.Name.Equals(Constants.Constants.UNKNWOWN)))
+                                              .Include(loc => loc.City)
+                                              .Include(city => city.City.Country)
+                                              .ToList();
             return locations; 
         }
 

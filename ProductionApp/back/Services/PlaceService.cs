@@ -21,9 +21,10 @@ namespace PyxisKapriBack.Services
 
             foreach (var location  in locations)
             {
-                locationsDTO.Add(new LocationDTO { 
-                    Id = location.Id, 
-                    Name = location.Name });
+                locationsDTO.Add(new LocationDTO {
+                    Id = location.Id,
+                    Name = String.Concat(location.Name, ", ", location.City.Name, ", ", location.City.Country.Name) 
+                }); ;
             }
 
             return locationsDTO;
@@ -54,7 +55,7 @@ namespace PyxisKapriBack.Services
                 locationsDTO.Add(new LocationDTO
                 {
                     Id = loc.Id,
-                    Name = loc.Name,
+                    Name = String.Concat(location.Name, ", ", location.City, ", ", location.City.Country),
                     Distance = loc.Distance
                 });
             }
