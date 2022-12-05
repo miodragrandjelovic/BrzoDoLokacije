@@ -47,5 +47,15 @@ namespace PyxisKapriBack.Services
                 return ResponseService.CreateErrorResponse(e.Message); 
             }
         }
+
+        public List<User> SearchFollowers(string username, string search)
+        {
+            return _iFollowDAL.SearchFollowers(username, search);
+        }
+
+        public List<User> SearchFollowing(string username, string search)
+        {
+            return _iFollowDAL.SearchFollowing(username, search); 
+        }
     }
 }

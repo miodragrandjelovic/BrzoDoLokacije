@@ -10,5 +10,7 @@ namespace PyxisKapriBack.UI.Interfaces
         Response AddFollow(string followingUsername);
         Response DeleteFollow(string followingUsername);
         Response IsFollowed(string followingUsername);
+        public List<UserShortDTO> SearchFollowers(string search);
+        public List<UserShortDTO> SearchFollowing(string search); 
     }
 }
