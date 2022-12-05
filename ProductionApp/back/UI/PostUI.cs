@@ -148,9 +148,14 @@ namespace PyxisKapriBack.UI
             return postService.SetLikeOnPost(postID);
         }
 
-        public Response GetPostsOnMap(string username)
+        public Response GetPostsOnMap(string username = "")
         {
-            Response response = postService.GetUserPosts(username);
+            Response response;
+            if (string.IsNullOrEmpty(username))
+                response = postService.GetUserPosts(userService.GetLoggedUser());
+            else
+                response = postService.GetUserPosts(username);
+
             if (response.StatusCode.Equals(StatusCodes.Status200OK))
                 response.Data = createPostOnMapDTO(response.Data.Cast<Post>().ToList(), username).Cast<object>().ToList();
             return response;

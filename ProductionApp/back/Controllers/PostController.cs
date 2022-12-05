@@ -129,7 +129,18 @@ namespace PyxisKapriBack.Controllers
             return Ok(response.Data.Cast<PostOnMapDTO>().ToList());
 
         }
+        [HttpGet("GetCurrentUserPostsOnMap")]
+        public async Task<IActionResult> GetCurrentUserPosts()
+        {
+            var response = postUI.GetPostsOnMap();
+            var message = new { message = response.Message };
 
+            if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
+                return BadRequest(message);
+
+            return Ok(response.Data.Cast<PostOnMapDTO>().ToList());
+
+        }
         [HttpPost("GetPostsBySearch")]
         public async Task<IActionResult> GetPostsBySearch(string search, int sortType = 0, int countOfResult = 5)
         {

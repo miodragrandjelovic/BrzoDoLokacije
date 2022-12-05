@@ -17,7 +17,7 @@ namespace PyxisKapriBack.UI.Interfaces
         Response RemoveLikeFromPost(int postID);
         List<PostDTO> GetFollowingPosts(SortType sortType = SortType.DATE);
         Response GetRecommendedPosts(SortType sortType = SortType.DATE);
-        Response GetPostsOnMap(string username);
-        Response GetPostsBySearch(string search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT); 
+        Response GetPostsOnMap(string username = "");
+        Response GetPostsBySearch(string search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT);
     }
 }
