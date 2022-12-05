@@ -27,12 +27,10 @@ namespace PyxisKapriBack.DAL
         public bool DeleteDislikeFromComment(string username, int commentID)
         {
             User user = _iUserDAL.GetUser(username);
-            Comment comment = _iCommentDAL.GetComment(commentID); // nigde se ne koristi a poziva se
-
             if (user == null)
                 throw new Exception(Constants.Constants.resNoFoundUser);
 
-            if (_iCommentDAL.GetComment(commentID) == null) // moze samo comment ovaj gore 
+            if (_iCommentDAL.GetComment(commentID) == null)
                 throw new Exception(Constants.Constants.resNoFoundComment);
 
             CommentDislike dislike = GetCommentDislike(username, commentID);

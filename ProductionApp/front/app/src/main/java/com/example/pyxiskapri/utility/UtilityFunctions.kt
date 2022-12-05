@@ -1,9 +1,8 @@
 package com.example.pyxiskapri.utility
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.DisplayMetrics
 import androidx.documentfile.provider.DocumentFile
 import com.example.pyxiskapri.models.ProgressRequestBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -12,6 +11,7 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+
 
 object UtilityFunctions {
 
@@ -23,7 +23,6 @@ object UtilityFunctions {
     fun requestBodyFromString(value: String): RequestBody {
         return value.toRequestBody("text/plain".toMediaTypeOrNull())
     }
-
 
     // Dobijanje trenutnog fajla iz Uri-ja koji se moze poslati kroz Multipart zahtev
     fun createTmpFileFromUri(context: Context, uri: Uri, fileName: String, suffix: String): File? {
@@ -37,12 +36,14 @@ object UtilityFunctions {
             null
         }
     }
+
     // Uzimanje ekstenzije Uri-ja
     fun getUriExtention(context: Context, uri: Uri): String{
         var fileName: String = DocumentFile.fromSingleUri(context, uri)?.name!!
         var extention: String = fileName.split(".").last()
         return ".$extention"
     }
+
     // Pretvara Uri slike u gotov MultipartBody.Part objekat koji je argument api zahteva
     fun uriToMultipartPart(context: Context, imageUri: Uri, partName: String, fileNamePrefix: String): MultipartBody.Part{
         val imageFile: File = createTmpFileFromUri(context, imageUri, fileNamePrefix, getUriExtention(context, imageUri))!!
@@ -50,6 +51,7 @@ object UtilityFunctions {
         val imageAsRequestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
         return MultipartBody.Part.createFormData(partName, imageFile.name, imageAsRequestBody)
     }
+
     // Pretvara Uri slike u gotov MultipartBody.Part sa pratnjom progresa
     fun uriToProgressMultipartPart(context: Context, imageId: Int, imageUri: Uri, partName: String, fileNamePrefix: String, listener: ProgressRequestBody.UploadListener): MultipartBody.Part{
         val imageFile: File = createTmpFileFromUri(context, imageUri, fileNamePrefix, getUriExtention(context, imageUri))!!
@@ -59,4 +61,11 @@ object UtilityFunctions {
     }
 
 
+    fun convertPixelsToDp(px: Float, context: Context): Float {
+        return px / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
+
+    fun convertDpToPixel(dp: Float, context: Context): Float {
+        return dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    }
 }

@@ -1,5 +1,7 @@
 package com.example.pyxiskapri.services
 
+import com.example.pyxiskapri.dtos.request.MapSearchRequest
+import com.example.pyxiskapri.dtos.request.NewPostRequest
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostAdditionalData
 import com.example.pyxiskapri.dtos.response.PostOnMapResponse
@@ -55,6 +57,9 @@ interface PostService {
 
     @GET("api/Post/GetPost/{id}")
     fun GetOnePostById(@Path(value = "id") id: Int) : Call<PostResponse>
+    @POST("api/Post/GetPostsBySearch")
+    fun getPostsBySearch(@Body searchRequest: MapSearchRequest) : Call<ArrayList<PostOnMapResponse>>
+
 
 
 }

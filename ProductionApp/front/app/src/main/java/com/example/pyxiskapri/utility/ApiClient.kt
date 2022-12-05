@@ -2,6 +2,7 @@ package com.example.pyxiskapri.utility
 
 import android.content.Context
 import com.example.pyxiskapri.services.CommentService
+import com.example.pyxiskapri.services.PlaceService
 import com.example.pyxiskapri.services.PostService
 import com.example.pyxiskapri.services.UserService
 import okhttp3.OkHttpClient
@@ -12,6 +13,7 @@ class ApiClient {
     private lateinit var userService: UserService
     private lateinit var postService: PostService
     private lateinit var commentService: CommentService
+    private lateinit var placeService: PlaceService
 
     private fun okHttpClient(context: Context): OkHttpClient {
         return OkHttpClient.Builder()
@@ -56,5 +58,18 @@ class ApiClient {
             commentService = retrofit.create(CommentService::class.java)
         }
         return commentService
+    }
+
+    fun getPlaceService(context: Context): PlaceService {
+        if(!::placeService.isInitialized){
+            val retrofit = Retrofit.Builder()
+                .baseUrl(Constants.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient(context))
+                .build()
+
+            placeService = retrofit.create(PlaceService::class.java)
+        }
+        return placeService
     }
 }

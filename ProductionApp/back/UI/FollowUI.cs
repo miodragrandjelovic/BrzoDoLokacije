@@ -61,7 +61,7 @@ namespace PyxisKapriBack.UI
                     FirstName = item.FirstName,
                     LastName = item.LastName,
                     Username = item.Username,
-                    ProfileImage = item.FolderPath + item.FileName
+                    ProfileImage = Path.Combine(item.FolderPath, item.FileName)
                 });
             }
             return listUserShortDTO;

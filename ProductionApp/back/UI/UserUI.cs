@@ -92,7 +92,6 @@ namespace PyxisKapriBack.UI
                     Username = user.Username,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    //ProfileImage = Convert.ToBase64String(user.ProfileImage),
                     Email = user.Email,
                     ProfileImagePath = Path.Combine(user.FolderPath, user.FileName)
                 }) ;
