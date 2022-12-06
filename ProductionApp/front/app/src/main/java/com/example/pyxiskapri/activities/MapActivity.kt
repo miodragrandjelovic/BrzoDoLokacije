@@ -304,7 +304,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                         marker?.tag = postMarker.postId
 
                     }
-                    override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
+                    override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?)
+                    {
+                        Log.d("BITMAP FAIL", "BITMAP FAIL")
+                    }
                     override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
                 }
             )
