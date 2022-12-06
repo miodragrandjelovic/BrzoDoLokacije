@@ -4,6 +4,8 @@
     {
         public int Id { get; set; }
 
+        public int Grade { get; set; }
+
         #region 'User'
         public int UserId { get; set; } 
         public User User { get; set; }
