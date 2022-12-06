@@ -1,35 +1,37 @@
 package com.example.pyxiskapri.activities
 
-import android.R.attr
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.PorterDuff
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.widget.ImageView
-import android.widget.TextView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isGone
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.dtos.request.AddFollowRequest
-import com.example.pyxiskapri.dtos.response.*
+import com.example.pyxiskapri.dtos.response.CustomMarkerResponse
+import com.example.pyxiskapri.dtos.response.GetUserResponse
+import com.example.pyxiskapri.dtos.response.MessageResponse
+import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -37,10 +39,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_foreign_profile_grid.*
 import kotlinx.android.synthetic.main.activity_foreign_profile_map.*
 import kotlinx.android.synthetic.main.activity_map_user_post.*
-import kotlinx.android.synthetic.main.activity_new_user_profile.*
 import kotlinx.android.synthetic.main.modal_confirm_follow.*
 import kotlinx.android.synthetic.main.modal_confirm_unfollow.*
 import retrofit2.Call
@@ -58,9 +58,12 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     lateinit var mCustomMarkerView:View
     lateinit var mMarkerImageView: ImageView
+    lateinit var markerImage: ImageView
 
     private lateinit var map: GoogleMap
     private lateinit var geocoder: Geocoder
+
+    var flag = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,6 +102,7 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mMarkerImageView = mCustomMarkerView.findViewById(R.id.cover_image)
 
+        markerImage = mCustomMarkerView.findViewById(R.id.marker_image)
 
 
         setupMap()
@@ -119,7 +123,7 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
         geocoder = Geocoder(this, Locale.getDefault())
-        addCustomMarkerFromURL();
+        addCustomMarkerFromURL(true);
 
         map.setOnMarkerClickListener{marker ->
 
@@ -145,11 +149,54 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
             true
         }
+
+
+        map.setOnCameraMoveListener {
+            val cameraPosition = googleMap.cameraPosition
+
+
+            if (cameraPosition.zoom > 5.0 && flag==0) {
+
+                var layoutParams = ConstraintLayout.LayoutParams(248, 340)
+                markerImage.layoutParams = layoutParams
+
+                layoutParams = ConstraintLayout.LayoutParams(248, 248)
+                mMarkerImageView.layoutParams = layoutParams
+
+
+                map.clear()
+
+                addCustomMarkerFromURL(false)
+
+
+                flag=1
+            }
+
+            else if(cameraPosition.zoom > 10.0 && flag==1)
+            {
+                var layoutParams = ConstraintLayout.LayoutParams(330, 440)
+                markerImage.layoutParams = layoutParams
+
+                layoutParams = ConstraintLayout.LayoutParams(330, 330)
+                mMarkerImageView.layoutParams = layoutParams
+
+
+                map.clear()
+
+                addCustomMarkerFromURL(false)
+
+
+                flag=2
+            }
+
+        }
+
+
     }
 
     private fun getMarkerBitmapFromView(view: View, bitmap: Bitmap?): Bitmap? {
 
-        mMarkerImageView?.setImageBitmap(bitmap)
+        mMarkerImageView.setImageBitmap(bitmap)
 
         view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
@@ -166,7 +213,7 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
         return returnedBitmap
     }
 
-    private fun addCustomMarkerFromURL() {
+    private fun addCustomMarkerFromURL(pom: Boolean) {
         if (map == null) {
             return
         }
@@ -179,7 +226,18 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
                 response: Response<ArrayList<CustomMarkerResponse>>
             ) {
 
-                post_number_fm.text = response.body()!!.size.toString()
+                if(pom) {
+
+                    post_number_fm.text = response.body()!!.size.toString()
+
+                    var cameraLocation: LatLng =
+                        LatLng(response.body()!![0].latitude, response.body()!![0].longitude)
+
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraLocation, 3f))
+
+                    Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(coverImage_fm)
+
+                }
 
                 for(post: CustomMarkerResponse in response.body()!!)
                 {
@@ -218,13 +276,6 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
         })
-
-
-        //ovde ide pikasso da se uzme picture
-        //I generalno ceo api zahtev da uzme location
-
-
-
 
 
     }
