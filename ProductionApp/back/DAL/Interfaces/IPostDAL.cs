@@ -1,4 +1,6 @@
 ﻿using PyxisKapriBack.Models;
+using System.Device.Location;
+
 namespace PyxisKapriBack.DAL.Interfaces
 {
     public interface IPostDAL
@@ -12,6 +14,7 @@ namespace PyxisKapriBack.DAL.Interfaces
         List<Post> GetPosts(String username, SortType sortType = SortType.DATE);
         List<Post> GetFollowingPosts(string username, SortType sortType = SortType.DATE);
         List<Post> GetRecommendedPosts(string username, SortType sortType = SortType.DATE);
-        List<Post> GetPostsBySearch(String search, SortType sortType = SortType.DATE); 
+        List<Post> GetPostsBySearch(String search, SortType sortType = SortType.DATE);
+        List<Post> GetPostsByCoordinates(double latitude, double longitude, double distance = Constants.Constants.DISTANCE); 
     }
 }
