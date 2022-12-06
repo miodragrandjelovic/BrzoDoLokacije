@@ -1,6 +1,7 @@
 package com.example.pyxiskapri.activities
 
 import android.animation.ObjectAnimator
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
@@ -9,23 +10,23 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.location.Geocoder
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnFocusChangeListener
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.marginTop
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.LocationListAdapter
 import com.example.pyxiskapri.dtos.request.MapSearchRequest
 import com.example.pyxiskapri.dtos.response.CustomMarkerResponse
 import com.example.pyxiskapri.dtos.response.LocationResponse
-import com.example.pyxiskapri.dtos.response.PostOnMapResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.fragments.MultiButtonSelector
 import com.example.pyxiskapri.utility.*
@@ -38,14 +39,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_map.*
-import kotlinx.android.synthetic.main.activity_map.btn_home
-import kotlinx.android.synthetic.main.activity_map.btn_messages
-import kotlinx.android.synthetic.main.activity_map.btn_newPost
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -59,6 +56,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var multiButtonFragment: MultiButtonSelector
 
     private lateinit var fromPostLocation: LatLng
+
+    private lateinit var markerImage: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,14 +115,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         geocoder = Geocoder(this, Locale.getDefault())
 
         mCustomMarkerView = (getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.view_custom_marker, null)
+        markerImage = mCustomMarkerView.findViewById(R.id.marker_image)
         mMarkerImageView = mCustomMarkerView.findViewById(R.id.cover_image)
 
         setupPostSearching()
 
-        if(this::fromPostLocation.isInitialized)
-            setupFromUserPostMap()
-        else
-            setupNormalMap()
     }
 
     private fun setupFromUserPostMap(){
@@ -294,6 +290,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setPostMarkers(postMarkers: ArrayList<CustomMarkerResponse>) {
         map.clear()
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         for (postMarker in postMarkers) {
             Picasso.get().load(UtilityFunctions.getFullImagePath(postMarker.coverImage)).into(
