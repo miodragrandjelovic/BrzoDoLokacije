@@ -132,7 +132,7 @@ namespace PyxisKapriBack.Controllers
         [HttpPost("GetPostsBySearch")]
         public async Task<IActionResult> GetPostsBySearch(SearchDTO search)
         {
-            var response = postUI.GetPostsBySearch(search.Search, search.SortType, search.CountOfResult);
+            var response = postUI.GetPostsBySearch(search.Search, search.SortType, search.CountOfResult, search.FriendsOnly);
             var message = new { message = response.Message };
 
             if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
@@ -153,7 +153,7 @@ namespace PyxisKapriBack.Controllers
         [HttpPost("GetAllAroundPosts")]
         public async Task<IActionResult> GetPostsByCoordinates(SearchDTO search)
         {
-            return Ok(postUI.GetAllAroundPosts(search.Latitude, search.Longitude, search.Distance));
+            return Ok(postUI.GetAllAroundPosts(search.Latitude, search.Longitude, search.Distance, search.FriendsOnly));
         }
     }
 }

@@ -125,24 +125,6 @@ namespace PyxisKapriBack.DAL
                                  .ToList();
         }
 
-        /*public List<Location> FilterLocations(string filter)
-        {
-            return _context.Posts.Where(post => post.FullLocation.Contains(filter)).Select(post => post.FullLocation).Distinct().ToList()
-            var locationsByCountry = FilterLocationsByCountry(filter);
-            var locationsByCity = FilterLocationsByCity(filter);
-            var locationsByName = FilterLocationsByName(filter);
-            
-            var allLocations = new List<Location>(); 
-            foreach (var item in locationsByCountry)
-                allLocations.Add(item);
-            foreach (var item in locationsByCity)
-                allLocations.Add(item);
-            foreach (var item in locationsByName)
-                allLocations.Add(item);
-            locations = allLocations.Distinct().ToList();
-            return locations; 
-        }*/
-
         public List<Location> GetAllAroundLocations(double latitude, double longitude, double distance = Constants.Constants.DISTANCE)
         {
             List<Post> posts = _context.Posts.ToList(); 

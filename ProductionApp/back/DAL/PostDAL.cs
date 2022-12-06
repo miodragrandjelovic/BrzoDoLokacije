@@ -10,13 +10,15 @@ namespace PyxisKapriBack.DAL
         private readonly Database _context;
         private readonly IUserDAL _iUserDAL; 
         private readonly ILocationDAL locationDAL;
-        private readonly ILocationManager locationManager; 
-        public PostDAL(Database context, IUserDAL iUserDAL, ILocationDAL ilocationDAL, ILocationManager ilocationManager)
+        private readonly ILocationManager locationManager;
+        private readonly IFollowDAL followDAL; 
+        public PostDAL(Database context, IUserDAL iUserDAL, ILocationDAL ilocationDAL, ILocationManager ilocationManager, IFollowDAL followDAL)
         {
             _context = context;
             _iUserDAL = iUserDAL;
             locationDAL = ilocationDAL;
-            locationManager = ilocationManager; 
+            locationManager = ilocationManager;
+            this.followDAL = followDAL;
         }
         public void AddPost(Post post)
         {
@@ -152,27 +154,43 @@ namespace PyxisKapriBack.DAL
             return orderedQueryable.ToList(); 
         }
 
-        public List<Post> GetPostsBySearch(String search, SortType sortType = SortType.DATE)
+        public List<Post> GetPostsBySearch(String username, String search, SortType sortType = SortType.DATE, bool friendsOnly = false)
         {
-            IQueryable<Post> posts; 
+            IQueryable<Post> posts;
 
-            if (!String.IsNullOrEmpty(search))
-                posts = _context.Posts.Where(post => post.FullLocation.Contains(search)); 
+            if (friendsOnly)
+            {
+                var users = followDAL.GetFollowing(username).Select(user => user.Id);
+                posts = _context.Posts.Where(post => users.Contains(post.UserId));
+            }
             else
-                posts = _context.Posts;
+                posts = _context.Posts.Where(post => post.FullLocation.Contains(search));
+            
+            if (!String.IsNullOrEmpty(search))
+                posts = posts.Where(post => post.FullLocation.Contains(search)); 
+
             posts = posts.Include(post => post.User)
                          .Include(post => post.Dislikes)
                          .Include(post => post.Likes)
-                         .Include(post => post.Comments);
-
+                         .Include(post => post.Comments); ;
             return SortListByCriteria(posts, sortType);
         }
 
-        public List<Post> GetPostsByCoordinates(double latitude, double lognitude, double distance = Constants.Constants.DISTANCE)
+        public List<Post> GetPostsByCoordinates(string username, double latitude, double lognitude, double distance = Constants.Constants.DISTANCE, bool friendsOnly = false)
         {
             GeoCoordinate coordinate = new GeoCoordinate(latitude, lognitude);
-            List<Post> posts = _context.Posts.ToList(); 
-
+            List<Post> posts = new List<Post>();
+            User user = _iUserDAL.GetUser(username);
+            
+            if (friendsOnly == false)
+                posts = _context.Posts.ToList();
+            else
+            {
+                var followings = followDAL.GetFollowing(username);
+                foreach (var following in followings)
+                    foreach (var post in following.Posts)
+                        posts.Add(post); 
+            }
             return locationManager.GetAllAroundPosts(coordinate, posts, distance); 
         }
     }

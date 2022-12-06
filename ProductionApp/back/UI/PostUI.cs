@@ -226,9 +226,9 @@ namespace PyxisKapriBack.UI
             return postsDTO; 
         }
 
-        public Response GetPostsBySearch(string search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT)
+        public Response GetPostsBySearch(string search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT, bool friendsOnly = false)
         {
-            Response response = postService.GetPostsBySearch(search, sortType, countOfResult);
+            Response response = postService.GetPostsBySearch(search, sortType, countOfResult, friendsOnly);
             if (response.StatusCode.Equals(StatusCodes.Status200OK))
                 response.Data = createPostOnMapDTO(response.Data.Cast<Post>().ToList(), userService.GetLoggedUser()).Cast<object>().ToList();
             return response;
@@ -252,9 +252,9 @@ namespace PyxisKapriBack.UI
             return null;
         }
 
-        public List<PostOnMapDTO> GetAllAroundPosts(double latitude, double longitude, double distance = Constants.Constants.DISTANCE)
+        public List<PostOnMapDTO> GetAllAroundPosts(double latitude, double longitude, double distance = Constants.Constants.DISTANCE, bool friendsOnly = false)
         {
-            var posts = postService.GetAllAroundPosts(latitude, longitude, distance);
+            var posts = postService.GetAllAroundPosts(latitude, longitude, distance, friendsOnly);
             
             return createPostOnMapDTO(posts, userService.GetLoggedUser()).ToList(); 
         }

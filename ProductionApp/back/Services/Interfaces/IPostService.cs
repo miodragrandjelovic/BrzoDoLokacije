@@ -14,7 +14,7 @@ namespace PyxisKapriBack.Services.Interfaces
         List<Post> GetAllPosts(SortType sortType = SortType.DATE);
         List<Post> GetFollowingPosts(string username, SortType sortType = SortType.DATE);
         Response GetRecommendedPosts(string username, SortType sortType = SortType.DATE);
-        Response GetPostsBySearch(String search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT);
-        List<Post> GetAllAroundPosts(double latitude, double longitude, double distance = Constants.Constants.DISTANCE);
+        Response GetPostsBySearch(String search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT, bool friendsOnly = false);
+        List<Post> GetAllAroundPosts(double latitude, double longitude, double distance = Constants.Constants.DISTANCE, bool friendsOnly = false);
     }
 }

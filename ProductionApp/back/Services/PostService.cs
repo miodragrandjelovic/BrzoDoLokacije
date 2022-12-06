@@ -245,7 +245,7 @@ namespace PyxisKapriBack.Services
             return response;
         }
 
-        public Response GetPostsBySearch(String search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT)
+        public Response GetPostsBySearch(String search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT, bool friendsOnly = false)
         {
             var response = new Response();
 
@@ -253,7 +253,7 @@ namespace PyxisKapriBack.Services
             {
                 if (countOfResult == 0)
                     countOfResult = Constants.Constants.TAKE_ELEMENT; 
-                response.Data = postDAL.GetPostsBySearch(search, sortType).Take(countOfResult).Cast<object>().ToList(); 
+                response.Data = postDAL.GetPostsBySearch(userService.GetLoggedUser(), search, sortType, friendsOnly).Take(countOfResult).Cast<object>().ToList(); 
                 response.Message = "Found posts";
                 response.StatusCode = StatusCodes.Status200OK;
             }
@@ -266,9 +266,9 @@ namespace PyxisKapriBack.Services
             return response; 
         }
 
-        public List<Post> GetAllAroundPosts(double latitude, double longitude, double distance = 1500)
+        public List<Post> GetAllAroundPosts(double latitude, double longitude, double distance = 1500, bool friendsOnly = false)
         {
-            return postDAL.GetPostsByCoordinates(latitude, longitude, distance);
+            return postDAL.GetPostsByCoordinates(userService.GetLoggedUser(), latitude, longitude, distance, friendsOnly);
         }
     }
 }
