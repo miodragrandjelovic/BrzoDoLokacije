@@ -126,7 +126,7 @@ class OpenPostActivity : AppCompatActivity() {
         // NOTIFICATIONS
     }
 
-    private fun setRemoveLike(){
+    private fun changeLikeStatus(){
         if(postData.isLiked) {
             apiClient.getPostService(this).removeLike(postData.id)
                 .enqueue(object : Callback<MessageResponse> {
@@ -253,6 +253,10 @@ class OpenPostActivity : AppCompatActivity() {
         else
             iv_likeIcon.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_IN);
 
+
+        btn_like.setOnClickListener{
+            changeLikeStatus()
+        }
 
 
         // REPORT CHECK
