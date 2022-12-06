@@ -31,10 +31,12 @@ namespace PyxisKapriBack.Controllers
                 }
             );
         }
-        [HttpPut("SetLike/{postId}")]
-        public async Task<IActionResult> SetLikeOnPost(int postId)
+        //[HttpPut("SetLike/{postId}")]
+        [HttpPost("SetLike")]
+        //public async Task<IActionResult> SetLikeOnPost(int postId)
+        public async Task<IActionResult> SetLikeOnPost(LikeDTO likeDTO)
         {
-            var response = postUI.SetLikeOnPost(postId);
+            var response = postUI.SetLikeOnPost(likeDTO);
             var message = new { message = response.Message };
             if (response.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(message);

@@ -12,6 +12,7 @@ namespace PyxisKapriBack.UI.Interfaces
         AdditionalPostData GetPost(int PostID);
         PostDTO GetPostById(int postID);
         Response SetLikeOnPost(int postID);
+        Response SetLikeOnPost(LikeDTO likeDTO);
         Response DeleteUserPost(int postID);
         List<PostDTO> GetAllPosts(SortType sortType = SortType.DATE);
         Response RemoveLikeFromPost(int postID);

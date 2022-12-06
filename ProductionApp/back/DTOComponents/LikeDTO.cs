@@ -2,8 +2,8 @@
 {
     public class LikeDTO
     {
-        String Username { get; set; }
-        int PostId { get; set; }
-        int Grade { get; set; }
+        public String Username { get; set; }
+        public int PostId { get; set; }
+        public int Grade { get; set; }
     }
 }

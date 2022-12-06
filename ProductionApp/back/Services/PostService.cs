@@ -270,5 +270,36 @@ namespace PyxisKapriBack.Services
         {
             return postDAL.GetPostsByCoordinates(userService.GetLoggedUser(), latitude, longitude, distance, friendsOnly);
         }
+
+        public Response SetLikeOnPost(LikeDTO likeDTO)
+        {
+            Like existLike = likeService.GetLike(likeDTO.Username, likeDTO.PostId); 
+            if(existLike != null)
+            {
+                existLike.Grade = likeDTO.Grade; 
+                return likeService.UpdateLike(existLike);
+            }
+                
+           
+            User user = userService.GetUser(userService.GetLoggedUser());
+            Post post = postDAL.GetPost(likeDTO.PostId);
+            
+            if (user == null)
+                return ResponseService.CreateErrorResponse(Constants.Constants.resNoFoundUser);
+            if (post == null)
+                return ResponseService.CreateErrorResponse(Constants.Constants.resNoFoundPost);
+            
+            Like like = new Like
+            {
+                UserId = user.Id,
+                User = user,
+                Post = post,
+                PostId = post.Id,
+                Grade = likeDTO.Grade
+            };
+
+
+            return likeService.AddLike(like); 
+        }
     }
 }

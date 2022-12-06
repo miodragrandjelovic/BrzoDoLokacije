@@ -258,5 +258,11 @@ namespace PyxisKapriBack.UI
             
             return createPostOnMapDTO(posts, userService.GetLoggedUser()).ToList(); 
         }
+
+        public Response SetLikeOnPost(LikeDTO likeDTO)
+        {
+            likeDTO.Username = userService.GetLoggedUser(); 
+            return postService.SetLikeOnPost(likeDTO); 
+        }
     }
 }
