@@ -9,6 +9,8 @@ namespace PyxisKapriBack.DAL.Interfaces
         public Boolean DeleteMessage(int messageId);
         public Boolean UpdateMessage(Message message);
 
-        public List<Message> GetMessages(string usernameSender, string usernameReceiver); 
+        public List<Message> GetMessages(string usernameSender, string usernameReceiver);
+
+        public List<User> GetLatestUsers(string username); 
     }
 }

@@ -38,6 +38,25 @@ namespace PyxisKapriBack.UI
             return messageService.DeleteMessage(messageId);
         }
 
+        public List<UserShortDTO> GetLatestUsers()
+        {
+            var users = messageService.GetLatestUsers(userService.GetLoggedUser());
+            var allUsers = new List<UserShortDTO>(); 
+
+            foreach(var user in users)
+            {
+                allUsers.Add(new UserShortDTO
+                {
+                    Username = user.Username,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    ProfileImage = Path.Combine(user.FolderPath, user.FileName)
+                });
+            }
+
+            return allUsers; 
+        }
+
         public MessageDTO GetMessage(int messageId)
         {
             Message message = messageService.GetMessage(messageId);

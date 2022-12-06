@@ -48,6 +48,27 @@ namespace PyxisKapriBack.DAL
             return true; 
         }
 
+        public List<User> GetLatestUsers(string username)
+        {
+            var pairs = _context.Messages.Where(message => message.Sender.Username.Equals(username)
+                                            || (message.Receiver.Username.Equals(username)))
+                                    .Include(message => message.Sender)
+                                    .Include(message => message.Receiver)
+                                    .OrderBy(message => message.Time)
+                                    .Select(message => new { Receiver = message.Receiver, Sender = message.Sender })
+                                    .ToList();
+            var users = new List<User>(); 
+            foreach(var pair in pairs)
+            {
+                if(pair.Sender.Username.Equals(username))
+                    users.Add(pair.Receiver);
+                else 
+                    users.Add(pair.Sender);
+
+            }
+            return users.Distinct().ToList();
+         }
+
         public Message GetMessage(int messageId)
         {
             Message message = _context.Messages.Where(message => (message.Id == messageId))
@@ -63,7 +84,7 @@ namespace PyxisKapriBack.DAL
                                     && message.Receiver.Username.Equals(usernameReceiver))
                                     .Include(message => message.Sender)
                                     .Include(message => message.Receiver)
-                                    .OrderBy(message => message.Time)
+                                    .OrderByDescending(message => message.Time)
                                     .ToList();
             return messages; 
         }

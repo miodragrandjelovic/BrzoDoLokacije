@@ -10,6 +10,7 @@ namespace PyxisKapriBack.UI.Interfaces
         public MessageDTO GetMessage(int messageId);
         public Response AddMessage(MessageDTO message);
 
-        public List<MessageDTO> GetMessages(string usernamReceiver); 
+        public List<MessageDTO> GetMessages(string usernamReceiver);
+        public List<UserShortDTO> GetLatestUsers(); 
     }
 }

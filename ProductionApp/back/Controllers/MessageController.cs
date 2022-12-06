@@ -69,5 +69,12 @@ namespace PyxisKapriBack.Controllers
 
             return Ok(messages);
         }
+
+        [HttpGet("GetLatestUsers")]
+        public async Task<IActionResult> GetLatestUsers()
+        {
+            var users = messageUI.GetLatestUsers();
+            return Ok(users); 
+        }
     }
 }

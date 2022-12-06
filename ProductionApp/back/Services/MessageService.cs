@@ -61,5 +61,9 @@ namespace PyxisKapriBack.Services
                 return ResponseService.CreateErrorResponse(e.Message);
             }
         }
+        public List<User> GetLatestUsers(string username)
+        {
+            return iMessageDAL.GetLatestUsers(username); 
+        }
     }
 }

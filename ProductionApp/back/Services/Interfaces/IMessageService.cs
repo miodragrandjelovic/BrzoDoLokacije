@@ -9,5 +9,6 @@ namespace PyxisKapriBack.Services.Interfaces
         public Response UpdateMessage(Message message);
         public Message GetMessage(int messageId);
         public List<Message> GetMessages(string usernameSender, string usernameReceiver);
+        public List<User> GetLatestUsers(string username);
     }
 }
