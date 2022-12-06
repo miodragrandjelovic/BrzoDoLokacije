@@ -119,7 +119,7 @@ namespace PyxisKapriBack.DAL
 
         public List<String> FilterLocations(string filter)
         {
-            return _context.Posts.Where(post => post.FullLocation.Contains(filter))
+            return _context.Posts.Where(post => post.FullLocation.ToLower().Contains(filter.ToLower()))
                                  .Select(post => post.FullLocation)
                                  .Distinct()
                                  .ToList();

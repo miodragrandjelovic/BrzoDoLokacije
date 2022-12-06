@@ -165,7 +165,7 @@ namespace PyxisKapriBack.DAL
             }
             
             if (!String.IsNullOrEmpty(search))
-                posts = posts.Where(post => post.FullLocation.Contains(search)); 
+                posts = posts.Where(post => post.FullLocation.ToLower().Contains(search.ToLower())); 
 
             posts = posts.Include(post => post.User)
                          .Include(post => post.Dislikes)
