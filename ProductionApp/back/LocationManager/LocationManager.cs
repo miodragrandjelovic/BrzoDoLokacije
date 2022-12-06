@@ -35,5 +35,25 @@ namespace PyxisKapriBack.LocationManager
             }
             return closest;
         }
+
+        public List<Post> GetAllAroundPosts(GeoCoordinate coordinate, List<Post> posts, double distance = Constants.Constants.DISTANCE)
+        {
+            var closest = new List<Post>();
+            double dist;
+            if (coordinate == null)
+                return closest;
+
+            foreach (var post in posts)
+            {
+                if ((post.Latitude == null) || (post.Longitude == null))
+                    continue;
+                
+                dist = GetDistance(coordinate.Latitude, coordinate.Longitude, Convert.ToDouble(post.Latitude), Convert.ToDouble(post.Longitude));
+                
+                if (dist <= distance)
+                    closest.Add(post);
+            }
+            return closest;
+        }
     }
 }
