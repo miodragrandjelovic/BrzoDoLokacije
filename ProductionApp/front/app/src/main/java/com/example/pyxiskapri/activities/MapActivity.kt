@@ -3,12 +3,20 @@ package com.example.pyxiskapri.activities
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
 import android.location.Geocoder
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnFocusChangeListener
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.marginTop
@@ -20,16 +28,15 @@ import com.example.pyxiskapri.dtos.response.LocationResponse
 import com.example.pyxiskapri.dtos.response.PostOnMapResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.fragments.MultiButtonSelector
-import com.example.pyxiskapri.utility.ActivityTransferStorage
-import com.example.pyxiskapri.utility.ApiClient
-import com.example.pyxiskapri.utility.Constants
-import com.example.pyxiskapri.utility.SessionManager
+import com.example.pyxiskapri.utility.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.activity_map.btn_home
 import kotlinx.android.synthetic.main.activity_map.btn_messages
@@ -54,7 +61,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var fromPostLocation: LatLng
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
@@ -69,8 +75,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         multiButtonFragment = (supportFragmentManager.findFragmentById(R.id.fragment_multibuttonSelector) as MultiButtonSelector)
         setupPrioritizedSelection()
         handleOptionsClick()
-
-        setupPostSearching()
     }
 
     private fun setupNavButtons(){
@@ -103,31 +107,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setupMapAndAutocomplete(){
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-        /* GOOGLE MAPS (preko PLACES)
-        if (!com.google.android.libraries.places.api.Places.isInitialized())
-            com.google.android.libraries.places.api.Places.initialize(applicationContext, R.string.API_KEY.toString())
-
-        val placesClient = com.google.android.libraries.places.api.Places.createClient(this)
-
-        val autocompleteFragment = supportFragmentManager.findFragmentById(R.id.autocomplete_fragment) as AutocompleteSupportFragment
-
-        //autocompleteFragment.setTypeFilter(TypeFilter.ESTABLISHMENT)
-
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
-        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                // TODO: Get info about the selected place.
-                Log.i(TAG, "Place: " + place.name + ", " + place.id)
-            }
-
-            override fun onError(status: Status) {
-                // TODO: Handle the error.
-                Log.i(TAG, "An error occurred: $status")
-            }
-        })
-
-        */
     }
 
 
@@ -136,13 +115,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         map = googleMap
         geocoder = Geocoder(this, Locale.getDefault())
 
-        if(this::fromPostLocation.isInitialized) {
-            setupFromUserPostMap()
-        }
-        else{
-            setupNormalMap()
-        }
+        mCustomMarkerView = (getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.view_custom_marker, null)
+        mMarkerImageView = mCustomMarkerView.findViewById(R.id.cover_image)
 
+        setupPostSearching()
+
+        if(this::fromPostLocation.isInitialized)
+            setupFromUserPostMap()
+        else
+            setupNormalMap()
     }
 
     private fun setupFromUserPostMap(){
@@ -240,6 +221,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         locationListAdapter = LocationListAdapter(arrayListOf(), ::requestPostsFromSearch)
         rv_locations.adapter = locationListAdapter
 
+        et_search.setOnClickListener{ it.visibility = View.VISIBLE }
+        map.setOnMapClickListener { rv_locations.visibility = View.GONE }
+
         // ON ENTER IN INPUT PRESS
         et_search.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
@@ -250,6 +234,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 return false
             }
         })
+
+
 
         iv_searchIcon.setOnClickListener {
             requestLocationsByText()
@@ -287,14 +273,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             search = locationName,
             sortType =  Constants.SearchType.LOCATION.ordinal,
             countOfResults = multiButtonFragment.value,
-            switch_friendsOnly.isActivated,
+            switch_friendsOnly.isActivated
         )
 
         apiClient.getPostService(this).getPostsBySearch(searchRequest)
             .enqueue(object : Callback<ArrayList<CustomMarkerResponse>> {
                 override fun onResponse(call: Call<ArrayList<CustomMarkerResponse>>, response: Response<ArrayList<CustomMarkerResponse>>) {
                     if(response.isSuccessful)
-                        Log.d("POSTS: ", response.body().toString())
+                        if(response.body() != null && response.body()?.size != 0)
+                            setPostMarkers(response.body()!!)
                 }
                 override fun onFailure(call: Call<ArrayList<CustomMarkerResponse>>, t: Throwable) {
                     Log.d("TEST", "TEST")
@@ -302,6 +289,49 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             })
     }
 
+    lateinit var mCustomMarkerView:View
+    lateinit var mMarkerImageView: ImageView
+
+    private fun setPostMarkers(postMarkers: ArrayList<CustomMarkerResponse>) {
+        map.clear()
+
+        for (postMarker in postMarkers) {
+            Picasso.get().load(UtilityFunctions.getFullImagePath(postMarker.coverImage)).into(
+                object : com.squareup.picasso.Target {
+                    override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+
+                        var marker = map.addMarker(
+                            MarkerOptions().position(LatLng(postMarker.latitude, postMarker.longitude))
+                            .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(mCustomMarkerView, bitmap)!!))
+                        )
+                        marker?.tag = postMarker.postId
+
+                    }
+                    override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {}
+                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+                }
+            )
+        }
+    }
+
+    private fun getMarkerBitmapFromView(view: View, bitmap: Bitmap?): Bitmap? {
+
+        mMarkerImageView?.setImageBitmap(bitmap)
+
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+        view.buildDrawingCache()
+        val returnedBitmap = Bitmap.createBitmap(
+            view.measuredWidth, view.measuredHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(returnedBitmap)
+        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN)
+        val drawable = view.background
+        drawable?.draw(canvas)
+        view.draw(canvas)
+        return returnedBitmap
+    }
 
 
 }

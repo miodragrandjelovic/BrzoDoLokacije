@@ -31,7 +31,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: Context) : BaseAdapter() {
+class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: Context, var onPostDeleteListener: () -> Unit) : BaseAdapter() {
 
     private var apiClient: ApiClient = ApiClient()
 
@@ -113,6 +113,7 @@ class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: C
                         postsItem.removeAt(position)
                         notifyDataSetChanged()
                         Toast.makeText(context,"Post is successfully deleted!",Toast.LENGTH_LONG).show()
+                        onPostDeleteListener()
                     }
 
                     else
