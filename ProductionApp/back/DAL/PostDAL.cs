@@ -156,15 +156,13 @@ namespace PyxisKapriBack.DAL
 
         public List<Post> GetPostsBySearch(String username, String search, SortType sortType = SortType.DATE, bool friendsOnly = false)
         {
-            IQueryable<Post> posts;
+            IQueryable<Post> posts = _context.Posts;
 
             if (friendsOnly)
             {
                 var users = followDAL.GetFollowing(username).Select(user => user.Id);
                 posts = _context.Posts.Where(post => users.Contains(post.UserId));
             }
-            else
-                posts = _context.Posts.Where(post => post.FullLocation.Contains(search));
             
             if (!String.IsNullOrEmpty(search))
                 posts = posts.Where(post => post.FullLocation.Contains(search)); 
@@ -172,7 +170,7 @@ namespace PyxisKapriBack.DAL
             posts = posts.Include(post => post.User)
                          .Include(post => post.Dislikes)
                          .Include(post => post.Likes)
-                         .Include(post => post.Comments); ;
+                         .Include(post => post.Comments);
             return SortListByCriteria(posts, sortType);
         }
 
