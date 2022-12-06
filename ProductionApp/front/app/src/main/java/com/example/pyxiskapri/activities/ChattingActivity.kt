@@ -10,6 +10,9 @@ import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import kotlinx.android.synthetic.main.activity_chatting.*
+import kotlinx.android.synthetic.main.activity_chatting.btn_discover
+import kotlinx.android.synthetic.main.activity_chatting.btn_messages
+import kotlinx.android.synthetic.main.activity_chatting.btn_newPost
 
 class ChattingActivity : AppCompatActivity() {
 
@@ -23,27 +26,47 @@ class ChattingActivity : AppCompatActivity() {
 
         apiClient = ApiClient()
 
+        collectFriendData()
 
-        setupGoBackButton()
-
-        setupFriendData()
+        setupNavButtons()
     }
 
-    private fun showDrawerMenu(view: View){
-        if(view.id == R.id.btn_menu)
-            fcv_chattingDrawer.getFragment<DrawerNav>().showDrawer()
-    }
-
-    private fun setupGoBackButton(){
-        btn_goBack.setOnClickListener {
-            finish()
-        }
-    }
-
-
-    private fun setupFriendData(){
+    private fun collectFriendData(){
         friendData = ActivityTransferStorage.chatToChatting
     }
+
+    private fun setupNavButtons(){
+        // NEW POST
+        btn_newPost.setOnClickListener {
+            val intent = Intent (this, NewPostActivity::class.java);
+            startActivity(intent);
+        }
+
+        // MAPS
+        btn_discover.setOnClickListener {
+            val intent = Intent (this, MapActivity::class.java);
+            startActivity(intent);
+        }
+
+        // HOME
+        btn_home.setOnClickListener {
+            val intent = Intent (this, HomeActivity::class.java);
+            startActivity(intent);
+        }
+
+        // MESSAGES
+        btn_messages.setOnClickListener {
+            val intent = Intent (this, ChatMainActivity::class.java);
+            startActivity(intent);
+        }
+
+        // NOTIFICATIONS
+
+    }
+
+
+
+
 
 
 }

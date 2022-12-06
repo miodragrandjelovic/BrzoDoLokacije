@@ -15,6 +15,7 @@ import androidx.core.view.marginTop
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.LocationListAdapter
 import com.example.pyxiskapri.dtos.request.MapSearchRequest
+import com.example.pyxiskapri.dtos.response.CustomMarkerResponse
 import com.example.pyxiskapri.dtos.response.LocationResponse
 import com.example.pyxiskapri.dtos.response.PostOnMapResponse
 import com.example.pyxiskapri.fragments.DrawerNav
@@ -249,10 +250,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 return false
             }
         })
+
+        iv_searchIcon.setOnClickListener {
+            requestLocationsByText()
+        }
     }
 
 
-    private val LOCATION_LIST_RESULT_COUNT = 5
+    private val LOCATION_LIST_RESULT_COUNT = 8
 
     private fun requestLocationsByText(){
         if(et_search.text.toString().trim() == "")
@@ -263,8 +268,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 override fun onResponse(call: Call<ArrayList<LocationResponse>>, response: Response<ArrayList<LocationResponse>>) {
                     if(response.isSuccessful)
                         if(response.body() != null)
-                            if(response.body()!!.size >= 5)
-                                locationListAdapter.setLocations(response.body()!!.take(5) as ArrayList<LocationResponse>)
+                            if(response.body()!!.size >= LOCATION_LIST_RESULT_COUNT)
+                                locationListAdapter.setLocations(response.body()!!.take(LOCATION_LIST_RESULT_COUNT) as ArrayList<LocationResponse>)
                             else
                                 locationListAdapter.setLocations(response.body()!!)
                 }
@@ -279,19 +284,19 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun requestPostsFromSearch(locationId: Int, locationName: String){
         var searchRequest = MapSearchRequest(
-            search = "locationName",
+            search = locationName,
             sortType =  Constants.SearchType.LOCATION.ordinal,
-            countOfResults = LOCATION_LIST_RESULT_COUNT,
-            switch_friendsOnly.isActivated
+            countOfResults = multiButtonFragment.value,
+            switch_friendsOnly.isActivated,
         )
 
         apiClient.getPostService(this).getPostsBySearch(searchRequest)
-            .enqueue(object : Callback<ArrayList<PostOnMapResponse>> {
-                override fun onResponse(call: Call<ArrayList<PostOnMapResponse>>, response: Response<ArrayList<PostOnMapResponse>>) {
+            .enqueue(object : Callback<ArrayList<CustomMarkerResponse>> {
+                override fun onResponse(call: Call<ArrayList<CustomMarkerResponse>>, response: Response<ArrayList<CustomMarkerResponse>>) {
                     if(response.isSuccessful)
                         Log.d("POSTS: ", response.body().toString())
                 }
-                override fun onFailure(call: Call<ArrayList<PostOnMapResponse>>, t: Throwable) {
+                override fun onFailure(call: Call<ArrayList<CustomMarkerResponse>>, t: Throwable) {
                     Log.d("TEST", "TEST")
                 }
             })

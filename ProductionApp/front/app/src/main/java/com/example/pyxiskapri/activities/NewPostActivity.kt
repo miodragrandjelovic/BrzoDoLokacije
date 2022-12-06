@@ -76,6 +76,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
     private val INVALID_LOCATION_VALUE : LatLng = LatLng(-123456789.0, -123456789.0)
     private var locationList: ArrayList<String> = ArrayList<String>()
     private var selectedLocation: LatLng = INVALID_LOCATION_VALUE
+    private lateinit var locationName: String
     private lateinit var locationAddress: String
     private lateinit var locationCity: String
     private lateinit var locationCountry: String
@@ -315,7 +316,6 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
 
     // MAP
-
     private fun setupMap(){
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -336,8 +336,6 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
         map.clear()
         map.addMarker(MarkerOptions().position(location))
 
-        val locationName: String = address.getAddressLine(0)
-        btn_location.text = locationName
         selectedLocation = location
 
         tv_latitude.text = buildString {
@@ -355,8 +353,11 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             append(address.featureName)
         }
 
+        locationName = address.getAddressLine(0)
         locationCity = address.locality
         locationCountry = address.countryName
+
+        btn_location.text = locationName
 
         Log.d("Address", address.toString())
     }
@@ -538,7 +539,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
                 Description = UtilityFunctions.requestBodyFromString(et_description.text.toString()),
                 Longitude = UtilityFunctions.requestBodyFromString(selectedLocation.longitude.toString()),
                 Latitude = UtilityFunctions.requestBodyFromString(selectedLocation.latitude.toString()),
-                LocationName = UtilityFunctions.requestBodyFromString("_naziv_lokacije_"),
+                LocationName = UtilityFunctions.requestBodyFromString(locationName),
                 Address = UtilityFunctions.requestBodyFromString(locationAddress),
                 City = UtilityFunctions.requestBodyFromString(locationCity),
                 Country = UtilityFunctions.requestBodyFromString(locationCountry)

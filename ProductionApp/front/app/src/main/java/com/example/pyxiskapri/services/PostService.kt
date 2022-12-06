@@ -53,7 +53,7 @@ interface PostService {
     fun GetOnePostById(@Path(value = "id") id: Int) : Call<PostResponse>
 
     @POST("api/Post/GetPostsBySearch")
-    fun getPostsBySearch(@Body searchRequest: MapSearchRequest) : Call<ArrayList<PostOnMapResponse>>
+    fun getPostsBySearch(@Body searchRequest: MapSearchRequest) : Call<ArrayList<CustomMarkerResponse>>
 
 
 
