@@ -149,5 +149,11 @@ namespace PyxisKapriBack.Controllers
 
             return Ok(post);
         }
+
+        [HttpPost("GetAllAroundPosts")]
+        public async Task<IActionResult> GetPostsByCoordinates(SearchDTO search)
+        {
+            return Ok(postUI.GetAllAroundPosts(search.Latitude, search.Longitude, search.Distance));
+        }
     }
 }

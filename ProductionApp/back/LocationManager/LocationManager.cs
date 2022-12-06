@@ -17,6 +17,7 @@ namespace PyxisKapriBack.LocationManager
         {
             var closest = new List<Location>();
             double dist;
+
             if (coordinate == null)
                 return closest; 
 
@@ -40,9 +41,10 @@ namespace PyxisKapriBack.LocationManager
         {
             var closest = new List<Post>();
             double dist;
-            if (coordinate == null)
-                return closest;
 
+            if (distance == 0)
+                distance = Constants.Constants.DISTANCE;
+            
             foreach (var post in posts)
             {
                 if ((post.Latitude == null) || (post.Longitude == null))

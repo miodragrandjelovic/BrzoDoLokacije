@@ -265,5 +265,10 @@ namespace PyxisKapriBack.Services
 
             return response; 
         }
+
+        public List<Post> GetAllAroundPosts(double latitude, double longitude, double distance = 1500)
+        {
+            return postDAL.GetPostsByCoordinates(latitude, longitude, distance);
+        }
     }
 }

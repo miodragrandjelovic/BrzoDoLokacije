@@ -251,5 +251,12 @@ namespace PyxisKapriBack.UI
                 };
             return null;
         }
+
+        public List<PostOnMapDTO> GetAllAroundPosts(double latitude, double longitude, double distance = Constants.Constants.DISTANCE)
+        {
+            var posts = postService.GetAllAroundPosts(latitude, longitude, distance);
+            
+            return createPostOnMapDTO(posts, userService.GetLoggedUser()).ToList(); 
+        }
     }
 }

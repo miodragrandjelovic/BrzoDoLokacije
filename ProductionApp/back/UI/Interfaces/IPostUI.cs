@@ -19,5 +19,7 @@ namespace PyxisKapriBack.UI.Interfaces
         Response GetRecommendedPosts(SortType sortType = SortType.DATE);
         Response GetPostsOnMap(string username = "");
         Response GetPostsBySearch(string search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT);
+
+        List<PostOnMapDTO> GetAllAroundPosts(double latitude, double longitude, double distance = Constants.Constants.DISTANCE);
     }
 }
