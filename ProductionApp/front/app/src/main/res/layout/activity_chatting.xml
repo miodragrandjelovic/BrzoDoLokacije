@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray"
+    android:background="@color/dark_gray"
     tools:context=".activities.ChattingActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -25,25 +25,215 @@
             tools:layout_editor_absoluteX="16dp" />
     </androidx.appcompat.widget.Toolbar>
 
-    <ImageView
-        android:id="@+id/btn_goBack"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:adjustViewBounds="true"
+    <LinearLayout
+        android:id="@+id/ll_friendHeader"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="-15dp"
+        android:background="@drawable/headerbackground"
+        android:backgroundTint="@color/gray"
+        android:clickable="true"
+        android:gravity="center"
+        android:paddingLeft="25dp"
+        android:paddingTop="15dp"
+        android:paddingRight="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_chatting"
-        app:srcCompat="@drawable/back_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_chatting">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fcv_chattingDrawer"
-        android:name="com.example.pyxiskapri.fragments.DrawerNav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="200dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_friendAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_weight="0"
+            app:cardBackgroundColor="@color/transparent"
+            app:cardCornerRadius="100dp">
+
+            <ImageView
+                android:id="@+id/iv_friendAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:clickable="true"
+                android:focusable="true"
+                tools:srcCompat="@tools:sample/avatars" />
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/ll_friendInfo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:gravity="left|center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_friendUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="14dp"
+                android:fontFamily="@font/montserrat_regular"
+                android:gravity="left|center_vertical"
+                android:text="Firname Lastname"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="1"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:text="Username"
+                    android:textColor="@color/red"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@drawable/navmenubackground"
+        android:backgroundTint="@color/gray"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/navMenu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:windowSoftInputMode="adjustPan|adjustResize">
+
+        <EditText
+            android:id="@+id/et_dialogNewCommentText2"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/et_rounded"
+            android:backgroundTint="@color/dark_gray"
+            android:ems="10"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center_vertical"
+            android:hint="Enter your message..."
+            android:inputType="textMultiLine"
+            android:minHeight="44dp"
+            android:paddingLeft="10dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textColorHint="#80FFFFFF"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_postComment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btn_postComment"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_weight="0"
+            android:background="@drawable/et_rounded"
+            android:backgroundTint="@color/red"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_sendIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_weight="0"
+                android:foreground="@drawable/send"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/navMenu"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:background="@drawable/navmenubackground"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingEnd="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_drawer_nav" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_newPost"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/addimage"
+            app:tint="#292D33" />
+
+        <ImageView
+            android:id="@+id/btn_discover"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/map"
+            app:tint="#292D33" />
+
+        <ImageView
+            android:id="@+id/btn_home"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/home"
+            app:tint="#292D33" />
+
+
+        <ImageView
+            android:id="@+id/btn_messages"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/messages"
+            app:tint="@color/red" />
+
+        <ImageView
+            android:id="@+id/btn_notifications"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            app:srcCompat="@drawable/notifications"
+            app:tint="#292D33" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

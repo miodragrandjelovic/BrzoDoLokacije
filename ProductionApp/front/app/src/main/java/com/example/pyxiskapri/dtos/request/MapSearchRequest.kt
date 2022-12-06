@@ -10,5 +10,16 @@ data class MapSearchRequest(
     @SerializedName("countOfResults")
     var countOfResults: Int,
     @SerializedName("friendsOnly")
-    var friendsOnly: Boolean
+    var friendsOnly: Boolean,
+
+    @SerializedName("name")
+    var name: String = "",
+    @SerializedName("searchType")
+    var searchType: Int = 0,
+    @SerializedName("longitude")
+    var longitude: Double = 0.0,
+    @SerializedName("latitude")
+    var latitude: Double = 0.0,
+    @SerializedName("distance")
+    var distance: Double = 0.0
 )
