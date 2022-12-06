@@ -403,8 +403,12 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     private fun setupUserPostAdapter() {
-        userPostAdapter = UserPostsAdapter(mutableListOf(),this)
+        userPostAdapter = UserPostsAdapter(mutableListOf(),this, ::onPostDelete)
         gv_user_posts.adapter = userPostAdapter
+    }
+
+    private fun onPostDelete(){
+
     }
 
 

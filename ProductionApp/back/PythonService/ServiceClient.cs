@@ -11,19 +11,21 @@ namespace PyxisKapriBack.PythonService
         private readonly HttpClient client;
         private readonly IConfiguration configuration;
 
-        private readonly string uri;
+        private readonly string uri;// = "http://147.91.204.115:";
+        //private readonly int port = 10036;
 
         public ServiceClient(HttpClient client, IConfiguration configuration)
         {
             this.client = client;
             this.configuration = configuration;
 
-            //uri = configuration.GetSection("ML_Server_Config:http") + configuration.GetSection("ML_Server_Config:host").Value.ToString() + ":" + configuration.GetSection("ML_Server_Config:port").Value.ToString() + "/";
+            uri = configuration.GetSection("PyService_Local_Config").GetSection("http").Value.ToString() + configuration.GetSection("PyService_Local_Config").GetSection("host").Value.ToString() + ":" + configuration.GetSection("PyService_Local_Config").GetSection("port").Value.ToString() + "/";
+            //uri = configuration.GetSection("PyService_Server_Config").GetSection("http").Value.ToString() + configuration.GetSection("PyService_Server_Config").GetSection("host").Value.ToString() + ":" + configuration.GetSection("PyService_Server_Config").GetSection("port").Value.ToString() + "/";
         }
 
         public async Task<String> GetMean()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://127.0.0.1:8000/");
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             using (var response = await client.SendAsync(request))
@@ -44,9 +46,10 @@ namespace PyxisKapriBack.PythonService
             };
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-            HttpResponseMessage httpResponse = await client.PostAsync("http://127.0.0.1:8000/image", content);
+            HttpResponseMessage httpResponse = await client.PostAsync(uri + "image", content);
 
             var result = await httpResponse.Content.ReadAsStringAsync();
+            Console.WriteLine(uri);
             return JsonConvert.DeserializeObject<string>(result);
 
         }
@@ -59,7 +62,7 @@ namespace PyxisKapriBack.PythonService
             };
             var content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-            HttpResponseMessage httpResponse = await client.PostAsync("http://127.0.0.1:8000/face-detect", content);
+            HttpResponseMessage httpResponse = await client.PostAsync(uri + "face-detect", content);
 
             var response = await httpResponse.Content.ReadAsStringAsync();
 

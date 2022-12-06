@@ -29,10 +29,10 @@ namespace PyxisKapriBack.Controllers
         }
 
 
-        [HttpGet("image/{path}")]
-        public async Task<IActionResult> Get(string path)
+        [HttpGet("image")]
+        public async Task<IActionResult> GetAnswer()
         {
-            var response = client.SendPathToService(path).Result;
+            var response = client.SendPathToService(@"C:\Users\Tekalo\Desktop\brzodolokacije\ProductionApp\back\Images\marko123\profile_image5761606153381296376.jpg").Result;
             var message = new
             {
                 message = response

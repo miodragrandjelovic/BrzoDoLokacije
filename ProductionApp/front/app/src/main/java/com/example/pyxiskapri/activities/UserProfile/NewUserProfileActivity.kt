@@ -141,8 +141,12 @@ class NewUserProfileActivity : AppCompatActivity(){
     }
 
     private fun setupUserPostAdapter() {
-        userPostAdapter = UserPostsAdapter(mutableListOf(),this)
+        userPostAdapter = UserPostsAdapter(mutableListOf(),this, ::onPostDelete)
         gv_n_user_posts.adapter = userPostAdapter
+    }
+
+    private fun onPostDelete(){
+        post_number.text = (post_number.text.toString().toInt() - 1).toString()
     }
 
 

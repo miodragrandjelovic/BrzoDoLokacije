@@ -65,18 +65,18 @@ namespace PyxisKapriBack.Services
                 foreach (var image in post.Images)
                 {
                     fileService.AddFile(fullPath, image);
-                    /*bool exists = client.DoFacesExistOnImage(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName)).Result;
+                    bool exists = client.DoFacesExistOnImage(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName)).Result;
                     if (exists == true)
                         File.Delete(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName));
                     else
-                    {*/
+                    {
                         Image newImage = new Image();
                         newImage.ImageName = image.FileName;
                         
                         newPost.Images.Add(newImage);
 
                         client.SendPathToService(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName).ToString());
-                    //}
+                    }
                 }
             }
             postDAL.AddPost(newPost);

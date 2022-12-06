@@ -225,7 +225,14 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
                 call: Call<ArrayList<CustomMarkerResponse>>,
                 response: Response<ArrayList<CustomMarkerResponse>>
             ) {
+                if(response.isSuccessful) {
+                    if(response.body() != null && response.body()?.size != 0){
+                        post_number_um.text = response.body()!!.size.toString()
+                        Picasso.get()
+                            .load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage))
+                            .into(coverImage_m)
 
+<<<<<<< Updated upstream
                 // izvrsava se samo prvi put, namesta se kamera i stavlja cover image
                 if(pom) {
 
@@ -235,6 +242,12 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
                         LatLng(response.body()!![0].latitude, response.body()!![0].longitude)
 
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraLocation, 3f))
+=======
+                        for (post: CustomMarkerResponse in response.body()!!) {
+
+                            var location = LatLng(post.latitude, post.longitude)
+
+>>>>>>> Stashed changes
 
                     Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(coverImage_m)
 
@@ -248,29 +261,47 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
                 {
                     var location: LatLng = LatLng(post.latitude,post.longitude)
 
+                            Picasso.get().load(UtilityFunctions.getFullImagePath(post.coverImage))
+                                .into(object : com.squareup.picasso.Target {
+                                    override fun onBitmapLoaded(
+                                        bitmap: Bitmap?,
+                                        from: Picasso.LoadedFrom?
+                                    ) {
 
-                    Picasso.get().load(UtilityFunctions.getFullImagePath(post.coverImage)).into(object : com.squareup.picasso.Target{
-                        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                                        var marker = map.addMarker(
+                                            MarkerOptions().position(location)
+                                                .icon(
+                                                    BitmapDescriptorFactory.fromBitmap(
+                                                        getMarkerBitmapFromView(
+                                                            mCustomMarkerView,
+                                                            bitmap
+                                                        )!!
+                                                    )
+                                                )
+                                        )
 
-                            var marker = map.addMarker( MarkerOptions().position(location)
-                                .icon( BitmapDescriptorFactory.fromBitmap(
-                                    getMarkerBitmapFromView(mCustomMarkerView, bitmap)!!)))
+                                        marker?.tag = post.postId
 
-                            marker?.tag=post.postId
+                                    }
+
+                                    override fun onBitmapFailed(
+                                        e: Exception?,
+                                        errorDrawable: Drawable?
+                                    ) {
+
+                                    }
+
+                                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+
+                                    }
+
+<<<<<<< Updated upstream
+=======
+                                })
 
                         }
-
-                        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-
-                        }
-
-                        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-
-                        }
-
-                    })
-
-
+                    }
+>>>>>>> Stashed changes
                 }
 
             }
