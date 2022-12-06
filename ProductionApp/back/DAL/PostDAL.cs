@@ -191,5 +191,20 @@ namespace PyxisKapriBack.DAL
             }
             return locationManager.GetAllAroundPosts(coordinate, posts, distance); 
         }
+
+        public double GetAverageGrade(int postId)
+        {
+            var post = _context.Posts.Where(post => post.Id.Equals(postId)).FirstOrDefault();
+            if (post == null)
+                return 0;
+            var sum = post.Likes.Sum(like => like.Grade);
+            var count = post.Likes.Count();
+
+            if (sum == 0)
+                return 0;
+            if (count == 0)
+                return 0;
+            return sum / count; 
+        }
     }
 }

@@ -46,6 +46,7 @@ namespace PyxisKapriBack.UI
                     FullProfileImagePath = Path.Combine(post.User.FolderPath,post.User.FileName),
                     NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
                     NumberOfViews = 0,
+                    AverageGrade = postService.GetAverageGrade(post.Id), 
                     Username = post.User.Username,
                     FullCoverImagePath = Path.Combine(post.User.FolderPath,post.PostPath,post.CoverImageName),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
@@ -70,6 +71,7 @@ namespace PyxisKapriBack.UI
                     FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
                     NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
                     NumberOfViews = 0,
+                    AverageGrade = postService.GetAverageGrade(post.Id),
                     Username = post.User.Username,
                     FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
@@ -107,6 +109,7 @@ namespace PyxisKapriBack.UI
                 Country = string.Empty,
                 Images = images,
                 NumberOfComments = post.Comments != null ? post.Comments.Count() : 0,
+                AverageGrade = postService.GetAverageGrade(post.Id)
             };
 
            
@@ -123,7 +126,8 @@ namespace PyxisKapriBack.UI
                 {
                    // CoverImage = post.CoverImage,
                     NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
-                    NumberOfViews = 0
+                    NumberOfViews = 0,
+                    AverageGrade = postService.GetAverageGrade(post.Id)
                 });
             }
 
@@ -174,6 +178,7 @@ namespace PyxisKapriBack.UI
                     FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
                     NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
                     NumberOfViews = 0,
+                    AverageGrade = postService.GetAverageGrade(post.Id),
                     Username = post.User.Username.ToString(),
                     FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
                     DateCreated = post.CreatedDate.ToString("g"),
@@ -195,6 +200,7 @@ namespace PyxisKapriBack.UI
                     Id = post.Id,
                     FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
                     NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
+                    AverageGrade = postService.GetAverageGrade(post.Id), 
                     DateCreated = post.CreatedDate.ToString("g"),
                     Location = post.Location.Name, 
                     City = post.Location.City.Name, 
@@ -244,6 +250,7 @@ namespace PyxisKapriBack.UI
                     FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
                     NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
                     NumberOfViews = 0,
+                    AverageGrade = postService.GetAverageGrade(postID),
                     Username = post.User.Username,
                     FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),

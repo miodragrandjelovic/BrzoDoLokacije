@@ -301,5 +301,10 @@ namespace PyxisKapriBack.Services
 
             return likeService.AddLike(like); 
         }
+
+        public double GetAverageGrade(int postId)
+        {
+            return postDAL.GetAverageGrade(postId); 
+        }
     }
 }
