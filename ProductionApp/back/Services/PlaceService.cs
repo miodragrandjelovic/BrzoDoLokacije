@@ -32,22 +32,17 @@ namespace PyxisKapriBack.Services
 
         public List<LocationDTO> GetAllAroundLocationsByName(string location, double distance = Constants.Constants.DISTANCE)
         {
-            var _location = _iLocationDAL.GetLocation(location);
+            Location _location = _iLocationDAL.GetLocation(location);
 
-            if (location == null)
+            if ((location == null) || (_location.Longitude == 0) || (_location.Latitude == 0))
                 return null; 
 
-            return createLocationDTOList(_iLocationDAL.GetAllAroundLocations(_location, distance)); 
+            return createLocationDTOList(_iLocationDAL.GetAllAroundLocations(_location.Latitude, _location.Longitude, distance)); 
         }
 
         public List<LocationDTO> GetAllAroundLocationsByCoordinates(double longitude, double latitude, double distance = 1500)
         {
-            var location = new Location()
-            {
-                Longitude = longitude,
-                Latitude = latitude
-            }; 
-            var locations = _iLocationDAL.GetAllAroundLocations(location, distance);
+            var locations = _iLocationDAL.GetAllAroundLocations(latitude, longitude, distance);
 
             var locationsDTO = new List<LocationDTO>();
             foreach (Location loc in locations)
@@ -55,7 +50,7 @@ namespace PyxisKapriBack.Services
                 locationsDTO.Add(new LocationDTO
                 {
                     Id = loc.Id,
-                    Name = String.Concat(location.Name, ", ", location.City, ", ", location.City.Country),
+                    Name = loc.Name,
                     Distance = loc.Distance
                 });
             }

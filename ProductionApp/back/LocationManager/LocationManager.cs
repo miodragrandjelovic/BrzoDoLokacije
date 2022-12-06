@@ -13,22 +13,24 @@ namespace PyxisKapriBack.LocationManager
             return coordinate1.GetDistanceTo(coordinate2);
         }
 
-        public List<Location> GetAllAroundLocations(Location location, List<Location> locations, double distance = Constants.Constants.DISTANCE)
+        public List<Location> GetAllAroundLocations(GeoCoordinate coordinate, List<Post> posts, double distance = Constants.Constants.DISTANCE)
         {
             var closest = new List<Location>();
             double dist;
-            if (location == null)
+            if (coordinate == null)
                 return closest; 
 
-            foreach(Location loc in locations)
+            foreach(var post in posts)
             {
-                if ((loc.Latitude == null) || (loc.Longitude == null))
+                if ((post.Latitude == null) || (post.Longitude == null))
                     continue; 
-                dist = GetDistance(location.Latitude, location.Longitude, loc.Latitude, loc.Longitude); 
+                dist = GetDistance(coordinate.Latitude, coordinate.Longitude, Convert.ToDouble(post.Latitude), Convert.ToDouble(post.Longitude)); 
                 if (dist <= distance)
                 {
-                    loc.Distance = Math.Round(dist,2); 
-                    closest.Add(loc);
+                    var location = new Location();
+                    location.Name = post.FullLocation; 
+                    location.Distance = Math.Round(dist,2); 
+                    closest.Add(location);
                 }
             }
             return closest;

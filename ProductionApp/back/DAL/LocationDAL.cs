@@ -143,11 +143,11 @@ namespace PyxisKapriBack.DAL
             return locations; 
         }*/
 
-        public List<Location> GetAllAroundLocations(Location location, double distance = Constants.Constants.DISTANCE)
+        public List<Location> GetAllAroundLocations(double latitude, double longitude, double distance = Constants.Constants.DISTANCE)
         {
-            List<Location> locations;
-            locations = _context.Locations.Include(location => location.Posts).ToList();
-            locations = locationManager.GetAllAroundLocations(location, locations, distance); 
+            List<Post> posts = _context.Posts.ToList(); 
+            List<Location> locations = locationManager.GetAllAroundLocations(new System.Device.Location.GeoCoordinate(latitude, longitude),
+                                                                             posts, distance); 
             return locations; 
         }
 
