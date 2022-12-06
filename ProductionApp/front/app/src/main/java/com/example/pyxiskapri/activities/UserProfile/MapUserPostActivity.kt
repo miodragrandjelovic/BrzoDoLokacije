@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.*
 import com.example.pyxiskapri.dtos.response.CustomMarkerResponse
@@ -21,11 +22,13 @@ import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.PostOnMapResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
+import com.example.pyxiskapri.models.ChangeCredentialsInformation
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -34,6 +37,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_change_credentials.*
+import kotlinx.android.synthetic.main.activity_foreign_profile_map.*
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_map_user_post.*
 import kotlinx.android.synthetic.main.activity_new_user_profile.*
@@ -53,12 +57,13 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
     lateinit var mCustomMarkerView:View
     lateinit var mMarkerImageView: ImageView
+    lateinit var markerImage: ImageView
 
     private lateinit var map: GoogleMap
     private lateinit var geocoder: Geocoder
 
 
-
+    var mapflag = 0
 
     /////////////////////////////////
 
@@ -66,6 +71,8 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
     lateinit var  window: PopupWindow
     lateinit var view : View
+
+    var changeCredentialsInformation = ChangeCredentialsInformation("","")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,6 +103,8 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
         mMarkerImageView = mCustomMarkerView.findViewById(R.id.cover_image)
 
+        markerImage = mCustomMarkerView.findViewById(R.id.marker_image)
+
 
 
     }
@@ -111,7 +120,7 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
         map = googleMap
         geocoder = Geocoder(this, Locale.getDefault())
 
-        addCustomMarkerFromURL();
+        addCustomMarkerFromURL(true);
 
         map.setOnMarkerClickListener{marker ->
 
@@ -138,6 +147,47 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
             true
         }
 
+        map.setOnCameraMoveListener {
+            val cameraPosition = googleMap.cameraPosition
+
+
+            if (cameraPosition.zoom > 5.0 && mapflag==0) {
+
+                var layoutParams = ConstraintLayout.LayoutParams(248, 340)
+                markerImage.layoutParams = layoutParams
+
+                layoutParams = ConstraintLayout.LayoutParams(248, 248)
+                mMarkerImageView.layoutParams = layoutParams
+
+
+                map.clear()
+
+                addCustomMarkerFromURL(false)
+
+
+                mapflag=1
+            }
+
+            else if(cameraPosition.zoom > 10.0 && mapflag==1)
+            {
+                var layoutParams = ConstraintLayout.LayoutParams(330, 440)
+                markerImage.layoutParams = layoutParams
+
+                layoutParams = ConstraintLayout.LayoutParams(330, 330)
+                mMarkerImageView.layoutParams = layoutParams
+
+
+                map.clear()
+
+                addCustomMarkerFromURL(false)
+
+
+                mapflag=2
+            }
+
+        }
+
+
     }
 
 
@@ -161,29 +211,42 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
         return returnedBitmap
     }
 
-    private fun addCustomMarkerFromURL() {
+    private fun addCustomMarkerFromURL(pom: Boolean) {
         if (map == null) {
             return
         }
 
         var context:Context = this
 
-
-
         var username = SessionManager(this).fetchUserData()?.username
+
         apiClient.getPostService(context).PostOnMap(username!!).enqueue(object : Callback<ArrayList<CustomMarkerResponse>>{
             override fun onResponse(
                 call: Call<ArrayList<CustomMarkerResponse>>,
                 response: Response<ArrayList<CustomMarkerResponse>>
             ) {
 
-                post_number_um.text = response.body()!!.size.toString()
-                Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(coverImage_m)
+                // izvrsava se samo prvi put, namesta se kamera i stavlja cover image
+                if(pom) {
 
-                for (post: CustomMarkerResponse in response.body()!!) {
+                    post_number_um.text = response.body()!!.size.toString()
 
-                    var location = LatLng(post.latitude, post.longitude)
+                    var cameraLocation: LatLng =
+                        LatLng(response.body()!![0].latitude, response.body()!![0].longitude)
 
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraLocation, 3f))
+
+                    Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(coverImage_m)
+
+                    // mora da se popuni u slucaju odlaska sa ovog aktivija na aktiviti changeCredentials
+                    changeCredentialsInformation.coverImage=response.body()!![0].coverImage
+                    changeCredentialsInformation.postsNumber=response.body()!!.size.toString()
+
+                }
+
+                for(post: CustomMarkerResponse in response.body()!!)
+                {
+                    var location: LatLng = LatLng(post.latitude,post.longitude)
 
 
                     Picasso.get().load(UtilityFunctions.getFullImagePath(post.coverImage)).into(object : com.squareup.picasso.Target{
@@ -208,8 +271,8 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
                     })
 
 
-
                 }
+
             }
 
             override fun onFailure(call: Call<ArrayList<CustomMarkerResponse>>, t: Throwable) {
@@ -219,9 +282,8 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
         })
 
+
     }
-
-
 
     fun showDrawerMenu(view: View){
         if(view.id == R.id.btn_menu)
@@ -282,6 +344,7 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
             view.settings.setOnClickListener() {
                 val intent = Intent(this, ChangeCredentialsActivity::class.java);
+                ActivityTransferStorage.changeCredentialsInformation = changeCredentialsInformation
                 startActivity(intent);
             }
 
