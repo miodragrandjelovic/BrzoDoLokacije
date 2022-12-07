@@ -197,8 +197,8 @@ namespace PyxisKapriBack.DAL
             var post = _context.Posts.Where(post => post.Id.Equals(postId)).FirstOrDefault();
             if (post == null)
                 return 0;
-            var sum = post.Likes.Sum(like => like.Grade);
-            var count = post.Likes.Count();
+            var sum = _context.Likes.Where(like => like.PostId.Equals(postId)).Sum(like => like.Grade); 
+            var count = _context.Likes.Where(like => like.PostId.Equals(postId)).Count();
 
             if (sum == 0)
                 return 0;
