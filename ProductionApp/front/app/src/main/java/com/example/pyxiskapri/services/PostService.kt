@@ -1,5 +1,6 @@
 package com.example.pyxiskapri.services
 
+import com.example.pyxiskapri.dtos.request.GradeRequest
 import com.example.pyxiskapri.dtos.request.MapSearchRequest
 import com.example.pyxiskapri.dtos.request.NewPostRequest
 import com.example.pyxiskapri.dtos.response.*
@@ -34,8 +35,8 @@ interface PostService {
     @GET("api/Post/GetPostById/{id}")
     fun getPostById(@Path(value= "id") id: Int) : Call<PostAdditionalData>
 
-    @PUT("api/Post/SetLike/{postId}")
-    fun setLike(@Path(value= "postId") postId: Int) : Call<MessageResponse>
+    @POST("api/Post/SetLike")
+    fun setLike(@Body gradeRequest: GradeRequest) : Call<MessageResponse>
 
     @DELETE("api/Post/RemoveLike/{postId}")
     fun removeLike(@Path(value= "postId") postId: Int) : Call<MessageResponse>

@@ -1,8 +1,8 @@
 package com.example.pyxiskapri.utility
 
 object Constants {
-    //const val BASE_URL: String = "http://10.0.2.2:5231"
-    const val BASE_URL: String = "http://softeng.pmf.kg.ac.rs:10030"
+    const val BASE_URL: String = "http://10.0.2.2:5231"
+    //const val BASE_URL: String = "http://softeng.pmf.kg.ac.rs:10030"
     const val SHAREDPREFS_PATH: String = "com.example.pyxiskapri"
 
     // Kodovi

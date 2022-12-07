@@ -3,14 +3,12 @@ package com.example.pyxiskapri.activities
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pyxiskapri.R
@@ -21,11 +19,11 @@ import com.example.pyxiskapri.dtos.response.CommentResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostAdditionalData
 import com.example.pyxiskapri.fragments.DrawerNav
+import com.example.pyxiskapri.fragments.GradeSelectorFragment
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.*
 import com.google.android.gms.maps.model.LatLng
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_open_post.*
 import kotlinx.android.synthetic.main.activity_open_post.btn_discover
 import kotlinx.android.synthetic.main.activity_open_post.btn_home
@@ -36,6 +34,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+
 
 class OpenPostActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
@@ -48,6 +47,8 @@ class OpenPostActivity : AppCompatActivity() {
 
     private lateinit var commentsAdapter: CommentAdapter
 
+    private lateinit var gradeSelectorFragment: GradeSelectorFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_open_post)
@@ -56,6 +57,8 @@ class OpenPostActivity : AppCompatActivity() {
 
         sessionManager = SessionManager(this)
         apiClient = ApiClient()
+
+        gradeSelectorFragment = supportFragmentManager.findFragmentById(R.id.gradeSelectorContainer) as GradeSelectorFragment
 
         setupNavButtons()
 
@@ -126,56 +129,56 @@ class OpenPostActivity : AppCompatActivity() {
         // NOTIFICATIONS
     }
 
-    private fun changeLikeStatus(){
-        if(postData.isLiked) {
-            apiClient.getPostService(this).removeLike(postData.id)
-                .enqueue(object : Callback<MessageResponse> {
-                    override fun onResponse(
-                        call: Call<MessageResponse>,
-                        response: Response<MessageResponse>
-                    ) {
-                        if(response.isSuccessful) {
-                            postData.isLiked = false
-                            postData.likeCount -= 1
-                            updatePostData(null)
-                        }
-
-                    }
-
-                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                        Log.d(
-                            "OpenPostActivity",
-                            "Nije implementiran onFailure za removeLike api zahtev!"
-                        )
-                    }
-
-                })
-        }
-        else {
-            apiClient.getPostService(this).setLike(postData.id)
-                .enqueue(object : Callback<MessageResponse> {
-                    override fun onResponse(
-                        call: Call<MessageResponse>,
-                        response: Response<MessageResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            postData.isLiked = true
-                            postData.likeCount += 1
-                            updatePostData(null)
-                        }
-
-                    }
-
-                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                        Log.d(
-                            "OpenPostActivity",
-                            "Nije implementiran onFailure za setLike api zahtev!"
-                        )
-                    }
-
-                })
-        }
-    }
+//    private fun changeLikeStatus(){
+//        if(postData.isLiked) {
+//            apiClient.getPostService(this).removeLike(postData.id)
+//                .enqueue(object : Callback<MessageResponse> {
+//                    override fun onResponse(
+//                        call: Call<MessageResponse>,
+//                        response: Response<MessageResponse>
+//                    ) {
+//                        if(response.isSuccessful) {
+//                            postData.isLiked = false
+//                            postData.likeCount -= 1
+//                            updatePostData(null)
+//                        }
+//
+//                    }
+//
+//                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+//                        Log.d(
+//                            "OpenPostActivity",
+//                            "Nije implementiran onFailure za removeLike api zahtev!"
+//                        )
+//                    }
+//
+//                })
+//        }
+//        else {
+//            apiClient.getPostService(this).setLike(postData.id)
+//                .enqueue(object : Callback<MessageResponse> {
+//                    override fun onResponse(
+//                        call: Call<MessageResponse>,
+//                        response: Response<MessageResponse>
+//                    ) {
+//                        if (response.isSuccessful) {
+//                            postData.isLiked = true
+//                            postData.likeCount += 1
+//                            updatePostData(null)
+//                        }
+//
+//                    }
+//
+//                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+//                        Log.d(
+//                            "OpenPostActivity",
+//                            "Nije implementiran onFailure za setLike api zahtev!"
+//                        )
+//                    }
+//
+//                })
+//        }
+//    }
 
 
     private fun requestPostData(){
@@ -244,19 +247,21 @@ class OpenPostActivity : AppCompatActivity() {
             }
         }
 
-        tv_likeCount.text = postData.likeCount.toString()
-        tv_viewCount.text = postData.viewCount.toString()
+        gradeSelectorFragment.gradedPostId = postData.id
 
-        // Liked
-        if(postData.isLiked)
-            iv_likeIcon.setColorFilter(ContextCompat.getColor(this, R.color.gold), PorterDuff.Mode.SRC_IN);
-        else
-            iv_likeIcon.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_IN);
-
-
-        btn_like.setOnClickListener{
-            changeLikeStatus()
-        }
+//        tv_likeCount.text = postData.likeCount.toString()
+//        tv_viewCount.text = postData.viewCount.toString()
+//
+//        // Liked
+//        if(postData.isLiked)
+//            iv_likeIcon.setColorFilter(ContextCompat.getColor(this, R.color.gold), PorterDuff.Mode.SRC_IN);
+//        else
+//            iv_likeIcon.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_IN);
+//
+//
+//        btn_like.setOnClickListener{
+//            changeLikeStatus()
+//        }
 
 
         // REPORT CHECK
