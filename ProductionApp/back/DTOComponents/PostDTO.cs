@@ -11,6 +11,7 @@
         public int NumberOfLikes { get; set; } = 0;
         public int NumberOfViews { get; set; } = 0;
         public bool IsLiked { get; set; } = false;
+        public int Grade { get; set; } = 0; 
         public string DateCreated { get; set; } = string.Empty;
         public string Location { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;

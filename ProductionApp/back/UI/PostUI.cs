@@ -47,6 +47,7 @@ namespace PyxisKapriBack.UI
                     NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
                     NumberOfViews = 0,
                     AverageGrade = postService.GetAverageGrade(post.Id), 
+                    Grade = postService.GetGrade(post.Id, userService.GetLoggedUser()),
                     Username = post.User.Username,
                     FullCoverImagePath = Path.Combine(post.User.FolderPath,post.PostPath,post.CoverImageName),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
@@ -62,7 +63,7 @@ namespace PyxisKapriBack.UI
             var posts = postService.GetFollowingPosts(userService.GetLoggedUser(), sortType);
 
             var allPosts = new List<PostDTO>();
-
+            var username = userService.GetLoggedUser();
             foreach (var post in posts)
             {
                 allPosts.Add(new PostDTO
@@ -74,7 +75,8 @@ namespace PyxisKapriBack.UI
                     AverageGrade = postService.GetAverageGrade(post.Id),
                     Username = post.User.Username,
                     FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
-                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
+                    IsLiked = likeService.IsLiked(post.Id, username),
+                    Grade = postService.GetGrade(post.Id, username),
                     DateCreated = post.CreatedDate.ToString("g")
                 });
             }
@@ -108,8 +110,7 @@ namespace PyxisKapriBack.UI
                 City = string.Empty,
                 Country = string.Empty,
                 Images = images,
-                NumberOfComments = post.Comments != null ? post.Comments.Count() : 0,
-                AverageGrade = postService.GetAverageGrade(post.Id)
+                NumberOfComments = post.Comments != null ? post.Comments.Count() : 0
             };
 
            
@@ -169,7 +170,8 @@ namespace PyxisKapriBack.UI
         {
             var postsDTO = new List<PostDTO>();
             if (posts == null)
-                return null; 
+                return null;
+            var username = userService.GetLoggedUser(); 
             foreach (var post in posts)
             {
                 postsDTO.Add(new PostDTO
@@ -179,10 +181,11 @@ namespace PyxisKapriBack.UI
                     NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
                     NumberOfViews = 0,
                     AverageGrade = postService.GetAverageGrade(post.Id),
+                    Grade = postService.GetGrade(post.Id, username), 
                     Username = post.User.Username.ToString(),
                     FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
                     DateCreated = post.CreatedDate.ToString("g"),
-                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
+                    IsLiked = likeService.IsLiked(post.Id, username),
                 });
             }
 
@@ -243,6 +246,7 @@ namespace PyxisKapriBack.UI
         public PostDTO GetPostById(int postID)
         {
             var post = postService.GetPost(postID);
+            var username = userService.GetLoggedUser(); 
             if (post != null)
                 return new PostDTO
                 {
@@ -251,9 +255,10 @@ namespace PyxisKapriBack.UI
                     NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
                     NumberOfViews = 0,
                     AverageGrade = postService.GetAverageGrade(postID),
+                    Grade = postService.GetGrade(post.Id, username),
                     Username = post.User.Username,
                     FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
-                    IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
+                    IsLiked = likeService.IsLiked(post.Id, username),
                     DateCreated = post.CreatedDate.ToString("g")
                 };
             return null;
