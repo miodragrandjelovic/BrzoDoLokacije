@@ -51,8 +51,8 @@ namespace PyxisKapriBack.UI
                     Username = post.User.Username,
                     FullCoverImagePath = Path.Combine(post.User.FolderPath,post.PostPath,post.CoverImageName),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
-                    DateCreated = post.CreatedDate.ToString("g")
-
+                    DateCreated = post.CreatedDate.ToString("g"),
+                    Count = post.Likes.Count()
                 });
             }
             return allPosts;
@@ -77,7 +77,8 @@ namespace PyxisKapriBack.UI
                     FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
                     IsLiked = likeService.IsLiked(post.Id, username),
                     Grade = postService.GetGrade(post.Id, username),
-                    DateCreated = post.CreatedDate.ToString("g")
+                    DateCreated = post.CreatedDate.ToString("g"),
+                    Count = post.Likes.Count()
                 });
             }
             return allPosts;
@@ -181,6 +182,7 @@ namespace PyxisKapriBack.UI
                     FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
                     DateCreated = post.CreatedDate.ToString("g"),
                     IsLiked = likeService.IsLiked(post.Id, username),
+                    Count = post.Likes.Count()
                 });
             }
 
@@ -254,7 +256,8 @@ namespace PyxisKapriBack.UI
                     Username = post.User.Username,
                     FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
                     IsLiked = likeService.IsLiked(post.Id, username),
-                    DateCreated = post.CreatedDate.ToString("g")
+                    DateCreated = post.CreatedDate.ToString("g"),
+                    Count = post.Likes.Count()
                 };
             return null;
         }

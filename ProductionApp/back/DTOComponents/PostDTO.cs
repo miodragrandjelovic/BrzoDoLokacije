@@ -16,6 +16,7 @@
         public string Location { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
         public string Country { get; set; } = string.Empty;
-        public double AverageGrade { get; set; } = 0; 
+        public double AverageGrade { get; set; } = 0;
+        public int Count { get; set; } = 0; 
     }
 }
