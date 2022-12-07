@@ -45,6 +45,8 @@ namespace PyxisKapriBack.UI
                 ProfileImagePath = Path.Combine(user.FolderPath, user.FileName),
                 UserFollowersCount = user.Followers != null ? user.Followers.Count : 0,
                 UserFollowingCount = user.Following != null ? user.Following.Count : 0,
+                AverageGradeForAllPosts = userService.GetAverageGradeForAllPosts(user.Username), 
+                DifferentLocations = userService.GetDifferentLocations(user.Username)
             };
 
             return userDTO;

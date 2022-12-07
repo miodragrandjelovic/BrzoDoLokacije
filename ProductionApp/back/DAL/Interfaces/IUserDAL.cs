@@ -13,5 +13,7 @@ namespace PyxisKapriBack.DAL.Interfaces
         bool UpdateUser(User user);
         bool DeleteUser(int userID); 
         List<User> GetAllUsers(User user);
+        double GetAverageGradeForAllPosts(string username);
+        int GetDifferentLocations(string username); 
     }
 }

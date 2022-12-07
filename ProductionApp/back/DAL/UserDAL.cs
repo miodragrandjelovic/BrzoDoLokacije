@@ -77,5 +77,34 @@ namespace PyxisKapriBack.DAL
         {
             return _context.Users.Where(u => u.Id != user.Id).ToList(); 
         }
+
+        public double GetAverageGradeForAllPosts(string username)
+        {
+            var posts = _context.Posts.Where(post => post.User.Username.Equals(username)).Select(post => post.Id); 
+            if (posts == null)
+                return 0;
+
+            var likes = _context.Likes.Where(like => posts.Contains(like.PostId));
+            if (likes == null)
+                return 0; 
+
+            var sum = likes.Sum(like => like.Grade);
+            var count = likes.Count();
+
+            if (sum == 0)
+                return 0;
+            if (count == 0)
+                return 0;
+            return sum / count;
+        }
+
+        public int GetDifferentLocations(string username)
+        {
+            int countLocations = _context.Posts.Where(post => post.User.Username.Equals(username))
+                                          .Select(post => post.FullLocation)
+                                          .Distinct()
+                                          .Count();
+            return countLocations; 
+        }
     }
 }

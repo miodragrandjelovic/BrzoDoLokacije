@@ -12,9 +12,7 @@ namespace PyxisKapriBack.DTOComponents
         public string ProfileImagePath { get; set; } = string.Empty;
         public int UserFollowersCount { get; set; } = 0;    
         public int UserFollowingCount { get; set; } = 0;
-
-
-
-
+        public int DifferentLocations { get; set; } = 0;
+        public double AverageGradeForAllPosts { get; set; } = 0;
     }
 }

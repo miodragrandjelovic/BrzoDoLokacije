@@ -276,6 +276,8 @@ namespace PyxisKapriBack.Services
             Like existLike = likeService.GetLike(likeDTO.Username, likeDTO.PostId); 
             if(existLike != null)
             {
+                if (likeDTO.Grade == 0)
+                    return likeService.DeleteLike(likeDTO.PostId); 
                 existLike.Grade = likeDTO.Grade; 
                 return likeService.UpdateLike(existLike);
             }

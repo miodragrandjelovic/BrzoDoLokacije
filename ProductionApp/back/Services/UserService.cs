@@ -106,6 +106,16 @@ namespace PyxisKapriBack.Services
             return roleDAL.GetAvailableRolesForUser(loggedUser);
         }
 
+        public double GetAverageGradeForAllPosts(string username)
+        {
+            return userDAL.GetAverageGradeForAllPosts(username); 
+        }
+
+        public int GetDifferentLocations(string username)
+        {
+            return userDAL.GetDifferentLocations(username); 
+        }
+
         public string? GetLoggedUser()
         {
             var loggedUser = httpContextAccessor?.HttpContext?.User?.Identity?.Name;
