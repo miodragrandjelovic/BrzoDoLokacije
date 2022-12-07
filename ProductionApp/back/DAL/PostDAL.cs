@@ -204,7 +204,7 @@ namespace PyxisKapriBack.DAL
                 return 0;
             if (count == 0)
                 return 0;
-            return sum / count; 
+            return (sum*1.0) / count; 
         }
     }
 }

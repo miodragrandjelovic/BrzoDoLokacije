@@ -148,11 +148,6 @@ namespace PyxisKapriBack.UI
             return likeService.DeleteLike(postID);
         }
 
-        public Response SetLikeOnPost(int postID)
-        {
-            return postService.SetLikeOnPost(postID);
-        }
-
         public Response GetPostsOnMap(string username = "")
         {
             Response response;
@@ -271,10 +266,21 @@ namespace PyxisKapriBack.UI
             return createPostOnMapDTO(posts, userService.GetLoggedUser()).ToList(); 
         }
 
-        public Response SetLikeOnPost(LikeDTO likeDTO)
+        public LikeDTO SetLikeOnPost(LikeDTO likeDTO)
         {
             likeDTO.Username = userService.GetLoggedUser(); 
-            return postService.SetLikeOnPost(likeDTO); 
+            var code = postService.SetLikeOnPost(likeDTO).StatusCode;
+            if (code.Equals(StatusCodes.Status200OK))
+            {
+                return new LikeDTO
+                {
+                    Average = postService.GetAverageGrade(likeDTO.PostId),
+                    Grade = likeDTO.Grade,
+                    Count = postService.GetPost(likeDTO.PostId).Likes.Count()
+                };
+            }
+            return null;
         }
+
     }
 }
