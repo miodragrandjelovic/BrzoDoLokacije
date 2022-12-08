@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/follow_item"
+    android:layout_width="match_parent"
+    android:layout_height="76dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginBottom="5dp"
+    android:background="@color/dark_gray"
+    android:clickable="true"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/iv_borderRight"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:background="@color/red" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="30dp"
+        android:layout_weight="0"
+        app:cardCornerRadius="100dp">
+
+        <ImageView
+            android:id="@+id/iv_friendAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:focusable="true"
+            tools:srcCompat="@tools:sample/avatars" />
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/ll_friendInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_weight="1"
+        android:gravity="left|center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/flw_first_and_last_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/montserrat_medium"
+            android:gravity="left|center_vertical"
+            android:text="First and last name"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/flw_username"
+            android:layout_width="wrap_content"
+            android:layout_height="14dp"
+            android:layout_weight="0"
+            android:alpha=".8"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="username..."
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
