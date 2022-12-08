@@ -40,35 +40,35 @@ namespace PyxisKapriBack.Services
             newPost.User = loggedUser;
             newPost.CreatedDate = DateTime.Now;
             newPost.Description = post.Description;
-            newPost.CoverImageName = post.CoverImage.FileName;
+            newPost.CoverImageName =  post.Images[0].FileName;
             newPost.PostPath = postPath;
             newPost.Longitude = Convert.ToDouble(post.Longitude);
             newPost.Latitude = Convert.ToDouble(post.Latitude);
-            newPost.FullLocation = post.LocationName; 
-
+            newPost.FullLocation = post.LocationName;
+            newPost.Tags = post.Tags; 
             var fullPath = Path.Combine(loggedUser.FolderPath, postPath);
             var answer = fileService.CreateFolder(fullPath);
-            fileService.AddFile(fullPath, post.CoverImage);
+            fileService.AddFile(fullPath, post.Images[0]);
 
             //var response = client.DoFacesExistOnImage(Path.Combine(Directory.GetCurrentDirectory(), fullPath, post.CoverImage.FileName)).Result;
             //if(response == true)
             //    Console.WriteLine("Pronadjena lica");
-            client.SendPathToService(Path.Combine(Directory.GetCurrentDirectory(), fullPath, post.CoverImage.FileName).ToString());
+            client.SendPathToService(Path.Combine(Directory.GetCurrentDirectory(), fullPath, post.Images[0].FileName).ToString());
             // poziv py servisa za kompresiju slika
 
 
             newPost.Location = FixLocation(post.Address, post.LocationName, post.City, post.Country, 
                                            Convert.ToDouble(post.Longitude), Convert.ToDouble(post.Latitude)); 
             
-            if (post.Images.Count > 0)
+            if ((post.Images != null) && (post.Images.Count > 0))
             {
-                foreach (var image in post.Images)
+                foreach (var image in post.Images.Skip(1))
                 {
                     fileService.AddFile(fullPath, image);
-                    //bool exists = client.DoFacesExistOnImage(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName)).Result;
-                    //if (exists == true)
-                    //    File.Delete(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName));
-                    //else
+                    bool exists = client.DoFacesExistOnImage(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName)).Result;
+                    if (exists == true)
+                        File.Delete(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName));
+                    else
                     {
                         Image newImage = new Image();
                         newImage.ImageName = image.FileName;

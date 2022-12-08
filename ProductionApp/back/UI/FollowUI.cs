@@ -57,7 +57,7 @@ namespace PyxisKapriBack.UI
         public List<UserShortDTO> createListUserShortDTO(List<User> list)
         {
             var listUserShortDTO = new List<UserShortDTO>();
-
+            List<string> following = _iFollowService.GetFollowing(_iUserService.GetLoggedUser()).Select(user => user.Username).ToList(); 
             foreach (var item in list)
             {
                 listUserShortDTO.Add(new UserShortDTO
@@ -65,7 +65,8 @@ namespace PyxisKapriBack.UI
                     FirstName = item.FirstName,
                     LastName = item.LastName,
                     Username = item.Username,
-                    ProfileImage = Path.Combine(item.FolderPath, item.FileName)
+                    ProfileImage = Path.Combine(item.FolderPath, item.FileName),
+                    IsFollowed = following.Contains(item.Username)
                 });
             }
             return listUserShortDTO;

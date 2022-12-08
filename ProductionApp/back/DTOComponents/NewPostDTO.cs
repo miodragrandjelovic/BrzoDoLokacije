@@ -2,8 +2,7 @@
 {
     public class NewPostDTO
     {
-        public IFormFile CoverImage { get; set; }
-        public List<IFormFile> Images { get;set; }
+        public List<IFormFile>? Images { get;set; }
         public string Description { get; set; }
         public string Longitude { get; set; }
         public string Latitude { get; set; }
@@ -11,6 +10,6 @@
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
-
+        public string? Tags { get; set; }
     }
 }

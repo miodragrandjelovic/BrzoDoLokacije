@@ -20,7 +20,8 @@
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
 
-        public String FullLocation { get; set; } = Constants.Constants.UNKNWOWN; 
+        public String FullLocation { get; set; } = Constants.Constants.UNKNWOWN;
+        public String? Tags { get; set; } = String.Empty;
         #region 'User'
         public int UserId { get; set; }
         public User User { get; set; }
