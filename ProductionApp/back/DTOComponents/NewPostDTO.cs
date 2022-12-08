@@ -2,7 +2,6 @@
 {
     public class NewPostDTO
     {
-        public IFormFile CoverImage { get; set; }
         public List<IFormFile>? Images { get;set; }
         public string Description { get; set; }
         public string Longitude { get; set; }
