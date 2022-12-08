@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class CommentResponse(
     @SerializedName("id")
     var id: Int,
-    @SerializedName("profileImage")
+    @SerializedName("profileImagePath")
     var commenterImage: String,
     @SerializedName("username")
     var commenterUsername: String,
@@ -20,7 +20,9 @@ data class CommentResponse(
     @SerializedName("dislikeCount")
     var dislikeCount: Int = 0,
     @SerializedName("replyCount")
-    var replyCount: Int = 0
+    var replyCount: Int = 0,
+    @SerializedName("replyComments")
+    var replies: ArrayList<CommentResponse>
 
 
 )

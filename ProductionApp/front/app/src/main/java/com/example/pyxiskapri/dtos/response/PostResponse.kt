@@ -5,16 +5,19 @@ import com.google.gson.annotations.SerializedName
 data class PostResponse(
     @SerializedName("id")
     var id: Int,
-    @SerializedName("isLiked")
-    var isLiked: Boolean,
     @SerializedName("username")
     var ownerUsername: String,
-    @SerializedName("profileImage")
+    @SerializedName("fullProfileImagePath")
     var ownerImage: String,
-    @SerializedName("coverImage")
+    @SerializedName("fullCoverImagePath")
     var coverImage: String,
+    @SerializedName("dateCreated")
+    var postDate: String,
     @SerializedName("numberOfLikes")
     var likeCount: Int,
     @SerializedName("numberOfViews")
-    var viewCount: Int
+    var viewCount: Int,
+    @SerializedName("isLiked")
+    var isLiked: Boolean
+
 )

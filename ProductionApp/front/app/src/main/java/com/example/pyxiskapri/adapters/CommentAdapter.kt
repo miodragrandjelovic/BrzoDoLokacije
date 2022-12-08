@@ -15,19 +15,21 @@ import android.widget.ExpandableListView.OnGroupClickListener
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.dtos.request.NewReplyRequest
+import com.example.pyxiskapri.dtos.request.NewCommentRequest
 import com.example.pyxiskapri.dtos.response.CommentResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.models.CommentExpandableListItem
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.UtilityFunctions
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_comment.view.*
+import kotlinx.android.synthetic.main.item_friend_in_chat.view.*
 import kotlinx.android.synthetic.main.item_reply.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var context: Context) : BaseExpandableListAdapter(), OnGroupClickListener {
+class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var postId: Int, var context: Context) : BaseExpandableListAdapter(), OnGroupClickListener {
 
     private val apiClient: ApiClient = ApiClient()
     var layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -121,7 +123,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
 
         view?.apply {
             // Header
-            iv_commenterAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(comment.commenterImage))
+            Picasso.get().load(UtilityFunctions.getFullImagePath(comment.commenterImage)).into(iv_commenterAvatar)
             tv_commenterUsername.text = comment.commenterUsername
             tv_commentDate.text = comment.creationDate
 
@@ -255,7 +257,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
 
         view?.apply {
             // Header
-            iv_replierAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(reply.commenterImage))
+            Picasso.get().load(UtilityFunctions.getFullImagePath(reply.commenterImage)).into(iv_replierAvatar)
             tv_replierUsername.text = reply.commenterUsername
             tv_replyDate.text = reply.creationDate
 
@@ -301,7 +303,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
 
             // REPLY
             btn_replyToReply.setOnClickListener {
-                newReplyDialog(reply.id, reply.commenterUsername)
+                newReplyDialog(commentList[groupPosition].id, reply.commenterUsername)
             }
 
             // Like-Dislike Buttons
@@ -323,7 +325,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
                 }
 
 
-                likeComment(commentList[groupPosition].id)
+                likeComment(reply.id)
                 notifyDataSetChanged()
             }
             btn_replyDislike.setOnClickListener {
@@ -345,7 +347,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
                 }
 
 
-                dislikeComment(commentList[groupPosition].id)
+                dislikeComment(reply.id)
                 notifyDataSetChanged()
             }
 
@@ -386,12 +388,15 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
         }
 
         dialogPostReplyButton.setOnClickListener{
-            val newReplyRequest = NewReplyRequest(
-                commentId = commentId,
+            val newReplyRequest = NewCommentRequest(
+                postId = postId,
+                parentId = commentId,
                 commentText = dialogReplyText.text.toString()
             )
 
             sendNewReplyRequest(newReplyRequest)
+
+            dialog.dismiss()
         }
 
 
@@ -400,8 +405,8 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
 
     }
 
-    private fun sendNewReplyRequest(newReplyRequest: NewReplyRequest){
-        apiClient.getCommentService(context).addNewReply(newReplyRequest)
+    private fun sendNewReplyRequest(newReplyRequest: NewCommentRequest){
+        apiClient.getCommentService(context).addNewComment(newReplyRequest)
             .enqueue(object : Callback<MessageResponse> {
                 override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
                     if(response.isSuccessful) {

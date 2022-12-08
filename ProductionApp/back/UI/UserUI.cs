@@ -38,11 +38,15 @@ namespace PyxisKapriBack.UI
 
             var userDTO = new UserDTO
             {
-                ProfileImage = user.ProfileImage == null ? string.Empty : Convert.ToBase64String(user.ProfileImage),
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email
+                Email = user.Email,
+                ProfileImagePath = Path.Combine(user.FolderPath, user.FileName),
+                UserFollowersCount = user.Followers != null ? user.Followers.Count : 0,
+                UserFollowingCount = user.Following != null ? user.Following.Count : 0,
+                AverageGradeForAllPosts = userService.GetAverageGradeForAllPosts(user.Username), 
+                DifferentLocations = userService.GetDifferentLocations(user.Username)
             };
 
             return userDTO;
@@ -56,13 +60,15 @@ namespace PyxisKapriBack.UI
 
             var userDTO = new UserDTO
             {
-                ProfileImage = Convert.ToBase64String(fileService.GetUserProfileImage(user.FolderPath)),
-                               //user.ProfileImage == null ? string.Empty : Convert.ToBase64String(user.ProfileImage),
-                               
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email
+                Email = user.Email,
+                ProfileImagePath = Path.Combine(user.FolderPath, user.FileName),
+                UserFollowersCount = user.Followers != null ? user.Followers.Count : 0,
+                UserFollowingCount = user.Following != null ? user.Following.Count : 0,
+                AverageGradeForAllPosts = userService.GetAverageGradeForAllPosts(user.Username),
+                DifferentLocations = userService.GetDifferentLocations(user.Username)
             };
 
             return userDTO;
@@ -88,17 +94,17 @@ namespace PyxisKapriBack.UI
                 allUsers.Add(new UserDTO
                 {
                     Username = user.Username,
-                    FirstName= user.FirstName,
+                    FirstName = user.FirstName,
                     LastName = user.LastName,
-                    ProfileImage = Convert.ToBase64String(user.ProfileImage),
-                    Email = user.Email
-                });
+                    Email = user.Email,
+                    ProfileImagePath = Path.Combine(user.FolderPath, user.FileName)
+                }) ;
             }
 
             return allUsers;
         }
 
-        public Response UpdateUser(UserDTO user)
+        public Response UpdateUser(UpdateUserDataDTO user)
         {
             return userService.UpdateUser(user);
         }
@@ -116,6 +122,11 @@ namespace PyxisKapriBack.UI
         public Response ChangeUserPassword(CredentialsDTO credentials)
         {
             return userService.ChangeUserPassword(credentials);
+        }
+
+        public Response UpdateProfileImage(UpdateUserImageDTO profileImage)
+        {
+            return userService.UpdateProfileImage(profileImage);
         }
     }
 }

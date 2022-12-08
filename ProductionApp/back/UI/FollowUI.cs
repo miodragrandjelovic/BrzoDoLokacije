@@ -25,47 +25,51 @@ namespace PyxisKapriBack.UI
             return _iFollowService.DeleteFollow(_iUserService.GetLoggedUser(), followingUsername);
         }
 
-        public List<UserShortDTO>? GetFollowers()
+        public List<UserShortDTO>? GetFollowers(string username = "")
         {
-            var followers = _iFollowService.GetFollowers(_iUserService.GetLoggedUser());
-
-            var followersDTO = new List<UserShortDTO>();
-
-            foreach (var follow in followers)
-            {
-                followersDTO.Add(new UserShortDTO
-                {
-                    ProfileImage = follow.ProfileImage == null ? string.Empty : Convert.ToBase64String(follow.ProfileImage),
-                    Username = follow.Username,
-                    FirstName = follow.FirstName,
-                    LastName = follow.LastName
-                });
-            }
-            return followersDTO;
+            if(String.IsNullOrEmpty(username))
+                return createListUserShortDTO(_iFollowService.GetFollowers(_iUserService.GetLoggedUser()));
+            return createListUserShortDTO(_iFollowService.GetFollowers(username));
         }
 
-        public List<UserShortDTO>? GetFollowing()
+        public List<UserShortDTO>? GetFollowing(string username = "")
         {
-            var followings = _iFollowService.GetFollowing(_iUserService.GetLoggedUser());
-
-            var followingDTO = new List<UserShortDTO>();
-
-            foreach (var follow in followings)
-            {
-                followingDTO.Add(new UserShortDTO
-                {
-                    ProfileImage = follow.ProfileImage == null ? string.Empty : Convert.ToBase64String(follow.ProfileImage),
-                    Username = follow.Username,
-                    FirstName = follow.FirstName,
-                    LastName = follow.LastName
-                });
-            }
-            return followingDTO;
+            if (String.IsNullOrEmpty(username))
+                return createListUserShortDTO(_iFollowService.GetFollowing(_iUserService.GetLoggedUser()));
+            return createListUserShortDTO(_iFollowService.GetFollowing(username));
         }
 
         public Response IsFollowed(string followingUsername)
         {
             return _iFollowService.IsFollowed(_iUserService.GetLoggedUser(), followingUsername); 
+        }
+
+        public List<UserShortDTO> SearchFollowers(string search)
+        {
+            return createListUserShortDTO(_iFollowService.SearchFollowers(_iUserService.GetLoggedUser(), search));
+        }
+
+        public List<UserShortDTO> SearchFollowing(string search)
+        {
+            return createListUserShortDTO(_iFollowService.SearchFollowing(_iUserService.GetLoggedUser(), search)); 
+        }
+
+        public List<UserShortDTO> createListUserShortDTO(List<User> list)
+        {
+            var listUserShortDTO = new List<UserShortDTO>();
+            List<string> following = _iFollowService.GetFollowing(_iUserService.GetLoggedUser()).Select(user => user.Username).ToList(); 
+            foreach (var item in list)
+            {
+                listUserShortDTO.Add(new UserShortDTO
+                {
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    Username = item.Username,
+                    ProfileImage = Path.Combine(item.FolderPath, item.FileName),
+                    IsFollowed = following.Contains(item.Username)
+                });
+            }
+            return listUserShortDTO;
         }
     }
 }

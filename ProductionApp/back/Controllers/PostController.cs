@@ -21,25 +21,22 @@ namespace PyxisKapriBack.Controllers
             this.postUI = postUI;
         }
         [HttpPost("NewPost")]
-        public async Task<IActionResult> CreatePost(NewPostDTO post)
+        public async Task<IActionResult> CreatePost([FromForm] NewPostDTO post)
         {   //izmena da vraca response
             postUI.AddPost(post);
             return Ok(
-                new{
+                new
+                {
                     message = "Uspesno dodat novi post"
                 }
             );
         }
-        [HttpPut("SetLike/{postId}")]
-        public async Task<IActionResult> SetLikeOnPost(int postId)
-        {   
-            var response = postUI.SetLikeOnPost(postId);
-            var message = new { message = response.Message };
-            if(response.StatusCode.Equals(StatusCodes.Status200OK))
-                return Ok(message);
-
-            return BadRequest(message);
-
+        //[HttpPut("SetLike/{postId}")]
+        [HttpPost("SetLike")]
+        //public async Task<IActionResult> SetLikeOnPost(int postId)
+        public async Task<IActionResult> SetLikeOnPost(LikeDTO likeDTO)
+        {
+            return Ok(postUI.SetLikeOnPost(likeDTO));
         }
         [HttpDelete("RemoveLike/{postId}")]
         public async Task<IActionResult> RemoveLikeFromPost(int postId)
@@ -55,7 +52,7 @@ namespace PyxisKapriBack.Controllers
         {
             var response = postUI.DeleteUserPost(postId);
             var message = new { message = response.Message };
-            if(response.StatusCode.Equals(StatusCodes.Status200OK))
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(message);
             return BadRequest(message);
         }
@@ -72,38 +69,87 @@ namespace PyxisKapriBack.Controllers
         [HttpGet("GetUserPosts/{username}")]
         public async Task<IActionResult> GetUserPosts(string username)
         {
-            var posts = postUI.GetUserPosts(username);
-            return Ok(posts);
+            var response = postUI.GetUserPosts(username);
+            var message = new { message = response.Message };
+
+            if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
+                return BadRequest(message);
+
+            return Ok(response.Data.Cast<PostDTO>().ToList());
         }
 
         [HttpGet("GetPostById/{id}")]
-        public async Task<IActionResult> GetPostById(int id)
+        public async Task<IActionResult> GetAdditionalPostData(int id)
         {
             var post = postUI.GetPost(id);
             if (post == null)
-                return BadRequest(new {message = "Error"});
+                return BadRequest(new { message = "Error" });
             return Ok(post);
         }
 
-        [HttpGet("GetAllPosts")]
-        public async Task<IActionResult> GetAllPosts()
+        [HttpGet("GetAllPosts/{sortType}")]
+        public async Task<IActionResult> GetAllPosts(int sortType = 0)
         {
-            var posts = postUI.GetAllPosts();
+            var posts = postUI.GetAllPosts((SortType)sortType);
             return Ok(posts);
         }
 
-        [HttpGet("GetFollowingPosts")]
-        public async Task<IActionResult> GetFollowingPosts()
+        [HttpGet("GetFollowingPosts/{sortType}")]
+        public async Task<IActionResult> GetFollowingPosts(int sortType = 0)
         {
-            var posts = postUI.GetFollowingPosts();
+            var posts = postUI.GetFollowingPosts((SortType)sortType);
             return Ok(posts);
         }
 
-        [HttpGet("GetRecommendedPosts")]
-        public async Task<IActionResult> GetRecommendedPosts()
+        [HttpGet("GetRecommendedPosts/{sortType}")]
+        public async Task<IActionResult> GetRecommendedPosts(int sortType = 0)
         {
-            var posts = postUI.GetRecommendedPosts();
-            return Ok(posts);
+            var response = postUI.GetRecommendedPosts((SortType)sortType);
+            var message = new { message = response.Message };
+
+            if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
+                return BadRequest(message);
+
+            return Ok(response.Data.Cast<PostDTO>().ToList());
+        }
+
+        [HttpGet("GetUsersPostOnMap/{username}")]
+        public async Task<IActionResult> GetPostsOnMap(string username)
+        {
+            var response = postUI.GetPostsOnMap(username);
+            var message = new { message = response.Message };
+
+            if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
+                return BadRequest(message);
+
+            return Ok(response.Data.Cast<PostOnMapDTO>().ToList());
+
+        }
+        [HttpPost("GetPostsBySearch")]
+        public async Task<IActionResult> GetPostsBySearch(SearchDTO search)
+        {
+            var response = postUI.GetPostsBySearch(search.Search, search.SortType, search.CountOfResult, search.FriendsOnly);
+            var message = new { message = response.Message };
+
+            if (response.StatusCode.Equals(StatusCodes.Status500InternalServerError))
+                return BadRequest(message);
+
+            return Ok(response.Data.Cast<PostOnMapDTO>().ToList());
+        }
+        [HttpGet("GetPost/{id}")]
+        public async Task<IActionResult> GetPostById(int id)
+        {
+            var post = postUI.GetPostById(id);
+            if (post == null)
+                return BadRequest();
+
+            return Ok(post);
+        }
+
+        [HttpPost("GetAllAroundPosts")]
+        public async Task<IActionResult> GetPostsByCoordinates(SearchDTO search)
+        {
+            return Ok(postUI.GetAllAroundPosts(search.Latitude, search.Longitude, search.Distance, search.FriendsOnly));
         }
     }
 }

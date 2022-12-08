@@ -4,8 +4,8 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.util.Log
+import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,22 +13,25 @@ import android.view.Window
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.graphics.drawable.toDrawable
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
-import com.example.pyxiskapri.models.ImageGridItem
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.UtilityFunctions
+import com.squareup.picasso.Picasso
+import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.modal_confirm_delete.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.ArrayList
 
-class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: Context) : BaseAdapter() {
+
+class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: Context, var onPostDeleteListener: () -> Unit) : BaseAdapter() {
 
     private var apiClient: ApiClient = ApiClient()
 
@@ -50,27 +53,31 @@ class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: C
 
         var view: View? = convertView
         if(view == null)
-            view = layoutInflater.inflate(R.layout.item_image, parent, false)
+            view = layoutInflater.inflate(R.layout.grid_view_layout, parent, false)
 
-        var gvItemImage = view?.findViewById<ImageView>(R.id.iv_image)
-        var ibDelete = view?.findViewById<ImageView>(R.id.ib_delete)
+        var gvItemImage = view?.findViewById<ShapeableImageView>(R.id.siv_imagePost)
+        var ibDelete = view?.findViewById<ImageView>(R.id.ib_delete_post)
 
         ibDelete?.setOnClickListener {
             removeImage(position)
         }
 
+
         val picture=postsItem[position].coverImage
         if(picture!=null)
         {
-            var imageData = android.util.Base64.decode(picture, android.util.Base64.DEFAULT)
-            gvItemImage?.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
+            Picasso.get().load(UtilityFunctions.getFullImagePath(postsItem[position].coverImage)).into(gvItemImage)
+
+            val radius = context.resources.getDimension(com.example.pyxiskapri.R.dimen.corner_radius20dp)
+            gvItemImage?.shapeAppearanceModel = gvItemImage?.shapeAppearanceModel!!
+                .toBuilder().setAllCornerSizes(radius)
+                .build()
+
         }
 
 
         gvItemImage?.setOnClickListener(){
             val intent = Intent(context, OpenPostActivity::class.java)
-            Log.d("BASE 64", postsItem[position].coverImage)
-            //intent.putExtra("postData", currentPost)
             ActivityTransferStorage.postItemToOpenPost = postsItem[position]
             context.startActivity(intent)
 
@@ -90,6 +97,7 @@ class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: C
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.modal_confirm_delete)
+        dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
         dialog.show()
 
@@ -105,6 +113,7 @@ class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: C
                         postsItem.removeAt(position)
                         notifyDataSetChanged()
                         Toast.makeText(context,"Post is successfully deleted!",Toast.LENGTH_LONG).show()
+                        onPostDeleteListener()
                     }
 
                     else

@@ -11,6 +11,7 @@ namespace PyxisKapriBack.Services
         private readonly IUserService userService;
         private readonly IEncryptionManager encryptionManager;
         private readonly IJWTManagerRepository JWTManager;
+        private readonly IFileService fileService;
 
         public AuthService(
             IUserService userService, 
@@ -22,10 +23,10 @@ namespace PyxisKapriBack.Services
             this.userService = userService;
             this.encryptionManager = encryptionManager;
             this.JWTManager = JWTManager;
-            FileService = fileService;
+            this.fileService = fileService;
+            this.fileService = fileService;
         }
 
-        public IFileService FileService { get; }
 
         public async Task<Response> Login(LoginDTO request)
         {
@@ -63,17 +64,20 @@ namespace PyxisKapriBack.Services
                 response.Message = "User already exists";
                 return response;
             }
-            
 
-            var convertedImage = FileService.ConvertImageToByte(FileService.GetDefaultProfileImage());
-            
 
+            //var convertedImage = FileService.ConvertImageToByte(FileService.GetDefaultProfileImage());
+
+            fileService.CreateUserFolder(request.Username);  
+            var folderPath = fileService.GetProfileImagePath(request.Username);
+            var fileName = Constants.Constants.DEFAULT_IMAGE_NAME;
 
             encryptionManager.EncryptPassword(request.Password, out passwordHash, out passwordKey);
             User newUser = new User
             {
-                ProfileImage = convertedImage,
-                FolderPath = FileService.GetDefaultPath(request.Username),
+                //ProfileImage = convertedImage,
+                FolderPath = folderPath,
+                FileName = fileName,
                 Username = request.Username,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
@@ -87,7 +91,7 @@ namespace PyxisKapriBack.Services
             var answer = userService.AddNewUser(newUser);
             if (answer.StatusCode.Equals(StatusCodes.Status200OK))
             {
-                FileService.CreateFolder(request.Username);
+                
                 return new Response
                 {
                     StatusCode = StatusCodes.Status200OK,

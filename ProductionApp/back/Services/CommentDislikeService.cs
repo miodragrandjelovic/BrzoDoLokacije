@@ -32,7 +32,7 @@ namespace PyxisKapriBack.Services
                 {
                     var answer = commentLikeDAL.DeleteLikeFromComment(user.Username, comment.Id);
                     if (!answer)
-                        throw new Exception(Constants.Constants.resDeleteLikeFailed);
+                        throw new Exception(Constants.Constants.resPermissionDenied);
                 }
                 if (_iCommentDislikeDAL.IsCommentDisliked(user.Username, comment.Id))
                 {

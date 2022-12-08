@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#23262B">
-
+    android:background="@drawable/back_rounded_border_red"
+    android:padding="20dp">
 
     <ImageView
         android:id="@+id/logo"
@@ -34,27 +35,27 @@
         android:id="@+id/tv_unfollow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="30dp"
-        android:paddingLeft="30dp"
-        android:textColor="#C3C3C3"
+        android:fontFamily="@font/montserrat_regular"
         android:gravity="center"
-        android:textSize="21dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
         android:text="Are you sure you want to unfollow username123?"
+        android:textColor="#C3C3C3"
+        android:textSize="21dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/logo"
 
-        />
-
-
-
+        app:layout_constraintTop_toBottomOf="@id/logo" />
 
 
     <Button
         android:id="@+id/btn_confirm_unfollow"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/montserrat_regular"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:text="Confirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

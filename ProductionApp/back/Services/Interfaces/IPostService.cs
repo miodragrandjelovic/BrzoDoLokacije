@@ -4,17 +4,20 @@ namespace PyxisKapriBack.Services.Interfaces
 {
     public interface IPostService
     {
-        List<Post> GetUserPosts(string username);
+        Response GetUserPosts(string username); 
         List<Post> GetPostsForLocation(int LocationID);
         void AddPost(NewPostDTO post);
         Response DeletePost(int postID);
         Post GetPost(int PostID);
         Response SetLikeOnPost(int postID);
+        Response SetLikeOnPost(LikeDTO likeDTO);
         Response DeleteUserPost(int postID);
-        List<Post> GetAllPosts();
-        List<Post> GetFollowingPosts(string username);
-        List<Post> GetRecommendedPosts(string username);
-
-
+        List<Post> GetAllPosts(SortType sortType = SortType.DATE);
+        List<Post> GetFollowingPosts(string username, SortType sortType = SortType.DATE);
+        Response GetRecommendedPosts(string username, SortType sortType = SortType.DATE);
+        Response GetPostsBySearch(String search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT, bool friendsOnly = false);
+        List<Post> GetAllAroundPosts(double latitude, double longitude, double distance = Constants.Constants.DISTANCE, bool friendsOnly = false);
+        double GetAverageGrade(int postId);
+        int GetGrade(int postId, string username); 
     }
 }

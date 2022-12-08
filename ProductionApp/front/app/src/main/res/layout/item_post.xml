@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="20dp"
-    android:background="@drawable/back_dark_rounded_border_red"
+    android:background="@color/dark_gray"
     android:orientation="vertical"
     android:padding="20dp">
 
@@ -16,12 +16,11 @@
         android:layout_weight="0"
         android:orientation="horizontal">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_ownerAvatar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_weight="0"
-            android:adjustViewBounds="true"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/avatarplaceholder" />
 
         <LinearLayout
@@ -76,22 +75,31 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp">
 
-        <ImageView
-            android:id="@+id/iv_postImage"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/addimage"
-            android:focusable="true"
-            android:scaleType="centerCrop"
-            app:layout_constraintDimensionRatio="1:1"
+            android:layout_weight="0"
+            app:cardCornerRadius="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_postImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:background="@color/gray"
+                android:focusable="true"
+                android:scaleType="centerCrop" />
+
+        </androidx.cardview.widget.CardView>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

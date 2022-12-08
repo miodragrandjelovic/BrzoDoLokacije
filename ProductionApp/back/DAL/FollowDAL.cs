@@ -138,5 +138,21 @@ namespace PyxisKapriBack.DAL
                 return false;
             return true; 
         }
+        public List<User> SearchFollowers(string username, string search)
+        {
+            if (String.IsNullOrEmpty(search))
+                return GetFollowers(username);
+
+            List<User> followers = GetFollowers(username).FindAll(user => user.Username.Contains(search));
+            return followers; 
+        }
+        public List<User> SearchFollowing(string username, string search)
+        {
+            if (String.IsNullOrEmpty(search))
+                return GetFollowing(username); 
+
+            List<User> following = GetFollowing(username).FindAll(user => user.Username.Contains(search));
+            return following;
+        }
     }
 }

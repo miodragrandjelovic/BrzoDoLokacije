@@ -6,5 +6,9 @@ data class LocationResponse(
     @SerializedName("id")
     var id: Int,
     @SerializedName("name")
-    var locationName: String
+    var name: String,
+    @SerializedName("distance")
+    var distance: Double,
+    @SerializedName("posts")
+    var posts: ArrayList<PostResponse>
 )

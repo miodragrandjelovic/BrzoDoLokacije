@@ -10,6 +10,8 @@ namespace PyxisKapriBack.Services.Interfaces
         public int GetNumberOfLikesByPostID(int postID);
 
         public bool IsLiked(int postID,string username);
-
+        public Response AddLike(Like like); 
+        public Like GetLike(string username, int postID);
+        public Response UpdateLike(Like like);
     }
 }

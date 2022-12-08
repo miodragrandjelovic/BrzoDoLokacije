@@ -3,6 +3,7 @@ using PyxisKapriBack.Services.Interfaces;
 using PyxisKapriBack.Models;
 using PyxisKapriBack.DTOComponents;
 using System.Text;
+using PyxisKapriBack.PythonService;
 
 namespace PyxisKapriBack.Services
 {
@@ -13,74 +14,71 @@ namespace PyxisKapriBack.Services
         private readonly IUserService userService;
         private readonly ILocationDAL locationDAL;
         private readonly ICityDAL cityDAL;
-        private readonly ICountryDAL countryDAL; 
+        private readonly ICountryDAL countryDAL;
+        private readonly IFileService fileService;
+        private readonly ServiceClient client;
+
         public PostService(IPostDAL postDAL, ILikeService likeService, IUserService userService, ILocationDAL locationDAL, 
-            ICityDAL cityDAL, ICountryDAL countryDAL)
+            ICityDAL cityDAL, ICountryDAL countryDAL,IFileService fileService,ServiceClient client)
         {
             this.postDAL = postDAL;
             this.likeService = likeService;
             this.userService = userService;
             this.locationDAL = locationDAL;
             this.cityDAL = cityDAL;
-            this.countryDAL = countryDAL; 
+            this.countryDAL = countryDAL;
+            this.fileService = fileService;
+            this.client = client;
         }
 
         public void AddPost(NewPostDTO post)
         {
-
+            var loggedUser = userService.GetUser(userService.GetLoggedUser());
+            var postPath = fileService.GetPostName();
             var newPost = new Post();
-            newPost.User = userService.GetUser(userService.GetLoggedUser());
+            
+            newPost.User = loggedUser;
             newPost.CreatedDate = DateTime.Now;
             newPost.Description = post.Description;
-            newPost.CoverImage = Convert.FromBase64String(post.CoverImage);
+            newPost.CoverImageName =  post.Images[0].FileName;
+            newPost.PostPath = postPath;
+            newPost.Longitude = Convert.ToDouble(post.Longitude);
+            newPost.Latitude = Convert.ToDouble(post.Latitude);
+            newPost.FullLocation = post.LocationName;
+            newPost.Tags = post.Tags; 
+            var fullPath = Path.Combine(loggedUser.FolderPath, postPath);
+            var answer = fileService.CreateFolder(fullPath);
+            fileService.AddFile(fullPath, post.Images[0]);
+
+            //var response = client.DoFacesExistOnImage(Path.Combine(Directory.GetCurrentDirectory(), fullPath, post.CoverImage.FileName)).Result;
+            //if(response == true)
+            //    Console.WriteLine("Pronadjena lica");
+            client.SendPathToService(Path.Combine(Directory.GetCurrentDirectory(), fullPath, post.Images[0].FileName).ToString());
+            // poziv py servisa za kompresiju slika
 
 
-            var location = locationDAL.GetLocation(post.LocationName);
-            var city = cityDAL.GetCity(post.City);
-            var country = countryDAL.GetCountry(post.Country);
+            newPost.Location = FixLocation(post.Address, post.LocationName, post.City, post.Country, 
+                                           Convert.ToDouble(post.Longitude), Convert.ToDouble(post.Latitude)); 
             
-            if (country == null)
-                if (countryDAL.AddCountry(post.Country))
-                    country = countryDAL.GetCountry(post.Country);
-
-            if (city == null)
-                if (cityDAL.AddCity(post.City, post.Country))
-                    city = cityDAL.GetCity(post.City);
-
-            if (location == null)
+            if ((post.Images != null) && (post.Images.Count > 0))
             {
-                location = new Location();
-                location.Longitude = post.Longitude;
-                location.Latitude = post.Latitude;
-                location.City = city; 
-                location.Address = post.Address;
-                location.Name = post.LocationName;
-
-                locationDAL.AddLocation(location); 
-            }
-            else if((location.Longitude == 0) || (location.Latitude == 0))
-            {
-                location.Longitude = post.Longitude;
-                location.Latitude = post.Latitude;
-                locationDAL.UpdateLocation(location); 
-            }
-            else if (String.IsNullOrEmpty(location.Address))
-            {
-                location.Address = post.Address;
-                locationDAL.AddLocation(location);
-            }
-                
-            if (post.Images.Count > 0)
-            {
-                foreach (string image in post.Images)
+                foreach (var image in post.Images.Skip(1))
                 {
-                    Image newImage = new Image();
-                    newImage.ImageData = Encoding.ASCII.GetBytes(image);
-                    newPost.Images.Add(newImage);
+                    fileService.AddFile(fullPath, image);
+                    bool exists = client.DoFacesExistOnImage(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName)).Result;
+                    if (exists == true)
+                        File.Delete(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName));
+                    else
+                    {
+                        Image newImage = new Image();
+                        newImage.ImageName = image.FileName;
+                        
+                        newPost.Images.Add(newImage);
+
+                        client.SendPathToService(Path.Combine(Directory.GetCurrentDirectory(), fullPath, image.FileName).ToString());
+                    }
                 }
             }
-
-
             postDAL.AddPost(newPost);
         }
         public Response DeletePost(int postID)
@@ -98,6 +96,64 @@ namespace PyxisKapriBack.Services
                 StatusCode = StatusCodes.Status200OK,
                 Message = "Post deleted succesffuly!"
             };
+        }
+        private Location FixLocation(string address, string locationName, string cityName, string countryName, double longitude, double latitude)
+        {
+            var location = locationDAL.GetLocation(locationName);
+            if(location == null)
+                location = locationDAL.GetLocation(address);
+
+            var city = cityDAL.GetCity(cityName);
+            var country = countryDAL.GetCountry(countryName);
+
+            if (country == null)
+                if (countryDAL.AddCountry(countryName))
+                    country = countryDAL.GetCountry(countryName);
+
+            if (city == null)
+                if (cityDAL.AddCity(cityName, countryName))
+                    city = cityDAL.GetCity(cityName);
+
+            if (location == null)
+            {
+                location = new Location();
+                location.Longitude = Convert.ToDouble(longitude);
+                location.Latitude = Convert.ToDouble(latitude);
+                location.City = city;
+                location.Address = address;
+
+                if (String.IsNullOrEmpty(locationName))
+                {
+                    if (String.IsNullOrEmpty(address))
+                        location.Name = Constants.Constants.UNKNWOWN;
+                    else
+                        location.Name = address;
+                }
+                else
+                    location.Name =locationName;
+
+                locationDAL.AddLocation(location);
+            }
+            else
+            {
+                if (String.IsNullOrEmpty(location.Address))
+                    location.Address = address;
+
+                if (String.IsNullOrEmpty(location.Name) && (!String.IsNullOrEmpty(locationName)))
+                    location.Name = locationName;
+
+                if ((location.Longitude == 0) || (location.Latitude == 0))
+                {
+                    location.Longitude = Convert.ToDouble(longitude);
+                    location.Latitude = Convert.ToDouble(latitude);
+                }
+
+                if (location.City == null)
+                    location.City = city;
+                locationDAL.UpdateLocation(location);
+            }
+
+            return location; 
         }
         public Response DeleteUserPost(int postID)
         {
@@ -133,9 +189,9 @@ namespace PyxisKapriBack.Services
             return response;
 
         }
-        public List<Post> GetAllPosts()
+        public List<Post> GetAllPosts(SortType sortType = SortType.DATE)
         {
-            return postDAL.GetPosts(userService.GetLoggedUser());
+            return postDAL.GetPosts(userService.GetLoggedUser(), sortType);
         }
         public Post GetPost(int PostID)
         {
@@ -145,22 +201,120 @@ namespace PyxisKapriBack.Services
         {
             return postDAL.GetPostsForLocation(LocationID);
         }
-        public List<Post> GetUserPosts(string username)
+        public Response GetUserPosts(string username)
         {
-            return postDAL.GetUserPosts(username);
-        }
+            var response = new Response();
+            try
+            {
+                response.Data = postDAL.GetUserPosts(username).Cast<object>().ToList();
+                response.StatusCode = StatusCodes.Status200OK;
+                response.Message = "Found posts"; 
+            }
+            catch(Exception e)
+            {
+                response.StatusCode = StatusCodes.Status500InternalServerError;
+                response.Message = e.Message; 
+            }
 
+            return response; 
+        }
         public Response SetLikeOnPost(int postID)
         {
             return likeService.AddLike(postID);
         }
-        public List<Post> GetFollowingPosts(string username)
+        public List<Post> GetFollowingPosts(string username, SortType sortType = SortType.DATE)
         {
-            return postDAL.GetFollowingPosts(username); 
+            return postDAL.GetFollowingPosts(username, sortType); 
         }
-        public List<Post> GetRecommendedPosts(string username)
+        public Response GetRecommendedPosts(string username, SortType sortType = SortType.DATE)
         {
-            return postDAL.GetRecommendedPosts(username); 
+            var response = new Response();
+            try
+            {
+                response.Data = postDAL.GetRecommendedPosts(username, sortType).Cast<object>().ToList();
+                response.Message = "Found posts";
+                response.StatusCode = StatusCodes.Status200OK;
+               
+            }
+            catch (Exception e)
+            {
+                response.StatusCode = StatusCodes.Status500InternalServerError;
+                response.Message = e.Message;
+            }
+
+            return response;
+        }
+
+        public Response GetPostsBySearch(String search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT, bool friendsOnly = false)
+        {
+            var response = new Response();
+
+            try
+            {
+                if (countOfResult == 0)
+                    countOfResult = Constants.Constants.TAKE_ELEMENT; 
+                response.Data = postDAL.GetPostsBySearch(userService.GetLoggedUser(), search, sortType, friendsOnly).Take(countOfResult).Cast<object>().ToList(); 
+                response.Message = "Found posts";
+                response.StatusCode = StatusCodes.Status200OK;
+            }
+            catch(Exception e)
+            {
+                response.Message = "Found posts";
+                response.StatusCode = StatusCodes.Status500InternalServerError;
+            }
+
+            return response; 
+        }
+
+        public List<Post> GetAllAroundPosts(double latitude, double longitude, double distance = 1500, bool friendsOnly = false)
+        {
+            return postDAL.GetPostsByCoordinates(userService.GetLoggedUser(), latitude, longitude, distance, friendsOnly);
+        }
+
+        public Response SetLikeOnPost(LikeDTO likeDTO)
+        {
+            Like existLike = likeService.GetLike(likeDTO.Username, likeDTO.PostId); 
+            if(existLike != null)
+            {
+                if (likeDTO.Grade == 0)
+                    return likeService.DeleteLike(likeDTO.PostId); 
+                existLike.Grade = likeDTO.Grade; 
+                return likeService.UpdateLike(existLike);
+            }
+                
+           
+            User user = userService.GetUser(userService.GetLoggedUser());
+            Post post = postDAL.GetPost(likeDTO.PostId);
+            
+            if (user == null)
+                return ResponseService.CreateErrorResponse(Constants.Constants.resNoFoundUser);
+            if (post == null)
+                return ResponseService.CreateErrorResponse(Constants.Constants.resNoFoundPost);
+            
+            Like like = new Like
+            {
+                UserId = user.Id,
+                User = user,
+                Post = post,
+                PostId = post.Id,
+                Grade = likeDTO.Grade
+            };
+
+
+            return likeService.AddLike(like); 
+        }
+
+        public double GetAverageGrade(int postId)
+        {
+            return postDAL.GetAverageGrade(postId); 
+        }
+
+        public int GetGrade(int postId, string username)
+        {
+            Like like = likeService.GetLike(username, postId);
+            if (like == null)
+                return 0; 
+            return like.Grade; 
         }
     }
 }

@@ -68,14 +68,22 @@ namespace PyxisKapriBack.Controllers
         }
 
         [HttpPut("UpdateUser")]
-        public async Task<IActionResult> UpdateUserCredentials(UserDTO user)
+        public async Task<IActionResult> UpdateUserCredentials(UpdateUserDataDTO user)
         {
             var answer = userUI.UpdateUser(user);
             if(answer.StatusCode.Equals(StatusCodes.Status200OK))
                 return Ok(new { token = answer.Message });
             return BadRequest(new { message = answer.Message });
         }
+        [HttpPut("UpdateProfileImage")]
+        public async Task<IActionResult> UpdateUserProfileImage([FromForm]UpdateUserImageDTO image)
+        {
+            var response = userUI.UpdateProfileImage(image);
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                return Ok(response);
 
+            return BadRequest(response);
+        }
         [HttpPut("ChangePassword")]
         public async Task<IActionResult> ChangeUserPassword(CredentialsDTO credentials)
         {
@@ -90,6 +98,20 @@ namespace PyxisKapriBack.Controllers
         public async Task<IActionResult> GetFollowers()
         {
             var followers = followUI.GetFollowers();
+            return Ok(followers);
+        }
+
+        [HttpGet("GetFollowing/{username}")]
+        public async Task<IActionResult> GetFollowing(string username)
+        {
+            var following = followUI.GetFollowing(username);
+            return Ok(following);
+        }
+
+        [HttpGet("GetFollowers/{username}")]
+        public async Task<IActionResult> GetFollowers(string username)
+        {
+            var followers = followUI.GetFollowers(username);
             return Ok(followers);
         }
 
@@ -166,6 +188,20 @@ namespace PyxisKapriBack.Controllers
             var image = fileService.GetUserProfileImage(path);
 
             return Ok(Convert.ToBase64String(image));
+        }
+
+        [HttpGet("SearchFollower/{search}")]
+        public async Task<IActionResult> SearchFollowers(string search)
+        {
+            var followers = followUI.SearchFollowers(search);
+            return Ok(followers);
+        }
+
+        [HttpGet("SearchFollowing/{search}")]
+        public async Task<IActionResult> SearchFollowing(string search)
+        {
+            var followers = followUI.SearchFollowing(search);
+            return Ok(followers);
         }
     }
 }

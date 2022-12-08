@@ -9,5 +9,7 @@
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
+        public int NumberOfComments { get; set; } = 0;
+        public double AverageGrade { get; set; } = 0; 
     }
 }

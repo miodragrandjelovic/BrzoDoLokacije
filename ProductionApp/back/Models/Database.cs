@@ -94,6 +94,21 @@ namespace PyxisKapriBack.Models
             .OnDelete(DeleteBehavior.Cascade);
             #endregion
 
+            #region 'View Relationships'
+
+            modelBuilder.Entity<View>()
+           .HasOne(view => view.Post)
+           .WithMany(post => post.Views)
+           .HasForeignKey(view => view.PostId)
+           .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<View>()
+            .HasOne(view => view.User)
+            .WithMany(user => user.Views)
+            .HasForeignKey(view => view.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+            #endregion
+
             #region 'Comment Relationships'
 
             modelBuilder.Entity<Comment>()

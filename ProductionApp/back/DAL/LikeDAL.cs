@@ -78,8 +78,35 @@ namespace PyxisKapriBack.DAL
         }
         public Like GetLike(int postId, string username)
         {
-            Like like = _context.Likes.Where(like => (like.PostId == postId) && (like.User.Username.Equals(username))).FirstOrDefault();
+            Like like = _context.Likes.Where(like => (like.PostId == postId) && (like.User.Username.Equals(username)))
+                                      .Include(like => like.User)
+                                      .Include(like => like.Post)
+                                      .FirstOrDefault();
             return like; 
+        }
+
+        public bool AddLike(Like like)
+        {
+            if (like.User == null)
+                throw new Exception(Constants.Constants.resNullValue + " for user");
+            if (like.Post == null)
+                throw new Exception(Constants.Constants.resNullValue + " for post");
+
+            _context.Likes.Add(like);
+            _context.SaveChanges();
+            return true; 
+        }
+
+        public bool UpdateLike(Like like)
+        {
+            if (like.User == null)
+                throw new Exception(Constants.Constants.resNullValue + " for user");
+            if (like.Post == null)
+                throw new Exception(Constants.Constants.resNullValue + " for post");
+
+            _context.Likes.Update(like);
+            _context.SaveChanges();
+            return true;
         }
     }
 }

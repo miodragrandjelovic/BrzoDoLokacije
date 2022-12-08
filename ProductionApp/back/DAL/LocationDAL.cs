@@ -1,4 +1,5 @@
-﻿using PyxisKapriBack.DAL.Interfaces; 
+﻿using PyxisKapriBack.DAL.Interfaces;
+using PyxisKapriBack.LocationManager.Interfaces;
 using PyxisKapriBack.Models;
 
 namespace PyxisKapriBack.DAL
@@ -6,11 +7,13 @@ namespace PyxisKapriBack.DAL
     public class LocationDAL : ILocationDAL
     {
         private Database _context;
+        private ILocationManager locationManager; 
         private int page = 0;
         private List<Location> locations;
-        public LocationDAL(Database context)
+        public LocationDAL(Database context, ILocationManager locationManager)
         {
             _context = context;
+            this.locationManager = locationManager;
         }
 
         public bool AddLocation(string locationName, string cityName, string countryName = Constants.Constants.UNKNWOWN)
@@ -51,7 +54,10 @@ namespace PyxisKapriBack.DAL
                 locations = _context.Locations.Where(location => (!location.Name.Equals(Constants.Constants.UNKNWOWN))).ToList(); 
             else
                 locations = _context.Locations.Where(location => (location.Name.ToLower().Contains(filter.ToLower())) &&
-                                                             (!location.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
+                                                             (!location.Name.Equals(Constants.Constants.UNKNWOWN)))
+                                              .Include(loc => loc.City)
+                                              .Include(city => city.City.Country)
+                                              .ToList();
             return locations.Take(Constants.Constants.TAKE_ELEMENT).ToList(); 
         }
 
@@ -62,7 +68,10 @@ namespace PyxisKapriBack.DAL
                 locations = _context.Locations.Where(location => (!location.City.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
             else 
                 locations = _context.Locations.Where(location => location.City.Name.ToLower().Contains(filter.ToLower()) &&
-                                                             (!location.City.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
+                                                             (!location.City.Name.Equals(Constants.Constants.UNKNWOWN)))
+                                              .Include(loc => loc.City)
+                                              .Include(city => city.City.Country)
+                                              .ToList();
             return locations;
         }
 
@@ -73,7 +82,10 @@ namespace PyxisKapriBack.DAL
                 locations = _context.Locations.Where(location => (!location.City.Country.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
             else 
                 locations = _context.Locations.Where(location => location.City.Country.Name.ToLower().Contains(filter.ToLower()) &&
-                                                             (!location.Name.Equals(Constants.Constants.UNKNWOWN))).ToList();
+                                                             (!location.Name.Equals(Constants.Constants.UNKNWOWN)))
+                                              .Include(loc => loc.City)
+                                              .Include(city => city.City.Country)
+                                              .ToList();
             return locations; 
         }
 
@@ -105,39 +117,26 @@ namespace PyxisKapriBack.DAL
             return true; 
         }
 
-        public List<Location> FilterLocations(string filter)
+        public List<String> FilterLocations(string filter)
         {
-            var locationsByCountry = FilterLocationsByCountry(filter);
-            var locationsByCity = FilterLocationsByCity(filter);
-            var locationsByName = FilterLocationsByName(filter);
-            
-            var allLocations = new List<Location>(); 
-            foreach (var item in locationsByCountry)
-                allLocations.Add(item);
-            foreach (var item in locationsByCity)
-                allLocations.Add(item);
-            foreach (var item in locationsByName)
-                allLocations.Add(item);
-            locations = allLocations.Distinct().ToList();
-            return locations; 
+            return _context.Posts.Where(post => post.FullLocation.ToLower().Contains(filter.ToLower()))
+                                 .Select(post => post.FullLocation)
+                                 .Distinct()
+                                 .ToList();
         }
 
-        public List<Location> GetAllAroundLocations(Location location, double distance = Constants.Constants.DISTANCE)
+        public List<Location> GetAllAroundLocations(double latitude, double longitude, double distance = Constants.Constants.DISTANCE)
         {
-            var closestLocations = _context.Locations.Where(loc => ((Math.Abs(location.Longitude - loc.Longitude) <= 0.2)
-                                                                || (Math.Abs(location.Latitude - loc.Latitude) <= 0.2))
-                                                                && (loc.Id != location.Id))
-                                                     .Include(loc => loc.City)
-                                                     .ToList();
-
-            closestLocations = LocationManager.LocationManager.GetAllAroundLocations(location, closestLocations, distance); 
-            return closestLocations; 
+            List<Post> posts = _context.Posts.ToList(); 
+            List<Location> locations = locationManager.GetAllAroundLocations(new System.Device.Location.GeoCoordinate(latitude, longitude),
+                                                                             posts, distance); 
+            return locations; 
         }
 
         public bool AddLocation(Location location)
         {
             if (location.City == null)
-                throw new Exception(Constants.Constants.resNoFoundCity); 
+                throw new Exception(Constants.Constants.resNotFoundCity); 
 
             _context.Locations.Add(location);
             _context.SaveChanges();

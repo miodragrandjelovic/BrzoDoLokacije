@@ -5,6 +5,7 @@ plugins {
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
+
 android {
     namespace 'com.example.pyxiskapri'
     compileSdk 33
@@ -52,9 +53,12 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+
 
     // Okhttp3 for the POST requests
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
@@ -70,7 +74,17 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
+    // SwipeDown to refresh
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
+    // Picasso (Get images from URL)
+    implementation 'com.squareup.picasso:picasso:2.8'
+
+    implementation "commons-io:commons-io:2.7"
+    // Circle image View
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    implementation 'com.google.android.libraries.places:places:2.7.0'
 
 
 

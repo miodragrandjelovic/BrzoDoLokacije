@@ -8,7 +8,6 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import com.example.pyxiskapri.models.ImageGridItem
 import com.example.pyxiskapri.R
-import kotlinx.android.synthetic.main.item_image.view.*
 
 class ImageGridAdapter(var imageItems: MutableList<ImageGridItem>, var context: Context) : BaseAdapter() {
 

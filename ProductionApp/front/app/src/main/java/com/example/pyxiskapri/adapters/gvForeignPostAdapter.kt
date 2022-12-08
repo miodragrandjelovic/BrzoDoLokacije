@@ -3,8 +3,6 @@ package com.example.pyxiskapri.adapters
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +15,9 @@ import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.UtilityFunctions
+import com.google.android.material.imageview.ShapeableImageView
+import com.squareup.picasso.Picasso
 
 
 class gvForeignPostAdapter (var postsItem: MutableList<PostListItem>, var context: Context) : BaseAdapter() {
@@ -42,29 +43,31 @@ class gvForeignPostAdapter (var postsItem: MutableList<PostListItem>, var contex
 
         var view: View? = convertView
         if(view == null)
-            view = layoutInflater.inflate(R.layout.item_image, parent, false)
+            view = layoutInflater.inflate(R.layout.grid_view_layout, parent, false)
 
 
-        var gvItemImage = view?.findViewById<ImageView>(R.id.iv_image)
-        var ibDelete = view?.findViewById<ImageView>(R.id.ib_delete)
+        var gvItemImage = view?.findViewById<ShapeableImageView>(R.id.siv_imagePost)
+        var ibDelete = view?.findViewById<ImageView>(R.id.ib_delete_post)
 
 
         ibDelete?.isGone=true
 
 
-
         val picture=postsItem[position].coverImage
         if(picture!=null)
         {
-            var imageData = android.util.Base64.decode(picture, android.util.Base64.DEFAULT)
-            gvItemImage?.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
+            Picasso.get().load(UtilityFunctions.getFullImagePath(postsItem[position].coverImage)).into(gvItemImage)
+
+            val radius = context.resources.getDimension(com.example.pyxiskapri.R.dimen.corner_radius20dp)
+            gvItemImage?.shapeAppearanceModel = gvItemImage?.shapeAppearanceModel!!
+                .toBuilder().setAllCornerSizes(radius)
+                .build()
+
         }
 
 
         gvItemImage?.setOnClickListener(){
             val intent = Intent(context, OpenPostActivity::class.java)
-            Log.d("BASE 64", postsItem[position].coverImage)
-            //intent.putExtra("postData", currentPost)
             ActivityTransferStorage.postItemToOpenPost = postsItem[position]
             context.startActivity(intent)
 

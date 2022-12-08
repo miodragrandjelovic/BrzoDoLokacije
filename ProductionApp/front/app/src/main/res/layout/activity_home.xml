@@ -25,8 +25,8 @@
             tools:layout_editor_absoluteX="16dp" />
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_home"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/navMenu"
@@ -34,7 +34,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent">
+
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/abl_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/transparent">
@@ -46,150 +58,142 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <LinearLayout
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/ll_follow"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_f_posts"
                         android:layout_width="match_parent"
-                        android:layout_height="231dp"
-                        android:layout_marginBottom="15dp"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/followedusersbackground"
-                        android:orientation="vertical">
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:text="Posts from people you follow:"
-                            android:textColor="@color/white"
-                            android:fontFamily="@font/montserrat_regular"
-                            />
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_f_posts"
-                            android:layout_marginBottom="1dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            tools:listitem="@layout/item_post_followed_profiles" />
-                        <!--android:layout_marginTop="1dp"-->
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp">
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:visibility="visible"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/item_post_followed_profiles" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="10dp"
+                        android:fillViewport="true"
+                        android:scrollbars="none">
 
                         <LinearLayout
-                            android:id="@+id/btn_categoryPopular"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/ib_rounded"
-                            android:backgroundTint="@color/red"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp">
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
-                            <ImageView
-                                android:id="@+id/iv_categoryPopular"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_marginEnd="3dp"
-                                android:adjustViewBounds="true"
-                                app:srcCompat="@drawable/popular" />
-
-                            <TextView
-                                android:id="@+id/tv_categoryPopular"
+                            <LinearLayout
+                                android:id="@+id/btn_sortPopular"
                                 android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_gravity="left|center_vertical"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:gravity="center_vertical"
-                                android:text="Popular"
-                                android:textColor="@color/white" />
-                        </LinearLayout>
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="0"
+                                android:background="@drawable/ib_rounded"
+                                android:backgroundTint="@color/red"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="5dp"
+                                android:paddingRight="10dp"
+                                android:paddingBottom="5dp">
 
-                        <LinearLayout
-                            android:id="@+id/btn_categoryNewest"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/ib_rounded"
-                            android:backgroundTint="@color/dark_gray"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp">
+                                <ImageView
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:adjustViewBounds="true"
+                                    app:srcCompat="@drawable/popular" />
 
-                            <ImageView
-                                android:id="@+id/iv_categoryNewest"
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:layout_marginEnd="3dp"
-                                android:adjustViewBounds="true"
-                                app:srcCompat="@drawable/star" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="left|center_vertical"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:gravity="center_vertical"
+                                    android:text="Popular"
+                                    android:textColor="@color/white" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/tv_commentsCount"
+                            <LinearLayout
+                                android:id="@+id/btn_sortNewest"
                                 android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_gravity="left|center_vertical"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:gravity="center_vertical"
-                                android:text="Trending"
-                                android:textColor="@color/white" />
-                        </LinearLayout>
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="0"
+                                android:background="@drawable/ib_rounded"
+                                android:backgroundTint="@color/dark_gray"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="5dp"
+                                android:paddingRight="10dp"
+                                android:paddingBottom="5dp">
 
-                        <LinearLayout
-                            android:id="@+id/btn_categoryFollowing"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="5dp"
-                            android:background="@drawable/ib_rounded"
-                            android:backgroundTint="@color/dark_gray"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:paddingLeft="10dp"
-                            android:paddingRight="10dp">
+                                <ImageView
+                                    android:layout_width="18dp"
+                                    android:layout_height="18dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:adjustViewBounds="true"
+                                    app:srcCompat="@drawable/star" />
 
-                            <ImageView
-                                android:id="@+id/iv_categoryFollowing"
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:layout_marginEnd="3dp"
-                                android:adjustViewBounds="true"
-                                app:srcCompat="@drawable/following" />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="left|center_vertical"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:gravity="center_vertical"
+                                    android:text="Newest"
+                                    android:textColor="@color/white" />
+                            </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/tv_categoryFollowing"
+                            <LinearLayout
+                                android:id="@+id/btn_sortDiscussed"
                                 android:layout_width="wrap_content"
-                                android:layout_height="20dp"
-                                android:layout_gravity="left|center_vertical"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:gravity="center_vertical"
-                                android:text="Trending"
-                                android:textColor="@color/white" />
-                        </LinearLayout>
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_weight="0"
+                                android:background="@drawable/ib_rounded"
+                                android:backgroundTint="@color/dark_gray"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="5dp"
+                                android:paddingRight="10dp"
+                                android:paddingBottom="5dp">
 
-                    </LinearLayout>
+                                <ImageView
+                                    android:id="@+id/iv_sortDiscussed"
+                                    android:layout_width="14dp"
+                                    android:layout_height="14dp"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginEnd="3dp"
+                                    android:adjustViewBounds="true"
+                                    android:background="@drawable/discussed" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="left|center_vertical"
+                                    android:fontFamily="@font/montserrat_regular"
+                                    android:gravity="center_vertical"
+                                    android:text="Discussed"
+                                    android:textColor="@color/white" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
 
                 </LinearLayout>
 
@@ -198,11 +202,10 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_home"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:fillViewport="true"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -219,10 +222,12 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <LinearLayout
         android:id="@+id/navMenu"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="54dp"
         android:background="@drawable/navmenubackground"
         android:clickable="true"
         android:gravity="center_vertical"
@@ -254,6 +259,7 @@
             android:focusable="true"
             app:srcCompat="@drawable/map"
             app:tint="#292D33" />
+
 
         <ImageView
             android:id="@+id/btn_home"

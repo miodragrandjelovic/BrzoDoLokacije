@@ -1,10 +1,11 @@
-﻿using PyxisKapriBack.Models;
+﻿using PyxisKapriBack.LocationManager.Interfaces;
+using PyxisKapriBack.Models;
 using System.Device.Location; 
 namespace PyxisKapriBack.LocationManager
 {
-    public static class LocationManager
+    public class LocationManager : ILocationManager
     {
-        public static double GetDistance(double Latitude1, double Longitude1, double Latitude2, double Longitude2)
+        public double GetDistance(double Latitude1, double Longitude1, double Latitude2, double Longitude2)
         {
             var coordinate1 = new GeoCoordinate(Latitude1, Longitude1); 
             var coordinate2 = new GeoCoordinate(Latitude2, Longitude2);
@@ -12,19 +13,47 @@ namespace PyxisKapriBack.LocationManager
             return coordinate1.GetDistanceTo(coordinate2);
         }
 
-        public static List<Location> GetAllAroundLocations(Location location, List<Location> locations, double distance = Constants.Constants.DISTANCE)
+        public List<Location> GetAllAroundLocations(GeoCoordinate coordinate, List<Post> posts, double distance = Constants.Constants.DISTANCE)
         {
             var closest = new List<Location>();
-            double dist; 
+            double dist;
 
-            foreach(Location loc in locations)
+            if (coordinate == null)
+                return closest; 
+
+            foreach(var post in posts)
             {
-                dist = GetDistance(location.Latitude, location.Longitude, loc.Latitude, loc.Longitude); 
+                if ((post.Latitude == null) || (post.Longitude == null))
+                    continue; 
+                dist = GetDistance(coordinate.Latitude, coordinate.Longitude, Convert.ToDouble(post.Latitude), Convert.ToDouble(post.Longitude)); 
                 if (dist <= distance)
                 {
-                    loc.Distance = dist; 
-                    closest.Add(loc);
+                    var location = new Location();
+                    location.Name = post.FullLocation; 
+                    location.Distance = Math.Round(dist,2); 
+                    closest.Add(location);
                 }
+            }
+            return closest;
+        }
+
+        public List<Post> GetAllAroundPosts(GeoCoordinate coordinate, List<Post> posts, double distance = Constants.Constants.DISTANCE)
+        {
+            var closest = new List<Post>();
+            double dist;
+
+            if (distance == 0)
+                distance = Constants.Constants.DISTANCE;
+            
+            foreach (var post in posts)
+            {
+                if ((post.Latitude == null) || (post.Longitude == null))
+                    continue;
+                
+                dist = GetDistance(coordinate.Latitude, coordinate.Longitude, Convert.ToDouble(post.Latitude), Convert.ToDouble(post.Longitude));
+                
+                if (dist <= distance)
+                    closest.Add(post);
             }
             return closest;
         }

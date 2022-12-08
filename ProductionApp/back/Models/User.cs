@@ -12,11 +12,13 @@
         public byte[] Password { get; set; }
         public byte[] PasswordKey { get; set; }
         public string FolderPath { get; set; } = string.Empty;
+        public string FileName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public byte[]? ProfileImage { get; set; }
         public List<Post>? Posts { get; set; }
         public List<Like>? Likes { get; set; }
         public List<Dislike>? Dislikes { get; set; }
+        public List<View>? Views { get; set; }
         public List<Comment>? Comments { get; set; }
         public List<CommentLike>? CommentLikes { get; set; }
         public List<CommentDislike>? CommentDislikes { get; set; }

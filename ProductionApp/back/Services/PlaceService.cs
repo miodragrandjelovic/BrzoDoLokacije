@@ -21,40 +21,60 @@ namespace PyxisKapriBack.Services
 
             foreach (var location  in locations)
             {
-                locationsDTO.Add(new LocationDTO { Id = location.Id, Name = location.Name });
+                locationsDTO.Add(new LocationDTO
+                {
+                    Name = location
+                });
             }
 
             return locationsDTO;
         }
 
-        public List<LocationDTO> GetAllAroundLocations(string location, double distance = Constants.Constants.DISTANCE)
+        public List<LocationDTO> GetAllAroundLocationsByName(string location, double distance = Constants.Constants.DISTANCE)
         {
-            var _location = _iLocationDAL.GetLocation(location);
+            Location _location = _iLocationDAL.GetLocation(location);
 
-            if (location == null)
+            if ((location == null) || (_location.Longitude == 0) || (_location.Latitude == 0))
                 return null; 
 
-            var locations = _iLocationDAL.GetAllAroundLocations(_location, distance);
-            if (locations == null)
-                return null;
+            return createLocationDTOList(_iLocationDAL.GetAllAroundLocations(_location.Latitude, _location.Longitude, distance)); 
+        }
 
-            var locationsDTO = new List<LocationDTO>(); 
-            foreach(Location loc in locations)
+        public List<LocationDTO> GetAllAroundLocationsByCoordinates(double longitude, double latitude, double distance = 1500)
+        {
+            var locations = _iLocationDAL.GetAllAroundLocations(latitude, longitude, distance);
+
+            var locationsDTO = new List<LocationDTO>();
+            foreach (Location loc in locations)
             {
                 locationsDTO.Add(new LocationDTO
                 {
                     Id = loc.Id,
-                    Name = loc.Name, 
+                    Name = loc.Name,
                     Distance = loc.Distance
-                }); 
+                });
             }
 
             return locationsDTO; 
         }
-
         public List<Location> GetNextSetOfLocations(int take = Constants.Constants.TAKE_ELEMENT)
         {
             return _iLocationDAL.GetNextSetOfLocations(take);
+        }
+
+        public List<LocationDTO> createLocationDTOList(List<Location> locations)
+        {
+            var locationsDTO = new List<LocationDTO>();
+            foreach (Location loc in locations)
+            {
+                locationsDTO.Add(new LocationDTO
+                {
+                    Id = loc.Id,
+                    Name = loc.Name,
+                    Distance = loc.Distance
+                });
+            }
+            return locationsDTO; 
         }
     }
 }

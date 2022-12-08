@@ -31,6 +31,19 @@ namespace PyxisKapriBack.Services
             };
         }
 
+        public Response AddLike(Like like)
+        {
+            try
+            {
+                var succeed = likeDAL.AddLike(like);
+                return ResponseService.CreateOkResponse(succeed.ToString()); 
+            }
+            catch(Exception e)
+            {
+                return ResponseService.CreateErrorResponse(e.Message); 
+            }
+        }
+
         public Response DeleteLike(int postId)
         {
             if (likeDAL.DeleteLike(postId, userService.GetLoggedUser()))
@@ -44,6 +57,12 @@ namespace PyxisKapriBack.Services
                 StatusCode = StatusCodes.Status500InternalServerError,
                 Message = "Error!"
             };
+        }
+
+        public Like GetLike(string username, int postID)
+        {
+            Like like = likeDAL.GetLike(postID, username);
+            return like; 
         }
 
         public List<Like> GetLikes(int postID, out int numberOfLikes)
@@ -64,6 +83,19 @@ namespace PyxisKapriBack.Services
         public bool IsLiked(int postID, string username)
         {
             return likeDAL.IsPostLiked(postID, username);
+        }
+
+        public Response UpdateLike(Like like)
+        {
+            try
+            {
+                var succeed = likeDAL.UpdateLike(like);
+                return ResponseService.CreateOkResponse(succeed.ToString());
+            }
+            catch (Exception e)
+            {
+                return ResponseService.CreateErrorResponse(e.Message);
+            }
         }
     }
 }

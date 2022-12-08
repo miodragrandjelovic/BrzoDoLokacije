@@ -1,16 +1,23 @@
 package com.example.pyxiskapri.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
+import android.os.AsyncTask
 import android.util.Log
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.ForeignProfileActivity
+import com.example.pyxiskapri.activities.ForeignProfileGridActivity
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
@@ -18,10 +25,25 @@ import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.UtilityFunctions
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_new_post.view.*
+import kotlinx.android.synthetic.main.activity_open_post.view.*
+import kotlinx.android.synthetic.main.fragment_drawer_nav.view.*
 import kotlinx.android.synthetic.main.item_post.view.*
+import kotlinx.android.synthetic.main.item_post.view.btn_like
+import kotlinx.android.synthetic.main.item_post.view.iv_likeIcon
+import kotlinx.android.synthetic.main.item_post.view.iv_ownerAvatar
+import kotlinx.android.synthetic.main.item_post.view.tv_likeCount
+import kotlinx.android.synthetic.main.item_post.view.tv_ownerUsername
+import kotlinx.android.synthetic.main.item_post.view.tv_viewCount
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.http.Url
+import java.net.URL
 import java.util.*
 
 class PostListAdapter(private val postList: MutableList<PostListItem>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
@@ -37,7 +59,7 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val currentPost = postList[position]
         holder.itemView.apply{
-            iv_ownerAvatar.setImageBitmap(UtilityFunctions.base64ToBitmap(currentPost.ownerImage))
+            Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.ownerImage)).into(iv_ownerAvatar)
             tv_ownerUsername.text = currentPost.ownerUsername
             tv_likeCount.text = currentPost.likeCount.toString()
             tv_viewCount.text = currentPost.viewCount.toString()
@@ -48,22 +70,22 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
             else
                 iv_likeIcon.setColorFilter(ContextCompat.getColor(context, R.color.white), PorterDuff.Mode.SRC_IN);
 
-            iv_postImage.setImageBitmap(UtilityFunctions.base64ToBitmap(currentPost.coverImage))
+            Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).into(iv_postImage)
+
 
             iv_postImage.setOnClickListener{
                 val intent = Intent(context, OpenPostActivity::class.java)
-                Log.d("BASE 64", currentPost.coverImage)
                 ActivityTransferStorage.postItemToOpenPost = currentPost
                 context.startActivity(intent)
             }
 
-            btn_like.setOnClickListener {
-                setRemoveLike(currentPost, position, context, currentPost.isLiked)
-            }
+//            btn_like.setOnClickListener {
+//                setRemoveLike(currentPost, position, context, currentPost.isLiked)
+//            }
 
             btn_ForeignUser.setOnClickListener(){
 
-                val intent = Intent(context, ForeignProfileActivity::class.java)
+                val intent = Intent(context, ForeignProfileGridActivity::class.java)
                 intent.putExtra("username", tv_ownerUsername.text.toString())
                 context.startActivity(intent)
             }
@@ -84,55 +106,55 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
         notifyDataSetChanged()
     }
 
-    private fun setRemoveLike(currentPost: PostListItem, position: Int, context: Context, isPostLiked: Boolean){
-        if(isPostLiked) {
-            apiClient.getPostService(context).removeLike(currentPost.id)
-                .enqueue(object : Callback<MessageResponse> {
-                    override fun onResponse(
-                        call: Call<MessageResponse>,
-                        response: Response<MessageResponse>
-                    ) {
-                        if(response.isSuccessful) {
-                            postList[position].isLiked = false
-                            postList[position].likeCount -= 1
-                            notifyItemChanged(position)
-                        }
-
-                    }
-
-                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                        Log.d(
-                            "PostListAdapter",
-                            "Nije implementiran onFailure za removeLike api zahtev!"
-                        )
-                    }
-
-                })
-        }
-        else {
-            apiClient.getPostService(context).setLike(currentPost.id)
-                .enqueue(object : Callback<MessageResponse> {
-                    override fun onResponse(
-                        call: Call<MessageResponse>,
-                        response: Response<MessageResponse>
-                    ) {
-                        if(response.isSuccessful) {
-                            postList[position].isLiked = true
-                            postList[position].likeCount += 1
-                            notifyItemChanged(position)
-                        }
-
-                    }
-
-                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                        Log.d(
-                            "PostListAdapter",
-                            "Nije implementiran onFailure za setLike api zahtev!"
-                        )
-                    }
-
-                })
-        }
-    }
+//    private fun setRemoveLike(currentPost: PostListItem, position: Int, context: Context, isPostLiked: Boolean){
+//        if(isPostLiked) {
+//            apiClient.getPostService(context).removeLike(currentPost.id)
+//                .enqueue(object : Callback<MessageResponse> {
+//                    override fun onResponse(
+//                        call: Call<MessageResponse>,
+//                        response: Response<MessageResponse>
+//                    ) {
+//                        if(response.isSuccessful) {
+//                            postList[position].isLiked = false
+//                            postList[position].likeCount -= 1
+//                            notifyItemChanged(position)
+//                        }
+//
+//                    }
+//
+//                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+//                        Log.d(
+//                            "PostListAdapter",
+//                            "Nije implementiran onFailure za removeLike api zahtev!"
+//                        )
+//                    }
+//
+//                })
+//        }
+//        else {
+//            apiClient.getPostService(context).setLike(currentPost.id)
+//                .enqueue(object : Callback<MessageResponse> {
+//                    override fun onResponse(
+//                        call: Call<MessageResponse>,
+//                        response: Response<MessageResponse>
+//                    ) {
+//                        if(response.isSuccessful) {
+//                            postList[position].isLiked = true
+//                            postList[position].likeCount += 1
+//                            notifyItemChanged(position)
+//                        }
+//
+//                    }
+//
+//                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+//                        Log.d(
+//                            "PostListAdapter",
+//                            "Nije implementiran onFailure za setLike api zahtev!"
+//                        )
+//                    }
+//
+//                })
+//        }
+//    }
 
 }

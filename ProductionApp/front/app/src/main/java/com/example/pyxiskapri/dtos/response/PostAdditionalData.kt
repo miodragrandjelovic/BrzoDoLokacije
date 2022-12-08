@@ -16,5 +16,7 @@ data class PostAdditionalData(
     @SerializedName("city")
     var city: String,
     @SerializedName("country")
-    var country: String
+    var country: String,
+    @SerializedName("numberOfComments")
+    var commentCount: Int
 )

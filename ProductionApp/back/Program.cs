@@ -15,6 +15,10 @@ using PyxisKapriBack.LocationManager;
 using PyxisKapriBack.UI.Interfaces;
 using PyxisKapriBack.UI;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using PyxisKapriBack.LocationManager.Interfaces;
+using Microsoft.Extensions.FileProviders;
+using PyxisKapriBack.PythonService;
+using PyxisKapriBack.Chat;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +58,13 @@ builder.Services.AddAuthentication(item =>
         }; 
     });
 
+// Add PythonHttpClient
+
+builder.Services.AddHttpClient<ServiceClient>();
+
+// Add SignalR
+builder.Services.AddSignalR();
+
 // Add services to the container.
 builder.Services.Configure<KestrelServerOptions>(builder.Configuration.GetSection("Kestrel"));
 builder.Services.AddControllers();
@@ -87,6 +98,7 @@ builder.Services.AddSwaggerGen(options => {
     builder.Services.AddTransient<IDislikeDAL, DislikeDAL>();
     builder.Services.AddTransient<IFollowDAL, FollowDAL>();
 
+    builder.Services.AddTransient< IMessageDAL, MessageDAL>();
     builder.Services.AddTransient<ICommentLikeDAL, CommentLikeDAL>();
     builder.Services.AddTransient<ICommentDislikeDAL, CommentDislikeDAL>();
 #endregion
@@ -100,19 +112,22 @@ builder.Services.AddSwaggerGen(options => {
     builder.Services.AddTransient<IPlaceService, PlaceService>();
     builder.Services.AddTransient<IFollowService, FollowService>();
     builder.Services.AddTransient<ICommentService, CommentService>();
-
+    builder.Services.AddTransient<IMessageService, MessageService>();
     builder.Services.AddTransient<ICommentLikeService, CommentLikeService>();
     builder.Services.AddTransient<ICommentDislikeService, CommentDislikeService>();
     #endregion
 
-#region 'UI - Dependencies'
-builder.Services.AddTransient<IUserUI, UserUI>();
+    #region 'UI - Dependencies'
+    builder.Services.AddTransient<IUserUI, UserUI>();
     builder.Services.AddTransient<IPostUI, PostUI>();
     builder.Services.AddTransient<IFollowUI, FollowUI>(); 
-    builder.Services.AddTransient<ICommentUI, CommentUI>(); 
+    builder.Services.AddTransient<ICommentUI, CommentUI>();
+    builder.Services.AddTransient<IPlaceUI, PlaceUI>();
+    builder.Services.AddTransient<IMessageUI, MessageUI>();
     #endregion
 
     #region 'Managers'
+    builder.Services.AddTransient<ILocationManager, LocationManager>(); 
     builder.Services.AddTransient<IEncryptionManager, EncryptionManager>();
     builder.Services.AddTransient<IJWTManagerRepository, JWTManagerRepository>();
     builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
@@ -144,8 +159,15 @@ app.UseAuthorization();
 
 app.UseCors();
 
+app.MapHub<ChatHub>("/chat");
+
 app.MapControllers();
 
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "Images")),
+    RequestPath = "/Images"
+});
 
 app.Run();

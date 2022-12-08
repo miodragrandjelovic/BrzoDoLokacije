@@ -25,6 +25,7 @@
             tools:layout_editor_absoluteX="16dp" />
     </androidx.appcompat.widget.Toolbar>
 
+
     <EditText
         android:id="@+id/et_friendSearch"
         android:layout_width="0dp"
@@ -51,10 +52,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarChatMain" />
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_chatMain"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/navMenu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_friendSearch">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_friends"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            tools:listitem="@layout/item_friend_in_chat" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <LinearLayout
         android:id="@+id/navMenu"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="54dp"
         android:background="@drawable/navmenubackground"
         android:clickable="true"
         android:gravity="center_vertical"
@@ -98,6 +117,7 @@
             app:srcCompat="@drawable/home"
             app:tint="#292D33" />
 
+
         <ImageView
             android:id="@+id/btn_messages"
             android:layout_width="wrap_content"
@@ -132,16 +152,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_drawer_nav" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_friends"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/navMenu"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_friendSearch"
-        tools:listitem="@layout/item_friend_in_chat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

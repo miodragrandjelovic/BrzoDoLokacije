@@ -12,9 +12,6 @@ import com.example.pyxiskapri.dtos.response.FriendResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
 import kotlinx.android.synthetic.main.activity_chat_main.*
-import kotlinx.android.synthetic.main.activity_chat_main.btn_home
-import kotlinx.android.synthetic.main.activity_chat_main.btn_newPost
-import kotlinx.android.synthetic.main.activity_home.*
 
 class ChatMainActivity : AppCompatActivity() {
 
@@ -28,6 +25,8 @@ class ChatMainActivity : AppCompatActivity() {
 
         apiClient = ApiClient()
 
+        setSwipeRefresh()
+
         setupNavButtons()
 
         setupFriendList()
@@ -38,26 +37,42 @@ class ChatMainActivity : AppCompatActivity() {
             fcv_chatMainDrawerNav.getFragment<DrawerNav>().showDrawer()
     }
 
+    private fun setSwipeRefresh(){
 
+        srl_chatMain.setProgressBackgroundColorSchemeResource(R.color.red)
+        srl_chatMain.setColorSchemeResources(R.color.white)
 
-    private fun setupNavButtons(){
-        setupGoHomeButton()
-        setupButtonNewPost()
-    }
+        srl_chatMain.setOnRefreshListener {
+            et_friendSearch.setText("")
+            setupFriendList()
 
-    private fun setupGoHomeButton(){
-        btn_home.setOnClickListener {
-            val intent = Intent (this, HomeActivity::class.java);
-            startActivity(intent);
+            srl_chatMain.isRefreshing = false
         }
     }
 
-    private fun setupButtonNewPost(){
+
+    private fun setupNavButtons(){
+        // NEW POST
         btn_newPost.setOnClickListener {
             val intent = Intent (this, NewPostActivity::class.java);
             startActivity(intent);
         }
+
+        // MAPS
+        btn_discover.setOnClickListener {
+            val intent = Intent (this, MapActivity::class.java);
+            startActivity(intent);
+        }
+
+        // HOME
+        btn_home.setOnClickListener {
+            val intent = Intent (this, HomeActivity::class.java);
+            startActivity(intent);
+        }
+
+        // NOTIFICATIONS
     }
+
 
 
     private fun getDummyData(): ArrayList<FriendResponse>{

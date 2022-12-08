@@ -3,9 +3,6 @@ package com.example.pyxiskapri.dtos.request
 import com.google.gson.annotations.SerializedName
 
 data class EditUserRequest(
-
-    @SerializedName("profileImage")
-    var profileimage: String,
     @SerializedName("username")
     var username: String,
     @SerializedName("password")
@@ -15,7 +12,5 @@ data class EditUserRequest(
     @SerializedName("lastName")
     var lastName: String,
     @SerializedName("email")
-    var email: String,
-
-
+    var email: String
 )

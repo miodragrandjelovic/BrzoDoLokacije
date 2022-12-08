@@ -16,14 +16,19 @@ namespace PyxisKapriBack.Services
         private readonly IRoleDAL roleDAL;
         private readonly IEncryptionManager manager;
         private readonly IJWTManagerRepository jwtManager;
+        private readonly IFileService fileService;
 
-        public UserService(IUserDAL userDAL, IHttpContextAccessor httpContextAccessor, IRoleDAL roleDAL,IEncryptionManager manager,IJWTManagerRepository jwtManager)
+        public UserService(IUserDAL userDAL, 
+            IHttpContextAccessor httpContextAccessor, 
+            IRoleDAL roleDAL,IEncryptionManager manager,
+            IJWTManagerRepository jwtManager,IFileService fileService)
         {
             this.userDAL = userDAL;
             this.httpContextAccessor = httpContextAccessor;
             this.roleDAL = roleDAL;
             this.manager = manager;
             this.jwtManager = jwtManager;
+            this.fileService = fileService;
         }
 
         public bool AddNewConnection(Connection connection)
@@ -159,7 +164,45 @@ namespace PyxisKapriBack.Services
             return roleDAL.GetUserRole();
         }
 
-        public Response UpdateUser(UserDTO user)
+        public Response UpdateProfileImage(UpdateUserImageDTO userImage)
+        {
+
+            var response = new Response
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Message = "Profile image updated succesffuly!"
+            };
+
+            var loggedUser = userDAL.GetUser(GetLoggedUser());
+
+            string newProfileImageName;
+            var folderPath = Path.Combine(Constants.Constants.ROOT_FOLDER, loggedUser.Username);
+            // Menjanje foldera korisnika ukoliko je korisnik promenio username
+
+            // MENJANJE PROFILNE SLIKE  
+            if (userImage.ProfileImage != null && !fileService.CheckIfProfileImageExists(folderPath, userImage.ProfileImage.FileName))
+            {
+                fileService.UpdateFile(folderPath, loggedUser.FileName, userImage.ProfileImage, out newProfileImageName);
+                loggedUser.FileName = newProfileImageName;
+                userDAL.UpdateUser(loggedUser);
+                return response;
+            }
+            else
+            {
+                loggedUser.FolderPath = folderPath;
+                loggedUser.FileName = userImage.ProfileImage.FileName;
+                userDAL.UpdateUser(loggedUser);
+                return response;
+            }
+            response.StatusCode = StatusCodes.Status500InternalServerError;
+            response.Message = "Error while updating profile image";
+            return response;
+
+            
+            
+        }
+
+        public Response UpdateUser(UpdateUserDataDTO user)
         {
             var loggedUser = userDAL.GetUser(GetLoggedUser());
             
@@ -175,8 +218,8 @@ namespace PyxisKapriBack.Services
                     StatusCode = StatusCodes.Status403Forbidden,
                     Message = "Wrong password!"
                 };
-
-            if (userDAL.GetUser(user.Username) != null && !loggedUser.Id.Equals(GetUser(user.Username).Id))
+            var existedUser = userDAL.GetUser(user.Username);
+            if (existedUser != null && !loggedUser.Id.Equals(existedUser.Id))
             {
                 return new Response
                 {
@@ -185,7 +228,14 @@ namespace PyxisKapriBack.Services
                 };
             }
 
-            loggedUser.ProfileImage = Convert.FromBase64String(user.ProfileImage);
+            var folderPath = Path.Combine(Constants.Constants.ROOT_FOLDER, loggedUser.Username);
+            if (!loggedUser.Username.Equals(user.Username))
+            {
+                var destFolderPath = Path.Combine(Constants.Constants.ROOT_FOLDER, user.Username);
+                loggedUser.FolderPath = destFolderPath;
+                Directory.Move(folderPath, destFolderPath);
+            }
+
             loggedUser.Username = user.Username;
             loggedUser.FirstName = user.FirstName;
             loggedUser.LastName = user.LastName;
