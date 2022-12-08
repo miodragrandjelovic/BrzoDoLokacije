@@ -22,6 +22,7 @@ import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.PostOnMapResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
+import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
@@ -105,6 +106,8 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
         mMarkerImageView = mCustomMarkerView.findViewById(R.id.cover_image)
 
 
+        setupGetFollowers()
+        setupGetFollowing()
 
     }
 
@@ -352,6 +355,41 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
 
             })
+    }
+
+
+    private fun setupGetFollowers() {
+
+        ll_followers_um.setOnClickListener(){
+
+            var followList = FollowList(
+                username = SessionManager(this).fetchUserData()?.username!!,
+                type = false
+            )
+
+            val intent = Intent(this, FollowListActivity::class.java);
+            ActivityTransferStorage.followList = followList
+            startActivity(intent);
+
+        }
+
+    }
+
+    private fun setupGetFollowing() {
+
+        ll_following_um.setOnClickListener(){
+
+            var followList = FollowList(
+                username = SessionManager(this).fetchUserData()?.username!!,
+                type = true
+            )
+
+            val intent = Intent(this, FollowListActivity::class.java);
+            ActivityTransferStorage.followList = followList
+            startActivity(intent);
+
+        }
+
     }
 
 

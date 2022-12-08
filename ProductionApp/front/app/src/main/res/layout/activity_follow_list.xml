@@ -63,7 +63,7 @@
         app:layout_constraintTop_toBottomOf="@+id/et_friendSearch">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_friends"
+            android:id="@+id/rv_follows"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"

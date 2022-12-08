@@ -11,15 +11,13 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.activities.ChatMainActivity
-import com.example.pyxiskapri.activities.HomeActivity
-import com.example.pyxiskapri.activities.MainActivity
-import com.example.pyxiskapri.activities.NewPostActivity
+import com.example.pyxiskapri.activities.*
 import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.ChangeCredentialsInformation
+import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
@@ -87,7 +85,8 @@ class NewUserProfileActivity : AppCompatActivity(){
         setupUserPostAdapter()
         setupGetUserPosts()
 
-
+        setupGetFollowing()
+        setupGetFollowers()
 
   }
 
@@ -182,6 +181,42 @@ class NewUserProfileActivity : AppCompatActivity(){
 
 
     }
+
+
+    private fun setupGetFollowers() {
+
+        ll_followers_u.setOnClickListener(){
+
+            var followList = FollowList(
+                username = SessionManager(this).fetchUserData()?.username!!,
+                type = false
+            )
+
+            val intent = Intent(this, FollowListActivity::class.java);
+            ActivityTransferStorage.followList = followList
+            startActivity(intent);
+
+        }
+
+    }
+
+    private fun setupGetFollowing() {
+
+        ll_following_u.setOnClickListener(){
+
+            var followList = FollowList(
+                username = SessionManager(this).fetchUserData()?.username!!,
+                type = true
+            )
+
+            val intent = Intent(this, FollowListActivity::class.java);
+            ActivityTransferStorage.followList = followList
+            startActivity(intent);
+
+        }
+
+    }
+
 
 
     private fun mapActivity() {

@@ -20,6 +20,7 @@ import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.ChatMainActivity
+import com.example.pyxiskapri.activities.FollowListActivity
 import com.example.pyxiskapri.activities.HomeActivity
 import com.example.pyxiskapri.activities.NewPostActivity
 import com.example.pyxiskapri.dtos.request.ChangePasswordRequest
@@ -28,6 +29,7 @@ import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.LoginResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.fragments.DrawerNav
+import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.utility.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_change_credentials.*
@@ -76,6 +78,10 @@ class ChangeCredentialsActivity : AppCompatActivity() {
         saveChanges()
 
         setupNavButtons()
+
+        setupGetFollowers()
+        setupGetFollowing()
+
     }
 
     fun showDrawerMenu(view: View){
@@ -285,6 +291,41 @@ class ChangeCredentialsActivity : AppCompatActivity() {
         }
 
     }
+
+    private fun setupGetFollowers() {
+
+        ll_followers_c.setOnClickListener(){
+
+            var followList = FollowList(
+                username = SessionManager(this).fetchUserData()?.username!!,
+                type = false
+            )
+
+            val intent = Intent(this, FollowListActivity::class.java);
+            ActivityTransferStorage.followList = followList
+            startActivity(intent);
+
+        }
+
+    }
+
+    private fun setupGetFollowing() {
+
+        ll_following_c.setOnClickListener(){
+
+            var followList = FollowList(
+                username = SessionManager(this).fetchUserData()?.username!!,
+                type = true
+            )
+
+            val intent = Intent(this, FollowListActivity::class.java);
+            ActivityTransferStorage.followList = followList
+            startActivity(intent);
+
+        }
+
+    }
+
 
     private fun setupChangePhoto() {
 
