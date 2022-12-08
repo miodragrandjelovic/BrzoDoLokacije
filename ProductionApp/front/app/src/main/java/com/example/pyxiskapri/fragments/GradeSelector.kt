@@ -6,24 +6,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isGone
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.dtos.request.GradeRequest
-import com.example.pyxiskapri.dtos.response.MessageResponse
-import com.example.pyxiskapri.dtos.response.PostResponse
+import com.example.pyxiskapri.dtos.response.GradeResponse
 import com.example.pyxiskapri.utility.ApiClient
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_grade_selector.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class GradeSelectorFragment : Fragment() {
+class GradeSelector : Fragment() {
+
+    public lateinit var gradeDisplay: GradeDisplay
 
     public var gradedPostId: Int = 0
     private var grade: Int = 0
 
     private var opened: Boolean = false
+
+    private var requestPending: Boolean = false
 
     private var apiClient: ApiClient = ApiClient()
 
@@ -43,6 +44,11 @@ class GradeSelectorFragment : Fragment() {
 
     private fun handleInputs(){
         btn_displayEmoji.setOnClickListener {
+            if(requestPending)
+                return@setOnClickListener
+
+            requestPending = true
+
             if(opened)
                 hideSelector()
             else
@@ -92,7 +98,8 @@ class GradeSelectorFragment : Fragment() {
         hideSelector()
     }
 
-    private fun setGradeSelectorInitialGrade(initialGrade: Int){
+    public fun setGradeSelectorInitialGrade(initialGrade: Int){
+        grade = initialGrade
         when(initialGrade){
             0 -> btn_displayEmoji.setImageResource(R.drawable.emoji_unset)
             1 -> btn_displayEmoji.setImageResource(R.drawable.emoji_crying)
@@ -112,12 +119,13 @@ class GradeSelectorFragment : Fragment() {
             grade = grade
         )
         apiClient.getPostService(requireContext()).setLike(gradeRequest)
-            .enqueue(object: Callback<MessageResponse>{
-                override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
-                    if(response.isSuccessful())
-                        Log.d("GRADE STATE: ", "CHANGED")
+            .enqueue(object: Callback<GradeResponse>{
+                override fun onResponse(call: Call<GradeResponse>, response: Response<GradeResponse>) {
+                    if(response.isSuccessful && ::gradeDisplay.isInitialized && response.body() != null){
+                        gradeDisplay.setGradeDisplay(response.body()!!.averageGrade, response.body()!!.gradesCount)
+                        }
                 }
-                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                override fun onFailure(call: Call<GradeResponse>, t: Throwable) {
                     Log.d("GRADE STATE: ", "REQUEST FAILED")
                 }
             })

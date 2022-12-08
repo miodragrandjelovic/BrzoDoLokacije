@@ -13,6 +13,9 @@ data class UserData(
     @SerializedName(SessionManager.LASTNAME_KEY)
     var lastName: String,
 
+    @SerializedName(SessionManager.PROFILE_IMAGE_KEY)
+    var profileImagePath: String,
+
     @SerializedName(SessionManager.EMAIL_KEY)
     var email: String,
 

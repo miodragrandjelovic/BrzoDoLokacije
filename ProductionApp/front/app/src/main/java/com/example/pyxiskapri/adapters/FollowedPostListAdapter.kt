@@ -6,22 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.activities.ForeignProfileActivity
 import com.example.pyxiskapri.activities.ForeignProfileGridActivity
 import com.example.pyxiskapri.activities.OpenPostActivity
-import com.example.pyxiskapri.activities.UserProfile.NewUserProfileActivity
 import com.example.pyxiskapri.dtos.response.PostResponse
-import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.UtilityFunctions
-import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_post.view.*
 import kotlinx.android.synthetic.main.item_post_followed_profiles.view.*
 
 
-class FollowedPostListAdapter (private val postList: MutableList<PostListItem>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>(){
+class FollowedPostListAdapter (private val postList: MutableList<PostResponse>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>(){
 
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -67,9 +62,7 @@ class FollowedPostListAdapter (private val postList: MutableList<PostListItem>) 
 
     fun setFollowedPostList(postResponseList: ArrayList<PostResponse>){
         postList.clear()
-
-        for(post: PostResponse in postResponseList)
-            postList.add(PostListItem(post))
+        postList.addAll(postResponseList)
 
         notifyDataSetChanged()
     }

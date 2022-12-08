@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Geocoder
 import android.os.Bundle
@@ -19,10 +18,8 @@ import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.*
 import com.example.pyxiskapri.dtos.response.CustomMarkerResponse
 import com.example.pyxiskapri.dtos.response.GetUserResponse
-import com.example.pyxiskapri.dtos.response.PostOnMapResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
-import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
@@ -35,14 +32,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_change_credentials.*
-import kotlinx.android.synthetic.main.activity_foreign_profile_map.*
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_map_user_post.*
-import kotlinx.android.synthetic.main.activity_new_user_profile.*
 import kotlinx.android.synthetic.main.activity_new_user_profile.menu_btn
 import kotlinx.android.synthetic.main.popup_menu.view.*
-import okhttp3.internal.wait
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -132,7 +124,7 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
                     response: Response<PostResponse>
                 ) {
                     val intent = Intent(context, OpenPostActivity::class.java)
-                    ActivityTransferStorage.postItemToOpenPost = PostListItem(response.body()!!)
+                    ActivityTransferStorage.postItemToOpenPost = response.body()!!
                     context.startActivity(intent)
 
                     (context as Activity).finish()

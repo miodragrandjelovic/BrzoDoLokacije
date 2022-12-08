@@ -2,9 +2,7 @@ package com.example.pyxiskapri.services
 
 import com.example.pyxiskapri.dtos.request.GradeRequest
 import com.example.pyxiskapri.dtos.request.MapSearchRequest
-import com.example.pyxiskapri.dtos.request.NewPostRequest
 import com.example.pyxiskapri.dtos.response.*
-import com.example.pyxiskapri.models.PostListItem
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -36,7 +34,7 @@ interface PostService {
     fun getPostById(@Path(value= "id") id: Int) : Call<PostAdditionalData>
 
     @POST("api/Post/SetLike")
-    fun setLike(@Body gradeRequest: GradeRequest) : Call<MessageResponse>
+    fun setLike(@Body gradeRequest: GradeRequest) : Call<GradeResponse>
 
     @DELETE("api/Post/RemoveLike/{postId}")
     fun removeLike(@Path(value= "postId") postId: Int) : Call<MessageResponse>

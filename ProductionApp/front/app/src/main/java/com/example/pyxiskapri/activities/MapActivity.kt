@@ -21,6 +21,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.animation.doOnEnd
 import androidx.core.view.marginTop
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.LocationListAdapter
@@ -177,7 +178,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 openOptions()
             else
                 hideOptions()
-            optionsOpen = !optionsOpen
         }
     }
 
@@ -189,7 +189,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         ObjectAnimator.ofFloat(iv_optionsOpenIndicator, "rotation", 180f).apply {
             duration = 250
             start()
-        }
+        }.doOnEnd { optionsOpen = true }
     }
 
     private fun hideOptions(){
@@ -200,7 +200,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         ObjectAnimator.ofFloat(iv_optionsOpenIndicator, "rotation", 0f).apply {
             duration = 250
             start()
-        }
+        }.doOnEnd { optionsOpen = false }
     }
 
 
