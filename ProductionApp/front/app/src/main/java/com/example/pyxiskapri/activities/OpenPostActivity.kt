@@ -18,9 +18,10 @@ import com.example.pyxiskapri.dtos.request.NewCommentRequest
 import com.example.pyxiskapri.dtos.response.CommentResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostAdditionalData
+import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
-import com.example.pyxiskapri.fragments.GradeSelectorFragment
-import com.example.pyxiskapri.models.PostListItem
+import com.example.pyxiskapri.fragments.GradeDisplay
+import com.example.pyxiskapri.fragments.GradeSelector
 import com.example.pyxiskapri.utility.*
 import com.google.android.gms.maps.model.LatLng
 import com.squareup.picasso.Picasso
@@ -40,14 +41,12 @@ class OpenPostActivity : AppCompatActivity() {
     lateinit var sessionManager: SessionManager
     lateinit var apiClient: ApiClient
 
-    private lateinit var postData: PostListItem
+    private lateinit var postData: PostResponse
     private lateinit var postLocation: LatLng
 
     private lateinit var postImagesAdapter: PostImagesAdapter
 
     private lateinit var commentsAdapter: CommentAdapter
-
-    private lateinit var gradeSelectorFragment: GradeSelectorFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,15 +57,13 @@ class OpenPostActivity : AppCompatActivity() {
         sessionManager = SessionManager(this)
         apiClient = ApiClient()
 
-        gradeSelectorFragment = supportFragmentManager.findFragmentById(R.id.gradeSelectorContainer) as GradeSelectorFragment
-
         setupNavButtons()
 
         requestPostData()
 
         setupOpenMapButton()
 
-        ll_user_btn.setOnClickListener(){
+        btn_openMap.setOnClickListener(){
             val intent = Intent(this, ForeignProfileGridActivity::class.java)
             intent.putExtra("username", tv_ownerUsername.text.toString())
             this.startActivity(intent)
@@ -129,58 +126,6 @@ class OpenPostActivity : AppCompatActivity() {
         // NOTIFICATIONS
     }
 
-//    private fun changeLikeStatus(){
-//        if(postData.isLiked) {
-//            apiClient.getPostService(this).removeLike(postData.id)
-//                .enqueue(object : Callback<MessageResponse> {
-//                    override fun onResponse(
-//                        call: Call<MessageResponse>,
-//                        response: Response<MessageResponse>
-//                    ) {
-//                        if(response.isSuccessful) {
-//                            postData.isLiked = false
-//                            postData.likeCount -= 1
-//                            updatePostData(null)
-//                        }
-//
-//                    }
-//
-//                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-//                        Log.d(
-//                            "OpenPostActivity",
-//                            "Nije implementiran onFailure za removeLike api zahtev!"
-//                        )
-//                    }
-//
-//                })
-//        }
-//        else {
-//            apiClient.getPostService(this).setLike(postData.id)
-//                .enqueue(object : Callback<MessageResponse> {
-//                    override fun onResponse(
-//                        call: Call<MessageResponse>,
-//                        response: Response<MessageResponse>
-//                    ) {
-//                        if (response.isSuccessful) {
-//                            postData.isLiked = true
-//                            postData.likeCount += 1
-//                            updatePostData(null)
-//                        }
-//
-//                    }
-//
-//                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-//                        Log.d(
-//                            "OpenPostActivity",
-//                            "Nije implementiran onFailure za setLike api zahtev!"
-//                        )
-//                    }
-//
-//                })
-//        }
-//    }
-
-
     private fun requestPostData(){
         apiClient.getPostService(this).getPostById(postData.id)
             .enqueue(object : Callback<PostAdditionalData> {
@@ -210,6 +155,8 @@ class OpenPostActivity : AppCompatActivity() {
             tv_commentsCount.text = buildString {
                 append(postAdditionalData.commentCount.toString())
                     .append(" comments") }
+
+            Picasso.get().load(UtilityFunctions.getFullImagePath(sessionManager.fetchUserData()!!.profileImagePath)).into(iv_userNewCommentAvatar)
 
             postImagesAdapter = PostImagesAdapter(postAdditionalData.additionalImages)
             rv_additionalImages.adapter = postImagesAdapter
@@ -247,24 +194,10 @@ class OpenPostActivity : AppCompatActivity() {
             }
         }
 
-        gradeSelectorFragment.gradedPostId = postData.id
-
-//        tv_likeCount.text = postData.likeCount.toString()
-//        tv_viewCount.text = postData.viewCount.toString()
-//
-//        // Liked
-//        if(postData.isLiked)
-//            iv_likeIcon.setColorFilter(ContextCompat.getColor(this, R.color.gold), PorterDuff.Mode.SRC_IN);
-//        else
-//            iv_likeIcon.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_IN);
-//
-//
-//        btn_like.setOnClickListener{
-//            changeLikeStatus()
-//        }
-
-
-        // REPORT CHECK
+        gradeDisplay.setGradeDisplay(postData.averageGrade, postData.gradesCount)
+        gradeSelector.setGradeSelectorInitialGrade(postData.usersGrade)
+        gradeSelector.gradeDisplay = gradeDisplay
+        gradeSelector.gradedPostId = postData.id
     }
 
     private fun setupOpenMapButton(){

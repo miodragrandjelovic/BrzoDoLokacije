@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="WrapGridView">
         <attr name="exampleString" format="string" />
@@ -5,4 +6,9 @@
         <attr name="exampleColor" format="color" />
         <attr name="exampleDrawable" format="color|reference" />
     </declare-styleable>
+
+    <declare-styleable name="GradeSelectorView"/>
+
+    <declare-styleable name="GradeDisplayView"/>
+
 </resources>

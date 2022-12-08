@@ -12,7 +12,6 @@ import androidx.core.view.isGone
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.PostResponse
-import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.UtilityFunctions
@@ -20,7 +19,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
 
 
-class gvForeignPostAdapter (var postsItem: MutableList<PostListItem>, var context: Context) : BaseAdapter() {
+class gvForeignPostAdapter (var postsItem: MutableList<PostResponse>, var context: Context) : BaseAdapter() {
 
 
     private var apiClient: ApiClient = ApiClient()
@@ -83,9 +82,7 @@ class gvForeignPostAdapter (var postsItem: MutableList<PostListItem>, var contex
 
     fun setPostList(postResponseList: ArrayList<PostResponse>){
         postsItem.clear()
-
-        for(post: PostResponse in postResponseList)
-            postsItem.add(PostListItem(post))
+        postsItem.addAll(postResponseList)
 
         notifyDataSetChanged()
     }

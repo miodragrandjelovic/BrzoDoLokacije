@@ -1,52 +1,23 @@
 package com.example.pyxiskapri.adapters
 
-import android.annotation.SuppressLint
-import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.PorterDuff
-import android.os.AsyncTask
-import android.util.Log
-import android.widget.ImageView
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.activities.ForeignProfileActivity
 import com.example.pyxiskapri.activities.ForeignProfileGridActivity
 import com.example.pyxiskapri.activities.OpenPostActivity
-import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
-import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_new_post.view.*
-import kotlinx.android.synthetic.main.activity_open_post.view.*
-import kotlinx.android.synthetic.main.fragment_drawer_nav.view.*
 import kotlinx.android.synthetic.main.item_post.view.*
-import kotlinx.android.synthetic.main.item_post.view.btn_like
-import kotlinx.android.synthetic.main.item_post.view.iv_likeIcon
-import kotlinx.android.synthetic.main.item_post.view.iv_ownerAvatar
-import kotlinx.android.synthetic.main.item_post.view.tv_likeCount
-import kotlinx.android.synthetic.main.item_post.view.tv_ownerUsername
-import kotlinx.android.synthetic.main.item_post.view.tv_viewCount
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.http.Url
-import java.net.URL
 import java.util.*
 
-class PostListAdapter(private val postList: MutableList<PostListItem>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
+
+class PostListAdapter(private var postList: MutableList<PostResponse>) : RecyclerView.Adapter<PostListAdapter.PostViewHolder>() {
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -58,20 +29,12 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val currentPost = postList[position]
+
         holder.itemView.apply{
             Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.ownerImage)).into(iv_ownerAvatar)
             tv_ownerUsername.text = currentPost.ownerUsername
-            tv_likeCount.text = currentPost.likeCount.toString()
-            tv_viewCount.text = currentPost.viewCount.toString()
-
-            // Liked
-            if(currentPost.isLiked)
-                iv_likeIcon.setColorFilter(ContextCompat.getColor(context, R.color.gold), PorterDuff.Mode.SRC_IN);
-            else
-                iv_likeIcon.setColorFilter(ContextCompat.getColor(context, R.color.white), PorterDuff.Mode.SRC_IN);
 
             Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).into(iv_postImage)
-
 
             iv_postImage.setOnClickListener{
                 val intent = Intent(context, OpenPostActivity::class.java)
@@ -79,9 +42,10 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
                 context.startActivity(intent)
             }
 
-//            btn_like.setOnClickListener {
-//                setRemoveLike(currentPost, position, context, currentPost.isLiked)
-//            }
+            gradeDisplay.setGradeDisplay(currentPost.averageGrade, currentPost.gradesCount)
+            gradeSelector.setGradeSelectorInitialGrade(currentPost.usersGrade)
+            gradeSelector.gradeDisplay = gradeDisplay
+            gradeSelector.gradedPostId = currentPost.id
 
             btn_ForeignUser.setOnClickListener(){
 
@@ -99,10 +63,7 @@ class PostListAdapter(private val postList: MutableList<PostListItem>) : Recycle
 
     public fun setPostList(postResponseList: ArrayList<PostResponse>){
         postList.clear()
-
-        for(post: PostResponse in postResponseList)
-            postList.add(PostListItem(post))
-
+        postList.addAll(postResponseList)
         notifyDataSetChanged()
     }
 

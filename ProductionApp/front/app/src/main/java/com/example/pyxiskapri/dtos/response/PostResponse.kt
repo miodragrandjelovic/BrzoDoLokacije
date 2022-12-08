@@ -17,7 +17,10 @@ data class PostResponse(
     var likeCount: Int,
     @SerializedName("numberOfViews")
     var viewCount: Int,
-    @SerializedName("isLiked")
-    var isLiked: Boolean
-
+    @SerializedName("grade")
+    var usersGrade: Int,
+    @SerializedName("averageGrade")
+    var averageGrade: Double,
+    @SerializedName("count")
+    var gradesCount: Int
 )

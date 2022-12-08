@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,20 +17,18 @@ import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.OpenPostActivity
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
-import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
 import com.google.android.material.imageview.ShapeableImageView
-import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.modal_confirm_delete.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: Context, var onPostDeleteListener: () -> Unit) : BaseAdapter() {
+class UserPostsAdapter (var postsItem: MutableList<PostResponse>, var context: Context, var onPostDeleteListener: () -> Unit) : BaseAdapter() {
 
     private var apiClient: ApiClient = ApiClient()
 
@@ -143,9 +140,7 @@ class UserPostsAdapter (var postsItem: MutableList<PostListItem>, var context: C
 
     fun setPostList(postResponseList: ArrayList<PostResponse>){
         postsItem.clear()
-
-        for(post: PostResponse in postResponseList)
-            postsItem.add(PostListItem(post))
+        postsItem.addAll(postResponseList)
 
         notifyDataSetChanged()
     }

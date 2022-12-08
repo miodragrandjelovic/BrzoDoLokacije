@@ -17,7 +17,7 @@ class SessionManager(context: Context) {
         const val FIRSTNAME_KEY = "FirstName"
         const val LASTNAME_KEY = "LastName"
         const val EMAIL_KEY = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
-        const val IMAGE_KEY = ""
+        const val PROFILE_IMAGE_KEY = "ImagePath"
         const val ROLE_KEY = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
         const val EXP_KEY = "exp"
     }
