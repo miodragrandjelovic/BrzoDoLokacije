@@ -101,6 +101,20 @@ namespace PyxisKapriBack.Controllers
             return Ok(followers);
         }
 
+        [HttpGet("GetFollowing/{username}")]
+        public async Task<IActionResult> GetFollowing(string username)
+        {
+            var following = followUI.GetFollowing(username);
+            return Ok(following);
+        }
+
+        [HttpGet("GetFollowers/{username}")]
+        public async Task<IActionResult> GetFollowers(string username)
+        {
+            var followers = followUI.GetFollowers(username);
+            return Ok(followers);
+        }
+
         [HttpGet("GetFollowing")]
         public async Task<IActionResult> GetFollowing()
         {

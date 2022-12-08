@@ -36,13 +36,7 @@ namespace PyxisKapriBack.Controllers
         //public async Task<IActionResult> SetLikeOnPost(int postId)
         public async Task<IActionResult> SetLikeOnPost(LikeDTO likeDTO)
         {
-            var response = postUI.SetLikeOnPost(likeDTO);
-            var message = new { message = response.Message };
-            if (response.StatusCode.Equals(StatusCodes.Status200OK))
-                return Ok(message);
-
-            return BadRequest(message);
-
+            return Ok(postUI.SetLikeOnPost(likeDTO));
         }
         [HttpDelete("RemoveLike/{postId}")]
         public async Task<IActionResult> RemoveLikeFromPost(int postId)

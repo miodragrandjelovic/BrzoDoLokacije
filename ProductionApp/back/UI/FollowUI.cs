@@ -25,14 +25,18 @@ namespace PyxisKapriBack.UI
             return _iFollowService.DeleteFollow(_iUserService.GetLoggedUser(), followingUsername);
         }
 
-        public List<UserShortDTO>? GetFollowers()
+        public List<UserShortDTO>? GetFollowers(string username = "")
         {
-            return createListUserShortDTO(_iFollowService.GetFollowers(_iUserService.GetLoggedUser()));
+            if(String.IsNullOrEmpty(username))
+                return createListUserShortDTO(_iFollowService.GetFollowers(_iUserService.GetLoggedUser()));
+            return createListUserShortDTO(_iFollowService.GetFollowers(username));
         }
 
-        public List<UserShortDTO>? GetFollowing()
+        public List<UserShortDTO>? GetFollowing(string username = "")
         {
-            return createListUserShortDTO(_iFollowService.GetFollowing(_iUserService.GetLoggedUser()));
+            if (String.IsNullOrEmpty(username))
+                return createListUserShortDTO(_iFollowService.GetFollowing(_iUserService.GetLoggedUser()));
+            return createListUserShortDTO(_iFollowService.GetFollowing(username));
         }
 
         public Response IsFollowed(string followingUsername)
