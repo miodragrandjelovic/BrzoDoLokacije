@@ -13,5 +13,14 @@ namespace PyxisKapriBack.DAL.Interfaces
         bool UpdateUser(User user);
         bool DeleteUser(int userID); 
         List<User> GetAllUsers(User user);
+<<<<<<< Updated upstream
+        double GetAverageGradeForAllPosts(string username);
+        int GetDifferentLocations(string username); 
+=======
+        List<Connection> GetUserConnections(string username);
+        Connection GetConnectionById(string connectionId);
+
+        bool AddNewConnection(Connection connection);
+>>>>>>> Stashed changes
     }
 }

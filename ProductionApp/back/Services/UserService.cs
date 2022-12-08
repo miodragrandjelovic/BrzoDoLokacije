@@ -25,6 +25,12 @@ namespace PyxisKapriBack.Services
             this.manager = manager;
             this.jwtManager = jwtManager;
         }
+
+        public bool AddNewConnection(Connection connection)
+        {
+            return userDAL.AddNewConnection(connection);
+        }
+
         public Response AddNewUser(User user)
         {
             var succeed = userDAL.AddNewUser(user);
@@ -101,6 +107,22 @@ namespace PyxisKapriBack.Services
             return roleDAL.GetAvailableRolesForUser(loggedUser);
         }
 
+<<<<<<< Updated upstream
+        public double GetAverageGradeForAllPosts(string username)
+        {
+            return userDAL.GetAverageGradeForAllPosts(username); 
+        }
+
+        public int GetDifferentLocations(string username)
+        {
+            return userDAL.GetDifferentLocations(username); 
+=======
+        public Connection GetConnectionById(string connectionId)
+        {
+            return userDAL.GetConnectionById(connectionId);
+>>>>>>> Stashed changes
+        }
+
         public string? GetLoggedUser()
         {
             var loggedUser = httpContextAccessor?.HttpContext?.User?.Identity?.Name;
@@ -120,7 +142,10 @@ namespace PyxisKapriBack.Services
             return userDAL.GetUser(usernameOrEmail);
         }
 
-        
+        public List<Connection> GetUserConnections(string username)
+        {
+            return userDAL.GetUserConnections(username);
+        }
 
         public string? GetUserEmail()
         {

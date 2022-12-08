@@ -33,6 +33,10 @@
 
         public List<Message>? SentMessages { get; set; }
         public List<Message>? ReceivedMessages { get; set; }
+
+        // Konekcije za chat
+        public List<Connection> Connections { get; set; }
+
         #region 'Country'
 
         [ForeignKey("Country")]

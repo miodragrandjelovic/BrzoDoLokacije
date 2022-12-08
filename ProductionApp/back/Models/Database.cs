@@ -177,6 +177,18 @@ namespace PyxisKapriBack.Models
             .OnDelete(DeleteBehavior.Cascade);
 
             #endregion
+
+            #region 'Connection Relationships'
+
+            modelBuilder.Entity<Connection>()
+                .HasOne(connection => connection.User)
+                .WithMany(user => user.Connections)
+                .HasForeignKey(connection => connection.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            
+
+            #endregion
         }
 
         #region 'Database Datasets'
@@ -194,6 +206,9 @@ namespace PyxisKapriBack.Models
         public DbSet<CommentLike> CommentLikes { get; set; }
         public DbSet<CommentDislike> CommentDislikes { get; set; }
         public DbSet<Message> Messages { get; set; }
+        public DbSet<View> Views { get; set; }
+
+        public DbSet<Connection> Connections { get; set; }
         #endregion
 
         #region 'Insert Data'
