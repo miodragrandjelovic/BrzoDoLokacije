@@ -18,5 +18,6 @@
         public string Country { get; set; } = string.Empty;
         public double AverageGrade { get; set; } = 0;
         public int Count { get; set; } = 0; 
+        public String? Tags { get; set; }
     }
 }

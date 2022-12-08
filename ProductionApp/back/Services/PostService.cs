@@ -44,8 +44,8 @@ namespace PyxisKapriBack.Services
             newPost.PostPath = postPath;
             newPost.Longitude = Convert.ToDouble(post.Longitude);
             newPost.Latitude = Convert.ToDouble(post.Latitude);
-            newPost.FullLocation = post.LocationName; 
-
+            newPost.FullLocation = post.LocationName;
+            newPost.Tags = post.Tags; 
             var fullPath = Path.Combine(loggedUser.FolderPath, postPath);
             var answer = fileService.CreateFolder(fullPath);
             fileService.AddFile(fullPath, post.CoverImage);
@@ -60,7 +60,7 @@ namespace PyxisKapriBack.Services
             newPost.Location = FixLocation(post.Address, post.LocationName, post.City, post.Country, 
                                            Convert.ToDouble(post.Longitude), Convert.ToDouble(post.Latitude)); 
             
-            if (post.Images.Count > 0)
+            if ((post.Images != null) && (post.Images.Count > 0))
             {
                 foreach (var image in post.Images)
                 {

@@ -52,7 +52,8 @@ namespace PyxisKapriBack.UI
                     FullCoverImagePath = Path.Combine(post.User.FolderPath,post.PostPath,post.CoverImageName),
                     IsLiked = likeService.IsLiked(post.Id, userService.GetLoggedUser()),
                     DateCreated = post.CreatedDate.ToString("g"),
-                    Count = post.Likes.Count()
+                    Count = post.Likes.Count(), 
+                    Tags = post.Tags
                 });
             }
             return allPosts;
@@ -78,7 +79,8 @@ namespace PyxisKapriBack.UI
                     IsLiked = likeService.IsLiked(post.Id, username),
                     Grade = postService.GetGrade(post.Id, username),
                     DateCreated = post.CreatedDate.ToString("g"),
-                    Count = post.Likes.Count()
+                    Count = post.Likes.Count(), 
+                    Tags = post.Tags
                 });
             }
             return allPosts;
@@ -182,7 +184,8 @@ namespace PyxisKapriBack.UI
                     FullProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName),
                     DateCreated = post.CreatedDate.ToString("g"),
                     IsLiked = likeService.IsLiked(post.Id, username),
-                    Count = post.Likes.Count()
+                    Count = post.Likes.Count(), 
+                    Tags = post.Tags
                 });
             }
 
@@ -204,7 +207,8 @@ namespace PyxisKapriBack.UI
                     DateCreated = post.CreatedDate.ToString("g"),
                     Location = post.Location.Name, 
                     City = post.Location.City.Name, 
-                    Country = post.Location.City.Country.Name
+                    Country = post.Location.City.Country.Name, 
+                    Tags = post.Tags
                 });
             }
 
@@ -257,7 +261,8 @@ namespace PyxisKapriBack.UI
                     FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
                     IsLiked = likeService.IsLiked(post.Id, username),
                     DateCreated = post.CreatedDate.ToString("g"),
-                    Count = post.Likes.Count()
+                    Count = post.Likes.Count(), 
+                    Tags = post.Tags
                 };
             return null;
         }
