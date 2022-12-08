@@ -35,12 +35,6 @@ namespace PyxisKapriBack.UI
                 case SearchType.COORDINATES: 
                     locationsDTO = iPlaceService.GetAllAroundLocationsByCoordinates(search.Longitude, search.Latitude, distance);
                     break;
-                case SearchType.CITY:
-                    locations = null;
-                    break;
-                case SearchType.COUNTRY:
-                    locations = null;
-                    break;
                 default:
                     locations = null;
                     break; 

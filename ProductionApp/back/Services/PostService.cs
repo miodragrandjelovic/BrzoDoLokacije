@@ -245,7 +245,7 @@ namespace PyxisKapriBack.Services
             return response;
         }
 
-        public Response GetPostsBySearch(String search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT, bool friendsOnly = false)
+        public Response GetPostsBySearch(String search, SearchType searchType = SearchType.LOCATION, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT, bool friendsOnly = false)
         {
             var response = new Response();
 
@@ -253,13 +253,13 @@ namespace PyxisKapriBack.Services
             {
                 if (countOfResult == 0)
                     countOfResult = Constants.Constants.TAKE_ELEMENT; 
-                response.Data = postDAL.GetPostsBySearch(userService.GetLoggedUser(), search, sortType, friendsOnly).Take(countOfResult).Cast<object>().ToList(); 
+                response.Data = postDAL.GetPostsBySearch(userService.GetLoggedUser(), search, searchType, sortType, friendsOnly).Take(countOfResult).Cast<object>().ToList(); 
                 response.Message = "Found posts";
                 response.StatusCode = StatusCodes.Status200OK;
             }
             catch(Exception e)
             {
-                response.Message = "Found posts";
+                response.Message = e.Message;
                 response.StatusCode = StatusCodes.Status500InternalServerError;
             }
 

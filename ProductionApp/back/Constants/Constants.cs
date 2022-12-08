@@ -70,8 +70,7 @@
     {
         LOCATION, 
         COORDINATES, 
-        CITY, 
-        COUNTRY
+        TAGS
     }
 
     public enum SortType
@@ -79,6 +78,6 @@
         DATE, 
         COUNT_LIKES, 
         COUNT_COMMENTS, 
-        COUNT_VIEWS
+        COUNT_VIEWS, 
     }
 }

@@ -154,7 +154,7 @@ namespace PyxisKapriBack.DAL
             return orderedQueryable.ToList(); 
         }
 
-        public List<Post> GetPostsBySearch(String username, String search, SortType sortType = SortType.DATE, bool friendsOnly = false)
+        public List<Post> GetPostsBySearch(String username, String search, SearchType searchType, SortType sortType = SortType.DATE, bool friendsOnly = false)
         {
             IQueryable<Post> posts = _context.Posts;
 
@@ -165,7 +165,18 @@ namespace PyxisKapriBack.DAL
             }
             
             if (!String.IsNullOrEmpty(search))
-                posts = posts.Where(post => post.FullLocation.ToLower().Contains(search.ToLower())); 
+            {
+                if(searchType == SearchType.LOCATION)
+                    posts = posts.Where(post => post.FullLocation.ToLower().Contains(search.ToLower()));
+                else if(searchType == SearchType.TAGS)
+                {
+                    List<String> tags = search.Split(", ").ToList();
+                    /*posts = posts.Where(post => !String.IsNullOrEmpty(post.Tags))
+                                 .Where(post => tags.Any(post.Tags.Contains())); */
+                    posts = posts.Where(post => !String.IsNullOrEmpty(post.Tags)); 
+                    posts = posts.ToList().Where(post => tags.Any(tag => post.Tags.ToLower().Contains(tag.ToLower()))).AsQueryable(); 
+                }
+            }
 
             posts = posts.Include(post => post.User)
                          .Include(post => post.Dislikes)

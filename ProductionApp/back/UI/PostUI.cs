@@ -236,9 +236,9 @@ namespace PyxisKapriBack.UI
             return postsDTO; 
         }
 
-        public Response GetPostsBySearch(string search, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT, bool friendsOnly = false)
+        public Response GetPostsBySearch(string search, SearchType searchType = SearchType.LOCATION, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT, bool friendsOnly = false)
         {
-            Response response = postService.GetPostsBySearch(search, sortType, countOfResult, friendsOnly);
+            Response response = postService.GetPostsBySearch(search, searchType, sortType, countOfResult, friendsOnly);
             if (response.StatusCode.Equals(StatusCodes.Status200OK))
                 response.Data = createPostOnMapDTO(response.Data.Cast<Post>().ToList(), userService.GetLoggedUser()).Cast<object>().ToList();
             return response;
