@@ -23,7 +23,6 @@ import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_comment.view.*
-import kotlinx.android.synthetic.main.item_friend_in_chat.view.*
 import kotlinx.android.synthetic.main.item_reply.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -372,7 +371,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
 
         var dialogUserAvatar: ImageView = dialog.findViewById(R.id.iv_dialogUserAvatar)
         var dialogReplyText: EditText = dialog.findViewById(R.id.et_dialogNewCommentText)
-        var dialogPostReplyButton: ConstraintLayout = dialog.findViewById(R.id.btn_postComment)
+        var dialogPostReplyButton: ConstraintLayout = dialog.findViewById(R.id.btn_addTag)
 
         // SET USER IMAGE
 

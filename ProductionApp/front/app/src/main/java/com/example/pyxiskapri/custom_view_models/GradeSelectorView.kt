@@ -62,7 +62,7 @@ class GradeSelectorView(context: Context, attrs: AttributeSet): ConstraintLayout
 
         val animSet = AnimatorSet()
         animSet.playTogether(
-            ObjectAnimator.ofFloat(iv_selectionBackground, "alpha", 1f ).setDuration(250),
+            ObjectAnimator.ofFloat(iv_selectionBackground, "alpha", 1f ).setDuration(200),
             ObjectAnimator.ofFloat(btn_grade1, "scaleX", 1f ).setDuration(250),
             ObjectAnimator.ofFloat(btn_grade2, "scaleX", 1f ).setDuration(200),
             ObjectAnimator.ofFloat(btn_grade3, "scaleX", 1f ).setDuration(150),
@@ -80,8 +80,9 @@ class GradeSelectorView(context: Context, attrs: AttributeSet): ConstraintLayout
 
     private fun hideSelector(){
         val animSet = AnimatorSet()
+
         animSet.playTogether(
-            ObjectAnimator.ofFloat(iv_selectionBackground, "alpha", 0f ).setDuration(250),
+            ObjectAnimator.ofFloat(iv_selectionBackground, "alpha", 0f ).setDuration(200),
             ObjectAnimator.ofFloat(btn_grade1, "scaleX", 0f ).setDuration(250),
             ObjectAnimator.ofFloat(btn_grade2, "scaleX", 0f ).setDuration(200),
             ObjectAnimator.ofFloat(btn_grade3, "scaleX", 0f ).setDuration(150),

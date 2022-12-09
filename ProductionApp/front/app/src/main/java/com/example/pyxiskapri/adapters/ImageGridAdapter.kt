@@ -9,7 +9,7 @@ import android.widget.ImageView
 import com.example.pyxiskapri.models.ImageGridItem
 import com.example.pyxiskapri.R
 
-class ImageGridAdapter(var imageItems: MutableList<ImageGridItem>, var context: Context) : BaseAdapter() {
+class ImageGridAdapter(var imageItems: MutableList<ImageGridItem>, var context: Context, var itemRemoveListener: (removedIndex: Int) -> Unit) : BaseAdapter() {
 
     override fun getCount(): Int {
         return imageItems.size
@@ -35,6 +35,7 @@ class ImageGridAdapter(var imageItems: MutableList<ImageGridItem>, var context: 
 
         ibDelete?.setOnClickListener {
             removeImage(position)
+            itemRemoveListener(position)
         }
 
         gvItemImage?.setImageURI(imageItems[position].uri)

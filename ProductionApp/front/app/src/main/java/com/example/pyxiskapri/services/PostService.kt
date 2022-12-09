@@ -13,7 +13,6 @@ interface PostService {
     @Multipart
     @POST("api/Post/NewPost")
     fun addPost(
-        @Part CoverImage: MultipartBody.Part,
         @Part Images: ArrayList<MultipartBody.Part>,
         @Part("Description") Description: RequestBody,
         @Part("Longitude") Longitude: RequestBody,
@@ -21,7 +20,8 @@ interface PostService {
         @Part("LocationName") LocationName: RequestBody,
         @Part("Address") Address: RequestBody,
         @Part("City") City: RequestBody,
-        @Part("Country") Country: RequestBody
+        @Part("Country") Country: RequestBody,
+        @Part("Tags") Tags: RequestBody
     ) : Call<MessageResponse>
 
     @GET("api/Post/GetAllPosts/{sortType}")

@@ -14,22 +14,30 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.CommentAdapter
 import com.example.pyxiskapri.adapters.PostImagesAdapter
+import com.example.pyxiskapri.adapters.TagsDisplayAdapter
+import com.example.pyxiskapri.adapters.TagsInputAdapter
 import com.example.pyxiskapri.dtos.request.NewCommentRequest
 import com.example.pyxiskapri.dtos.response.CommentResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostAdditionalData
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
-import com.example.pyxiskapri.fragments.GradeDisplay
-import com.example.pyxiskapri.fragments.GradeSelector
 import com.example.pyxiskapri.utility.*
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.gms.maps.model.LatLng
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_open_post.*
+import kotlinx.android.synthetic.main.activity_open_post.btn_addTag
 import kotlinx.android.synthetic.main.activity_open_post.btn_discover
 import kotlinx.android.synthetic.main.activity_open_post.btn_home
 import kotlinx.android.synthetic.main.activity_open_post.btn_messages
 import kotlinx.android.synthetic.main.activity_open_post.btn_newPost
+import kotlinx.android.synthetic.main.activity_open_post.iv_coverImage
+import kotlinx.android.synthetic.main.activity_open_post.rv_images
+import kotlinx.android.synthetic.main.activity_open_post.rv_tags
 import kotlinx.android.synthetic.main.dialog_full_image.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -46,6 +54,8 @@ class OpenPostActivity : AppCompatActivity() {
 
     private lateinit var postImagesAdapter: PostImagesAdapter
 
+    private lateinit var tagsAdapter: TagsDisplayAdapter
+
     private lateinit var commentsAdapter: CommentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +68,8 @@ class OpenPostActivity : AppCompatActivity() {
         apiClient = ApiClient()
 
         setupNavButtons()
+
+        setupTagsAdapter()
 
         requestPostData()
 
@@ -146,6 +158,12 @@ class OpenPostActivity : AppCompatActivity() {
             })
     }
 
+    private fun setupTagsAdapter(){
+        tagsAdapter = TagsDisplayAdapter(context = this)
+        rv_tags.adapter = tagsAdapter
+        rv_tags.layoutManager = FlexboxLayoutManager(this, FlexDirection.ROW, FlexWrap.WRAP)
+    }
+
     private fun updatePostData(postAdditionalData: PostAdditionalData?){
 
         if(postAdditionalData != null){
@@ -159,8 +177,8 @@ class OpenPostActivity : AppCompatActivity() {
             Picasso.get().load(UtilityFunctions.getFullImagePath(sessionManager.fetchUserData()!!.profileImagePath)).into(iv_userNewCommentAvatar)
 
             postImagesAdapter = PostImagesAdapter(postAdditionalData.additionalImages)
-            rv_additionalImages.adapter = postImagesAdapter
-            rv_additionalImages.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
+            rv_images.adapter = postImagesAdapter
+            rv_images.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
         }
 
         Picasso.get().load(UtilityFunctions.getFullImagePath(postData.ownerImage)).into(iv_ownerAvatar)
@@ -194,6 +212,9 @@ class OpenPostActivity : AppCompatActivity() {
             }
         }
 
+        if(postData.tagsString != null)
+            tagsAdapter.setTags(postData.tagsString)
+
         gradeDisplay.setGradeDisplay(postData.averageGrade, postData.gradesCount)
         gradeSelector.setGradeSelectorInitialGrade(postData.usersGrade)
         gradeSelector.gradeDisplay = gradeDisplay
@@ -216,7 +237,7 @@ class OpenPostActivity : AppCompatActivity() {
 
         requestComments()
 
-        btn_postComment.setOnClickListener{
+        btn_addTag.setOnClickListener{
             postNewComment()
         }
     }

@@ -22,5 +22,7 @@ data class PostResponse(
     @SerializedName("averageGrade")
     var averageGrade: Double,
     @SerializedName("count")
-    var gradesCount: Int
+    var gradesCount: Int,
+    @SerializedName("tags")
+    var tagsString: String
 )

@@ -1,44 +1,42 @@
 package com.example.pyxiskapri.activities
 
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.icu.text.Transliterator
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
-import android.os.AsyncTask
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.adapters.CoverPickImagesAdapter
 import com.example.pyxiskapri.adapters.ImageGridAdapter
 import com.example.pyxiskapri.adapters.ImageUploadProgressAdapter
+import com.example.pyxiskapri.adapters.TagsInputAdapter
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.ImageGridItem
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_new_post.btn_discover
 import kotlinx.android.synthetic.main.activity_new_post.btn_home
@@ -46,10 +44,6 @@ import kotlinx.android.synthetic.main.activity_new_post.btn_messages
 import kotlinx.android.synthetic.main.activity_new_post.btn_newPost
 import kotlinx.android.synthetic.main.dialog_images_upload_progress.*
 import kotlinx.android.synthetic.main.dialog_location_search.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -88,16 +82,17 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
     // CARD COVER
     private val PICK_COVER_IMAGE_CODE: Int = 1
     private lateinit var coverImage: Uri
-
+    lateinit var coverPickImagesAdapter: CoverPickImagesAdapter
+    private var selectedCoverIndex = 0
 
     // CARD POST
     lateinit var uploadProgressAdapter: ImageUploadProgressAdapter
 
-    lateinit var listAdapter: ArrayAdapter<String>
+    lateinit var locationTextListAdapter: ArrayAdapter<String>
+
+    lateinit var tagsAdapter: TagsInputAdapter
 
 
-
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_post)
@@ -109,8 +104,10 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
         setupLocationButton()
 
         setupImageGridAdapter()
-        setupPickCoverImage()
         setupPickImagesButton()
+
+        setupPickCoverImageAdapter()
+        setupTagsAdapter()
 
         setupNavButtons()
 
@@ -154,26 +151,23 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
         // NOTIFICATIONS
     }
 
-
-
-
     // UI CONTROL
 
     private fun checkCurrentCardIsValid(cardNumber: Int): Boolean{
         when(cardNumber){
             1 -> {
-                if(INVALID_LOCATION_VALUE != selectedLocation)
+                if(imageGridAdapter.imageItems.size > 0)
                     return true
+
             }
 
             2 -> {
-                if(::coverImage.isInitialized)
-                    if(!Uri.EMPTY.equals(coverImage))
-                        return true
+                return true
             }
 
             3 -> {
-                return true
+                if(INVALID_LOCATION_VALUE != selectedLocation)
+                    return true
             }
 
             4 -> {
@@ -188,7 +182,6 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
     private fun setupCardUIButtons(){
         btn_cardBack.setOnClickListener{
-
             selectedCard--
             updateCardUI()
         }
@@ -201,7 +194,29 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
         }
 
         iv_circle1.setOnClickListener {
+            selectedCard = 1
+            updateCardUI()
+        }
+        iv_circle2.setOnClickListener {
+            if(!checkCurrentCardIsValid(1))
+                return@setOnClickListener
 
+            selectedCard = 2
+            updateCardUI()
+        }
+        iv_circle3.setOnClickListener {
+            if(!checkCurrentCardIsValid(1) || !checkCurrentCardIsValid(2))
+                return@setOnClickListener
+
+            selectedCard = 3
+            updateCardUI()
+        }
+        iv_circle4.setOnClickListener {
+            if(!checkCurrentCardIsValid(1) || !checkCurrentCardIsValid(2) || !checkCurrentCardIsValid(3))
+                return@setOnClickListener
+
+            selectedCard = 4
+            updateCardUI()
         }
     }
 
@@ -225,13 +240,13 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
         iv_circle2.setImageResource(R.drawable.circle)
         iv_circle2.setColorFilter(lightGray)
         tv_2.setTextColor(darkGray)
-        tv_circleImages.setTextColor(lightGray)
+        tv_circleCover.setTextColor(lightGray)
 
         // 3
         iv_circle3.setImageResource(R.drawable.circle)
         iv_circle3.setColorFilter(lightGray)
         tv_3.setTextColor(darkGray)
-        tv_circleCover.setTextColor(lightGray)
+        tv_circleImages.setTextColor(lightGray)
 
         // 4
         iv_circle4.setImageResource(R.drawable.circle)
@@ -269,18 +284,20 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             1 -> {
                 turnOnCardIndicator(iv_circle1, tv_1, tv_circleLocation)
                 iv_circle1.setImageResource(R.drawable.circle_selected)
+                btn_cardBack.visibility = View.VISIBLE
                 btn_cardNext.visibility = View.VISIBLE
-                cl_locationCard.visibility = View.VISIBLE
+                cl_imagesCard.visibility = View.VISIBLE
             }
 
             // IMAGES CARD
             2 -> {
                 turnOnCardIndicator(iv_circle1, tv_1, tv_circleLocation)
-                turnOnCardIndicator(iv_circle2, tv_2, tv_circleCover)
+                turnOnCardIndicator(iv_circle2, tv_2, tv_circleImages)
                 iv_circle2.setImageResource(R.drawable.circle_selected)
                 iv_bar1.setColorFilter(red)
                 btn_cardBack.visibility = View.VISIBLE
                 btn_cardNext.visibility = View.VISIBLE
+                updatePickCoverImagesRv()
                 cl_coverCard.visibility = View.VISIBLE
             }
 
@@ -292,9 +309,8 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
                 iv_circle3.setImageResource(R.drawable.circle_selected)
                 iv_bar1.setColorFilter(red)
                 iv_bar2.setColorFilter(red)
-                btn_cardBack.visibility = View.VISIBLE
                 btn_cardNext.visibility = View.VISIBLE
-                cl_imagesCard.visibility = View.VISIBLE
+                cl_locationCard.visibility = View.VISIBLE
             }
 
             // POST CARD
@@ -378,7 +394,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             val dialog: Dialog = Dialog(this)
 
             dialog.setContentView(R.layout.dialog_location_search)
-            dialog.window?.setLayout(920, 1000)
+            dialog.window?.setLayout(1000, 1200)
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
             dialog.show()
@@ -386,22 +402,22 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             var editText: EditText = dialog.findViewById(R.id.edit_text)
             var listView: ListView = dialog.findViewById(R.id.list_view)
 
-            var listAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.item_search_text, locationList)
+            var locationTextListAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.item_search_text, locationList)
 
             var fetchedAddresses: MutableList<Address> = mutableListOf()
 
-            listView.adapter = listAdapter
+            listView.adapter = locationTextListAdapter
 
             dialog.btn_searchLocations.setOnClickListener{
-                listAdapter.clear()
+                locationTextListAdapter.clear()
 
                 if(editText.text.toString() != "") {
                     fetchedAddresses = geocoder.getFromLocationName(editText.text.toString(), 8)!!
                     if (fetchedAddresses.size != 0) {
                         for (address in fetchedAddresses)
-                            listAdapter.add(address.getAddressLine(0))
+                            locationTextListAdapter.add(address.getAddressLine(0))
 
-                        listAdapter.notifyDataSetChanged()
+                        locationTextListAdapter.notifyDataSetChanged()
                     } else
                         Toast.makeText(this, "No locations found!", Toast.LENGTH_LONG).show()
                 }
@@ -444,30 +460,27 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             imageGridAdapter.notifyDataSetChanged()
         }
 
-        if(requestCode == PICK_COVER_IMAGE_CODE)  {
-            if(data == null)
-                return
-
-            if (data.clipData != null) {
-                iv_coverImage.setImageURI(data.clipData!!.getItemAt(0).uri)
-                coverImage=data.clipData!!.getItemAt(0).uri
-            }
-            else {
-                val imageUri = data.data
-                if (imageUri != null) {
-                    iv_coverImage.setImageURI(imageUri)
-                    coverImage=imageUri
-                }
-            }
-
-            tv_coverText.isVisible = false
-            btn_coverImage.isVisible = false
-
-        }
+//        if(requestCode == PICK_COVER_IMAGE_CODE)  {
+//            if(data == null)
+//                return
+//
+//            if (data.clipData != null) {
+//                iv_coverImage.setImageURI(data.clipData!!.getItemAt(0).uri)
+//                coverImage=data.clipData!!.getItemAt(0).uri
+//            }
+//            else {
+//                val imageUri = data.data
+//                if (imageUri != null) {
+//                    iv_coverImage.setImageURI(imageUri)
+//                    coverImage=imageUri
+//                }
+//            }
+//
+//        }
     }
 
     private fun setupImageGridAdapter() {
-        imageGridAdapter = ImageGridAdapter(mutableListOf(), this)
+        imageGridAdapter = ImageGridAdapter(mutableListOf(), this, ::imageRemovedListener)
         gv_additionalImages.adapter = imageGridAdapter
     }
 
@@ -481,28 +494,46 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
         }
     }
 
-    private fun setupPickCoverImage() {
+    private fun setupPickCoverImageAdapter(){
+        coverPickImagesAdapter = CoverPickImagesAdapter(arrayListOf(), ::selectCoverImageListener)
+        rv_images.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
+        rv_images.adapter = coverPickImagesAdapter
+        (rv_images.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+    }
 
-        btn_coverImage.setOnClickListener(){
-                val intent: Intent = Intent()
-                intent.type = "image/*"
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                intent.action = Intent.ACTION_GET_CONTENT
-                startActivityForResult(Intent.createChooser(intent, "Select Cover Images"), PICK_COVER_IMAGE_CODE)
-            }
 
-        cl_coverImage.setOnClickListener(){
-            val intent: Intent = Intent()
-            intent.type = "image/*"
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "Select Cover Images"), PICK_COVER_IMAGE_CODE)
-        }
+    private fun selectCoverImageListener(selectedIndex: Int){
+        selectedCoverIndex = selectedIndex
+        iv_coverImage.setImageURI(imageGridAdapter.imageItems[selectedCoverIndex].uri)
+    }
+
+    private fun imageRemovedListener(removedIndex: Int){
+        if(removedIndex == selectedCoverIndex)
+            selectedCoverIndex = 0
+        if(removedIndex < selectedCoverIndex)
+            selectedCoverIndex--
+    }
+
+    private fun updatePickCoverImagesRv() {
+        coverPickImagesAdapter.setImages(imageGridAdapter.imageItems, selectedCoverIndex)
+        iv_coverImage.setImageURI(imageGridAdapter.imageItems[selectedCoverIndex].uri)
     }
 
 
 
 
+    private fun setupTagsAdapter(){
+        tagsAdapter = TagsInputAdapter(mutableListOf(), this)
+        rv_tags.adapter = tagsAdapter
+        rv_tags.layoutManager = FlexboxLayoutManager(this, FlexDirection.ROW, FlexWrap.WRAP)
+
+        btn_addTag.setOnClickListener {
+            if(et_tagInput.text.trim() == "")
+                return@setOnClickListener
+            tagsAdapter.addTag(et_tagInput.text.toString())
+            et_tagInput.text.clear()
+        }
+    }
 
     // UPLOAD POST
 
@@ -527,14 +558,17 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
             // Images Multipart.Body
             val partImagesList: ArrayList<MultipartBody.Part> = arrayListOf()
-            var imageIndex = 1
+            var imageIndex = 0
             for (imageGridItem in imageGridAdapter.imageItems)
                 partImagesList.add(UtilityFunctions.uriToProgressMultipartPart(this, imageIndex++, imageGridItem.uri, "Images", "postImage", uploadProgressAdapter.uploadListener))
+
+            val pomItem = partImagesList[selectedCoverIndex]
+            partImagesList[selectedCoverIndex] = partImagesList[0]
+            partImagesList[0] = pomItem
 
             val context: Context = this
             // Images Upload
             apiClient.getPostService(this).addPost(
-                CoverImage = UtilityFunctions.uriToProgressMultipartPart(this, 0, coverImage, "CoverImage", "coverImage", uploadProgressAdapter.uploadListener),
                 Images = partImagesList,
                 Description = UtilityFunctions.requestBodyFromString(et_description.text.toString()),
                 Longitude = UtilityFunctions.requestBodyFromString(selectedLocation.longitude.toString()),
@@ -542,20 +576,25 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
                 LocationName = UtilityFunctions.requestBodyFromString(locationName),
                 Address = UtilityFunctions.requestBodyFromString(locationAddress),
                 City = UtilityFunctions.requestBodyFromString(locationCity),
-                Country = UtilityFunctions.requestBodyFromString(locationCountry)
+                Country = UtilityFunctions.requestBodyFromString(locationCountry),
+                Tags = UtilityFunctions.requestBodyFromString(tagsAdapter.tagsList.joinToString(separator = ", "))
             ).enqueue(
                 object : Callback<MessageResponse> {
-                    override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>
-                    ) {
+                    override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
                         if (response.isSuccessful) {
                             val intent = Intent(context, HomeActivity::class.java)
                             startActivity(intent)
                             dialog.dismiss()
                             finish()
                         }
+                        else{
+                            Toast.makeText(context, "Adding new post failed (with response)!", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                        }
                     }
 
                     override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                        dialog.dismiss()
                         Toast.makeText(context, "Adding new post failed!", Toast.LENGTH_SHORT).show()
                     }
                 }

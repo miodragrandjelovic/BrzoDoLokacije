@@ -227,10 +227,9 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_additionalImages"
+                    android:id="@+id/rv_images"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:backgroundTint="@color/dark_gray"
                     android:orientation="horizontal"
                     android:padding="10dp"
@@ -243,18 +242,32 @@
 
                 </androidx.recyclerview.widget.RecyclerView>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_tags"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:horizontalSpacing="10dp"
+                    android:isScrollContainer="true"
+                    android:padding="5dp"
+                    android:verticalSpacing="10dp"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_images"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:listitem="@layout/item_tag"
+                    tools:itemCount="3"/>
+
                 <ImageView
                     android:id="@+id/ll_postOptions"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
-                    android:layout_marginTop="10dp"
                     android:backgroundTint="@color/dark_gray"
                     android:orientation="horizontal"
                     android:padding="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_additionalImages">
+                    app:layout_constraintTop_toBottomOf="@+id/rv_tags">
 
                 </ImageView>
 
@@ -347,7 +360,7 @@
                         android:textSize="12sp" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/btn_postComment"
+                        android:id="@+id/btn_addTag"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_weight="0"

@@ -52,7 +52,7 @@
             android:textSize="12sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/btn_postComment"
+            android:id="@+id/btn_addTag"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_weight="0"

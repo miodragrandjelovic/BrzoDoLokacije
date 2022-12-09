@@ -133,12 +133,12 @@
             android:textColorHint="#80FFFFFF"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_postComment"
+            app:layout_constraintEnd_toStartOf="@+id/btn_addTag"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/btn_postComment"
+            android:id="@+id/btn_addTag"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_weight="0"
