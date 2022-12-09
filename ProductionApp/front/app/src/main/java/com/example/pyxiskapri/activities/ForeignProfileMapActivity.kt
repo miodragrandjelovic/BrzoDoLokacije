@@ -24,6 +24,8 @@ import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
+import com.example.pyxiskapri.models.FollowList
+import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
@@ -37,6 +39,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_foreign_profile_map.*
+import kotlinx.android.synthetic.main.activity_map_user_post.*
+import kotlinx.android.synthetic.main.activity_new_user_profile.*
 import kotlinx.android.synthetic.main.modal_confirm_follow.*
 import kotlinx.android.synthetic.main.modal_confirm_unfollow.*
 import retrofit2.Call
@@ -60,6 +64,11 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var geocoder: Geocoder
 
     var flag = 0
+
+    override fun onRestart() {
+        super.onRestart()
+        getForeignUser()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,6 +112,9 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         setupMap()
 
+        setupGetFollowers()
+        setupGetFollowing()
+
     }
 
 
@@ -135,7 +147,6 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
                     ActivityTransferStorage.postItemToOpenPost = response.body()!!
                     context.startActivity(intent)
 
-                    (context as Activity).finish()
                 }
 
                 override fun onFailure(call: Call<PostResponse>, t: Throwable) {
@@ -470,6 +481,41 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
         })
 
     }
+
+    private fun setupGetFollowers() {
+
+        ll_followers_fm.setOnClickListener(){
+
+            var followList = FollowList(
+                username = username,
+                type = false
+            )
+
+            val intent = Intent(this, FollowListActivity::class.java);
+            ActivityTransferStorage.followList = followList
+            startActivity(intent);
+
+        }
+
+    }
+
+    private fun setupGetFollowing() {
+
+        ll_following_fm.setOnClickListener(){
+
+            var followList = FollowList(
+                username = username,
+                type = true
+            )
+
+            val intent = Intent(this, FollowListActivity::class.java);
+            ActivityTransferStorage.followList = followList
+            startActivity(intent);
+
+        }
+
+    }
+
 
     private fun setupNavButtons() {
         setupHome()

@@ -19,6 +19,8 @@ import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
+import com.example.pyxiskapri.models.FollowList
+import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
@@ -44,6 +46,11 @@ class ForeignProfileGridActivity : AppCompatActivity() {
     lateinit var username:String
 
     lateinit var gvForeignPostAdapter: gvForeignPostAdapter
+
+    override fun onRestart() {
+        super.onRestart()
+        getForeignUser()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +87,9 @@ class ForeignProfileGridActivity : AppCompatActivity() {
 
         setupUserPostAdapter()
         setupGetUserPosts()
+
+        setupGetFollowing()
+        setupGetFollowers()
 
     }
 
@@ -317,6 +327,39 @@ class ForeignProfileGridActivity : AppCompatActivity() {
 
     }
 
+
+    private fun setupGetFollowers() {
+
+        ll_followers_fg.setOnClickListener(){
+
+            var followList = FollowList(
+                username = username,
+                type = false
+            )
+
+            val intent = Intent(this, FollowListActivity::class.java);
+            ActivityTransferStorage.followList = followList
+            startActivity(intent);
+        }
+
+    }
+
+    private fun setupGetFollowing() {
+
+        ll_following_fg.setOnClickListener(){
+
+            var followList = FollowList(
+                username = username,
+                type = true
+            )
+
+            val intent = Intent(this, FollowListActivity::class.java);
+            ActivityTransferStorage.followList = followList
+            startActivity(intent);
+
+        }
+
+    }
 
 
     private fun setupNavButtons() {

@@ -3,10 +3,7 @@ package com.example.pyxiskapri.services
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.pyxiskapri.dtos.request.*
 import com.example.pyxiskapri.dtos.request.response.LoginRequest
-import com.example.pyxiskapri.dtos.response.GetUserResponse
-import com.example.pyxiskapri.dtos.response.LoginResponse
-import com.example.pyxiskapri.dtos.response.MessageResponse
-import com.example.pyxiskapri.dtos.response.PostResponse
+import com.example.pyxiskapri.dtos.response.*
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -46,7 +43,15 @@ interface UserService {
     @GET("api/User/IsFollowed/{followingUsername}")
     fun getFollow(@Path(value = "followingUsername") followingUsername: String): Call<MessageResponse>
 
+    @GET("api/User/GetFollowing/{username}")
+    fun getFollowing(@Path(value = "username") username: String): Call<ArrayList<FollowUserResponse>>
 
+    @GET("api/User/GetFollowers/{username}")
+    fun getFollowers(@Path(value = "username") username: String): Call<ArrayList<FollowUserResponse>>
+
+
+    @GET("api/User/SearchFollowing/{search}")
+    fun searchUsers(@Path(value = "search") search: String): Call<ArrayList<FollowUserResponse>>
 
 
 }

@@ -11,15 +11,13 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.activities.ChatMainActivity
-import com.example.pyxiskapri.activities.HomeActivity
-import com.example.pyxiskapri.activities.MainActivity
-import com.example.pyxiskapri.activities.NewPostActivity
+import com.example.pyxiskapri.activities.*
 import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.ChangeCredentialsInformation
+import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
@@ -61,6 +59,7 @@ class NewUserProfileActivity : AppCompatActivity(){
     override fun onRestart() {
         super.onRestart()
         setupGetUserPosts()
+        setupGetUser()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,7 +86,8 @@ class NewUserProfileActivity : AppCompatActivity(){
         setupUserPostAdapter()
         setupGetUserPosts()
 
-
+        setupGetFollowing()
+        setupGetFollowers()
 
   }
 
@@ -95,6 +95,7 @@ class NewUserProfileActivity : AppCompatActivity(){
         setupHome()
         setupAddPost()
         setupButtonMessages()
+        setupDiscover()
     }
 
     fun showDrawerMenu(view: View){
@@ -118,8 +119,8 @@ class NewUserProfileActivity : AppCompatActivity(){
                         tv_name1.text=response.body()!!.firstName
                         tv_name2.text=response.body()!!.lastName
 
-                        followers_count.text = response.body()!!.followersCount.toString()
-                        following_count.text = response.body()!!.followingCount.toString()
+                        followers_count.text = response.body()!!.followingCount.toString()
+                        following_count.text = response.body()!!.followersCount.toString()
 
 
 
@@ -184,6 +185,41 @@ class NewUserProfileActivity : AppCompatActivity(){
     }
 
 
+    private fun setupGetFollowers() {
+
+        ll_followers_u.setOnClickListener(){
+
+            var followList = FollowList(
+                username = SessionManager(this).fetchUserData()?.username!!,
+                type = false
+            )
+
+            val intent = Intent(this, FollowListActivity::class.java);
+            ActivityTransferStorage.followList = followList
+            startActivity(intent);
+
+        }
+
+    }
+
+    private fun setupGetFollowing() {
+
+        ll_following_u.setOnClickListener(){
+
+            var followList = FollowList(
+                username = SessionManager(this).fetchUserData()?.username!!,
+                type = true
+            )
+
+            val intent = Intent(this, FollowListActivity::class.java);
+            ActivityTransferStorage.followList = followList
+            startActivity(intent);
+        }
+
+    }
+
+
+
     private fun mapActivity() {
         ll_map.setOnClickListener(){
 
@@ -244,6 +280,13 @@ class NewUserProfileActivity : AppCompatActivity(){
     private fun setupButtonMessages() {
         btn_messages.setOnClickListener {
             val intent = Intent (this, ChatMainActivity::class.java);
+            startActivity(intent);
+        }
+    }
+
+    private fun setupDiscover(){
+        btn_discoverr.setOnClickListener {
+            val intent = Intent (this, MapActivity::class.java);
             startActivity(intent);
         }
     }
