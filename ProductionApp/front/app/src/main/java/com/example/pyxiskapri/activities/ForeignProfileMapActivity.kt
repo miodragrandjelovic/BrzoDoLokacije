@@ -421,8 +421,8 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
                     tv_name1_fm.text=response.body()!!.firstName
                     tv_name2_fm.text=response.body()!!.lastName
 
-                    followers_count_fm.text = response.body()!!.followersCount.toString()
-                    following_count_fm.text = response.body()!!.followingCount.toString()
+                    followers_count_fm.text = response.body()!!.followingCount.toString()
+                    following_count_fm.text = response.body()!!.followersCount.toString()
 
 
 

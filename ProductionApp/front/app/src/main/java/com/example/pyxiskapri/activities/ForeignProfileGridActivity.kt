@@ -231,8 +231,8 @@ class ForeignProfileGridActivity : AppCompatActivity() {
                     tv_name1_fg.text=response.body()!!.firstName
                     tv_name2_fg.text=response.body()!!.lastName
 
-                    followers_count_fg.text = response.body()!!.followersCount.toString()
-                    following_count_fg.text = response.body()!!.followingCount.toString()
+                    followers_count_fg.text = response.body()!!.followingCount.toString()
+                    following_count_fg.text = response.body()!!.followersCount.toString()
 
 
 

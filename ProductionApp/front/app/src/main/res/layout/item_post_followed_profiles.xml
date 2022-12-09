@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="120dp"
     android:layout_height="wrap_content"
-    android:background="@drawable/rounded_post"
+    android:background="@drawable/rounded_post_black"
     android:layout_marginLeft="12dp">
 
 
@@ -11,7 +11,7 @@
         android:id="@+id/fl_post"
         android:layout_width="match_parent"
         android:layout_height="145dp"
-        android:background="@drawable/rounded_post"
+        android:background="@drawable/rounded_post_black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,7 +20,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/red"
+            android:background="#0D0D0F"
             app:cardCornerRadius="15dp">
 
             <ImageView
@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:background="@color/red">
+                android:background="#0D0D0F">
             </ImageView>
 
         </androidx.cardview.widget.CardView>
@@ -54,77 +54,30 @@
     </FrameLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_width="110dp"
+        android:layout_height="35dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:background="@drawable/rounded_red"
-        android:orientation="vertical"
+        android:layout_marginLeft="-4dp"
+        android:background="@drawable/rounded_post_black"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fl_post">
 
-        <LinearLayout
+
+        <com.example.pyxiskapri.custom_view_models.GradeDisplayView
+            android:id="@+id/gradeDisplay_followed"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:layout_marginBottom="1dp"
-            android:gravity="left|center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="35dp"
+            android:elevation="10dp"
+            />
 
 
-            <ImageView
-                android:layout_width="11dp"
-                android:layout_height="11dp"
-                android:background="@drawable/like" />
-
-            <TextView
-                android:id="@+id/f_post_likes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:fontFamily="@font/montserrat_regular"
-                android:text="325,125"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:gravity="left|center_vertical"
-            android:orientation="horizontal">
-
-
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="10dp"
-
-                android:adjustViewBounds="true"
-                android:background="@drawable/view"
-                android:cropToPadding="false" />
-
-            <TextView
-                android:id="@+id/f_post_dislikes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:fontFamily="@font/montserrat_regular"
-                android:text="325,125"
-                android:textColor="@color/white"
-                android:textSize="10dp" />
-
-
-        </LinearLayout>
 
 
     </LinearLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

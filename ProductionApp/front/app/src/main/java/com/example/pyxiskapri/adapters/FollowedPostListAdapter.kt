@@ -13,6 +13,7 @@ import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item_post.view.*
 import kotlinx.android.synthetic.main.item_post_followed_profiles.view.*
 
 
@@ -32,8 +33,7 @@ class FollowedPostListAdapter (private val postList: MutableList<PostResponse>) 
         val currentPost = postList[position]
         holder.itemView.apply {
             Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.ownerImage)).into(profileImage)
-            f_post_likes.text = currentPost.likeCount.toString()
-            f_post_dislikes.text = currentPost.viewCount.toString()
+            gradeDisplay_followed.setGradeDisplay(currentPost.averageGrade, currentPost.gradesCount)
 
 
             Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.coverImage)).into(iv_coverImage)
