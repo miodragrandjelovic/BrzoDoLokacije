@@ -143,7 +143,7 @@ namespace PyxisKapriBack.DAL
             if (String.IsNullOrEmpty(search))
                 return GetFollowers(username);
 
-            List<User> followers = GetFollowers(username).FindAll(user => user.Username.Contains(search));
+            List<User> followers = GetFollowers(username).FindAll(user => user.Username.ToLower().Contains(search.ToLower()));
             return followers; 
         }
         public List<User> SearchFollowing(string username, string search)
@@ -151,7 +151,7 @@ namespace PyxisKapriBack.DAL
             if (String.IsNullOrEmpty(search))
                 return GetFollowing(username); 
 
-            List<User> following = GetFollowing(username).FindAll(user => user.Username.Contains(search));
+            List<User> following = GetFollowing(username).FindAll(user => user.Username.ToLower().Contains(search.ToLower()));
             return following;
         }
     }
