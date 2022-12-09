@@ -21,7 +21,6 @@ import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.FollowList
-import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
@@ -32,6 +31,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_map_user_post.*
@@ -41,6 +41,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -151,7 +152,7 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
             val cameraPosition = googleMap.cameraPosition
 
 
-            if (cameraPosition.zoom > 5.0 && mapFlag==0) {
+            if (cameraPosition.zoom > 9.0 && mapFlag==0) {
 
                 var layoutParams = ConstraintLayout.LayoutParams(248, 340)
                 markerImage.layoutParams = layoutParams
@@ -167,13 +168,12 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 mapFlag=1
             }
-
-            else if(cameraPosition.zoom > 10.0 && mapFlag==1)
+            else if(cameraPosition.zoom < 9.0 && mapFlag==1)
             {
-                var layoutParams = ConstraintLayout.LayoutParams(330, 440)
+                var layoutParams = ConstraintLayout.LayoutParams(138, 193)
                 markerImage.layoutParams = layoutParams
 
-                layoutParams = ConstraintLayout.LayoutParams(330, 330)
+                layoutParams = ConstraintLayout.LayoutParams(138, 138)
                 mMarkerImageView.layoutParams = layoutParams
 
 
@@ -182,8 +182,9 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
                 addCustomMarkerFromURL(false)
 
 
-                mapFlag=2
+                mapFlag=0
             }
+
 
         }
 

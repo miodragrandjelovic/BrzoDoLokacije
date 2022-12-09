@@ -17,7 +17,6 @@ import com.example.pyxiskapri.dtos.response.FollowUserResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.models.FollowUserItem
-import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions

@@ -25,7 +25,6 @@ import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.FollowList
-import com.example.pyxiskapri.models.PostListItem
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
@@ -162,7 +161,7 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
             val cameraPosition = googleMap.cameraPosition
 
 
-            if (cameraPosition.zoom > 5.0 && flag==0) {
+            if (cameraPosition.zoom > 9.0 && flag==0) {
 
                 var layoutParams = ConstraintLayout.LayoutParams(248, 340)
                 markerImage.layoutParams = layoutParams
@@ -178,13 +177,12 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 flag=1
             }
-
-            else if(cameraPosition.zoom > 10.0 && flag==1)
+            else if(cameraPosition.zoom < 9.0 && flag==1)
             {
-                var layoutParams = ConstraintLayout.LayoutParams(330, 440)
+                var layoutParams = ConstraintLayout.LayoutParams(138, 193)
                 markerImage.layoutParams = layoutParams
 
-                layoutParams = ConstraintLayout.LayoutParams(330, 330)
+                layoutParams = ConstraintLayout.LayoutParams(138, 138)
                 mMarkerImageView.layoutParams = layoutParams
 
 
@@ -193,8 +191,9 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
                 addCustomMarkerFromURL(false)
 
 
-                flag=2
+                flag=0
             }
+
 
         }
 
