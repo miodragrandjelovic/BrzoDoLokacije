@@ -74,6 +74,12 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var  window: PopupWindow
     lateinit var view : View
 
+
+    override fun onRestart() {
+        super.onRestart()
+        setupGetUser()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map_user_post)
@@ -138,7 +144,6 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
                     ActivityTransferStorage.postItemToOpenPost = PostListItem(response.body()!!)
                     context.startActivity(intent)
 
-                    (context as Activity).finish()
                 }
 
                 override fun onFailure(call: Call<PostResponse>, t: Throwable) {
@@ -336,8 +341,8 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
                         tv_name1_m.text=response.body()!!.firstName
                         tv_name2_m.text=response.body()!!.lastName
 
-                        followers_count_m.text = response.body()!!.followersCount.toString()
-                        following_count_m.text = response.body()!!.followingCount.toString()
+                        followers_count_m.text = response.body()!!.followingCount.toString()
+                        following_count_m.text = response.body()!!.followersCount.toString()
 
 
                         val picture=response.body()!!.profileImage
@@ -387,6 +392,7 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
             val intent = Intent(this, FollowListActivity::class.java);
             ActivityTransferStorage.followList = followList
             startActivity(intent);
+
 
         }
 

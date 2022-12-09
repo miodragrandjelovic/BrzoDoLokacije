@@ -85,7 +85,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/btn_newPost"
+            android:id="@+id/flw_btn_newPost"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_weight="1"
@@ -96,7 +96,7 @@
             app:tint="#292D33" />
 
         <ImageView
-            android:id="@+id/btn_discover"
+            android:id="@+id/flw_btn_discover"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_weight="1"
@@ -107,7 +107,7 @@
             app:tint="#292D33" />
 
         <ImageView
-            android:id="@+id/btn_home"
+            android:id="@+id/flw_btn_home"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_weight="1"
@@ -119,7 +119,7 @@
 
 
         <ImageView
-            android:id="@+id/btn_messages"
+            android:id="@+id/flw_btn_messages"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_weight="1"
@@ -143,7 +143,7 @@
     </LinearLayout>
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fcv_chatMainDrawerNav"
+        android:id="@+id/fcv_flwDrawerNav"
         android:name="com.example.pyxiskapri.fragments.DrawerNav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

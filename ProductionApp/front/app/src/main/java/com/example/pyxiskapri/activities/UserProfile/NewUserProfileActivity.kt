@@ -59,6 +59,7 @@ class NewUserProfileActivity : AppCompatActivity(){
     override fun onRestart() {
         super.onRestart()
         setupGetUserPosts()
+        setupGetUser()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,6 +95,7 @@ class NewUserProfileActivity : AppCompatActivity(){
         setupHome()
         setupAddPost()
         setupButtonMessages()
+        setupDiscover()
     }
 
     fun showDrawerMenu(view: View){
@@ -117,8 +119,8 @@ class NewUserProfileActivity : AppCompatActivity(){
                         tv_name1.text=response.body()!!.firstName
                         tv_name2.text=response.body()!!.lastName
 
-                        followers_count.text = response.body()!!.followersCount.toString()
-                        following_count.text = response.body()!!.followingCount.toString()
+                        followers_count.text = response.body()!!.followingCount.toString()
+                        following_count.text = response.body()!!.followersCount.toString()
 
 
 
@@ -212,7 +214,6 @@ class NewUserProfileActivity : AppCompatActivity(){
             val intent = Intent(this, FollowListActivity::class.java);
             ActivityTransferStorage.followList = followList
             startActivity(intent);
-
         }
 
     }
@@ -279,6 +280,13 @@ class NewUserProfileActivity : AppCompatActivity(){
     private fun setupButtonMessages() {
         btn_messages.setOnClickListener {
             val intent = Intent (this, ChatMainActivity::class.java);
+            startActivity(intent);
+        }
+    }
+
+    private fun setupDiscover(){
+        btn_discoverr.setOnClickListener {
+            val intent = Intent (this, MapActivity::class.java);
             startActivity(intent);
         }
     }

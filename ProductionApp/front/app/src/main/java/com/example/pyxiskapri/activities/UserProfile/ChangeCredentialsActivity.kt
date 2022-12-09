@@ -56,6 +56,10 @@ class ChangeCredentialsActivity : AppCompatActivity() {
     private val PICK_IMAGE_CODE=1
     var profileImage: Uri = Uri.EMPTY
 
+    override fun onRestart() {
+        super.onRestart()
+        setupGetUser()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,8 +115,8 @@ class ChangeCredentialsActivity : AppCompatActivity() {
                         tv_name1.text=response.body()!!.firstName
                         tv_name2.text=response.body()!!.lastName
 
-                        followers_count_c.text = response.body()!!.followersCount.toString()
-                        following_count_c.text = response.body()!!.followingCount.toString()
+                        followers_count_c.text = response.body()!!.followingCount.toString()
+                        following_count_c.text = response.body()!!.followersCount.toString()
 
 
                         val picture=response.body()!!.profileImage

@@ -6,20 +6,20 @@ import java.io.Serializable
 
 data class FollowUserItem(
 
-    var id: Int = 0,
     var firstName: String = "",
     var lastName: String = "",
     var username: String = "",
-    var profileImage: String = ""
+    var profileImage: String = "",
+    var isFollowed: Boolean = false
 
 )
 : Serializable {
     constructor(response: FollowUserResponse) : this(
-        response.id,
         response.firstName,
         response.lastName,
         response.username,
-        response.profileImage
+        response.profileImage,
+        response.isFollowed
     )
 }
 
