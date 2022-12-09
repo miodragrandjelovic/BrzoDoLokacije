@@ -11,6 +11,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -124,12 +125,6 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
     }
 
     private fun setupNavButtons(){
-        // NEW POST
-        btn_newPost.setOnClickListener {
-            val intent = Intent (this, NewPostActivity::class.java);
-            startActivity(intent);
-        }
-
         // MAPS
         btn_discover.setOnClickListener {
             val intent = Intent (this, MapActivity::class.java);
@@ -282,17 +277,16 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
             // LOCATION CARD
             1 -> {
-                turnOnCardIndicator(iv_circle1, tv_1, tv_circleLocation)
+                turnOnCardIndicator(iv_circle1, tv_1, tv_circleImages)
                 iv_circle1.setImageResource(R.drawable.circle_selected)
-                btn_cardBack.visibility = View.VISIBLE
                 btn_cardNext.visibility = View.VISIBLE
                 cl_imagesCard.visibility = View.VISIBLE
             }
 
             // IMAGES CARD
             2 -> {
-                turnOnCardIndicator(iv_circle1, tv_1, tv_circleLocation)
-                turnOnCardIndicator(iv_circle2, tv_2, tv_circleImages)
+                turnOnCardIndicator(iv_circle1, tv_1, tv_circleImages)
+                turnOnCardIndicator(iv_circle2, tv_2, tv_circleCover)
                 iv_circle2.setImageResource(R.drawable.circle_selected)
                 iv_bar1.setColorFilter(red)
                 btn_cardBack.visibility = View.VISIBLE
@@ -303,21 +297,22 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
             // COVER CARD
             3 -> {
-                turnOnCardIndicator(iv_circle1, tv_1, tv_circleLocation)
+                turnOnCardIndicator(iv_circle1, tv_1, tv_circleImages)
                 turnOnCardIndicator(iv_circle2, tv_2, tv_circleCover)
-                turnOnCardIndicator(iv_circle3, tv_3, tv_circleImages)
+                turnOnCardIndicator(iv_circle3, tv_3, tv_circleLocation)
                 iv_circle3.setImageResource(R.drawable.circle_selected)
                 iv_bar1.setColorFilter(red)
                 iv_bar2.setColorFilter(red)
+                btn_cardBack.visibility = View.VISIBLE
                 btn_cardNext.visibility = View.VISIBLE
                 cl_locationCard.visibility = View.VISIBLE
             }
 
             // POST CARD
             4 -> {
-                turnOnCardIndicator(iv_circle1, tv_1, tv_circleLocation)
+                turnOnCardIndicator(iv_circle1, tv_1, tv_circleImages)
                 turnOnCardIndicator(iv_circle2, tv_2, tv_circleCover)
-                turnOnCardIndicator(iv_circle3, tv_3, tv_circleImages)
+                turnOnCardIndicator(iv_circle3, tv_3, tv_circleLocation)
                 turnOnCardIndicator(iv_circle4, tv_4, tv_circlePost)
                 iv_circle4.setImageResource(R.drawable.circle_selected)
                 iv_bar1.setColorFilter(red)
@@ -523,12 +518,12 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
 
     private fun setupTagsAdapter(){
-        tagsAdapter = TagsInputAdapter(mutableListOf(), this)
+        tagsAdapter = TagsInputAdapter(arrayListOf(), this)
         rv_tags.adapter = tagsAdapter
         rv_tags.layoutManager = FlexboxLayoutManager(this, FlexDirection.ROW, FlexWrap.WRAP)
 
         btn_addTag.setOnClickListener {
-            if(et_tagInput.text.trim() == "")
+            if(TextUtils.isEmpty(et_tagInput.text))
                 return@setOnClickListener
             tagsAdapter.addTag(et_tagInput.text.toString())
             et_tagInput.text.clear()

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
 import kotlinx.android.synthetic.main.item_tag.view.*
 
-class TagsInputAdapter(var tagsList: MutableList<String>, var context: Context) : RecyclerView.Adapter<TagsInputAdapter.TagViewHolder>() {
+class TagsInputAdapter(var tagsList: ArrayList<String>, var context: Context) : RecyclerView.Adapter<TagsInputAdapter.TagViewHolder>() {
     class TagViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
@@ -20,8 +20,8 @@ class TagsInputAdapter(var tagsList: MutableList<String>, var context: Context) 
             tv_tagName.text = tagsList[position]
 
             this.setOnClickListener{
-                tagsList.removeAt(position)
-                notifyItemRemoved(position)
+                tagsList.removeAt(holder.adapterPosition)
+                notifyItemRemoved(holder.adapterPosition)
             }
         }
     }
