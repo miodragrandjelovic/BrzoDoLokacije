@@ -27,7 +27,7 @@
 
 
     <EditText
-        android:id="@+id/et_friendSearch"
+        android:id="@+id/flw_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -36,7 +36,7 @@
         android:background="@drawable/back_dark_rounded_border_red"
         android:ems="10"
         android:fontFamily="@font/montserrat_regular"
-        android:hint="Follower ..."
+        android:hint="User..."
         android:inputType="textPersonName"
         android:maxLines="1"
         android:minLines="1"
@@ -60,7 +60,7 @@
         app:layout_constraintBottom_toTopOf="@+id/navMenu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_friendSearch">
+        app:layout_constraintTop_toBottomOf="@+id/flw_search">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_follows"

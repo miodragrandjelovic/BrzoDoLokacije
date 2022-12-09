@@ -43,7 +43,6 @@ interface UserService {
     @GET("api/User/IsFollowed/{followingUsername}")
     fun getFollow(@Path(value = "followingUsername") followingUsername: String): Call<MessageResponse>
 
-
     @GET("api/User/GetFollowing/{username}")
     fun getFollowing(@Path(value = "username") username: String): Call<ArrayList<FollowUserResponse>>
 
@@ -51,6 +50,8 @@ interface UserService {
     fun getFollowers(@Path(value = "username") username: String): Call<ArrayList<FollowUserResponse>>
 
 
+    @GET("api/User/SearchFollowing/{search}")
+    fun searchUsers(@Path(value = "search") search: String): Call<ArrayList<FollowUserResponse>>
 
 
 }

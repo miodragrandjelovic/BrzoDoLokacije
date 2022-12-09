@@ -1,5 +1,6 @@
 package com.example.pyxiskapri.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -24,6 +25,8 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_foreign_profile_grid.*
 import kotlinx.android.synthetic.main.follow_item.view.*
 import kotlinx.android.synthetic.main.item_post_followed_profiles.view.*
+import okhttp3.internal.notify
+import okhttp3.internal.notifyAll
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,7 +39,7 @@ class FollowUserAdapter (private val users: MutableList<FollowUserItem>) : Recyc
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         apiClient = ApiClient()
-        return FollowUserAdapter.UserViewHolder( LayoutInflater.from(parent.context).inflate(R.layout.follow_item, parent, false))
+        return UserViewHolder( LayoutInflater.from(parent.context).inflate(R.layout.follow_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
