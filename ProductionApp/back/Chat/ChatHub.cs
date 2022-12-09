@@ -8,13 +8,39 @@ namespace PyxisKapriBack.Chat
     {
         private readonly IUserService userService;
         private readonly IMessageService messageService;
-
+        private readonly HttpContext httpContext;
         public ChatHub(IUserService userService, IMessageService messageService)
         {
             this.userService = userService;
             this.messageService = messageService;
+            httpContext = Context.GetHttpContext();
         }
 
+        public override Task OnConnectedAsync()
+        {
+            
+            var loggedUser = userService.GetUser(userService.GetLoggedUser());
+
+            var toUser = userService.GetUser(httpContext.Request.Headers["toUsername"]);
+            if (loggedUser == null)
+                return base.OnDisconnectedAsync(new Exception("User not found"));
+
+            userService.AddNewConnection(new Connection
+            {
+                ConnectionId = Context.ConnectionId,
+                SenderId = loggedUser.Id,
+                Sender = loggedUser,
+                ReceiverId = toUser.Id,
+                Receiver = toUser
+                
+            });
+            return base.OnConnectedAsync();
+        }
+        public override Task OnDisconnectedAsync(Exception? exception)
+        {
+            return base.OnDisconnectedAsync(exception);
+        }
+        /*
         public async Task SendPrivateMessage(string reciever, string connectionId, string message)
         {
             var sendUser = userService.GetUser(userService.GetLoggedUser());
@@ -50,6 +76,7 @@ namespace PyxisKapriBack.Chat
 
             Clients.Caller.SendAsync("",reciver);
         }
+        */
 
     }
 }

@@ -112,7 +112,7 @@ namespace PyxisKapriBack.Services
             return roleDAL.GetAvailableRolesForUser(loggedUser);
         }
 
-<<<<<<< Updated upstream
+
         public double GetAverageGradeForAllPosts(string username)
         {
             return userDAL.GetAverageGradeForAllPosts(username); 
@@ -120,12 +120,12 @@ namespace PyxisKapriBack.Services
 
         public int GetDifferentLocations(string username)
         {
-            return userDAL.GetDifferentLocations(username); 
-=======
+            return userDAL.GetDifferentLocations(username);
+        }
         public Connection GetConnectionById(string connectionId)
         {
             return userDAL.GetConnectionById(connectionId);
->>>>>>> Stashed changes
+
         }
 
         public string? GetLoggedUser()

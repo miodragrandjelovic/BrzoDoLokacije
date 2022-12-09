@@ -196,12 +196,18 @@ namespace PyxisKapriBack.Models
             #region 'Connection Relationships'
 
             modelBuilder.Entity<Connection>()
-                .HasOne(connection => connection.User)
-                .WithMany(user => user.Connections)
-                .HasForeignKey(connection => connection.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+            .HasOne(connection => connection.Sender)
+            .WithMany(sender => sender.Connections)
+            .HasForeignKey(connection => connection.SenderId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-            
+            modelBuilder.Entity<Connection>()
+            .HasOne(connection => connection.Receiver)
+            .WithMany(receiver => receiver.Connections)
+            .HasForeignKey(connection => connection.ReceiverId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
 
             #endregion
         }

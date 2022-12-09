@@ -24,8 +24,10 @@ namespace PyxisKapriBack.Services.Interfaces
         Response UpdateProfileImage(UpdateUserImageDTO userImage);
         List<User> GetAllUsers();
         Response ChangeUserPassword(CredentialsDTO credentials);
-
+        List<Connection> GetUserConnections(string username);
+        bool AddNewConnection(Connection connection);
         double GetAverageGradeForAllPosts(string username);
+        Connection GetConnectionById(string connectionId);
         int GetDifferentLocations(string username); 
     }
 }
