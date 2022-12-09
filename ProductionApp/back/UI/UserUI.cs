@@ -10,7 +10,7 @@ namespace PyxisKapriBack.UI
         private readonly IUserService userService;
         private readonly IFileService fileService;
 
-        public UserUI(IUserService userService,IFileService fileService)
+        public UserUI(IUserService userService, IFileService fileService)
         {
             this.userService = userService;
             this.fileService = fileService;
@@ -35,21 +35,7 @@ namespace PyxisKapriBack.UI
             var user = userService.GetUser(GetLoggedUser());
             if (user == null)
                 return null;
-
-            var userDTO = new UserDTO
-            {
-                Username = user.Username,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                ProfileImagePath = Path.Combine(user.FolderPath, user.FileName),
-                UserFollowersCount = user.Followers != null ? user.Followers.Count : 0,
-                UserFollowingCount = user.Following != null ? user.Following.Count : 0,
-                AverageGradeForAllPosts = userService.GetAverageGradeForAllPosts(user.Username), 
-                DifferentLocations = userService.GetDifferentLocations(user.Username)
-            };
-
-            return userDTO;
+            return createUserDTO(user);
         }
 
         public UserDTO GetUser(string username)
@@ -57,7 +43,10 @@ namespace PyxisKapriBack.UI
             var user = userService.GetUser(username);
             if (user == null)
                 return null;
-
+            return createUserDTO(user);
+        }
+        private UserDTO createUserDTO(User user)
+        {
             var userDTO = new UserDTO
             {
                 Username = user.Username,
@@ -71,9 +60,8 @@ namespace PyxisKapriBack.UI
                 DifferentLocations = userService.GetDifferentLocations(user.Username)
             };
 
-            return userDTO;
+            return userDTO; 
         }
-
         public string? GetUserEmail()
         {
             return userService.GetUserEmail();

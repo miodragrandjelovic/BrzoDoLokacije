@@ -28,7 +28,7 @@ namespace PyxisKapriBack.DAL
             User user = _context.Users.Where(x => x.Username.Equals(usernameOrEmail) || x.Email.Equals(usernameOrEmail)).Include(x => x.Role)
                                                                                                                         .Include(x => x.Country)
                                                                                                                         .Include(x => x.Followers)
-                                                                                                                        .Include(x => x.Followers)
+                                                                                                                        .Include(x => x.Following)
                                                                                                                         .FirstOrDefault();
             return user; 
         }
