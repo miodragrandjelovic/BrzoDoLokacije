@@ -81,7 +81,7 @@ class OpenPostActivity : AppCompatActivity() {
             finish()
         }
 
-        iv_ownerAvatar.setOnClickListener()
+        cl_owner.setOnClickListener()
         {
             if(tv_ownerUsername.text.toString()==SessionManager(this).fetchUserData()?.username)
             {
