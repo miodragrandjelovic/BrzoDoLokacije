@@ -18,6 +18,7 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.doOnEnd
 import androidx.core.view.marginTop
 import com.example.pyxiskapri.R
@@ -27,6 +28,7 @@ import com.example.pyxiskapri.dtos.response.CustomMarkerResponse
 import com.example.pyxiskapri.dtos.response.LocationResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.fragments.MultiButtonSelector
+import com.example.pyxiskapri.models.MarkerModel
 import com.example.pyxiskapri.utility.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -34,6 +36,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_map.*
@@ -53,9 +56,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var multiButtonFragment: MultiButtonSelector
 
-    private lateinit var fromPostLocation: LatLng
+    private lateinit var fromPostLocation: MarkerModel
 
     private lateinit var markerImage: ImageView
+    var mapFlag=0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,6 +76,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         multiButtonFragment = (supportFragmentManager.findFragmentById(R.id.fragment_multibuttonSelector) as MultiButtonSelector)
         setupPrioritizedSelection()
         handleOptionsClick()
+
+        if(ActivityTransferStorage.flag)
+            fromPostLocation = ActivityTransferStorage.openPostToMap
+
     }
 
     private fun setupNavButtons(){
@@ -79,17 +87,23 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         btn_newPost.setOnClickListener {
             val intent = Intent (this, NewPostActivity::class.java);
             startActivity(intent);
+            ActivityTransferStorage.flag=false
+            finish()
         }
 
         // HOME
         btn_home.setOnClickListener {
             val intent = Intent (this, HomeActivity::class.java);
+            ActivityTransferStorage.flag=false
+            finish()
             startActivity(intent);
         }
 
         // MESSAGES
         btn_messages.setOnClickListener {
             val intent = Intent (this, ChatMainActivity::class.java);
+            ActivityTransferStorage.flag=false
+            finish()
             startActivity(intent);
         }
 
@@ -116,15 +130,102 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         markerImage = mCustomMarkerView.findViewById(R.id.marker_image)
         mMarkerImageView = mCustomMarkerView.findViewById(R.id.cover_image)
 
+
+        if(ActivityTransferStorage.flag)
+            setupFromUserPostMap(true)
         setupPostSearching()
+
+        cameraListener()
 
     }
 
-    private fun setupFromUserPostMap(){
-        fromPostLocation = ActivityTransferStorage.openPostToMap
-        Log.d("TEST", fromPostLocation.toString())
-        map.addMarker(MarkerOptions().position(fromPostLocation))
-        map.moveCamera(CameraUpdateFactory.newLatLng(fromPostLocation))
+    private fun cameraListener() {
+        map.setOnCameraMoveListener {
+            val cameraPosition = map.cameraPosition
+
+            if(ActivityTransferStorage.flag)
+            {
+                if (cameraPosition.zoom > 9.0 && mapFlag==0) {
+
+                    var layoutParams = ConstraintLayout.LayoutParams(248, 340)
+                    markerImage.layoutParams = layoutParams
+
+                    layoutParams = ConstraintLayout.LayoutParams(248, 248)
+                    mMarkerImageView.layoutParams = layoutParams
+
+
+                    map.clear()
+
+                    setupFromUserPostMap(false)
+
+
+                    mapFlag=1
+                }
+                else if(cameraPosition.zoom < 9.0 && mapFlag==1)
+                {
+                    var layoutParams = ConstraintLayout.LayoutParams(138, 193)
+                    markerImage.layoutParams = layoutParams
+
+                    layoutParams = ConstraintLayout.LayoutParams(138, 138)
+                    mMarkerImageView.layoutParams = layoutParams
+
+
+                    map.clear()
+
+                    setupFromUserPostMap(false)
+
+
+                    mapFlag=0
+                }
+            }
+
+
+
+        }
+    }
+
+    private fun setupFromUserPostMap(pom: Boolean){
+
+
+        var marker:Marker?
+
+        Picasso.get().load(UtilityFunctions.getFullImagePath(fromPostLocation.coverImage))
+            .into(object : com.squareup.picasso.Target {
+                override fun onBitmapLoaded(
+                    bitmap: Bitmap?,
+                    from: Picasso.LoadedFrom?
+                ) {
+
+                    marker=map.addMarker(
+                        MarkerOptions().position(LatLng(fromPostLocation.latitude,fromPostLocation.longitude))
+                            .icon(
+                                BitmapDescriptorFactory.fromBitmap(
+                                    getMarkerBitmapFromView(
+                                        mCustomMarkerView,
+                                        bitmap
+                                    )!!
+                                )
+                            )
+                    )
+
+                    if(pom)
+                        map.moveCamera(CameraUpdateFactory.newLatLng(marker!!.position))
+
+                }
+
+                override fun onBitmapFailed(
+                    e: Exception?,
+                    errorDrawable: Drawable?
+                ) {
+
+                }
+
+                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+
+                }
+
+            })
+
     }
 
     private fun setupNormalMap(){

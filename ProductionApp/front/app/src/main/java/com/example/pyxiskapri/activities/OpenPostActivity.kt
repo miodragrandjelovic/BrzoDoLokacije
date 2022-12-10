@@ -22,6 +22,7 @@ import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostAdditionalData
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.DrawerNav
+import com.example.pyxiskapri.models.MarkerModel
 import com.example.pyxiskapri.utility.*
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
@@ -73,13 +74,6 @@ class OpenPostActivity : AppCompatActivity() {
         requestPostData()
 
         setupOpenMapButton()
-
-        btn_openMap.setOnClickListener(){
-            val intent = Intent(this, ForeignProfileGridActivity::class.java)
-            intent.putExtra("username", tv_ownerUsername.text.toString())
-            this.startActivity(intent)
-            finish()
-        }
 
         cl_owner.setOnClickListener()
         {
@@ -233,7 +227,15 @@ class OpenPostActivity : AppCompatActivity() {
     private fun setupOpenMapButton(){
         btn_openMap.setOnClickListener {
             val intent = Intent (this, MapActivity::class.java);
-            ActivityTransferStorage.openPostToMap = LatLng(postLocation.latitude, postLocation.longitude)
+            ActivityTransferStorage.flag=true
+            ActivityTransferStorage.openPostToMap = MarkerModel(postLocation.latitude, postLocation.longitude,postData.coverImage)
+            startActivity(intent);
+        }
+
+        iv_mapIcon.setOnClickListener(){
+            val intent = Intent (this, MapActivity::class.java);
+            ActivityTransferStorage.flag=true
+            ActivityTransferStorage.openPostToMap = MarkerModel(postLocation.latitude, postLocation.longitude,postData.coverImage)
             startActivity(intent);
         }
     }
