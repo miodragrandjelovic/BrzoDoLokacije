@@ -37,10 +37,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_new_user_profile.*
 import kotlinx.android.synthetic.main.activity_new_user_profile.btn_messages
 import kotlinx.android.synthetic.main.activity_new_user_profile.shapeableImageView
-import kotlinx.android.synthetic.main.activity_user_profile.*
-import kotlinx.android.synthetic.main.activity_user_profile.et_first_name
-import kotlinx.android.synthetic.main.activity_user_profile.tv_name1
-import kotlinx.android.synthetic.main.activity_user_profile.tv_name2
+
 import kotlinx.android.synthetic.main.modal_change_pass.*
 import kotlinx.android.synthetic.main.modal_confirm_password.*
 import retrofit2.Call
@@ -112,8 +109,8 @@ class ChangeCredentialsActivity : AppCompatActivity() {
 
                         et_email_n.setText(response.body()!!.email)
 
-                        tv_name1.text=response.body()!!.firstName
-                        tv_name2.text=response.body()!!.lastName
+                        tv_name1_c.text=response.body()!!.firstName
+                        tv_name2_c.text=response.body()!!.lastName
 
                         followers_count_c.text = response.body()!!.followingCount.toString()
                         following_count_c.text = response.body()!!.followersCount.toString()

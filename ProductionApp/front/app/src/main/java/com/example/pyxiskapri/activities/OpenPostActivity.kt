@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.activities.UserProfile.NewUserProfileActivity
 import com.example.pyxiskapri.adapters.CommentAdapter
 import com.example.pyxiskapri.adapters.PostImagesAdapter
 import com.example.pyxiskapri.adapters.TagsDisplayAdapter
@@ -84,10 +85,20 @@ class OpenPostActivity : AppCompatActivity() {
 
         iv_ownerAvatar.setOnClickListener()
         {
-            val intent = Intent(this, ForeignProfileGridActivity::class.java)
-            intent.putExtra("username", tv_ownerUsername.text.toString())
-            this.startActivity(intent)
-            finish()
+            if(tv_ownerUsername.text.toString()==SessionManager(this).fetchUserData()?.username)
+            {
+                val intent = Intent(this, NewUserProfileActivity::class.java)
+                this.startActivity(intent)
+                finish()
+            }
+            else
+            {
+                val intent = Intent(this, ForeignProfileGridActivity::class.java)
+                intent.putExtra("username", tv_ownerUsername.text.toString())
+                this.startActivity(intent)
+                finish()
+            }
+
         }
 
         setupComments()

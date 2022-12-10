@@ -25,7 +25,6 @@ import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_foreign_profile.*
 import kotlinx.android.synthetic.main.activity_foreign_profile_grid.*
 import kotlinx.android.synthetic.main.activity_foreign_profile_grid.ib_follow
 import kotlinx.android.synthetic.main.activity_foreign_profile_grid.ib_following

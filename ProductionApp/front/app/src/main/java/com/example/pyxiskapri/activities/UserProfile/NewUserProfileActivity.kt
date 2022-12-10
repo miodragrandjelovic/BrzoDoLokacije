@@ -32,7 +32,6 @@ import kotlinx.android.synthetic.main.activity_new_user_profile.btn_messages
 import kotlinx.android.synthetic.main.activity_new_user_profile.btn_newPost
 import kotlinx.android.synthetic.main.activity_new_user_profile.tv_name1
 import kotlinx.android.synthetic.main.activity_new_user_profile.tv_name2
-import kotlinx.android.synthetic.main.activity_user_profile.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import retrofit2.Call
 import retrofit2.Callback
