@@ -4,7 +4,7 @@
     {
         [Key]
         public int Id { get; set; }
-        [MaxLength(Constants.ModelConstants.LENGTH_DESCRIPTION)]
+        [MaxLength(Constants.ModelConstants.LENGTH_POST)]
         public string Description { get; set; }
 
         public DateTime CreatedDate { get; set; }

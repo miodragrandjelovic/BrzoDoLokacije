@@ -5,7 +5,7 @@
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(Constants.ModelConstants.LENGTH_DESCRIPTION)]
+        [MaxLength(Constants.ModelConstants.LENGTH_COMMENT)]
         public string Text { get; set; }
         public List<Comment>? Replies { get; set; } = null;
         public List<CommentLike>? Likes { get; set; } = null;
