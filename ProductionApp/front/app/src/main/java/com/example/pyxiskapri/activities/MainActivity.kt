@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.activities.UserProfile.NewUserProfileActivity
 import com.example.pyxiskapri.utility.ActivityControl
 import com.example.pyxiskapri.utility.SessionManager
 import kotlinx.android.synthetic.main.activity_main.*

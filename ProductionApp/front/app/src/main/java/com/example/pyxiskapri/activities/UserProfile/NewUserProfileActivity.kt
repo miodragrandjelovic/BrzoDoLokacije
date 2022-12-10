@@ -3,9 +3,7 @@ package com.example.pyxiskapri.activities.UserProfile
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.PopupWindow
 import android.widget.Toast
@@ -22,10 +20,7 @@ import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
-import com.google.android.material.imageview.ShapeableImageView
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_change_credentials.*
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_new_user_profile.*
 import kotlinx.android.synthetic.main.activity_new_user_profile.btn_home
 import kotlinx.android.synthetic.main.activity_new_user_profile.btn_messages

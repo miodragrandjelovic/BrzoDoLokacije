@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.Context
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.content.ContextCompat.startActivity
 import com.example.pyxiskapri.activities.HomeActivity
 import com.example.pyxiskapri.activities.MainActivity

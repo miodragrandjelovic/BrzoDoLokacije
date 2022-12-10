@@ -13,7 +13,6 @@ import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_post.view.*
 import kotlinx.android.synthetic.main.item_post_followed_profiles.view.*
 
 

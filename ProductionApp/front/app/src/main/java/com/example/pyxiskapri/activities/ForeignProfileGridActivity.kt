@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isGone
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.adapters.gvForeignPostAdapter
 import com.example.pyxiskapri.dtos.request.AddFollowRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
@@ -29,8 +28,6 @@ import kotlinx.android.synthetic.main.activity_foreign_profile_grid.*
 import kotlinx.android.synthetic.main.activity_foreign_profile_grid.ib_follow
 import kotlinx.android.synthetic.main.activity_foreign_profile_grid.ib_following
 import kotlinx.android.synthetic.main.activity_foreign_profile_grid.tv_follow_ing
-import kotlinx.android.synthetic.main.activity_new_user_profile.*
-import kotlinx.android.synthetic.main.activity_open_post.*
 import kotlinx.android.synthetic.main.modal_confirm_follow.*
 import kotlinx.android.synthetic.main.modal_confirm_unfollow.*
 import retrofit2.Call

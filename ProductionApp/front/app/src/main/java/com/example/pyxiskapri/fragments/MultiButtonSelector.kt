@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.example.pyxiskapri.R
-import kotlinx.android.synthetic.main.fragment_multi_button_selector.*
 import kotlinx.android.synthetic.main.fragment_multi_button_selector.view.*
 
 class MultiButtonSelector : Fragment() {

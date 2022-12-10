@@ -4,20 +4,15 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Toast
 import androidx.core.graphics.drawable.toDrawable
-import androidx.core.view.isGone
-import androidx.core.view.isInvisible
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.ChatMainActivity
 import com.example.pyxiskapri.activities.FollowListActivity
@@ -33,17 +28,11 @@ import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.utility.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_change_credentials.*
-import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.activity_new_user_profile.*
-import kotlinx.android.synthetic.main.activity_new_user_profile.btn_messages
-import kotlinx.android.synthetic.main.activity_new_user_profile.shapeableImageView
-
 import kotlinx.android.synthetic.main.modal_change_pass.*
 import kotlinx.android.synthetic.main.modal_confirm_password.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
 
 class ChangeCredentialsActivity : AppCompatActivity() {
 

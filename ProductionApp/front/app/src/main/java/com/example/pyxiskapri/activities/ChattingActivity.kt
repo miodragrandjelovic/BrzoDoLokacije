@@ -3,10 +3,8 @@ package com.example.pyxiskapri.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.dtos.response.FriendResponse
-import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
 import kotlinx.android.synthetic.main.activity_chatting.*

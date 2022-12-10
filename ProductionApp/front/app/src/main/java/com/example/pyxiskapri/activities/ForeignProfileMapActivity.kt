@@ -1,6 +1,5 @@
 package com.example.pyxiskapri.activities
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -38,8 +37,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_foreign_profile_map.*
-import kotlinx.android.synthetic.main.activity_map_user_post.*
-import kotlinx.android.synthetic.main.activity_new_user_profile.*
 import kotlinx.android.synthetic.main.modal_confirm_follow.*
 import kotlinx.android.synthetic.main.modal_confirm_unfollow.*
 import retrofit2.Call

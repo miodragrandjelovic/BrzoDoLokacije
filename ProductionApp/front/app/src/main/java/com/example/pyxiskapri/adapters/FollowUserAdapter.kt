@@ -1,7 +1,5 @@
 package com.example.pyxiskapri.adapters
 
-import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -15,17 +13,12 @@ import com.example.pyxiskapri.activities.UserProfile.NewUserProfileActivity
 import com.example.pyxiskapri.dtos.request.AddFollowRequest
 import com.example.pyxiskapri.dtos.response.FollowUserResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
-import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.models.FollowUserItem
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_foreign_profile_grid.*
 import kotlinx.android.synthetic.main.follow_item.view.*
-import kotlinx.android.synthetic.main.item_post_followed_profiles.view.*
-import okhttp3.internal.notify
-import okhttp3.internal.notifyAll
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

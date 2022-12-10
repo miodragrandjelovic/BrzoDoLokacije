@@ -3,14 +3,12 @@ package com.example.pyxiskapri.adapters
 import android.app.Dialog
 import android.graphics.Color
 import android.view.*
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.dialog_full_image.*
-import kotlinx.android.synthetic.main.item_image.*
 import kotlinx.android.synthetic.main.item_post_image.view.*
 
 

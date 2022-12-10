@@ -1,13 +1,9 @@
 package com.example.pyxiskapri.services
 
-import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.pyxiskapri.dtos.request.*
 import com.example.pyxiskapri.dtos.request.response.LoginRequest
 import com.example.pyxiskapri.dtos.response.*
-import com.google.gson.JsonObject
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.*
 

@@ -1,6 +1,5 @@
 package com.example.pyxiskapri.activities.UserProfile
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.*
@@ -31,7 +30,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_map_user_post.*

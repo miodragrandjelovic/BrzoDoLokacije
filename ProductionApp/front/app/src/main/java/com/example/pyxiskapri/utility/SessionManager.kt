@@ -3,7 +3,6 @@ package com.example.pyxiskapri.utility
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Base64
-import android.util.Log
 import com.example.pyxiskapri.models.UserData
 import com.google.gson.Gson
 

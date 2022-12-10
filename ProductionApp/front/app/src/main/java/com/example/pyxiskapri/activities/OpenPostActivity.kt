@@ -16,7 +16,6 @@ import com.example.pyxiskapri.activities.UserProfile.NewUserProfileActivity
 import com.example.pyxiskapri.adapters.CommentAdapter
 import com.example.pyxiskapri.adapters.PostImagesAdapter
 import com.example.pyxiskapri.adapters.TagsDisplayAdapter
-import com.example.pyxiskapri.adapters.TagsInputAdapter
 import com.example.pyxiskapri.dtos.request.NewCommentRequest
 import com.example.pyxiskapri.dtos.response.CommentResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
@@ -29,7 +28,6 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.gms.maps.model.LatLng
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_open_post.*
 import kotlinx.android.synthetic.main.activity_open_post.btn_addTag
 import kotlinx.android.synthetic.main.activity_open_post.btn_discover

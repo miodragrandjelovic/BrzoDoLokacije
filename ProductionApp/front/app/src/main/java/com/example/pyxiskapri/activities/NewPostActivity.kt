@@ -42,7 +42,6 @@ import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_new_post.btn_discover
 import kotlinx.android.synthetic.main.activity_new_post.btn_home
 import kotlinx.android.synthetic.main.activity_new_post.btn_messages
-import kotlinx.android.synthetic.main.activity_new_post.btn_newPost
 import kotlinx.android.synthetic.main.dialog_images_upload_progress.*
 import kotlinx.android.synthetic.main.dialog_location_search.*
 import okhttp3.MultipartBody

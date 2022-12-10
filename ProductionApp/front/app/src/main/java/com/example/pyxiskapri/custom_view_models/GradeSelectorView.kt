@@ -1,6 +1,5 @@
 package com.example.pyxiskapri.custom_view_models
 
-import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
@@ -14,7 +13,6 @@ import com.example.pyxiskapri.R
 import com.example.pyxiskapri.dtos.request.GradeRequest
 import com.example.pyxiskapri.dtos.response.GradeResponse
 import com.example.pyxiskapri.utility.ApiClient
-import kotlinx.android.synthetic.main.fragment_grade_selector.*
 import kotlinx.android.synthetic.main.grade_selector.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,8 +21,8 @@ import retrofit2.Response
 
 class GradeSelectorView(context: Context, attrs: AttributeSet): ConstraintLayout(context, attrs) {
 
-    public lateinit var gradeDisplay: GradeDisplayView
-    public var gradedPostId: Int = 0
+    lateinit var gradeDisplay: GradeDisplayView
+    var gradedPostId: Int = 0
 
     private var grade: Int = 0
 

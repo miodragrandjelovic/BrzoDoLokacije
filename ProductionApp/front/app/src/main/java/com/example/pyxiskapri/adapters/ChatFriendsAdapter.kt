@@ -5,17 +5,14 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.activities.ChatMainActivity
 import com.example.pyxiskapri.activities.ChattingActivity
 import com.example.pyxiskapri.dtos.response.FriendResponse
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_friend_in_chat.view.*
-import okhttp3.FormBody
 
 class ChatFriendsAdapter(private var friendsList: ArrayList<FriendResponse>, private var context: Context): RecyclerView.Adapter<ChatFriendsAdapter.ChatFriendViewHolder>() {
     class ChatFriendViewHolder(friendView: View) : RecyclerView.ViewHolder(friendView)
