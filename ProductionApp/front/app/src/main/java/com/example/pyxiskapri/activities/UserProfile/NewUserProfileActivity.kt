@@ -92,11 +92,6 @@ class NewUserProfileActivity : AppCompatActivity(){
         setupDiscover()
     }
 
-    fun showDrawerMenu(view: View){
-        if(view.id == R.id.btn_menu)
-            fcv_drawerNav_n.getFragment<DrawerNav>().showDrawer()
-    }
-
 
     private fun setupGetUser() {
 

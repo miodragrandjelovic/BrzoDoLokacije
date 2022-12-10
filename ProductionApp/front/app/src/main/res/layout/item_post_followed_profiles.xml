@@ -70,7 +70,7 @@
         <com.example.pyxiskapri.custom_view_models.GradeDisplayView
             android:id="@+id/gradeDisplay_followed"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="30dp"
             android:elevation="10dp"
             />
 

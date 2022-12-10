@@ -2,6 +2,7 @@ package com.example.pyxiskapri.custom_view_models
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.pyxiskapri.R
@@ -12,7 +13,12 @@ class GradeDisplayView(context: Context, attrs: AttributeSet): ConstraintLayout(
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val view = inflater.inflate(R.layout.grade_display, this, true)
+        inflater.inflate(R.layout.grade_display, this, true)
+    }
+
+    public fun setupForFollowed(){
+        tv_averageGrade.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20f)
+        tv_gradesCount.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10f)
     }
 
     public fun setGradeDisplay(averageGrade: Double, gradesCount: Int){

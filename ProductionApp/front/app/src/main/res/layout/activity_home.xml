@@ -9,20 +9,20 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
+        android:elevation="1000dp"
         android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:background="@drawable/headerbackground"
-        android:elevation="100dp"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:layout_height="66dp"
+        android:minHeight="0dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetStartWithNavigation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <include
-            android:id="@+id/include_toolbar"
-            layout="@layout/toolbar"
-            tools:layout_editor_absoluteX="16dp" />
+        <com.example.pyxiskapri.custom_view_models.ToolbarView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

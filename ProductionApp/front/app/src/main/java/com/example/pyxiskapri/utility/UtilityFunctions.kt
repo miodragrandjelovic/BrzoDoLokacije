@@ -2,6 +2,8 @@ package com.example.pyxiskapri.utility
 
 import android.content.Context
 import android.net.Uri
+import android.se.omapi.Session
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import androidx.documentfile.provider.DocumentFile
 import com.example.pyxiskapri.models.ProgressRequestBody
@@ -14,6 +16,13 @@ import java.io.File
 
 
 object UtilityFunctions {
+
+    fun checkUsernameLogged(username: String, context: Context): Boolean{
+        var userData = SessionManager(context).fetchUserData()
+        if(userData != null && userData.username == username)
+            return true
+        return false
+    }
 
     fun getFullImagePath(imagePath: String): String{
         return Constants.BASE_URL + "/" + imagePath

@@ -117,12 +117,6 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
         setupAddPostButton()
     }
 
-
-    fun showDrawerMenu(view: View){
-        if(view.id == R.id.btn_menu)
-            fcv_drawerNavNewPost.getFragment<DrawerNav>().showDrawer()
-    }
-
     private fun setupNavButtons(){
         // MAPS
         btn_discover.setOnClickListener {
@@ -263,7 +257,6 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
         circle.setColorFilter(Color.parseColor("#FFCC2045"))
         number.setTextColor(Color.WHITE)
         label.setTextColor(Color.WHITE)
-        tv_circleLocation.setTextColor(Color.WHITE)
     }
 
 
@@ -338,10 +331,6 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
     }
 
     private fun addMarker(address: Address){
-
-        if(address.countryName == null || address.locality == null || address.featureName == null && address.thoroughfare == null)
-            return
-
         val location: LatLng = LatLng(address.latitude, address.longitude)
         map.clear()
         map.addMarker(MarkerOptions().position(location))
@@ -364,8 +353,14 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
         }
 
         locationName = address.getAddressLine(0)
-        locationCity = address.locality
-        locationCountry = address.countryName
+
+        locationCity = "Nepoznato"
+        if(address.locality != null)
+            locationCity = address.locality
+
+        locationCountry = "Nepoznato"
+        if(address.countryName != null)
+            locationCountry = address.countryName
 
         btn_location.text = locationName
 
@@ -408,8 +403,9 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
                 if(editText.text.toString() != "") {
                     fetchedAddresses = geocoder.getFromLocationName(editText.text.toString(), 8)!!
                     if (fetchedAddresses.size != 0) {
-                        for (address in fetchedAddresses)
+                        for (address in fetchedAddresses) {
                             locationTextListAdapter.add(address.getAddressLine(0))
+                        }
 
                         locationTextListAdapter.notifyDataSetChanged()
                     } else
@@ -419,8 +415,9 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             }
 
             listView.onItemClickListener = OnItemClickListener { _, _, position, _ ->
-                    addMarker(fetchedAddresses[position])
-                    dialog.dismiss()
+                Log.d("TEST", fetchedAddresses[position].toString())
+                addMarker(fetchedAddresses[position])
+                dialog.dismiss()
             }
 
         }
@@ -582,7 +579,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
                             finish()
                         }
                         else{
-                            Toast.makeText(context, "Adding new post failed (with response)!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Adding new post failed!", Toast.LENGTH_SHORT).show()
                             dialog.dismiss()
                         }
                     }

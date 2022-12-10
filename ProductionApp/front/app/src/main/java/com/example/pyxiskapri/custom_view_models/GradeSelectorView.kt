@@ -33,10 +33,8 @@ class GradeSelectorView(context: Context, attrs: AttributeSet): ConstraintLayout
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.grade_selector, this, true)
 
-        view.apply{
-            handleInputs()
-            hideSelector()
-        }
+        handleInputs()
+        hideSelector()
     }
 
     private fun handleInputs(){

@@ -123,8 +123,8 @@
 
                 <ImageView
                     android:id="@+id/btn_commentLike"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_marginEnd="4dp"
                     android:layout_weight="0"
                     android:adjustViewBounds="true"
@@ -138,7 +138,7 @@
                     android:fontFamily="@font/montserrat_regular"
                     android:text="xyz"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -150,8 +150,8 @@
 
                 <ImageView
                     android:id="@+id/btn_commentDislike"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_marginEnd="4dp"
                     android:layout_weight="0"
                     android:adjustViewBounds="true"
@@ -165,7 +165,7 @@
                     android:fontFamily="@font/montserrat_regular"
                     android:text="xyz"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
         </LinearLayout>

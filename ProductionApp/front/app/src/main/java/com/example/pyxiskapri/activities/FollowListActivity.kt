@@ -76,31 +76,18 @@ class FollowListActivity : AppCompatActivity() {
 
         if(flw_search.text.trim().toString()=="")
             showFollows(followList)
-
         else
-        apiClient.getUserService(this).searchUsers(flw_search.text.trim().toString()).enqueue(object : Callback<ArrayList<FollowUserResponse>>{
-            override fun onResponse(
-                call: Call<ArrayList<FollowUserResponse>>,
-                response: Response<ArrayList<FollowUserResponse>>
-            )
-            {
-                followUserAdapter.setFollowUsersList(response.body()!!)
-            }
+            apiClient.getUserService(this).searchUsers(flw_search.text.trim().toString()).enqueue(object : Callback<ArrayList<FollowUserResponse>>{
+                override fun onResponse(
+                    call: Call<ArrayList<FollowUserResponse>>,
+                    response: Response<ArrayList<FollowUserResponse>>
+                )
+                {
+                    followUserAdapter.setFollowUsersList(response.body()!!)
+                }
 
-            override fun onFailure(call: Call<ArrayList<FollowUserResponse>>, t: Throwable) {
-
-
-            }
-
-        })
-
-
-    }
-
-
-    fun showDrawerMenu(view: View){
-        if(view.id == R.id.btn_menu)
-            fcv_flwDrawerNav.getFragment<DrawerNav>().showDrawer()
+                override fun onFailure(call: Call<ArrayList<FollowUserResponse>>, t: Throwable) { }
+            })
     }
 
     private fun setupFollowUserAdapter() {

@@ -32,6 +32,7 @@ class FollowedPostListAdapter (private val postList: MutableList<PostResponse>) 
         val currentPost = postList[position]
         holder.itemView.apply {
             Picasso.get().load(UtilityFunctions.getFullImagePath(currentPost.ownerImage)).into(profileImage)
+            gradeDisplay_followed.setupForFollowed()
             gradeDisplay_followed.setGradeDisplay(currentPost.averageGrade, currentPost.gradesCount)
 
 

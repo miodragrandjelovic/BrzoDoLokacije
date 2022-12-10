@@ -2,24 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_messageContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
-    android:gravity="center_vertical|left">
+    android:gravity="left">
 
-    <TextView
-        android:id="@+id/tv_messageText"
+    <LinearLayout
+        android:id="@+id/ll_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/et_rounded"
-        android:backgroundTint="@color/gray"
-        android:fontFamily="@font/montserrat_regular"
-        android:gravity="left|center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp"
-        android:paddingRight="10dp"
-        android:paddingBottom="5dp"
-        android:text="Message text"
-        android:textColor="@color/white"
-        android:textSize="12sp" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center"
+            android:textColor="#B3FFFFFF"
+            android:textSize="10sp"
+            tools:text="12/12/2022" />
+
+        <TextView
+            android:id="@+id/tv_messageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/et_rounded"
+            android:backgroundTint="@color/gray"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp"
+            android:text="Message text"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+    </LinearLayout>
+
 </LinearLayout>

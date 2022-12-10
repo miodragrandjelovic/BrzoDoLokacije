@@ -3,7 +3,6 @@ package com.example.pyxiskapri.activities
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,7 +11,6 @@ import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.FollowedPostListAdapter
 import com.example.pyxiskapri.adapters.PostListAdapter
 import com.example.pyxiskapri.dtos.response.PostResponse
-import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
 import com.example.pyxiskapri.utility.SessionManager
 import kotlinx.android.synthetic.main.activity_home.*
@@ -69,13 +67,6 @@ class HomeActivity : AppCompatActivity() {
             fillFollowedPostsRv()
             srl_home.isRefreshing = false
         }
-    }
-
-
-
-    fun showDrawerMenu(view: View){
-        if(view.id == R.id.btn_menu)
-            fcv_drawerNav.getFragment<DrawerNav>().showDrawer()
     }
 
     private fun setupNavButtons(){

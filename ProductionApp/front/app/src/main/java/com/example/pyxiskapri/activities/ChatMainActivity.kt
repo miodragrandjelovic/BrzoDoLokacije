@@ -32,11 +32,6 @@ class ChatMainActivity : AppCompatActivity() {
         setupFriendList()
     }
 
-    fun showDrawerMenu(view: View){
-        if(view.id == R.id.btn_menu)
-            fcv_chatMainDrawerNav.getFragment<DrawerNav>().showDrawer()
-    }
-
     private fun setSwipeRefresh(){
 
         srl_chatMain.setProgressBackgroundColorSchemeResource(R.color.red)

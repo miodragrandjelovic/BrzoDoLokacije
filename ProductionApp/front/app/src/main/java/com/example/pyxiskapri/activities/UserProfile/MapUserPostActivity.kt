@@ -299,13 +299,6 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-
-
-    fun showDrawerMenu(view: View){
-        if(view.id == R.id.btn_menu)
-            fcv_drawerNav_m.getFragment<DrawerNav>().showDrawer()
-    }
-
     private fun postsActivity() {
         ll_posts.setOnClickListener(){
 

@@ -74,11 +74,6 @@ class ChangeCredentialsActivity : AppCompatActivity() {
 
     }
 
-    fun showDrawerMenu(view: View){
-        if(view.id == R.id.btn_menu)
-            fcv_drawerNav_c.getFragment<DrawerNav>().showDrawer()
-    }
-
     private fun setupGetUser() {
 
         val context:Context=this

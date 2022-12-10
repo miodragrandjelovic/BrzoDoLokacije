@@ -108,11 +108,6 @@ class OpenPostActivity : AppCompatActivity() {
         finish()
     }
 
-    fun showDrawerMenu(view: View){
-        if(view.id == R.id.btn_menu)
-            fcv_drawerNavOpenPost.getFragment<DrawerNav>().showDrawer()
-    }
-
     private fun setupNavButtons(){
         // NEW POST
         btn_newPost.setOnClickListener {
@@ -177,7 +172,7 @@ class OpenPostActivity : AppCompatActivity() {
                 append(postAdditionalData.commentCount.toString())
                     .append(" comments") }
 
-            Picasso.get().load(UtilityFunctions.getFullImagePath(sessionManager.fetchUserData()!!.profileImagePath)).into(iv_userNewCommentAvatar)
+            Picasso.get().load(UtilityFunctions.getFullImagePath(sessionManager.fetchUserData()!!.profileImagePath)).into(btn_userAvatar)
 
             postImagesAdapter = PostImagesAdapter(postAdditionalData.additionalImages)
             rv_images.adapter = postImagesAdapter

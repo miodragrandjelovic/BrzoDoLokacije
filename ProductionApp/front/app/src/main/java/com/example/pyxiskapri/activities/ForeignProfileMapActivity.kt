@@ -113,12 +113,6 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-
-    fun showDrawerMenu(view: View){
-        if(view.id == R.id.btn_menu)
-            fcv_drawerNav_fm.getFragment<DrawerNav>().showDrawer()
-    }
-
     private fun setupMap(){
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fm) as SupportMapFragment
         mapFragment.getMapAsync(this)

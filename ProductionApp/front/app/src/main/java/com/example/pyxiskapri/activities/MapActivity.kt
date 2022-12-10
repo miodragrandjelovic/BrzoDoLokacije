@@ -110,11 +110,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         // NOTIFICATIONS
     }
 
-    fun showDrawerMenu(view: View){
-        if(view.id == R.id.btn_menu)
-            fcv_drawerNavMap.getFragment<DrawerNav>().showDrawer()
-    }
-
     private fun setupMapAndAutocomplete(){
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)

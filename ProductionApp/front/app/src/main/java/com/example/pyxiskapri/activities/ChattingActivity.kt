@@ -24,13 +24,11 @@ class ChattingActivity : AppCompatActivity() {
 
         apiClient = ApiClient()
 
-        collectFriendData()
-
         setupNavButtons()
-    }
 
-    private fun collectFriendData(){
-        friendData = ActivityTransferStorage.chatToChatting
+        setupChattingRV()
+
+        collectAndSetFriendData()
     }
 
     private fun setupNavButtons(){
@@ -59,8 +57,17 @@ class ChattingActivity : AppCompatActivity() {
         }
 
         // NOTIFICATIONS
+    }
+
+
+    private fun setupChattingRV(){
 
     }
+
+    private fun collectAndSetFriendData(){
+        friendData = ActivityTransferStorage.chatToChatting
+    }
+
 
 
 

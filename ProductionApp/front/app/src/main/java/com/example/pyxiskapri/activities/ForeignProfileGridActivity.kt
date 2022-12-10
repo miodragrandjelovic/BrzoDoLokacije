@@ -89,12 +89,6 @@ class ForeignProfileGridActivity : AppCompatActivity() {
 
     }
 
-    fun showDrawerMenu(view: View){
-        if(view.id == R.id.btn_menu)
-            fcv_drawerNav_fg.getFragment<DrawerNav>().showDrawer()
-    }
-
-
     private fun followProfile() {
 
 
