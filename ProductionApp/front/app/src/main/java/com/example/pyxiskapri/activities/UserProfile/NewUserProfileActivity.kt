@@ -11,12 +11,14 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.*
 import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.custom_view_models.GradeDisplayView
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
+import com.example.pyxiskapri.dtos.response.StatisticsResponse
 import com.example.pyxiskapri.models.ChangeCredentialsInformation
 import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.utility.ActivityTransferStorage
@@ -87,6 +89,100 @@ class NewUserProfileActivity : AppCompatActivity(){
         setupSetStatistics()
 
   }
+
+    private fun setupSetStatistics() {
+
+
+        ll_statistics.setOnClickListener(){
+
+
+            tv_statistics.setTextColor(Color.parseColor("#CC2045"))
+            tv_posts.setTextColor(Color.WHITE)
+
+            gv_n_user_posts.isGone=true
+            cl_statistics.isGone=false
+
+            average_grade.text=averageGrade.toString()
+            post_number_statistics.text=numberOfPosts.toString() + " posts"
+
+            if(averageGrade == 0.00)
+                emoji.setImageResource(R.drawable.emoji_unset)
+            else if(averageGrade < 1.5)
+                emoji.setImageResource(R.drawable.emoji_crying)
+            else if(averageGrade < 2.5)
+                emoji.setImageResource(R.drawable.emoji_sad)
+            else if(averageGrade < 3.5)
+                emoji.setImageResource(R.drawable.emoji_neutral)
+            else if(averageGrade < 4.5)
+                emoji.setImageResource(R.drawable.emoji_happy)
+            else if(averageGrade <= 5.0)
+                emoji.setImageResource(R.drawable.emoji_amazed)
+
+
+            var username = SessionManager(this).fetchUserData()?.username
+            apiClient.getPostService(this).getUserTopPosts(username!!).enqueue(object : Callback<ArrayList<StatisticsResponse>>{
+                override fun onResponse(
+                    call: Call<ArrayList<StatisticsResponse>>,
+                    response: Response<ArrayList<StatisticsResponse>>
+                ) {
+
+                    var size = response.body()!!.size
+
+                    if(size>0)
+                    {
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(iv_coverImage_prvi)
+                        gradeDisplay_followed_prvi.setupForFollowed()
+                        gradeDisplay_followed_prvi.setGradeDisplay(response.body()!![0].averageGrade,response.body()!![0].gradesCount)
+
+                    }
+                    else
+                    {
+                        ll_prvi_grade.isGone=true
+                        tv_no_post_prvi.isVisible=true
+                    }
+
+                    //drugi
+                    if(size>1)
+                    {
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![1].coverImage)).into(iv_coverImage_drugi)
+                        gradeDisplay_followed_drugi.setupForFollowed()
+                        gradeDisplay_followed_drugi.setGradeDisplay(response.body()!![1].averageGrade,response.body()!![1].gradesCount)
+                    }
+                    else
+                    {
+                        ll_drugi_grade.isGone=true
+                        tv_no_post_drugi.isVisible=true
+                    }
+
+                    //treci
+
+                    if(size>2)
+                    {
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![2].coverImage)).into(iv_coverImage_treci)
+                        gradeDisplay_followed_treci.setupForFollowed()
+                        gradeDisplay_followed_treci.setGradeDisplay(response.body()!![2].averageGrade,response.body()!![2].gradesCount)
+
+                    }
+                    else
+                    {
+                        ll_treci_grade.isGone=true
+                        tv_no_post_treci.isVisible=true
+                    }
+
+
+
+                }
+
+                override fun onFailure(call: Call<ArrayList<StatisticsResponse>>, t: Throwable) {
+
+                }
+
+            })
+
+        }
+
+
+    }
 
     private fun setupGetUser() {
 

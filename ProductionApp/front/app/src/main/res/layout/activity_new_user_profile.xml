@@ -466,6 +466,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_highest_rated_posts">
 
 
+
+                    <!--DRUGO MESTO-->
+
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="420dp"
@@ -529,9 +532,22 @@
                                         android:background="#0D0D0F">
                                     </ImageView>
 
+                                    <TextView
+                                        android:id="@+id/tv_no_post_drugi"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:fontFamily="@font/montserrat_medium"
+                                        android:text="No post"
+                                        android:textColor="@color/light_gray"
+                                        android:textSize="15dp"
+                                        android:visibility="invisible"
+                                        />
+
                                 </androidx.cardview.widget.CardView>
 
                                 <LinearLayout
+                                    android:id="@+id/ll_drugi_grade"
                                     android:layout_width="match_parent"
                                     android:layout_height="35dp"
                                     android:layout_marginTop="5dp"
@@ -622,6 +638,7 @@
                                     android:background="#0D0D0F"
                                     app:cardCornerRadius="15dp">
 
+
                                     <ImageView
                                         android:id="@+id/iv_coverImage_prvi"
                                         android:layout_width="match_parent"
@@ -630,9 +647,22 @@
                                         android:background="#0D0D0F">
                                     </ImageView>
 
+                                    <TextView
+                                        android:id="@+id/tv_no_post_prvi"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:fontFamily="@font/montserrat_medium"
+                                        android:text="No post"
+                                        android:textColor="@color/light_gray"
+                                        android:textSize="15dp"
+                                        android:visibility="invisible"
+                                        />
+
                                 </androidx.cardview.widget.CardView>
 
                                 <LinearLayout
+                                    android:id="@+id/ll_prvi_grade"
                                     android:layout_width="match_parent"
                                     android:layout_height="35dp"
                                     android:layout_marginTop="5dp"
@@ -733,9 +763,22 @@
                                         android:background="#0D0D0F">
                                     </ImageView>
 
+                                    <TextView
+                                        android:id="@+id/tv_no_post_treci"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:fontFamily="@font/montserrat_medium"
+                                        android:text="No post"
+                                        android:textColor="@color/light_gray"
+                                        android:textSize="15dp"
+                                        android:visibility="invisible"
+                                        />
+
                                 </androidx.cardview.widget.CardView>
 
                                 <LinearLayout
+                                    android:id="@+id/ll_treci_grade"
                                     android:layout_width="match_parent"
                                     android:layout_height="35dp"
                                     android:layout_marginTop="5dp"

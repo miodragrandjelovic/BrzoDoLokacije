@@ -3,10 +3,10 @@ package com.example.pyxiskapri.dtos.response
 import com.google.gson.annotations.SerializedName
 
 data class StatisticsResponse (
-    @SerializedName("FullCoverImagePath")
+    @SerializedName("fullCoverImagePath")
     var coverImage: String,
-    @SerializedName("AverageGrade")
+    @SerializedName("averageGrade")
     var averageGrade: Double,
-    @SerializedName("Count")
+    @SerializedName("count")
     var gradesCount: Int
 )
