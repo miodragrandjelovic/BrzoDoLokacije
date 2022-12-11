@@ -44,7 +44,7 @@ namespace PyxisKapriBack.UI
                 {
                     Id = post.Id,
                     FullProfileImagePath = Path.Combine(post.User.FolderPath,post.User.FileName),
-                    NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
+                    NumberOfLikes = Math.Round((double)(post.Likes.Count > 0 ? post.Likes.Sum(post => post.Grade) * 1.0 / post.Likes.Count() : 0), 2),
                     NumberOfViews = 0,
                     AverageGrade = postService.GetAverageGrade(post.Id), 
                     Grade = postService.GetGrade(post.Id, userService.GetLoggedUser()),
@@ -71,7 +71,7 @@ namespace PyxisKapriBack.UI
                 {
                     Id = post.Id,
                     FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
-                    NumberOfLikes = post.Likes != null ? post.Likes.Count() : 0,
+                    NumberOfLikes = Math.Round((double)(post.Likes.Count > 0 ? post.Likes.Sum(post => post.Grade) * 1.0 / post.Likes.Count() : 0), 2),
                     NumberOfViews = 0,
                     AverageGrade = postService.GetAverageGrade(post.Id),
                     Username = post.User.Username,
@@ -129,7 +129,7 @@ namespace PyxisKapriBack.UI
                 postsDTO.Add(new PostDTO
                 {
                    // CoverImage = post.CoverImage,
-                    NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
+                    NumberOfLikes = Math.Round((double)(post.Likes.Count > 0 ? post.Likes.Sum(post => post.Grade) * 1.0 / post.Likes.Count() : 0), 2),
                     NumberOfViews = 0,
                     AverageGrade = postService.GetAverageGrade(post.Id)
                 });
@@ -176,7 +176,7 @@ namespace PyxisKapriBack.UI
                 {
                     Id = post.Id,
                     FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
-                    NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
+                    NumberOfLikes = Math.Round((double)(post.Likes.Count > 0 ? post.Likes.Sum(post => post.Grade) * 1.0 / post.Likes.Count() : 0), 2),
                     NumberOfViews = 0,
                     AverageGrade = postService.GetAverageGrade(post.Id),
                     Grade = postService.GetGrade(post.Id, username), 
@@ -202,7 +202,7 @@ namespace PyxisKapriBack.UI
                 {
                     Id = post.Id,
                     FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
-                    NumberOfLikes = likeService.GetNumberOfLikesByPostID(post.Id),
+                    NumberOfLikes = Math.Round((double)(post.Likes.Count > 0 ? post.Likes.Sum(post => post.Grade) * 1.0 / post.Likes.Count() : 0), 2),
                     AverageGrade = postService.GetAverageGrade(post.Id), 
                     DateCreated = post.CreatedDate.ToString("g"),
                     Location = post.Location.Name, 
@@ -226,11 +226,11 @@ namespace PyxisKapriBack.UI
                 postsDTO.Add(new PostOnMapDTO
                 {
                     Id = post.Id,
-                    CoverImagePath = Path.Combine(Constants.Constants.ROOT_FOLDER, username, post.PostPath, post.CoverImageName),
+                    CoverImagePath = Path.Combine(Constants.Constants.ROOT_FOLDER, post.User.Username, post.PostPath, post.CoverImageName),
                     Latitude = post.Latitude,
                     Longitude = post.Longitude,
-                    numberOfLikes = post.Likes != null ? post.Likes.Count : 0
-                });
+                    numberOfLikes = Math.Round((double)(post.Likes.Count > 0 ? post.Likes.Sum(post => post.Grade)*1.0 / post.Likes.Count() : 0), 2)
+                }) ;
             }
 
             return postsDTO; 
@@ -290,5 +290,16 @@ namespace PyxisKapriBack.UI
             return null;
         }
 
+        public List<PostOnMapDTO> GetUserTopPosts(string username)
+        {
+            var response = postService.GetUserPosts(username, SortType.COUNT_LIKES);
+            List<Post> posts = null; 
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                posts = response.Data.Cast<Post>().Take(3).ToList();
+
+            if (posts == null)
+                return null; 
+            return createPostOnMapDTO(posts, username).ToList();
+        }
     }
 }

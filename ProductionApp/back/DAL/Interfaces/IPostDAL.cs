@@ -9,7 +9,7 @@ namespace PyxisKapriBack.DAL.Interfaces
         bool DeletePost(int PostID);
         void UpdatePost(Post post);
         Post GetPost(int PostID);
-        List<Post> GetUserPosts(String username);
+        List<Post> GetUserPosts(string username, SortType sortType = SortType.DATE);
         List<Post> GetPostsForLocation(int LocationID);
         List<Post> GetPosts(String username, SortType sortType = SortType.DATE);
         List<Post> GetFollowingPosts(string username, SortType sortType = SortType.DATE);

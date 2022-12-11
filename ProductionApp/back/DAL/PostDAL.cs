@@ -68,20 +68,19 @@ namespace PyxisKapriBack.DAL
                                                                               .ToList(); 
         }
 
-        public List<Post> GetUserPosts(string username)
+        public List<Post> GetUserPosts(string username, SortType sortType = SortType.DATE)
         {
             User user = _iUserDAL.GetUser(username);
             if (user == null)
-                throw new Exception(Constants.Constants.resNoFoundUser); 
+                throw new Exception(Constants.Constants.resNoFoundUser);
 
-            return _context.Posts.Where(post => post.UserId == user.Id).Include(post => post.User)
+            var posts = _context.Posts.Where(post => post.UserId == user.Id).Include(post => post.User)
                                                                        .Include(post => post.Dislikes)
                                                                        .Include(post => post.Likes)
                                                                        .Include(post => post.Comments)
                                                                        .Include(post => post.Images)
-                                                                       .Include(post => post.Location)
-                                                                       .OrderByDescending(post => post.CreatedDate)
-                                                                       .ToList(); 
+                                                                       .Include(post => post.Location);
+            return SortListByCriteria(posts, sortType);
         }
 
         public List<Post> GetPosts(string username, SortType sortType = SortType.DATE)
@@ -149,7 +148,9 @@ namespace PyxisKapriBack.DAL
             else if (sortType == SortType.COUNT_COMMENTS)
                 orderedQueryable = orderedQueryable.OrderByDescending(post => post.Comments.Count);
             else if (sortType == SortType.COUNT_LIKES)
-                orderedQueryable = orderedQueryable.OrderByDescending(post => post.Likes.Count);
+            {
+                orderedQueryable = orderedQueryable.OrderByDescending(post => post.Likes.Sum(post => post.Grade) / post.Likes.Count()); 
+            }
 
             return orderedQueryable.ToList(); 
         }
@@ -197,8 +198,11 @@ namespace PyxisKapriBack.DAL
             {
                 var followings = followDAL.GetFollowing(username);
                 foreach (var following in followings)
-                    foreach (var post in following.Posts)
-                        posts.Add(post); 
+                    if (following.Posts != null)
+                    {
+                        foreach (var post in following.Posts)
+                            posts.Add(post);
+                    }
             }
             return locationManager.GetAllAroundPosts(coordinate, posts, distance); 
         }

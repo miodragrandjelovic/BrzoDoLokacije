@@ -59,7 +59,15 @@
         public const string DEFAULT_IMAGE_PATH = "DefaultProfileImage";
         public const string DEFAULT_IMAGE_NAME = "default-image.png";
         public const string POST_NAME = "Post";
+
+        // Faces on image
+        public const int ONE_FACE = 1;
+        public const int MORE_FACES = -1;
+        public const int NO_FACES = 0;
+
+
     }
+
     public enum CommentState
     {
         DISLIKED = -1,

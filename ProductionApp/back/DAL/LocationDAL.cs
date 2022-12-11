@@ -38,7 +38,7 @@ namespace PyxisKapriBack.DAL
 
         public bool DeleteLocation(string locationName)
         {
-            Location location = GetLocation(locationName);
+            Location location = FilterLocationsByName(locationName).FirstOrDefault();
             if (location == null)
                 return false;
 
