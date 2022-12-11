@@ -151,5 +151,12 @@ namespace PyxisKapriBack.Controllers
         {
             return Ok(postUI.GetAllAroundPosts(search.Latitude, search.Longitude, search.Distance, search.FriendsOnly));
         }
+
+        [HttpGet("GetUserTopPosts/{username}")]
+        public async Task<IActionResult> GetUserTopPosts(string username)
+        {
+            var posts = postUI.GetUserTopPosts(username);
+            return Ok(posts);
+        }
     }
 }

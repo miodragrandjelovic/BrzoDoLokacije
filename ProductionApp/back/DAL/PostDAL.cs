@@ -68,20 +68,19 @@ namespace PyxisKapriBack.DAL
                                                                               .ToList(); 
         }
 
-        public List<Post> GetUserPosts(string username)
+        public List<Post> GetUserPosts(string username, SortType sortType = SortType.DATE)
         {
             User user = _iUserDAL.GetUser(username);
             if (user == null)
-                throw new Exception(Constants.Constants.resNoFoundUser); 
+                throw new Exception(Constants.Constants.resNoFoundUser);
 
-            return _context.Posts.Where(post => post.UserId == user.Id).Include(post => post.User)
+            var posts = _context.Posts.Where(post => post.UserId == user.Id).Include(post => post.User)
                                                                        .Include(post => post.Dislikes)
                                                                        .Include(post => post.Likes)
                                                                        .Include(post => post.Comments)
                                                                        .Include(post => post.Images)
-                                                                       .Include(post => post.Location)
-                                                                       .OrderByDescending(post => post.CreatedDate)
-                                                                       .ToList(); 
+                                                                       .Include(post => post.Location);
+            return SortListByCriteria(posts, sortType);
         }
 
         public List<Post> GetPosts(string username, SortType sortType = SortType.DATE)

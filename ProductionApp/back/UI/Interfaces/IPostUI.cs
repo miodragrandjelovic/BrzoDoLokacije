@@ -22,5 +22,7 @@ namespace PyxisKapriBack.UI.Interfaces
         Response GetPostsBySearch(string search, SearchType searchType = SearchType.LOCATION, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT, bool friendsOnly = false);
 
         List<PostOnMapDTO> GetAllAroundPosts(double latitude, double longitude, double distance = Constants.Constants.DISTANCE, bool friendsOnly = false);
+
+        List<PostOnMapDTO> GetUserTopPosts(string username); 
     }
 }

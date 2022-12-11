@@ -201,12 +201,12 @@ namespace PyxisKapriBack.Services
         {
             return postDAL.GetPostsForLocation(LocationID);
         }
-        public Response GetUserPosts(string username)
+        public Response GetUserPosts(string username, SortType sortType = SortType.DATE)
         {
             var response = new Response();
             try
             {
-                response.Data = postDAL.GetUserPosts(username).Cast<object>().ToList();
+                response.Data = postDAL.GetUserPosts(username, sortType).Cast<object>().ToList();
                 response.StatusCode = StatusCodes.Status200OK;
                 response.Message = "Found posts"; 
             }

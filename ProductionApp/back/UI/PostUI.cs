@@ -290,5 +290,16 @@ namespace PyxisKapriBack.UI
             return null;
         }
 
+        public List<PostOnMapDTO> GetUserTopPosts(string username)
+        {
+            var response = postService.GetUserPosts(username, SortType.COUNT_LIKES);
+            List<Post> posts = null; 
+            if (response.StatusCode.Equals(StatusCodes.Status200OK))
+                posts = response.Data.Cast<Post>().Take(3).ToList();
+
+            if (posts == null)
+                return null; 
+            return createPostOnMapDTO(posts, username).ToList();
+        }
     }
 }
