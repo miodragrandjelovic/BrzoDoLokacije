@@ -30,7 +30,10 @@ def detect_face(path):
 
 def is_face_exists(path):
     face_count = detect_face(path)
-    if(face_count > 0):
-        return True
+    if(face_count == 1):
+        return 1
+    elif(face_count > 1):
+        return -1
+    else:
+        return 0
     
-    return False
