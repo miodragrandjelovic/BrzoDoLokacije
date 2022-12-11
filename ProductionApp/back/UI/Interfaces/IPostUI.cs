@@ -23,6 +23,6 @@ namespace PyxisKapriBack.UI.Interfaces
 
         List<PostOnMapDTO> GetAllAroundPosts(double latitude, double longitude, double distance = Constants.Constants.DISTANCE, bool friendsOnly = false);
 
-        List<PostOnMapDTO> GetUserTopPosts(string username); 
+        List<StatisticsDTO> GetUserTopPosts(string username); 
     }
 }

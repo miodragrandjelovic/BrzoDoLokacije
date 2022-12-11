@@ -290,16 +290,29 @@ namespace PyxisKapriBack.UI
             return null;
         }
 
-        public List<PostOnMapDTO> GetUserTopPosts(string username)
+        public List<StatisticsDTO> GetUserTopPosts(string username)
         {
             var response = postService.GetUserPosts(username, SortType.COUNT_LIKES);
             List<Post> posts = null; 
             if (response.StatusCode.Equals(StatusCodes.Status200OK))
                 posts = response.Data.Cast<Post>().Take(3).ToList();
 
+            var statisticsDTO = new List<StatisticsDTO>();
             if (posts == null)
-                return null; 
-            return createPostOnMapDTO(posts, username).ToList();
+                return null;
+
+            foreach (var post in posts)
+            {
+                statisticsDTO.Add(new StatisticsDTO
+                {
+                    FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
+                    AverageGrade = postService.GetAverageGrade(post.Id),
+                    Count = post.Likes.Count()
+                });
+            }
+
+            return statisticsDTO;
+           
         }
     }
 }
