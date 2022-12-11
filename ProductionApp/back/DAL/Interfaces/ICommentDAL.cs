@@ -4,7 +4,7 @@ namespace PyxisKapriBack.DAL.Interfaces
 {
     public interface ICommentDAL
     {
-        public bool AddComment(Comment Comment); 
+        public int AddComment(Comment Comment); 
         public bool DeleteComment(int CommitID);
         public bool UpdateComment(Comment Comment); 
 

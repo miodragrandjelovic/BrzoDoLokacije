@@ -62,7 +62,7 @@ namespace PyxisKapriBack.Services
                 };
             }
             var succeed = commentDAL.AddComment(newComment);
-            if (!succeed)
+            if (succeed == -1)
             {
                 return new Response
                 {
@@ -74,7 +74,7 @@ namespace PyxisKapriBack.Services
             return new Response
             {
                 StatusCode = StatusCodes.Status200OK,
-                Message = "Comment added succesffuly!"
+                Message = succeed.ToString(),
             };
         }
 

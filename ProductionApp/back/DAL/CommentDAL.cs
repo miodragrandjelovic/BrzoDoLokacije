@@ -12,13 +12,14 @@ namespace PyxisKapriBack.DAL
             _context = context;
         }
 
-        public bool AddComment(Comment Comment)
+        public int AddComment(Comment Comment)
         {
             if (Comment == null)
-                return false; 
+                return -1; 
             _context.Comments.Add(Comment);
-            _context.SaveChanges(); 
-            return true;
+            _context.SaveChanges();
+            
+            return Comment.Id;
         }
 
         public bool DeleteComment(int CommentID)
