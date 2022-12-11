@@ -80,7 +80,7 @@ namespace PyxisKapriBack.Controllers
         {
             var response = userUI.UpdateProfileImage(image);
             if (response.StatusCode.Equals(StatusCodes.Status200OK))
-                return Ok(response);
+                return Ok(new {token = response.Message});
 
             return BadRequest(response);
         }

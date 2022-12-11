@@ -186,6 +186,7 @@ namespace PyxisKapriBack.Services
                 loggedUser.FileName = newProfileImageName;
                 userDAL.UpdateUser(loggedUser);
                 File.Delete(tempFilePath);
+                response.Message = jwtManager.GenerateToken(loggedUser);
                 return response;
             }
             else
@@ -193,6 +194,7 @@ namespace PyxisKapriBack.Services
                 loggedUser.FolderPath = folderPath;
                 loggedUser.FileName = userImage.ProfileImage.FileName;
                 userDAL.UpdateUser(loggedUser);
+                response.Message = jwtManager.GenerateToken(loggedUser);
                 return response;
             }
             response.StatusCode = StatusCodes.Status500InternalServerError;
