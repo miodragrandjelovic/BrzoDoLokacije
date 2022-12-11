@@ -226,7 +226,7 @@ namespace PyxisKapriBack.UI
                 postsDTO.Add(new PostOnMapDTO
                 {
                     Id = post.Id,
-                    CoverImagePath = Path.Combine(Constants.Constants.ROOT_FOLDER, username, post.PostPath, post.CoverImageName),
+                    CoverImagePath = Path.Combine(Constants.Constants.ROOT_FOLDER, post.User.Username, post.PostPath, post.CoverImageName),
                     Latitude = post.Latitude,
                     Longitude = post.Longitude,
                     numberOfLikes = Math.Round((double)(post.Likes.Count > 0 ? post.Likes.Sum(post => post.Grade)*1.0 / post.Likes.Count() : 0), 2)
