@@ -30,6 +30,7 @@ namespace PyxisKapriBack.PythonService
 
             using (var response = await client.SendAsync(request))
             {
+                Console.WriteLine(uri);
                 response.EnsureSuccessStatusCode();
 
                 var content = await response.Content.ReadAsStringAsync();
