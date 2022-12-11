@@ -174,8 +174,13 @@ namespace PyxisKapriBack.DAL
                     List<String> tags = search.Split(", ").ToList();
                     /*posts = posts.Where(post => !String.IsNullOrEmpty(post.Tags))
                                  .Where(post => tags.Any(post.Tags.Contains())); */
-                    posts = posts.Where(post => !String.IsNullOrEmpty(post.Tags)); 
-                    posts = posts.ToList().Where(post => tags.Any(tag => post.Tags.ToLower().Contains(tag.ToLower()))).AsQueryable(); 
+                    posts = posts.Where(post => !String.IsNullOrEmpty(post.Tags));
+                    var filteredPosts = posts.ToList()
+                                             .Where(post => tags.Any(tag => post.Tags.ToLower().Contains(tag.ToLower())))
+                                             .AsQueryable()
+                                             .Select(post => post.Id)
+                                             .ToList();
+                    posts = posts.Where(post => filteredPosts.Contains(post.Id)); 
                 }
             }
 
