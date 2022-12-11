@@ -34,7 +34,9 @@ namespace PyxisKapriBack.Services
         {
             Location _location = _iLocationDAL.GetLocation(location);
 
-            if ((location == null) || (_location.Longitude == 0) || (_location.Latitude == 0))
+            if (location == null)
+                return null;
+            if ((_location.Longitude == 0) || (_location.Latitude == 0))
                 return null; 
 
             return createLocationDTOList(_iLocationDAL.GetAllAroundLocations(_location.Latitude, _location.Longitude, distance)); 

@@ -149,7 +149,9 @@ namespace PyxisKapriBack.DAL
             else if (sortType == SortType.COUNT_COMMENTS)
                 orderedQueryable = orderedQueryable.OrderByDescending(post => post.Comments.Count);
             else if (sortType == SortType.COUNT_LIKES)
-                orderedQueryable = orderedQueryable.OrderByDescending(post => post.Likes.Count);
+            {
+                orderedQueryable = orderedQueryable.OrderByDescending(post => post.Likes.Sum(post => post.Grade) / post.Likes.Count()); 
+            }
 
             return orderedQueryable.ToList(); 
         }
@@ -197,8 +199,11 @@ namespace PyxisKapriBack.DAL
             {
                 var followings = followDAL.GetFollowing(username);
                 foreach (var following in followings)
-                    foreach (var post in following.Posts)
-                        posts.Add(post); 
+                    if (following.Posts != null)
+                    {
+                        foreach (var post in following.Posts)
+                            posts.Add(post);
+                    }
             }
             return locationManager.GetAllAroundPosts(coordinate, posts, distance); 
         }

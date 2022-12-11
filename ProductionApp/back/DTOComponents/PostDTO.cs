@@ -8,7 +8,7 @@
         public string FullCoverImagePath { get; set; } = string.Empty;
 
         //public DateTime DateCreated { get; set; }
-        public int NumberOfLikes { get; set; } = 0;
+        public double NumberOfLikes { get; set; } = 0;
         public int NumberOfViews { get; set; } = 0;
         public bool IsLiked { get; set; } = false;
         public int Grade { get; set; } = 0; 
