@@ -6,9 +6,7 @@ import android.util.Base64
 import com.example.pyxiskapri.models.UserData
 import com.google.gson.Gson
 
-class SessionManager(context: Context) {
-    private var prefs: SharedPreferences = context.getSharedPreferences(Constants.SHAREDPREFS_PATH, Context.MODE_PRIVATE)
-
+class SessionManager(private var context: Context) {
     companion object {
         const val USER_TOKEN = "user_token"
 
@@ -22,15 +20,15 @@ class SessionManager(context: Context) {
     }
 
     fun clearToken(){
-        prefs.edit().remove(USER_TOKEN).commit()
+        context.getSharedPreferences(Constants.SHAREDPREFS_PATH, Context.MODE_PRIVATE).edit().remove(USER_TOKEN).commit()
     }
 
     fun saveToken(token: String){
-        prefs.edit().putString(USER_TOKEN, token).commit()
+        context.getSharedPreferences(Constants.SHAREDPREFS_PATH, Context.MODE_PRIVATE).edit().putString(USER_TOKEN, token).commit()
     }
 
     fun fetchToken(): String?{
-        return prefs.getString(USER_TOKEN, null)
+        return context.getSharedPreferences(Constants.SHAREDPREFS_PATH, Context.MODE_PRIVATE).getString(USER_TOKEN, null)
     }
 
     fun fetchUserData(): UserData? {

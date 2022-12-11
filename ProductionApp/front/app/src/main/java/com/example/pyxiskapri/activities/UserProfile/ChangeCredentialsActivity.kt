@@ -9,7 +9,6 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.view.Window
 import android.widget.Toast
 import androidx.core.graphics.drawable.toDrawable
@@ -23,7 +22,6 @@ import com.example.pyxiskapri.dtos.request.EditUserRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.LoginResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
-import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.utility.*
 import com.squareup.picasso.Picasso
@@ -67,8 +65,6 @@ class ChangeCredentialsActivity : AppCompatActivity() {
         setupChangePhoto()
         saveChanges()
 
-        setupNavButtons()
-
         setupGetFollowers()
         setupGetFollowing()
 
@@ -91,7 +87,7 @@ class ChangeCredentialsActivity : AppCompatActivity() {
 
                         et_username_n.setText(response.body()!!.username)
 
-                        et_email_n.setText(response.body()!!.email)
+                        et_email.setText(response.body()!!.email)
 
                         tv_name1_c.text=response.body()!!.firstName
                         tv_name2_c.text=response.body()!!.lastName
@@ -138,7 +134,7 @@ class ChangeCredentialsActivity : AppCompatActivity() {
                     firstName = this.et_first_name_n.text.toString(),
                     lastName = this.et_last_name_n.text.toString(),
                     username = this.et_username_n.text.toString(),
-                    email = this.et_email_n.text.toString(),
+                    email = this.et_email.text.toString(),
                     password = dialog.et_modul_password.text.toString(),
                 )
 
@@ -352,33 +348,5 @@ class ChangeCredentialsActivity : AppCompatActivity() {
         }
 
     }
-
-    private fun setupNavButtons(){
-        setupButtonHome()
-        setupButtonNewPost()
-        setupButtonMessages()
-    }
-
-    private fun setupButtonHome() {
-        btn_home_c.setOnClickListener(){
-            val intent = Intent (this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setupButtonNewPost() {
-        btn_newPost_c.setOnClickListener(){
-            val intent = Intent (this, NewPostActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setupButtonMessages() {
-        btn_messages_c.setOnClickListener {
-            val intent = Intent (this, ChatMainActivity::class.java);
-            startActivity(intent);
-        }
-    }
-
 
 }

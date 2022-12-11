@@ -13,7 +13,6 @@ import com.example.pyxiskapri.activities.*
 import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
-import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.ChangeCredentialsInformation
 import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.utility.ActivityTransferStorage
@@ -22,11 +21,6 @@ import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_new_user_profile.*
-import kotlinx.android.synthetic.main.activity_new_user_profile.btn_home
-import kotlinx.android.synthetic.main.activity_new_user_profile.btn_messages
-import kotlinx.android.synthetic.main.activity_new_user_profile.btn_newPost
-import kotlinx.android.synthetic.main.activity_new_user_profile.tv_name1
-import kotlinx.android.synthetic.main.activity_new_user_profile.tv_name2
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -66,7 +60,6 @@ class NewUserProfileActivity : AppCompatActivity(){
         window.contentView = view
 
         popup()
-        setupNavButtons()
 
         mapActivity()
 
@@ -84,14 +77,6 @@ class NewUserProfileActivity : AppCompatActivity(){
         setupGetFollowers()
 
   }
-
-    private fun setupNavButtons() {
-        setupHome()
-        setupAddPost()
-        setupButtonMessages()
-        setupDiscover()
-    }
-
 
     private fun setupGetUser() {
 
@@ -249,35 +234,4 @@ class NewUserProfileActivity : AppCompatActivity(){
             flag*=-1
         }
     }
-
-
-
-    private fun setupHome() {
-        btn_home.setOnClickListener(){
-            val intent = Intent (this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setupAddPost() {
-        btn_newPost.setOnClickListener(){
-            val intent = Intent (this, NewPostActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setupButtonMessages() {
-        btn_messages.setOnClickListener {
-            val intent = Intent (this, ChatMainActivity::class.java);
-            startActivity(intent);
-        }
-    }
-
-    private fun setupDiscover(){
-        btn_discoverr.setOnClickListener {
-            val intent = Intent (this, MapActivity::class.java);
-            startActivity(intent);
-        }
-    }
-
 }

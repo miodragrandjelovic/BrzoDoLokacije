@@ -32,7 +32,6 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:scrollbars="none"
-        app:layout_constraintBottom_toTopOf="@+id/navMenu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -71,8 +70,8 @@
 
                         <ImageView
                             android:id="@+id/iv_ownerAvatar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:adjustViewBounds="true"
                             android:scaleType="centerCrop"
                             android:src="@drawable/avatarplaceholder" />
@@ -248,11 +247,11 @@
                     android:isScrollContainer="true"
                     android:padding="5dp"
                     android:verticalSpacing="10dp"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_images"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:listitem="@layout/item_tag"
-                    tools:itemCount="3"/>
+                    app:layout_constraintTop_toBottomOf="@+id/rv_images"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_tag" />
 
                 <ImageView
                     android:id="@+id/ll_postOptions"
@@ -330,7 +329,7 @@
                         app:cardCornerRadius="100dp">
 
                         <ImageView
-                            android:id="@+id/btn_userAvatar"
+                            android:id="@+id/btn_userCommentAvatar"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
@@ -381,185 +380,35 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/ll_sort"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
+            <TextView
+                android:id="@+id/tv_commentsCount"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="left|center_vertical"
                 android:layout_marginBottom="10dp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/btn_categoryPopular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/ib_rounded"
-                    android:backgroundTint="@color/red"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
-
-                    <ImageView
-                        android:id="@+id/iv_categoryPopular"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginEnd="3dp"
-                        android:adjustViewBounds="true"
-                        app:srcCompat="@drawable/popular" />
-
-                    <TextView
-                        android:id="@+id/tv_categoryPopular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_gravity="left|center_vertical"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:gravity="center_vertical"
-                        android:text="Popular"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/btn_categoryNewest"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/ib_rounded"
-                    android:backgroundTint="@color/dark_gray"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
-
-                    <ImageView
-                        android:id="@+id/iv_categoryNewest"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_marginEnd="3dp"
-                        android:adjustViewBounds="true"
-                        app:srcCompat="@drawable/star" />
-
-                    <TextView
-                        android:id="@+id/tv_categoryNewest"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_gravity="left|center_vertical"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:gravity="center_vertical"
-                        android:text="Newest"
-                        android:textColor="@color/white" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tv_commentsCount"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="left|center_vertical"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:gravity="right|center_vertical"
-                    android:text="xyz comments"
-                    android:textColor="@color/white" />
-
-            </LinearLayout>
+                android:fontFamily="@font/montserrat_regular"
+                android:gravity="right|center_vertical"
+                tools:text="xyz comments"
+                android:textColor="@color/white" />
 
             <com.example.pyxiskapri.custom_view_models.WrapExpandableListView
                 android:id="@+id/elv_comments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="100dp"
                 android:groupIndicator="@null"
-                tools:listitem="@layout/item_comment" />
+                tools:listitem="@layout/item_comment"/>
 
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <LinearLayout
-        android:id="@+id/navMenu"
-        android:layout_width="0dp"
-        android:layout_height="54dp"
-        android:background="@drawable/navmenubackground"
-        android:clickable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingEnd="20dp"
-        android:windowSoftInputMode="adjustPan"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/btn_newPost"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/addimage"
-            app:tint="#292D33" />
-
-        <ImageView
-            android:id="@+id/btn_discover"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/map"
-            app:tint="#292D33" />
-
-        <ImageView
-            android:id="@+id/btn_home"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/home"
-            app:tint="@color/red" />
-
-        <ImageView
-            android:id="@+id/btn_messages"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/messages"
-            app:tint="#292D33" />
-
-        <ImageView
-            android:id="@+id/btn_notifications"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/notifications"
-            app:tint="#292D33" />
-
-    </LinearLayout>
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fcv_drawerNavOpenPost"
-        android:name="com.example.pyxiskapri.fragments.DrawerNav"
-        android:layout_width="wrap_content"
+    <com.example.pyxiskapri.custom_view_models.NavMenuView
+        android:id="@+id/navMenuView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_drawer_nav" />
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

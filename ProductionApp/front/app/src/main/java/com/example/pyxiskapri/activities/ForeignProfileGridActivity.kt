@@ -17,7 +17,6 @@ import com.example.pyxiskapri.dtos.request.AddFollowRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
-import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
@@ -25,9 +24,6 @@ import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_foreign_profile_grid.*
-import kotlinx.android.synthetic.main.activity_foreign_profile_grid.ib_follow
-import kotlinx.android.synthetic.main.activity_foreign_profile_grid.ib_following
-import kotlinx.android.synthetic.main.activity_foreign_profile_grid.tv_follow_ing
 import kotlinx.android.synthetic.main.modal_confirm_follow.*
 import kotlinx.android.synthetic.main.modal_confirm_unfollow.*
 import retrofit2.Call
@@ -65,8 +61,6 @@ class ForeignProfileGridActivity : AppCompatActivity() {
 
         apiClient= ApiClient()
         sessionManager= SessionManager(this)
-
-        setupNavButtons()
 
         getForeignUser()
 
@@ -349,34 +343,6 @@ class ForeignProfileGridActivity : AppCompatActivity() {
 
         }
 
-    }
-
-
-    private fun setupNavButtons() {
-        setupHome()
-        setupAddPost()
-        setupButtonMessages()
-    }
-
-    private fun setupHome() {
-        btn_home_fg.setOnClickListener(){
-            val intent = Intent (this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setupAddPost() {
-        btn_newPost_fg.setOnClickListener(){
-            val intent = Intent (this, NewPostActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setupButtonMessages() {
-        btn_messages_fg.setOnClickListener {
-            val intent = Intent (this, ChatMainActivity::class.java);
-            startActivity(intent);
-        }
     }
 
 }

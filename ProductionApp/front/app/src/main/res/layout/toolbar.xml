@@ -65,7 +65,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/btn_userAvatar"
+            android:id="@+id/btn_toolbarUserAvatar"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:clickable="true"

@@ -85,9 +85,6 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
         apiClient= ApiClient()
         sessionManager= SessionManager(this)
 
-
-        setupNavButtons()
-
         getForeignUser()
 
 
@@ -508,34 +505,6 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         }
 
-    }
-
-
-    private fun setupNavButtons() {
-        setupHome()
-        setupAddPost()
-        setupButtonMessages()
-    }
-
-    private fun setupHome() {
-        btn_home_fm.setOnClickListener(){
-            val intent = Intent (this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setupAddPost() {
-        btn_newPost_fm.setOnClickListener(){
-            val intent = Intent (this, NewPostActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setupButtonMessages() {
-        btn_messages_fm.setOnClickListener {
-            val intent = Intent (this, ChatMainActivity::class.java);
-            startActivity(intent);
-        }
     }
 
 }

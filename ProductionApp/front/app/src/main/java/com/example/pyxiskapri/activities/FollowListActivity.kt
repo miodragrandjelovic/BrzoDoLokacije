@@ -41,12 +41,6 @@ class FollowListActivity : AppCompatActivity() {
         setupFollowUserAdapter()
         showFollows(followList)
 
-
-        setupHome()
-        setupAddPost()
-        setupButtonMessages()
-        setupDiscover()
-
         search(followList)
 
     }
@@ -136,35 +130,6 @@ class FollowListActivity : AppCompatActivity() {
             })
         }
 
-    }
-
-
-    private fun setupHome() {
-        flw_btn_home.setOnClickListener(){
-            val intent = Intent (this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setupAddPost() {
-        flw_btn_newPost.setOnClickListener(){
-            val intent = Intent (this, NewPostActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setupButtonMessages() {
-        flw_btn_messages.setOnClickListener {
-            val intent = Intent (this, ChatMainActivity::class.java);
-            startActivity(intent);
-        }
-    }
-
-    private fun setupDiscover(){
-        flw_btn_discover.setOnClickListener {
-            val intent = Intent (this, MapActivity::class.java);
-            startActivity(intent);
-        }
     }
 
 }

@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.PerformanceHintManager.Session
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -28,20 +29,20 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.annotations.SerializedName
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_chat_main.*
 import kotlinx.android.synthetic.main.activity_open_post.*
 import kotlinx.android.synthetic.main.activity_open_post.btn_addTag
-import kotlinx.android.synthetic.main.activity_open_post.btn_discover
-import kotlinx.android.synthetic.main.activity_open_post.btn_home
-import kotlinx.android.synthetic.main.activity_open_post.btn_messages
-import kotlinx.android.synthetic.main.activity_open_post.btn_newPost
 import kotlinx.android.synthetic.main.activity_open_post.iv_coverImage
+import kotlinx.android.synthetic.main.activity_open_post.navMenuView
 import kotlinx.android.synthetic.main.activity_open_post.rv_images
 import kotlinx.android.synthetic.main.activity_open_post.rv_tags
 import kotlinx.android.synthetic.main.dialog_full_image.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -66,8 +67,6 @@ class OpenPostActivity : AppCompatActivity() {
 
         sessionManager = SessionManager(this)
         apiClient = ApiClient()
-
-        setupNavButtons()
 
         setupTagsAdapter()
 
@@ -95,6 +94,7 @@ class OpenPostActivity : AppCompatActivity() {
 
         setupComments()
 
+        navMenuView.setIndicator(Constants.NavIndicators.HOME)
     }
 
     override fun onResume() {
@@ -106,34 +106,6 @@ class OpenPostActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         finish()
-    }
-
-    private fun setupNavButtons(){
-        // NEW POST
-        btn_newPost.setOnClickListener {
-            val intent = Intent (this, NewPostActivity::class.java);
-            startActivity(intent);
-        }
-
-        // MAPS
-        btn_discover.setOnClickListener {
-            val intent = Intent (this, MapActivity::class.java);
-            startActivity(intent);
-        }
-
-        // HOME
-        btn_home.setOnClickListener {
-            val intent = Intent (this, HomeActivity::class.java);
-            startActivity(intent);
-        }
-
-        // MESSAGES
-        btn_messages.setOnClickListener {
-            val intent = Intent (this, ChatMainActivity::class.java);
-            startActivity(intent);
-        }
-
-        // NOTIFICATIONS
     }
 
     private fun requestPostData(){
@@ -172,7 +144,7 @@ class OpenPostActivity : AppCompatActivity() {
                 append(postAdditionalData.commentCount.toString())
                     .append(" comments") }
 
-            Picasso.get().load(UtilityFunctions.getFullImagePath(sessionManager.fetchUserData()!!.profileImagePath)).into(btn_userAvatar)
+            Picasso.get().load(UtilityFunctions.getFullImagePath(sessionManager.fetchUserData()!!.profileImagePath)).into(btn_userCommentAvatar)
 
             postImagesAdapter = PostImagesAdapter(postAdditionalData.additionalImages)
             rv_images.adapter = postImagesAdapter
@@ -253,7 +225,7 @@ class OpenPostActivity : AppCompatActivity() {
             .enqueue(object : Callback<ArrayList<CommentResponse>> {
                 override fun onResponse(call: Call<ArrayList<CommentResponse>>, response: Response<ArrayList<CommentResponse>>) {
                     if(response.isSuccessful) {
-                        commentsAdapter.AddCommentList(response.body()!!)
+                        commentsAdapter.addCommentList(response.body()!!)
                     }
 
                     if(response.code() == Constants.CODE_BAD_REQUEST)
@@ -274,12 +246,8 @@ class OpenPostActivity : AppCompatActivity() {
 
     private fun postNewComment(){
 
-        if(et_newCommentText.text.toString() == "") {
-            // Obavestenje da mora da unese tekst ili da pocrveni okvir
+        if(et_newCommentText.text.toString() == "")
             return
-        }
-
-
 
         var newComment = NewCommentRequest(
             postId = postData.id,
@@ -287,17 +255,30 @@ class OpenPostActivity : AppCompatActivity() {
             commentText = et_newCommentText.text.toString()
         )
 
+        val context = this
         apiClient.getCommentService(this).addNewComment(newComment)
             .enqueue(object : Callback<MessageResponse> {
                 override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
-                    if(response.isSuccessful) {
-                        et_newCommentText.text.clear()
-                        // Uradi nesto
-                    }
+                    if(!response.isSuccessful)
+                        return
 
-                    if(response.code() == Constants.CODE_BAD_REQUEST)
-                        Log.d("ERROR", "Bad Request")
+                    val userData = SessionManager(context).fetchUserData()!!
 
+                    val commentToAdd = CommentResponse(
+                        id = response.body()!!.message.toInt(),
+                        commenterImage = userData.profileImagePath,
+                        commenterUsername = userData.username,
+                        commentText = et_newCommentText.text.toString(),
+                        creationDate = SimpleDateFormat("dd-MMM-yy HH:mm:ss").format(Calendar.getInstance().time),
+                        likeStatus = 0,
+                        likeCount = 0,
+                        dislikeCount = 0,
+                        replyCount = 0,
+                        replies = arrayListOf()
+                    )
+
+                    commentsAdapter.addComment(commentToAdd)
+                    et_newCommentText.text.clear()
                 }
 
                 override fun onFailure(call: Call<MessageResponse>, t: Throwable) {

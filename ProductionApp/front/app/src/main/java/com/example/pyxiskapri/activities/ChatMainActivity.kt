@@ -11,6 +11,7 @@ import com.example.pyxiskapri.adapters.ChatFriendsAdapter
 import com.example.pyxiskapri.dtos.response.FriendResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.Constants
 import kotlinx.android.synthetic.main.activity_chat_main.*
 
 class ChatMainActivity : AppCompatActivity() {
@@ -27,9 +28,9 @@ class ChatMainActivity : AppCompatActivity() {
 
         setSwipeRefresh()
 
-        setupNavButtons()
-
         setupFriendList()
+
+        navMenuView.setIndicator(Constants.NavIndicators.MESSAGES)
     }
 
     private fun setSwipeRefresh(){
@@ -44,30 +45,6 @@ class ChatMainActivity : AppCompatActivity() {
             srl_chatMain.isRefreshing = false
         }
     }
-
-
-    private fun setupNavButtons(){
-        // NEW POST
-        btn_newPost.setOnClickListener {
-            val intent = Intent (this, NewPostActivity::class.java);
-            startActivity(intent);
-        }
-
-        // MAPS
-        btn_discover.setOnClickListener {
-            val intent = Intent (this, MapActivity::class.java);
-            startActivity(intent);
-        }
-
-        // HOME
-        btn_home.setOnClickListener {
-            val intent = Intent (this, HomeActivity::class.java);
-            startActivity(intent);
-        }
-
-        // NOTIFICATIONS
-    }
-
 
 
     private fun getDummyData(): ArrayList<FriendResponse>{

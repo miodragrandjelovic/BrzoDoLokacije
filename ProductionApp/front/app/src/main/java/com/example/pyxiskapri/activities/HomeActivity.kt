@@ -12,10 +12,11 @@ import com.example.pyxiskapri.adapters.FollowedPostListAdapter
 import com.example.pyxiskapri.adapters.PostListAdapter
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
+import kotlinx.android.synthetic.main.activity_chat_main.*
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.activity_home.btn_messages
-import kotlinx.android.synthetic.main.activity_home.btn_newPost
+import kotlinx.android.synthetic.main.activity_home.navMenuView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -48,7 +49,7 @@ class HomeActivity : AppCompatActivity() {
         fillPostsRV()
         fillFollowedPostsRv()
 
-        setupNavButtons()
+        navMenuView.setIndicator(Constants.NavIndicators.HOME)
     }
 
     private fun setSwipeRefresh(){
@@ -67,28 +68,6 @@ class HomeActivity : AppCompatActivity() {
             fillFollowedPostsRv()
             srl_home.isRefreshing = false
         }
-    }
-
-    private fun setupNavButtons(){
-        // NEW POST
-        btn_newPost.setOnClickListener {
-            val intent = Intent (this, NewPostActivity::class.java);
-            startActivity(intent);
-        }
-
-        // MAPS
-        btn_discover.setOnClickListener {
-            val intent = Intent (this, MapActivity::class.java);
-            startActivity(intent);
-        }
-
-        // MESSAGES
-        btn_messages.setOnClickListener {
-            val intent = Intent (this, ChatMainActivity::class.java);
-            startActivity(intent);
-        }
-
-        // NOTIFICATIONS
     }
 
 

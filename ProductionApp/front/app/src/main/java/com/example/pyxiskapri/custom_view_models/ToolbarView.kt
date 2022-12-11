@@ -16,15 +16,15 @@ import kotlinx.android.synthetic.main.toolbar.view.*
 
 
 class ToolbarView(context: Context, attrs: AttributeSet): ConstraintLayout(context, attrs) {
-
-    private lateinit var userData: UserData
-    private var profileClickListener: ProfileClickListener = ProfileClickListener(context)
+    private var userData: UserData?
+    private var profileClickListener: ProfileClickListener
 
     init {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.toolbar, this, true)
 
-        userData = SessionManager(context).fetchUserData()!!
+        profileClickListener = ProfileClickListener(context)
+        userData = SessionManager(context).fetchUserData()
 
         handleInput()
         setupToolbarViews()
@@ -38,15 +38,17 @@ class ToolbarView(context: Context, attrs: AttributeSet): ConstraintLayout(conte
     }
 
     private fun handleInput(){
-        btn_userAvatar.setOnClickListener(profileClickListener)
+        btn_toolbarUserAvatar.setOnClickListener(profileClickListener)
         tv_fullname.setOnClickListener(profileClickListener)
         tv_username.setOnClickListener(profileClickListener)
     }
 
     private fun setupToolbarViews(){
-        Picasso.get().load(UtilityFunctions.getFullImagePath(userData.profileImagePath)).into(btn_userAvatar)
-        tv_fullname.text = StringBuilder().append(userData.firstName).append(" ").append(userData.lastName)
-        tv_username.text = StringBuilder().append("@").append(userData.username)
+        if(userData == null)
+            return
+        Picasso.get().load(UtilityFunctions.getFullImagePath(userData!!.profileImagePath)).into(btn_toolbarUserAvatar)
+        tv_fullname.text = StringBuilder().append(userData!!.firstName).append(" ").append(userData!!.lastName)
+        tv_username.text = StringBuilder().append("@").append(userData!!.username)
     }
 
 

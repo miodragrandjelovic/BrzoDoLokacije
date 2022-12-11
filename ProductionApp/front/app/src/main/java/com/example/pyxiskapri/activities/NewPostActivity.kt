@@ -25,9 +25,9 @@ import com.example.pyxiskapri.adapters.ImageGridAdapter
 import com.example.pyxiskapri.adapters.ImageUploadProgressAdapter
 import com.example.pyxiskapri.adapters.TagsInputAdapter
 import com.example.pyxiskapri.dtos.response.MessageResponse
-import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.ImageGridItem
 import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.Constants
 import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.google.android.flexbox.FlexDirection
@@ -39,10 +39,9 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.activity_chat_main.*
 import kotlinx.android.synthetic.main.activity_new_post.*
-import kotlinx.android.synthetic.main.activity_new_post.btn_discover
-import kotlinx.android.synthetic.main.activity_new_post.btn_home
-import kotlinx.android.synthetic.main.activity_new_post.btn_messages
+import kotlinx.android.synthetic.main.activity_new_post.navMenuView
 import kotlinx.android.synthetic.main.dialog_images_upload_progress.*
 import kotlinx.android.synthetic.main.dialog_location_search.*
 import okhttp3.MultipartBody
@@ -111,34 +110,12 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
         setupPickCoverImageAdapter()
         setupTagsAdapter()
 
-        setupNavButtons()
-
         setupCardUIButtons()
         updateCardUI()
 
         setupAddPostButton()
-    }
 
-    private fun setupNavButtons(){
-        // MAPS
-        btn_discover.setOnClickListener {
-            val intent = Intent (this, MapActivity::class.java);
-            startActivity(intent);
-        }
-
-        // HOME
-        btn_home.setOnClickListener {
-            val intent = Intent (this, HomeActivity::class.java);
-            startActivity(intent);
-        }
-
-        // MESSAGES
-        btn_messages.setOnClickListener {
-            val intent = Intent (this, ChatMainActivity::class.java);
-            startActivity(intent);
-        }
-
-        // NOTIFICATIONS
+        navMenuView.setIndicator(Constants.NavIndicators.NEW_POST)
     }
 
     // UI CONTROL
