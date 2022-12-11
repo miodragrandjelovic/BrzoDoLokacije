@@ -305,7 +305,7 @@ namespace PyxisKapriBack.UI
             {
                 statisticsDTO.Add(new StatisticsDTO
                 {
-                    FullCoverImagePath = Path.Combine(post.User.FolderPath, post.PostPath, post.CoverImageName),
+                    FullCoverImagePath = Path.Combine(Constants.Constants.ROOT_FOLDER, post.User.Username, post.PostPath, post.CoverImageName),
                     AverageGrade = postService.GetAverageGrade(post.Id),
                     Count = post.Likes.Count()
                 });
