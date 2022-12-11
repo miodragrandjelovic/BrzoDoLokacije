@@ -66,9 +66,14 @@ namespace PyxisKapriBack.Services
         // umesto topFolder ide putanja iz baze
         public string AddFile(string path, IFormFile file)
         {
-            var filePath = Path.Combine(path,file.FileName);
+            var sections = file.FileName.Split('.');
+            string filePath;
+            if (sections[1].Equals("avif")) // avif je novi format pa mora da se konvertuje zato sto nece da ga prikaze lepo
+                filePath = Path.Combine(path,sections[0]+".jpg");
+            else
+                filePath = Path.Combine(path, file.FileName);
 
-            using(FileStream fs = new FileStream(filePath, FileMode.Create))
+            using (FileStream fs = new FileStream(filePath, FileMode.Create))
             {
                 file.CopyTo(fs);
             }
