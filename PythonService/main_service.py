@@ -43,10 +43,11 @@ def get_image_path(request:ImageDataModel):
 @app.post("/face-detect")
 def get_image_path(request:ImageDataModel):
 
-    faces_on_image = face_detect.is_face_exists(request.ImagePath)
-    if(faces_on_image):
-        # 1 ukoliko postoje
+    faces_on_image = face_detect.detect_face(request.ImagePath)
+    if(faces_on_image == 1):
         return Response(1,"Faces on image found.")
-    # 0 ukoliko ne postoje
-    return Response(0,"No faces found on image.")
+    elif(faces_on_image > 1):
+        return Response(-1,"Found one face.")
+    else:
+        return Response(0,"No faces found on image.")
 

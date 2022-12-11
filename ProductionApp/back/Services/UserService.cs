@@ -3,6 +3,7 @@ using PyxisKapriBack.DTOComponents;
 using PyxisKapriBack.JWTManager.Interfaces;
 using PyxisKapriBack.Models;
 using PyxisKapriBack.Models.Interfaces;
+using PyxisKapriBack.PythonService;
 using PyxisKapriBack.Services.Interfaces;
 using System.Security.Claims;
 
@@ -17,11 +18,13 @@ namespace PyxisKapriBack.Services
         private readonly IEncryptionManager manager;
         private readonly IJWTManagerRepository jwtManager;
         private readonly IFileService fileService;
+        private readonly ServiceClient serviceClient;
 
         public UserService(IUserDAL userDAL, 
             IHttpContextAccessor httpContextAccessor, 
             IRoleDAL roleDAL,IEncryptionManager manager,
-            IJWTManagerRepository jwtManager,IFileService fileService)
+            IJWTManagerRepository jwtManager,IFileService fileService,
+            ServiceClient serviceClient)
         {
             this.userDAL = userDAL;
             this.httpContextAccessor = httpContextAccessor;
@@ -29,6 +32,7 @@ namespace PyxisKapriBack.Services
             this.manager = manager;
             this.jwtManager = jwtManager;
             this.fileService = fileService;
+            this.serviceClient = serviceClient;
         }
         public Response AddNewUser(User user)
         {
@@ -167,9 +171,21 @@ namespace PyxisKapriBack.Services
             // MENJANJE PROFILNE SLIKE  
             if (userImage.ProfileImage != null && !fileService.CheckIfProfileImageExists(folderPath, userImage.ProfileImage.FileName))
             {
+                var tempPath = Path.Combine(Directory.GetCurrentDirectory(), Constants.Constants.ROOT_FOLDER, "Temp");
+                var tempFilePath = fileService.AddFile(tempPath,userImage.ProfileImage); 
+                if (serviceClient.DoFacesExistOnImage(tempFilePath).Result != 1)
+                {
+                    File.Delete(tempFilePath);
+                    return new Response
+                    {
+                        StatusCode = StatusCodes.Status406NotAcceptable,
+                        Message = "Profile image must contain only one face."
+                    };
+                }
                 fileService.UpdateFile(folderPath, loggedUser.FileName, userImage.ProfileImage, out newProfileImageName);
                 loggedUser.FileName = newProfileImageName;
                 userDAL.UpdateUser(loggedUser);
+                File.Delete(tempFilePath);
                 return response;
             }
             else

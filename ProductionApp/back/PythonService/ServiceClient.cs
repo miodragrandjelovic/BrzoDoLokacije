@@ -54,7 +54,7 @@ namespace PyxisKapriBack.PythonService
 
         }
 
-        public async Task<bool> DoFacesExistOnImage(string path)
+        public async Task<int> DoFacesExistOnImage(string path)
         {
             var model = new ImageDataModel
             {
@@ -67,11 +67,17 @@ namespace PyxisKapriBack.PythonService
             var response = await httpResponse.Content.ReadAsStringAsync();
 
             Response data = JsonConvert.DeserializeObject<Response>(response);
-            if (data != null && data.StatusCode == 1)
-                return true;
+            if (data != null)
+            {
+                if (data.StatusCode == Constants.Constants.ONE_FACE)
+                    return Constants.Constants.ONE_FACE;
+                else if (data.StatusCode == Constants.Constants.MORE_FACES)
+                    return Constants.Constants.MORE_FACES;
+                else
+                    return Constants.Constants.NO_FACES;
+            }
 
-            return false;
-
+            return Constants.Constants.NO_FACES;
         }
 
 

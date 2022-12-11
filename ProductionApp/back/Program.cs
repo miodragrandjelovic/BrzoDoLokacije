@@ -170,4 +170,9 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/Images"
 });
 
+if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), Constants.ROOT_FOLDER, "Temp")))
+{
+    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), Constants.ROOT_FOLDER, "Temp"));
+}
+
 app.Run();
