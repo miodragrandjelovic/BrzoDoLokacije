@@ -3,6 +3,7 @@ package com.example.pyxiskapri.activities
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -26,7 +27,6 @@ import com.example.pyxiskapri.adapters.LocationListAdapter
 import com.example.pyxiskapri.dtos.request.MapSearchRequest
 import com.example.pyxiskapri.dtos.response.CustomMarkerResponse
 import com.example.pyxiskapri.dtos.response.LocationResponse
-import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.fragments.MultiButtonSelector
 import com.example.pyxiskapri.models.MarkerModel
 import com.example.pyxiskapri.utility.*
@@ -34,10 +34,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_map.*
 import retrofit2.Call
@@ -119,6 +116,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+
+        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_dark_style))
+
         geocoder = Geocoder(this, Locale.getDefault())
 
         mCustomMarkerView = (getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.view_custom_marker, null)

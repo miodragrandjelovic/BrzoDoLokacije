@@ -37,6 +37,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_new_post.*
 import kotlinx.android.synthetic.main.activity_new_post.btn_discover
@@ -74,6 +75,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
     private lateinit var locationAddress: String
     private lateinit var locationCity: String
     private lateinit var locationCountry: String
+    private var fetchedAddresses: MutableList<Address> = mutableListOf()
 
     // CARD IMAGES
     private val PICK_IMAGES_CODE: Int = 0
@@ -326,6 +328,9 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+
+        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_dark_style))
+
         geocoder = Geocoder(this, Locale.getDefault())
         setupAddMarkerOnTouch()
     }
@@ -392,8 +397,6 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             var listView: ListView = dialog.findViewById(R.id.list_view)
 
             var locationTextListAdapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.item_search_text, locationList)
-
-            var fetchedAddresses: MutableList<Address> = mutableListOf()
 
             listView.adapter = locationTextListAdapter
 
