@@ -11,4 +11,6 @@
 
     <declare-styleable name="GradeDisplayView"/>
 
+    <declare-styleable name="ToolbarView"/>
+
 </resources>

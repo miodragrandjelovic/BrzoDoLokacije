@@ -3,7 +3,6 @@ package com.example.pyxiskapri.activities
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -18,6 +17,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.doOnEnd
@@ -27,6 +27,7 @@ import com.example.pyxiskapri.adapters.LocationListAdapter
 import com.example.pyxiskapri.dtos.request.MapSearchRequest
 import com.example.pyxiskapri.dtos.response.CustomMarkerResponse
 import com.example.pyxiskapri.dtos.response.LocationResponse
+import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.MultiButtonSelector
 import com.example.pyxiskapri.models.MarkerModel
 import com.example.pyxiskapri.utility.*
@@ -36,7 +37,10 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_chat_main.*
 import kotlinx.android.synthetic.main.activity_map.*
+import kotlinx.android.synthetic.main.activity_map.navMenuView
+import kotlinx.android.synthetic.main.dialog_location_search.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -67,8 +71,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         setupMapAndAutocomplete()
 
-        setupNavButtons()
-
         // OPTIONS
         multiButtonFragment = (supportFragmentManager.findFragmentById(R.id.fragment_multibuttonSelector) as MultiButtonSelector)
         setupPrioritizedSelection()
@@ -77,34 +79,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         if(ActivityTransferStorage.flag)
             fromPostLocation = ActivityTransferStorage.openPostToMap
 
-    }
-
-    private fun setupNavButtons(){
-        // NEW POST
-        btn_newPost.setOnClickListener {
-            val intent = Intent (this, NewPostActivity::class.java);
-            startActivity(intent);
-            ActivityTransferStorage.flag=false
-            finish()
-        }
-
-        // HOME
-        btn_home.setOnClickListener {
-            val intent = Intent (this, HomeActivity::class.java);
-            ActivityTransferStorage.flag=false
-            finish()
-            startActivity(intent);
-        }
-
-        // MESSAGES
-        btn_messages.setOnClickListener {
-            val intent = Intent (this, ChatMainActivity::class.java);
-            ActivityTransferStorage.flag=false
-            finish()
-            startActivity(intent);
-        }
-
-        // NOTIFICATIONS
+        navMenuView.setIndicator(Constants.NavIndicators.DISCOVER)
     }
 
     private fun setupMapAndAutocomplete(){
@@ -118,6 +93,32 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         map = googleMap
 
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_dark_style))
+        map.mapType = GoogleMap.MAP_TYPE_HYBRID
+
+        setMapTypeChangeButton()
+
+        map.setOnMarkerClickListener{marker ->
+
+            var context = this
+
+            var tag= marker.tag as? Int
+            apiClient.getPostService(context).GetOnePostById(tag!!).enqueue(object : Callback<PostResponse>{
+                override fun onResponse(
+                    call: Call<PostResponse>,
+                    response: Response<PostResponse>
+                ) {
+                    val intent = Intent(context, OpenPostActivity::class.java)
+                    ActivityTransferStorage.postItemToOpenPost = response.body()!!
+                    context.startActivity(intent)
+                }
+
+                override fun onFailure(call: Call<PostResponse>, t: Throwable) {
+                    Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
+                }
+            })
+
+            true
+        }
 
         geocoder = Geocoder(this, Locale.getDefault())
 
@@ -132,6 +133,21 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         cameraListener()
 
+    }
+
+    private var satelliteTypeMap: Boolean = true
+    private fun setMapTypeChangeButton(){
+        btn_mapType.setOnClickListener {
+            if (satelliteTypeMap) {
+                map.mapType = GoogleMap.MAP_TYPE_NORMAL
+                tv_mapType.text = "Map"
+            }
+            else {
+                map.mapType = GoogleMap.MAP_TYPE_HYBRID
+                tv_mapType.text = "Satellite"
+            }
+            satelliteTypeMap = !satelliteTypeMap
+        }
     }
 
     private fun cameraListener() {
@@ -220,10 +236,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
 
             })
-
-    }
-
-    private fun setupNormalMap(){
 
     }
 
@@ -323,12 +335,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 return false
             }
         })
-
-
-
-        iv_searchIcon.setOnClickListener {
-            requestLocationsByText()
-        }
     }
 
 
@@ -362,7 +368,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             search = locationName,
             sortType =  Constants.SearchType.LOCATION.ordinal,
             countOfResults = multiButtonFragment.value,
-            switch_friendsOnly.isActivated
+            friendsOnly = switch_friendsOnly.isActivated,
+            name = "",
+            searchType = 0,
+            0.0,
+            0.0,
+            0.0
         )
 
         apiClient.getPostService(this).getPostsBySearch(searchRequest)
@@ -404,6 +415,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                     override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
                 }
             )
+
+
+
         }
     }
 

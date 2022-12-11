@@ -17,5 +17,6 @@ object Constants {
 
     enum class SortType(){ DATE, COUNT_LIKES, COUNT_COMMENTS, COUNT_VIEWS }
     enum class SearchType(){ LOCATION, COORDINATES, CITY, COUNTRY }
+    enum class NavIndicators(){ NEW_POST, DISCOVER, HOME, MESSAGES, NOTIFICATIONS }
 
 }

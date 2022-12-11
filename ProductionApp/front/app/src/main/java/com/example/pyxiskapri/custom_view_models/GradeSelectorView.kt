@@ -20,7 +20,6 @@ import retrofit2.Response
 
 
 class GradeSelectorView(context: Context, attrs: AttributeSet): ConstraintLayout(context, attrs) {
-
     lateinit var gradeDisplay: GradeDisplayView
     var gradedPostId: Int = 0
 

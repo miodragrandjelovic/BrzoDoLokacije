@@ -95,7 +95,6 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
         popup()
 
         postsActivity()
-        setupNavButtons()
 
 
         mCustomMarkerView = (getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.view_custom_marker, null)
@@ -412,34 +411,6 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
             flag*=-1
-        }
-    }
-
-
-    private fun setupNavButtons(){
-        setupButtonHome()
-        setupButtonNewPost()
-        setupButtonMessages()
-    }
-
-    private fun setupButtonHome() {
-        btn_home_m.setOnClickListener(){
-            val intent = Intent (this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setupButtonNewPost() {
-        btn_newPost_m.setOnClickListener(){
-            val intent = Intent (this, NewPostActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setupButtonMessages() {
-        btn_messages_m.setOnClickListener {
-            val intent = Intent (this, ChatMainActivity::class.java);
-            startActivity(intent);
         }
     }
 

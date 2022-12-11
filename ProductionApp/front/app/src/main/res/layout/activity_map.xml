@@ -36,89 +36,6 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <LinearLayout
-        android:id="@+id/navMenu"
-        android:layout_width="0dp"
-        android:layout_height="54dp"
-        android:background="@drawable/navmenubackground"
-        android:clickable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/btn_newPost"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/addimage"
-            app:tint="#292D33" />
-
-        <ImageView
-            android:id="@+id/btn_discover"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/map"
-            app:tint="@color/red" />
-
-        <ImageView
-            android:id="@+id/btn_home"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/home"
-            app:tint="#292D33" />
-
-        <ImageView
-            android:id="@+id/btn_messages"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/messages"
-            app:tint="#292D33" />
-
-        <ImageView
-            android:id="@+id/btn_notifications"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            app:srcCompat="@drawable/notifications"
-            app:tint="#292D33" />
-
-    </LinearLayout>
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fcv_drawerNavMap"
-        android:name="com.example.pyxiskapri.fragments.DrawerNav"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:elevation="200dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_drawer_nav" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_options"
         android:layout_width="match_parent"
@@ -127,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_search"
-        tools:visibility="gone">
+        tools:visibility="visible">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_options"
@@ -258,7 +175,7 @@
                         android:fontFamily="@font/montserrat_regular"
                         android:text="Prioritized posts"
                         android:textColor="@color/white"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
 
                     <HorizontalScrollView
                         android:layout_width="match_parent"
@@ -292,7 +209,7 @@
                                     android:layout_height="16dp"
                                     android:layout_marginEnd="3dp"
                                     android:adjustViewBounds="true"
-                                    app:srcCompat="@drawable/popular" />
+                                    app:srcCompat="@drawable/emoji_happy" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -449,7 +366,8 @@
         android:layout_marginTop="-30dp"
         app:layout_constraintEnd_toEndOf="@+id/map"
         app:layout_constraintStart_toStartOf="@+id/map"
-        app:layout_constraintTop_toBottomOf="@+id/cv_search">
+        app:layout_constraintTop_toBottomOf="@+id/cv_search"
+        tools:visibility="gone">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_locationListBack"
@@ -500,18 +418,58 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <ImageView
-        android:id="@+id/iv_searchIcon"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/btn_mapType"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginEnd="15dp"
-        android:background="@drawable/quantum_ic_search_grey600_24"
-        android:backgroundTint="@color/red"
-        android:clickable="true"
-        android:elevation="15dp"
-        app:layout_constraintBottom_toBottomOf="@+id/et_search"
-        app:layout_constraintEnd_toEndOf="@+id/et_search"
-        app:layout_constraintTop_toTopOf="@+id/et_search" />
+        android:layout_marginBottom="15dp"
+        app:cardBackgroundColor="@color/red"
+        app:cardCornerRadius="50dp"
+        app:layout_constraintBottom_toTopOf="@+id/navMenuView"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_earthIcon"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:background="@drawable/changemap"
+                android:backgroundTint="@color/white"
+                app:layout_constraintBottom_toTopOf="@+id/tv_mapType"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/tv_mapType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="Satellite"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_earthIcon" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <com.example.pyxiskapri.custom_view_models.NavMenuView
+        android:id="@+id/navMenuView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

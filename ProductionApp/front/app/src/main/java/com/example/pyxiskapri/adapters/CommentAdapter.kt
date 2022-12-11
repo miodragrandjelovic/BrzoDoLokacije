@@ -20,13 +20,18 @@ import com.example.pyxiskapri.dtos.response.CommentResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.models.CommentExpandableListItem
 import com.example.pyxiskapri.utility.ApiClient
+import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_open_post.*
 import kotlinx.android.synthetic.main.item_comment.view.*
 import kotlinx.android.synthetic.main.item_reply.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var postId: Int, var context: Context) : BaseExpandableListAdapter(), OnGroupClickListener {
 
@@ -34,37 +39,31 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
     var layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
 
+    private lateinit var replyDialog: Dialog
 
 
-
-
-    public fun AddCommentList(commentResponses: ArrayList<CommentResponse>){
+    public fun addCommentList(commentResponses: ArrayList<CommentResponse>){
         for(commentResponse: CommentResponse in commentResponses)
             commentList.add(CommentExpandableListItem(commentResponse))
         notifyDataSetChanged()
     }
 
-    public fun AddComment(commentResponse: CommentResponse){
+    public fun addComment(commentResponse: CommentResponse){
         commentList.add(CommentExpandableListItem(commentResponse))
         notifyDataSetChanged()
     }
 
-    public fun AddReplyList(commentResponses: ArrayList<CommentResponse>, groupPosition: Int){
+    public fun addReplyList(commentResponses: ArrayList<CommentResponse>, groupPosition: Int){
         for(commentResponse: CommentResponse in commentResponses)
             commentList[groupPosition].replyList.add(commentResponse)
         notifyDataSetChanged()
     }
 
-    public fun AddReply(commentResponse: CommentResponse, groupPosition: Int){
+    public fun addReply(commentResponse: CommentResponse, groupPosition: Int){
+        commentList[groupPosition].replyCount++
         commentList[groupPosition].replyList.add(commentResponse)
         notifyDataSetChanged()
     }
-
-
-
-
-
-
 
 
 
@@ -86,11 +85,11 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
     }
 
     override fun getGroupId(groupPosition: Int): Long {
-        return groupPosition.toLong()
+        return commentList[groupPosition].id.toLong()
     }
 
     override fun getChildId(groupPosition: Int, childPosition: Int): Long {
-        return childPosition.toLong()
+        return commentList[groupPosition].replyList[childPosition].id.toLong()
     }
 
     override fun hasStableIds(): Boolean {
@@ -104,13 +103,6 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
     override fun onGroupClick(parent: ExpandableListView?, v: View?, groupPosition: Int, id: Long): Boolean {
         return true
     }
-
-
-
-
-
-
-
 
 
     override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup?): View {
@@ -239,7 +231,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
 
             // REPLY
             btn_replyToComment.setOnClickListener {
-                newReplyDialog(comment.id)
+                newReplyDialog(comment.id, groupPosition)
             }
 
         }
@@ -302,7 +294,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
 
             // REPLY
             btn_replyToReply.setOnClickListener {
-                newReplyDialog(commentList[groupPosition].id, reply.commenterUsername)
+                newReplyDialog(commentList[groupPosition].id, groupPosition, reply.commenterUsername)
             }
 
             // Like-Dislike Buttons
@@ -360,21 +352,20 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
 
 
 
-    private fun newReplyDialog(commentId: Int, replyToUsername: String? = ""){
-        val dialog = Dialog(context)
+    private fun newReplyDialog(commentId: Int, groupPosition: Int, replyToUsername: String? = ""){
+        replyDialog = Dialog(context)
 
-        dialog.setContentView(R.layout.dialog_new_reply)
-        dialog.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        replyDialog.setContentView(R.layout.dialog_new_reply)
+        replyDialog.window?.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        replyDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        dialog.show()
+        replyDialog.show()
 
-        var dialogUserAvatar: ImageView = dialog.findViewById(R.id.iv_dialogUserAvatar)
-        var dialogReplyText: EditText = dialog.findViewById(R.id.et_dialogNewCommentText)
-        var dialogPostReplyButton: ConstraintLayout = dialog.findViewById(R.id.btn_addTag)
+        var dialogUserAvatar: ImageView = replyDialog.findViewById(R.id.iv_dialogUserAvatar)
+        val dialogReplyText: EditText = replyDialog.findViewById(R.id.et_dialogNewCommentText)
+        val dialogPostReplyButton: ConstraintLayout = replyDialog.findViewById(R.id.btn_addTag)
 
         // SET USER IMAGE
-
 
         if(replyToUsername != "") {
             dialogReplyText.setText(
@@ -393,9 +384,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
                 commentText = dialogReplyText.text.toString()
             )
 
-            sendNewReplyRequest(newReplyRequest)
-
-            dialog.dismiss()
+            sendNewReplyRequest(newReplyRequest, groupPosition)
         }
 
 
@@ -404,14 +393,32 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
 
     }
 
-    private fun sendNewReplyRequest(newReplyRequest: NewCommentRequest){
+    private fun sendNewReplyRequest(newReplyRequest: NewCommentRequest, originalCommentPosition: Int){
         apiClient.getCommentService(context).addNewComment(newReplyRequest)
             .enqueue(object : Callback<MessageResponse> {
                 override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
-                    if(response.isSuccessful) {
-                        // RADI NESTO
-                    }
+                    if(!response.isSuccessful)
+                        return
 
+                    val userData = SessionManager(context).fetchUserData()!!
+                    val replyEditText: EditText = replyDialog.findViewById(R.id.et_dialogNewCommentText)
+
+                    val replyToAdd = CommentResponse(
+                        id = response.body()!!.message.toInt(),
+                        commenterImage = userData.profileImagePath,
+                        commenterUsername = userData.username,
+                        commentText = replyEditText.text.toString(),
+                        creationDate = SimpleDateFormat("dd-MMM-yy HH:mm:ss").format(Calendar.getInstance().time),
+                        likeStatus = 0,
+                        likeCount = 0,
+                        dislikeCount = 0,
+                        replyCount = 0,
+                        replies = arrayListOf()
+                    )
+
+                    addReply(replyToAdd, originalCommentPosition)
+
+                    replyDialog.dismiss()
                 }
 
                 override fun onFailure(call: Call<MessageResponse>, t: Throwable) {

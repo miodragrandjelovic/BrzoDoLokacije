@@ -12,6 +12,6 @@ data class CustomMarkerResponse(
     @SerializedName("latitude")
     var latitude: Double,
     @SerializedName("numberOfLikes")
-    var numberOfLikes: Int
+    var numberOfLikes: Double
 
 )

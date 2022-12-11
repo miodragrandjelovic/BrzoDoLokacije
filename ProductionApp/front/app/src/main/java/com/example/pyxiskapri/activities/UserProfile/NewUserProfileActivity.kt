@@ -17,7 +17,6 @@ import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.custom_view_models.GradeDisplayView
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
-import com.example.pyxiskapri.dtos.response.StatisticsResponse
 import com.example.pyxiskapri.models.ChangeCredentialsInformation
 import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.utility.ActivityTransferStorage
@@ -26,7 +25,6 @@ import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_new_user_profile.*
-import kotlinx.android.synthetic.main.item_post_followed_profiles.view.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -70,7 +68,6 @@ class NewUserProfileActivity : AppCompatActivity(){
         window.contentView = view
 
         popup()
-        setupNavButtons()
 
         mapActivity()
 
@@ -90,90 +87,6 @@ class NewUserProfileActivity : AppCompatActivity(){
         setupSetStatistics()
 
   }
-
-    private fun setupNavButtons() {
-        setupHome()
-        setupAddPost()
-        setupButtonMessages()
-        setupDiscover()
-    }
-
-
-    private fun setupSetStatistics() {
-
-        ll_statistics.setOnClickListener(){
-
-            tv_posts.setTextColor(Color.parseColor("#FFFFFF"))
-            tv_statistics.setTextColor(Color.parseColor("#CC2045"))
-
-            gv_n_user_posts.isGone=true
-            cl_statistics.isGone=false
-
-
-            average_grade.text=averageGrade.toString()
-            post_number_statistics.text=numberOfPosts.toString()
-
-            if(averageGrade == 0.00)
-                emoji.setImageResource(R.drawable.emoji_unset)
-            else if(averageGrade < 1.5)
-                emoji.setImageResource(R.drawable.emoji_crying)
-            else if(averageGrade < 2.5)
-                emoji.setImageResource(R.drawable.emoji_sad)
-            else if(averageGrade < 3.5)
-                emoji.setImageResource(R.drawable.emoji_neutral)
-            else if(averageGrade < 4.5)
-                emoji.setImageResource(R.drawable.emoji_happy)
-            else if(averageGrade <= 5.0)
-                emoji.setImageResource(R.drawable.emoji_amazed)
-
-
-            var username = SessionManager(this).fetchUserData()?.username
-
-            apiClient.getPostService(this).getUserTopPosts(username!!).enqueue(object : Callback<ArrayList<StatisticsResponse>>{
-                override fun onResponse(
-                    call: Call<ArrayList<StatisticsResponse>>,
-                    response: Response<ArrayList<StatisticsResponse>>
-                ) {
-
-                    //prvi
-
-                    var size = response.body()!!.size
-
-                    if(size>0)
-                    {
-                    Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(iv_coverImage_prvi)
-                    gradeDisplay_followed_prvi.setupForFollowed()
-                    gradeDisplay_followed_prvi.setGradeDisplay(response.body()!![0].averageGrade,response.body()!![0].gradesCount)
-                    }
-                    //drugi
-                    if(size>1)
-                    {
-                    Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![1].coverImage)).into(iv_coverImage_drugi)
-                    gradeDisplay_followed_drugi.setupForFollowed()
-                    gradeDisplay_followed_drugi.setGradeDisplay(response.body()!![1].averageGrade,response.body()!![1].gradesCount)
-                    }
-
-                    //treci
-                    if(size>3)
-                    {
-                    Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![2].coverImage)).into(iv_coverImage_treci)
-                    gradeDisplay_followed_treci.setupForFollowed()
-                    gradeDisplay_followed_treci.setGradeDisplay(response.body()!![2].averageGrade,response.body()!![2].gradesCount)
-                    }
-
-                }
-
-                override fun onFailure(call: Call<ArrayList<StatisticsResponse>>, t: Throwable) {
-
-                }
-
-            })
-
-
-        }
-
-    }
-
 
     private fun setupGetUser() {
 
@@ -335,35 +248,4 @@ class NewUserProfileActivity : AppCompatActivity(){
             flag*=-1
         }
     }
-
-
-
-    private fun setupHome() {
-        btn_home.setOnClickListener(){
-            val intent = Intent (this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setupAddPost() {
-        btn_newPost.setOnClickListener(){
-            val intent = Intent (this, NewPostActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun setupButtonMessages() {
-        btn_messages.setOnClickListener {
-            val intent = Intent (this, ChatMainActivity::class.java);
-            startActivity(intent);
-        }
-    }
-
-    private fun setupDiscover(){
-        btn_discoverr.setOnClickListener {
-            val intent = Intent (this, MapActivity::class.java);
-            startActivity(intent);
-        }
-    }
-
 }

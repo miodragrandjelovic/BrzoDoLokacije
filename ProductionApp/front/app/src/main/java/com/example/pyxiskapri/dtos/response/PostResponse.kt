@@ -14,7 +14,7 @@ data class PostResponse(
     @SerializedName("dateCreated")
     var postDate: String,
     @SerializedName("numberOfLikes")
-    var likeCount: Int,
+    var likeCount: Double,
     @SerializedName("numberOfViews")
     var viewCount: Int,
     @SerializedName("grade")
