@@ -18,6 +18,9 @@ data class GetUserResponse(
     @SerializedName("userFollowersCount")
     var followersCount: Int,
     @SerializedName("userFollowingCount")
-    var followingCount: Int
-
+    var followingCount: Int,
+    @SerializedName("averageGradeForAllPosts")
+    var averageGrade: Double,
+    @SerializedName("differentLocations")
+    var differentLocations: Int,
 )

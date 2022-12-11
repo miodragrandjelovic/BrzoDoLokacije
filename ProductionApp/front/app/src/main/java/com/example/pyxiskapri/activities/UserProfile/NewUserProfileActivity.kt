@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,9 +14,9 @@ import androidx.core.view.isGone
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.*
 import com.example.pyxiskapri.adapters.UserPostsAdapter
+import com.example.pyxiskapri.custom_view_models.GradeDisplayView
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
-import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.ChangeCredentialsInformation
 import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.utility.ActivityTransferStorage
@@ -24,11 +25,7 @@ import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_new_user_profile.*
-import kotlinx.android.synthetic.main.activity_new_user_profile.btn_home
-import kotlinx.android.synthetic.main.activity_new_user_profile.btn_messages
-import kotlinx.android.synthetic.main.activity_new_user_profile.btn_newPost
-import kotlinx.android.synthetic.main.activity_new_user_profile.tv_name1
-import kotlinx.android.synthetic.main.activity_new_user_profile.tv_name2
+import kotlinx.android.synthetic.main.item_post_followed_profiles.view.*
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -50,6 +47,7 @@ class NewUserProfileActivity : AppCompatActivity(){
 
     var averageGrade: Double=0.0
     var numberOfPosts: Int = 0
+    var differentLocations: Int = 0
 
     //lateinit var cover_image : String
 
@@ -111,12 +109,56 @@ class NewUserProfileActivity : AppCompatActivity(){
             cl_statistics.isGone=false
 
 
-            apiClient.getPostService(this).getPostById()
+            average_grade.text=averageGrade.toString()
+            post_number_statistics.text=numberOfPosts.toString()
+
+            if(averageGrade == 0.00)
+                emoji.setImageResource(R.drawable.emoji_unset)
+            else if(averageGrade < 1.5)
+                emoji.setImageResource(R.drawable.emoji_crying)
+            else if(averageGrade < 2.5)
+                emoji.setImageResource(R.drawable.emoji_sad)
+            else if(averageGrade < 3.5)
+                emoji.setImageResource(R.drawable.emoji_neutral)
+            else if(averageGrade < 4.5)
+                emoji.setImageResource(R.drawable.emoji_happy)
+            else if(averageGrade <= 5.0)
+                emoji.setImageResource(R.drawable.emoji_amazed)
 
 
+            var username = SessionManager(this).fetchUserData()?.username
+
+            apiClient.getPostService(this).getUserTopPosts(username!!).enqueue(object : Callback<ArrayList<PostResponse>>{
+                override fun onResponse(
+                    call: Call<ArrayList<PostResponse>>,
+                    response: Response<ArrayList<PostResponse>>
+                ) {
+
+                    //prvi
+                    Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(iv_coverImage_prvi)
+                    gradeDisplay_followed_prvi.setupForFollowed()
+                    gradeDisplay_followed_prvi.setGradeDisplay(response.body()!![0].averageGrade,response.body()!![0].gradesCount)
+
+                    //drugi
+
+                    Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![1].coverImage)).into(iv_coverImage_drugi)
+                    gradeDisplay_followed_drugi.setupForFollowed()
+                    gradeDisplay_followed_drugi.setGradeDisplay(response.body()!![1].averageGrade,response.body()!![1].gradesCount)
+
+                    //treci
+
+                    Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![2].coverImage)).into(iv_coverImage_treci)
+                    gradeDisplay_followed_treci.setupForFollowed()
+                    gradeDisplay_followed_treci.setGradeDisplay(response.body()!![2].averageGrade,response.body()!![2].gradesCount)
 
 
+                }
 
+                override fun onFailure(call: Call<ArrayList<PostResponse>>, t: Throwable) {
+
+                }
+
+            })
 
 
         }
@@ -142,6 +184,8 @@ class NewUserProfileActivity : AppCompatActivity(){
                         followers_count.text = response.body()!!.followingCount.toString()
                         following_count.text = response.body()!!.followersCount.toString()
 
+                        averageGrade=response.body()!!.averageGrade
+                        differentLocations=response.body()!!.differentLocations
 
 
                         val picture=response.body()!!.profileImage
@@ -181,6 +225,8 @@ class NewUserProfileActivity : AppCompatActivity(){
                     if(response.isSuccessful) {
 
                         post_number.text=response.body()!!.size.toString()
+                        numberOfPosts=response.body()!!.size
+
                         changeCredentialsInformation.postsNumber=response.body()!!.size.toString()
 
                         if(response.body()?.size == 0)
