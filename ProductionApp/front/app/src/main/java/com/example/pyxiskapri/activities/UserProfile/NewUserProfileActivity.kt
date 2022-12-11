@@ -3,11 +3,13 @@ package com.example.pyxiskapri.activities.UserProfile
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.*
 import com.example.pyxiskapri.adapters.UserPostsAdapter
@@ -46,6 +48,9 @@ class NewUserProfileActivity : AppCompatActivity(){
 
     lateinit var userPostAdapter:UserPostsAdapter
 
+    var averageGrade: Double=0.0
+    var numberOfPosts: Int = 0
+
     //lateinit var cover_image : String
 
     var changeCredentialsInformation = ChangeCredentialsInformation("","")
@@ -83,6 +88,8 @@ class NewUserProfileActivity : AppCompatActivity(){
         setupGetFollowing()
         setupGetFollowers()
 
+        setupSetStatistics()
+
   }
 
     private fun setupNavButtons() {
@@ -90,6 +97,30 @@ class NewUserProfileActivity : AppCompatActivity(){
         setupAddPost()
         setupButtonMessages()
         setupDiscover()
+    }
+
+
+    private fun setupSetStatistics() {
+
+        ll_statistics.setOnClickListener(){
+
+            tv_posts.setTextColor(Color.parseColor("#FFFFFF"))
+            tv_statistics.setTextColor(Color.parseColor("#CC2045"))
+
+            gv_n_user_posts.isGone=true
+            cl_statistics.isGone=false
+
+
+            apiClient.getPostService(this).getPostById()
+
+
+
+
+
+
+
+        }
+
     }
 
 

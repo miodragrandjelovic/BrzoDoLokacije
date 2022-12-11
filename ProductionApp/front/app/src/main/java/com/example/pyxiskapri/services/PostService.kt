@@ -55,5 +55,8 @@ interface PostService {
     fun getPostsBySearch(@Body searchRequest: MapSearchRequest) : Call<ArrayList<CustomMarkerResponse>>
 
 
+    @GET("api/Post/GetUserStatistics/{username}")
+    fun GetUserStatistics(@Path(value = "username") username: String) : Call<ArrayList<PostResponse>>
+
 
 }

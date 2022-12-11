@@ -59,9 +59,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <com.example.pyxiskapri.custom_view_models.ToolbarView
+                <!--<com.example.pyxiskapri.custom_view_models.ToolbarView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent" />-->
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -272,6 +272,7 @@
                     android:weightSum="2">
 
                     <TextView
+                        android:id="@+id/tv_posts"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/montserrat_regular"
@@ -304,6 +305,28 @@
                 </LinearLayout>
 
 
+                <LinearLayout
+                    android:id="@+id/ll_statistics"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/tv_statistics"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:text="Statistics"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="15dp" />
+
+                </LinearLayout>
+
+
             </LinearLayout>
 
 
@@ -323,9 +346,290 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_fields"
-
                 />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_statistics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ll_fields"
+                android:visibility="gone"
+                >
+
+                <ImageView
+                    android:id="@+id/mini_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="25dp"
+                    android:background="@drawable/miniheader"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Average post grade"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/mini_header"
+                    app:layout_constraintStart_toStartOf="@+id/mini_header"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <ImageView
+                    android:id="@+id/statistics_star"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:background="@drawable/statistics_star"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mini_header" />
+
+                <ImageView
+                    android:id="@+id/emoji"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="70dp"
+                    android:background="@drawable/emoji_amazed"
+                    app:layout_constraintEnd_toEndOf="@+id/statistics_star"
+                    app:layout_constraintStart_toStartOf="@+id/statistics_star"
+                    app:layout_constraintTop_toBottomOf="@+id/mini_header" />
+
+                <TextView
+                    android:id="@+id/average_grade"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-5dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="4.76"
+                    android:textColor="@color/red"
+                    android:textSize="30dp"
+                    app:layout_constraintEnd_toEndOf="@+id/statistics_star"
+                    app:layout_constraintStart_toStartOf="@+id/statistics_star"
+                    app:layout_constraintTop_toBottomOf="@+id/emoji" />
+
+                <TextView
+                    android:id="@+id/post_number_statistics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="12 Posts"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    app:layout_constraintEnd_toEndOf="@+id/statistics_star"
+                    app:layout_constraintStart_toStartOf="@+id/statistics_star"
+                    app:layout_constraintTop_toBottomOf="@+id/average_grade" />
+
+
+                <ImageView
+                    android:id="@+id/mini_header2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="25dp"
+                    android:background="@drawable/miniheader"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/statistics_star" />
+
+
+                <TextView
+                    android:id="@+id/tv_highest_rated_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Highest rated posts"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/mini_header"
+                    app:layout_constraintStart_toStartOf="@+id/mini_header"
+                    app:layout_constraintTop_toBottomOf="@+id/statistics_star"
+                    />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_highest_rated_posts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_highest_rated_posts">
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="420dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="20dp"
+                        android:orientation="vertical">
+
+
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/montserrat_bold"
+                                android:gravity="center"
+                                android:text="2"
+                                android:textColor="@color/red"
+                                android:textSize="50dp"
+                                app:layout_constraintBottom_toTopOf="@+id/include"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="90dp"
+                                android:background="@drawable/bar1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+                            <include
+                                android:id="@+id/include"
+                                layout="@layout/item_post_followed_profiles"
+                                android:layout_width="match_parent"
+                                android:layout_height="190dp"
+                                android:layout_marginBottom="70dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="420dp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="20dp"
+                        android:orientation="vertical">
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/montserrat_bold"
+                                android:gravity="center"
+                                android:text="1"
+                                android:textColor="@color/red"
+                                android:textSize="50dp"
+                                app:layout_constraintBottom_toTopOf="@+id/include2"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                            <ImageView
+                                android:layout_width="125dp"
+                                android:layout_height="130dp"
+                                android:background="@drawable/bar1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+                            <include
+                                android:id="@+id/include2"
+                                layout="@layout/item_post_followed_profiles"
+                                android:layout_width="match_parent"
+                                android:layout_height="190dp"
+                                android:layout_marginBottom="120dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </LinearLayout>
+
+
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="420dp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:fontFamily="@font/montserrat_bold"
+                                android:gravity="center"
+                                android:text="3"
+                                android:textColor="@color/red"
+                                android:textSize="50dp"
+                                app:layout_constraintBottom_toTopOf="@+id/include3"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+
+                            <ImageView
+                                android:layout_width="125dp"
+                                android:layout_height="60dp"
+                                android:background="@drawable/bar1"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                />
+
+
+                            <include
+                                android:id="@+id/include3"
+                                layout="@layout/item_post_followed_profiles"
+                                android:layout_width="match_parent"
+                                android:layout_height="190dp"
+                                android:layout_marginBottom="50dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

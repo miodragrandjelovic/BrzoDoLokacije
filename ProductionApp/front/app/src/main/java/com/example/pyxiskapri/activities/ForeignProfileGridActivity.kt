@@ -225,7 +225,6 @@ class ForeignProfileGridActivity : AppCompatActivity() {
                     following_count_fg.text = response.body()!!.followersCount.toString()
 
 
-
                     val picture=response.body()!!.profileImage
                     if(picture!=null)
                     {
