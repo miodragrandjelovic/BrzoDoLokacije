@@ -17,6 +17,7 @@ import com.example.pyxiskapri.adapters.UserPostsAdapter
 import com.example.pyxiskapri.custom_view_models.GradeDisplayView
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
+import com.example.pyxiskapri.dtos.response.StatisticsResponse
 import com.example.pyxiskapri.models.ChangeCredentialsInformation
 import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.utility.ActivityTransferStorage
@@ -128,33 +129,41 @@ class NewUserProfileActivity : AppCompatActivity(){
 
             var username = SessionManager(this).fetchUserData()?.username
 
-            apiClient.getPostService(this).getUserTopPosts(username!!).enqueue(object : Callback<ArrayList<PostResponse>>{
+            apiClient.getPostService(this).getUserTopPosts(username!!).enqueue(object : Callback<ArrayList<StatisticsResponse>>{
                 override fun onResponse(
-                    call: Call<ArrayList<PostResponse>>,
-                    response: Response<ArrayList<PostResponse>>
+                    call: Call<ArrayList<StatisticsResponse>>,
+                    response: Response<ArrayList<StatisticsResponse>>
                 ) {
 
                     //prvi
+
+                    var size = response.body()!!.size
+
+                    if(size>0)
+                    {
                     Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(iv_coverImage_prvi)
                     gradeDisplay_followed_prvi.setupForFollowed()
                     gradeDisplay_followed_prvi.setGradeDisplay(response.body()!![0].averageGrade,response.body()!![0].gradesCount)
-
+                    }
                     //drugi
-
+                    if(size>1)
+                    {
                     Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![1].coverImage)).into(iv_coverImage_drugi)
                     gradeDisplay_followed_drugi.setupForFollowed()
                     gradeDisplay_followed_drugi.setGradeDisplay(response.body()!![1].averageGrade,response.body()!![1].gradesCount)
+                    }
 
                     //treci
-
+                    if(size>3)
+                    {
                     Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![2].coverImage)).into(iv_coverImage_treci)
                     gradeDisplay_followed_treci.setupForFollowed()
                     gradeDisplay_followed_treci.setGradeDisplay(response.body()!![2].averageGrade,response.body()!![2].gradesCount)
-
+                    }
 
                 }
 
-                override fun onFailure(call: Call<ArrayList<PostResponse>>, t: Throwable) {
+                override fun onFailure(call: Call<ArrayList<StatisticsResponse>>, t: Throwable) {
 
                 }
 
