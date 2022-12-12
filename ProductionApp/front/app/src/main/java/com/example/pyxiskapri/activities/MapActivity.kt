@@ -75,6 +75,16 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         if(ActivityTransferStorage.openPostToMapSet)
             markersList.add(ActivityTransferStorage.openPostToMap)
 
+        switch_friendsOnly.setOnCheckedChangeListener { _, isChecked ->
+            searchFriends = isChecked
+            Log.d("SEARCH FRIENDS", searchFriends.toString())
+        }
+
+        switch_searchTags.setOnCheckedChangeListener { _, isChecked ->
+            searchTags = isChecked
+            Log.d("SEARCH TAGS", searchTags.toString())
+        }
+
         navMenuView.setIndicator(Constants.NavIndicators.DISCOVER)
     }
 
@@ -83,6 +93,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
+    private var searchFriends: Boolean = false
+    private var searchTags: Boolean = false
 
 
 
@@ -267,8 +279,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var locationListAdapter: LocationListAdapter
 
     private fun setupPostSearching(){
-        val context = this
-
         locationListAdapter = LocationListAdapter(arrayListOf(), ::requestPostsFromSearch)
         rv_locations.adapter = locationListAdapter
 
@@ -279,7 +289,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         et_search.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
                 if (event?.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    requestLocationsByText()
+                    if(!searchTags)
+                        requestLocationsByText()
+                    else {
+                        requestPostsFromSearch(0, et_search.text.toString().trim(), 2)
+                        et_search.text.clear()
+                    }
+
                     return true
                 }
                 return false
@@ -312,14 +328,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    private fun requestPostsFromSearch(locationId: Int, locationName: String){
+    private fun requestPostsFromSearch(locationId: Int, searchText: String, searchTypeT: Int = 0){
         var searchRequest = MapSearchRequest(
-            search = locationName,
+            search = searchText,
             sortType =  Constants.SearchType.LOCATION.ordinal,
             countOfResults = multiButtonFragment.value,
-            friendsOnly = switch_friendsOnly.isActivated,
+            friendsOnly = searchFriends,
             name = "",
-            searchType = 0,
+            searchType = searchTypeT,
             0.0,
             0.0,
             0.0

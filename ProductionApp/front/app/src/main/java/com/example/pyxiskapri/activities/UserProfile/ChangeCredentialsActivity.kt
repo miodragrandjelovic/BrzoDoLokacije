@@ -162,7 +162,6 @@ class ChangeCredentialsActivity : AppCompatActivity() {
                     response: Response<LoginResponse>
                 ) {
                     if (response.isSuccessful) {
-                        Log.d("", response.body()?.token.toString())
                         sessionManager.clearToken()
                         sessionManager.saveToken(response.body()?.token.toString())
 

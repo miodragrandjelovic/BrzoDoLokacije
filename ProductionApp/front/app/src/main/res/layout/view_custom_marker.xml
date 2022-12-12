@@ -1,5 +1,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/custom_marker_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -33,10 +34,26 @@
         android:layout_height="50dp"
         android:backgroundTint="#00FFFFFF"
         android:scaleType="centerCrop"
-        android:src="@drawable/kragujevac"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/kragujevac" />
+
+    <TextView
+        android:id="@+id/tv_postCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:includeFontPadding="false"
+        android:text="+123"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/cover_image"
+        app:layout_constraintEnd_toEndOf="@+id/cover_image"
+        app:layout_constraintStart_toStartOf="@+id/cover_image"
+        app:layout_constraintTop_toTopOf="@+id/cover_image"
+        tools:visibility="visible" />
 
     <!--</com.christophesmet.android.views.maskableframelayout.MaskableFrameLayout>-->
 
