@@ -184,17 +184,18 @@ namespace PyxisKapriBack.Services
                 }
                 fileService.UpdateFile(folderPath, loggedUser.FileName, userImage.ProfileImage, out newProfileImageName);
                 loggedUser.FileName = newProfileImageName;
-                userDAL.UpdateUser(loggedUser);
+                if (userDAL.UpdateUser(loggedUser))
+                    response.Message = jwtManager.GenerateToken(loggedUser);
                 File.Delete(tempFilePath);
-                response.Message = jwtManager.GenerateToken(loggedUser);
+               
                 return response;
             }
             else
             {
                 loggedUser.FolderPath = folderPath;
                 loggedUser.FileName = userImage.ProfileImage.FileName;
-                userDAL.UpdateUser(loggedUser);
-                response.Message = jwtManager.GenerateToken(loggedUser);
+                if(userDAL.UpdateUser(loggedUser))
+                    response.Message = jwtManager.GenerateToken(loggedUser);
                 return response;
             }
             response.StatusCode = StatusCodes.Status500InternalServerError;
