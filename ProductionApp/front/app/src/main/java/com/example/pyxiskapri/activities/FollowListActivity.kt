@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.FollowUserAdapter
+import com.example.pyxiskapri.dtos.request.SearchRequest
 import com.example.pyxiskapri.dtos.response.FollowUserResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.FollowList
@@ -71,17 +72,58 @@ class FollowListActivity : AppCompatActivity() {
         if(flw_search.text.trim().toString()=="")
             showFollows(followList)
         else
-            apiClient.getUserService(this).searchUsers(flw_search.text.trim().toString()).enqueue(object : Callback<ArrayList<FollowUserResponse>>{
-                override fun onResponse(
-                    call: Call<ArrayList<FollowUserResponse>>,
-                    response: Response<ArrayList<FollowUserResponse>>
-                )
-                {
-                    followUserAdapter.setFollowUsersList(response.body()!!)
-                }
+        {
 
-                override fun onFailure(call: Call<ArrayList<FollowUserResponse>>, t: Throwable) { }
-            })
+            var request= SearchRequest(
+                username = followList.username,
+                search = flw_search.text.trim().toString()
+            )
+
+            //followers false
+            if(!followList.type)
+            {
+                apiClient.getUserService(this).searchFollower(request).enqueue(object : Callback<ArrayList<FollowUserResponse>>{
+                    override fun onResponse(
+                        call: Call<ArrayList<FollowUserResponse>>,
+                        response: Response<ArrayList<FollowUserResponse>>
+                    ) {
+                        followUserAdapter.setFollowUsersList(response.body()!!)
+                    }
+
+                    override fun onFailure(
+                        call: Call<ArrayList<FollowUserResponse>>,
+                        t: Throwable
+                    ) {
+
+                    }
+
+                })
+            }
+            // following true
+            else
+            {
+                apiClient.getUserService(this).searchFollowing(request).enqueue(object : Callback<ArrayList<FollowUserResponse>>{
+                    override fun onResponse(
+                        call: Call<ArrayList<FollowUserResponse>>,
+                        response: Response<ArrayList<FollowUserResponse>>
+                    ) {
+                        followUserAdapter.setFollowUsersList(response.body()!!)
+                    }
+
+                    override fun onFailure(
+                        call: Call<ArrayList<FollowUserResponse>>,
+                        t: Throwable
+                    ) {
+
+                    }
+
+                })
+            }
+
+
+        }
+
+
     }
 
     private fun setupFollowUserAdapter() {

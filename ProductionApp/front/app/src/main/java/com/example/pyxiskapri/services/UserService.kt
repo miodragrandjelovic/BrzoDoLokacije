@@ -46,8 +46,10 @@ interface UserService {
     fun getFollowers(@Path(value = "username") username: String): Call<ArrayList<FollowUserResponse>>
 
 
-    @GET("api/User/SearchFollowing/{search}")
-    fun searchUsers(@Path(value = "search") search: String): Call<ArrayList<FollowUserResponse>>
+    @POST("api/User/SearchFollowing")
+    fun searchFollowing(@Body requestBody: SearchRequest): Call<ArrayList<FollowUserResponse>>
 
+    @POST("api/User/SearchFollower")
+    fun searchFollower(@Body requestBody: SearchRequest): Call<ArrayList<FollowUserResponse>>
 
 }
