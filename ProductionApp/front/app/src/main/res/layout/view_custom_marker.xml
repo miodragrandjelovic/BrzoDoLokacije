@@ -51,8 +51,10 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/cover_image"
         app:layout_constraintEnd_toEndOf="@+id/cover_image"
+        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="@+id/cover_image"
         app:layout_constraintTop_toTopOf="@+id/cover_image"
+        app:layout_constraintVertical_bias="0.615"
         tools:visibility="visible" />
 
     <!--</com.christophesmet.android.views.maskableframelayout.MaskableFrameLayout>-->
