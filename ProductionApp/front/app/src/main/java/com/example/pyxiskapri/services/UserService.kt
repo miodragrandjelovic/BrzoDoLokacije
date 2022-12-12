@@ -19,7 +19,7 @@ interface UserService {
 
     @Multipart
     @PUT("api/User/UpdateProfileImage")
-    fun editUserImage(@Part profileImage: MultipartBody.Part) : Call<MessageResponse>
+    fun editUserImage(@Part profileImage: MultipartBody.Part) : Call<LoginResponse>
 
     @GET("api/User/GetUser")
     fun getUser() : Call<GetUserResponse>

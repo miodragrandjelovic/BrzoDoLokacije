@@ -23,7 +23,9 @@ class GradeSelectorView(context: Context, attrs: AttributeSet): ConstraintLayout
     lateinit var gradeDisplay: GradeDisplayView
     var gradedPostId: Int = 0
 
-    private var grade: Int = 0
+    public lateinit var _onGradeSelectListener: (GradeResponse) -> Unit
+
+    public var grade: Int = 0
 
     private var opened: Boolean = false
     private var apiClient: ApiClient = ApiClient()
@@ -34,6 +36,10 @@ class GradeSelectorView(context: Context, attrs: AttributeSet): ConstraintLayout
 
         handleInputs()
         hideSelector()
+    }
+
+    public fun setOnGradeSelectListener(onGradeSelectListener: (GradeResponse) -> Unit){
+        _onGradeSelectListener = onGradeSelectListener
     }
 
     private fun handleInputs(){
@@ -144,8 +150,11 @@ class GradeSelectorView(context: Context, attrs: AttributeSet): ConstraintLayout
         apiClient.getPostService(context).setLike(gradeRequest)
             .enqueue(object: Callback<GradeResponse> {
                 override fun onResponse(call: Call<GradeResponse>, response: Response<GradeResponse>) {
-                    if(response.isSuccessful && ::gradeDisplay.isInitialized && response.body() != null)
+                    if(response.isSuccessful && ::gradeDisplay.isInitialized && response.body() != null) {
                         gradeDisplay.setGradeDisplay(response.body()!!.averageGrade, response.body()!!.gradesCount)
+                        if(::_onGradeSelectListener.isInitialized)
+                            _onGradeSelectListener(response.body()!!)
+                    }
                 }
                 override fun onFailure(call: Call<GradeResponse>, t: Throwable) {
                     Log.d("GRADE STATE: ", "REQUEST FAILED")

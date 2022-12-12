@@ -4,19 +4,17 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toDrawable
 import com.example.pyxiskapri.R
-import com.example.pyxiskapri.activities.ChatMainActivity
 import com.example.pyxiskapri.activities.FollowListActivity
-import com.example.pyxiskapri.activities.HomeActivity
-import com.example.pyxiskapri.activities.NewPostActivity
 import com.example.pyxiskapri.dtos.request.ChangePasswordRequest
 import com.example.pyxiskapri.dtos.request.EditUserRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
@@ -31,6 +29,8 @@ import kotlinx.android.synthetic.main.modal_confirm_password.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+
 
 class ChangeCredentialsActivity : AppCompatActivity() {
 
@@ -42,7 +42,7 @@ class ChangeCredentialsActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        setupGetUser()
+        //setupGetUser()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,9 +98,7 @@ class ChangeCredentialsActivity : AppCompatActivity() {
 
                         val picture=response.body()!!.profileImage
                         if(picture!=null)
-                        {
-                            Picasso.get().load(UtilityFunctions.getFullImagePath(picture)).into(shapeableImageView_c)
-                        }
+                            Picasso.get().load(UtilityFunctions.getFullImagePath(picture)).into(iv_profileImageView)
 
 
                     }
@@ -206,12 +204,16 @@ class ChangeCredentialsActivity : AppCompatActivity() {
         apiClient.getUserService(this).editUserImage(
             UtilityFunctions.uriToMultipartPart(context, profileImage, "ProfileImage", "profile_image")
         )
-            .enqueue(object : Callback<MessageResponse>{
-                override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
-
+            .enqueue(object : Callback<LoginResponse>{
+                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                    if(response.isSuccessful) {
+                        var token = response.body()?.token!!
+                        SessionManager(context).clearToken()
+                        SessionManager(context).saveToken(token)
+                    }
                 }
 
-                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     Toast.makeText(context,"Something went wrong, try again.",Toast.LENGTH_LONG).show()
                 }
 
@@ -316,7 +318,7 @@ class ChangeCredentialsActivity : AppCompatActivity() {
 
             val intent: Intent = Intent()
             intent.type = "image/*"
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
             intent.action = Intent.ACTION_GET_CONTENT
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             startActivityForResult(Intent.createChooser(intent, "Select Images"), PICK_IMAGE_CODE)
@@ -327,26 +329,20 @@ class ChangeCredentialsActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == PICK_IMAGE_CODE) {
+        if (requestCode != PICK_IMAGE_CODE || resultCode != Activity.RESULT_OK || data == null)
+            return
 
-            if (resultCode == Activity.RESULT_OK) {
+//        if (data!!.clipData != null) {
+//            profileImage = data.clipData!!.getItemAt(0).uri
+//        }
+//        else {
+//
+//        }
 
-                if (data!!.clipData != null) {
+        val imageUri = data.data
+        profileImage = imageUri!!
 
-                    profileImage = data.clipData!!.getItemAt(0).uri
-                } else {
-                    val imageUri = data.data
-                    if (imageUri != null) {
-
-                        profileImage = imageUri
-                    }
-                }
-
-                shapeableImageView_c.setImageURI(profileImage)
-
-            }
-
-        }
+        iv_profileImageView.setImageURI(profileImage)
 
     }
 

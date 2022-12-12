@@ -171,6 +171,7 @@ namespace PyxisKapriBack.Services
             // MENJANJE PROFILNE SLIKE  
             if (userImage.ProfileImage != null && !fileService.CheckIfProfileImageExists(folderPath, userImage.ProfileImage.FileName))
             {
+                /*
                 var tempPath = Path.Combine(Directory.GetCurrentDirectory(), Constants.Constants.ROOT_FOLDER, "Temp");
                 var tempFilePath = fileService.AddFile(tempPath,userImage.ProfileImage); 
                 if (serviceClient.DoFacesExistOnImage(tempFilePath).Result != 1)
@@ -181,21 +182,23 @@ namespace PyxisKapriBack.Services
                         StatusCode = StatusCodes.Status406NotAcceptable,
                         Message = "Profile image must contain only one face."
                     };
-                }
+                }*/
                 fileService.UpdateFile(folderPath, loggedUser.FileName, userImage.ProfileImage, out newProfileImageName);
                 loggedUser.FileName = newProfileImageName;
-                if (userDAL.UpdateUser(loggedUser))
+                if (userDAL.UpdateUser(loggedUser)) 
                     response.Message = jwtManager.GenerateToken(loggedUser);
-                File.Delete(tempFilePath);
-               
+
+                //File.Delete(tempFilePath);
+                //response.Message = jwtManager.GenerateToken(loggedUser);
                 return response;
             }
             else
             {
                 loggedUser.FolderPath = folderPath;
                 loggedUser.FileName = userImage.ProfileImage.FileName;
-                if(userDAL.UpdateUser(loggedUser))
+                if (userDAL.UpdateUser(loggedUser)) 
                     response.Message = jwtManager.GenerateToken(loggedUser);
+                //response.Message = jwtManager.GenerateToken(loggedUser);
                 return response;
             }
             response.StatusCode = StatusCodes.Status500InternalServerError;

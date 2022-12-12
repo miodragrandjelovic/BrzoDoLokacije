@@ -263,9 +263,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
 
-
-
-
     // SEARCH
     private lateinit var locationListAdapter: LocationListAdapter
 
@@ -375,8 +372,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
 
-
-
     private fun getMarkerBitmapFromView(view: View, bitmap: Bitmap?): Bitmap? {
 
         mMarkerImageView?.setImageBitmap(bitmap)
@@ -395,5 +390,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         view.draw(canvas)
         return returnedBitmap
     }
+
+
 
 }

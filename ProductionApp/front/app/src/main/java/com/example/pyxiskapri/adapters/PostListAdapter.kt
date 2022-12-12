@@ -47,6 +47,12 @@ class PostListAdapter(private var postList: MutableList<PostResponse>) : Recycle
             gradeSelector.gradeDisplay = gradeDisplay
             gradeSelector.gradedPostId = currentPost.id
 
+            gradeSelector.setOnGradeSelectListener {
+                currentPost.averageGrade = it.averageGrade
+                currentPost.gradesCount = it.gradesCount
+                currentPost.usersGrade = gradeSelector.grade
+            }
+
             btn_ForeignUser.setOnClickListener(){
 
                 val intent = Intent(context, ForeignProfileGridActivity::class.java)
