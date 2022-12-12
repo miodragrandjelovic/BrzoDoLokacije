@@ -190,17 +190,17 @@ namespace PyxisKapriBack.Controllers
             return Ok(Convert.ToBase64String(image));
         }
 
-        [HttpGet("SearchFollower/{search}")]
-        public async Task<IActionResult> SearchFollowers(string search)
+        [HttpPost("SearchFollower")]
+        public async Task<IActionResult> SearchFollowers(UserSearchDTO userSearchDTO)
         {
-            var followers = followUI.SearchFollowers(search);
+            var followers = followUI.SearchFollowers(userSearchDTO);
             return Ok(followers);
         }
 
-        [HttpGet("SearchFollowing/{search}")]
-        public async Task<IActionResult> SearchFollowing(string search)
+        [HttpPost("SearchFollowing")]
+        public async Task<IActionResult> SearchFollowing(UserSearchDTO userSearchDTO)
         {
-            var followers = followUI.SearchFollowing(search);
+            var followers = followUI.SearchFollowing(userSearchDTO);
             return Ok(followers);
         }
     }

@@ -44,20 +44,22 @@ namespace PyxisKapriBack.UI
             return _iFollowService.IsFollowed(_iUserService.GetLoggedUser(), followingUsername); 
         }
 
-        public List<UserShortDTO> SearchFollowers(string search)
+        public List<UserShortDTO> SearchFollowers(UserSearchDTO userSearchDTO)
         {
-            return createListUserShortDTO(_iFollowService.SearchFollowers(_iUserService.GetLoggedUser(), search));
+            return createListUserShortDTO(_iFollowService.SearchFollowers(userSearchDTO.Username, userSearchDTO.Search));
         }
 
-        public List<UserShortDTO> SearchFollowing(string search)
+        public List<UserShortDTO> SearchFollowing(UserSearchDTO userSearchDTO)
         {
-            return createListUserShortDTO(_iFollowService.SearchFollowing(_iUserService.GetLoggedUser(), search)); 
+            return createListUserShortDTO(_iFollowService.SearchFollowing(userSearchDTO.Username, userSearchDTO.Search)); 
         }
 
-        public List<UserShortDTO> createListUserShortDTO(List<User> list)
+        public List<UserShortDTO> createListUserShortDTO(List<User> list, bool followers = true)
         {
             var listUserShortDTO = new List<UserShortDTO>();
-            List<string> following = _iFollowService.GetFollowing(_iUserService.GetLoggedUser()).Select(user => user.Username).ToList(); 
+            List<String> listFollow; 
+            listFollow = _iFollowService.GetFollowing(_iUserService.GetLoggedUser()).Select(user => user.Username).ToList();
+
             foreach (var item in list)
             {
                 listUserShortDTO.Add(new UserShortDTO
@@ -66,7 +68,7 @@ namespace PyxisKapriBack.UI
                     LastName = item.LastName,
                     Username = item.Username,
                     ProfileImage = Path.Combine(item.FolderPath, item.FileName),
-                    IsFollowed = following.Contains(item.Username)
+                    IsFollowed = listFollow.Contains(item.Username)
                 });
             }
             return listUserShortDTO;
