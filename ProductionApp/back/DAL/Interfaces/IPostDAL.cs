@@ -14,7 +14,9 @@ namespace PyxisKapriBack.DAL.Interfaces
         List<Post> GetPosts(String username, SortType sortType = SortType.DATE);
         List<Post> GetFollowingPosts(string username, SortType sortType = SortType.DATE);
         List<Post> GetRecommendedPosts(string username, SortType sortType = SortType.DATE);
-        List<Post> GetPostsBySearch(String username, String search, SearchType searchType, SortType sortType = SortType.DATE, bool friendsOnly = false);
+        List<Post> GetPostsBySearch(String username, String search, SearchType searchType, 
+                                    double latitude, double longitude, double distance = Constants.Constants.DISTANCE,
+                                    SortType sortType = SortType.DATE, bool friendsOnly = false);
         List<Post> GetPostsByCoordinates(string username, double latitude, double longitude, double distance = Constants.Constants.DISTANCE, bool friendsOnly = false);
         double GetAverageGrade(int postId); 
     }

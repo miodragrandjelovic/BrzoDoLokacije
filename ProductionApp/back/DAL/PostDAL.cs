@@ -155,39 +155,44 @@ namespace PyxisKapriBack.DAL
             return orderedQueryable.ToList(); 
         }
 
-        public List<Post> GetPostsBySearch(String username, String search, SearchType searchType, SortType sortType = SortType.DATE, bool friendsOnly = false)
+        public List<Post> GetPostsBySearch(String username, String search, SearchType searchType,
+                                    double latitude, double longitude, double distance = Constants.Constants.DISTANCE,
+                                    SortType sortType = SortType.DATE, bool friendsOnly = false)
         {
-            IQueryable<Post> posts = _context.Posts;
-
+            IQueryable<Post> posts = _context.Posts.Include(post => post.User)
+                                                   .Include(post => post.Dislikes)
+                                                   .Include(post => post.Likes)
+                                                   .Include(post => post.Comments);
             if (friendsOnly)
             {
                 var users = followDAL.GetFollowing(username).Select(user => user.Id);
                 posts = _context.Posts.Where(post => users.Contains(post.UserId));
             }
-            
-            if (!String.IsNullOrEmpty(search))
+
+            if (searchType != SearchType.COORDINATES)
             {
-                if(searchType == SearchType.LOCATION)
-                    posts = posts.Where(post => post.FullLocation.ToLower().Contains(search.ToLower()));
-                else if(searchType == SearchType.TAGS)
+                if (!String.IsNullOrEmpty(search))
                 {
-                    List<String> tags = search.Split(", ").ToList();
-                    /*posts = posts.Where(post => !String.IsNullOrEmpty(post.Tags))
-                                 .Where(post => tags.Any(post.Tags.Contains())); */
-                    posts = posts.Where(post => !String.IsNullOrEmpty(post.Tags));
-                    var filteredPosts = posts.ToList()
-                                             .Where(post => tags.Any(tag => post.Tags.ToLower().Contains(tag.ToLower())))
-                                             .AsQueryable()
-                                             .Select(post => post.Id)
-                                             .ToList();
-                    posts = posts.Where(post => filteredPosts.Contains(post.Id)); 
+                    if (searchType == SearchType.LOCATION)
+                        posts = posts.Where(post => post.FullLocation.ToLower().Contains(search.ToLower()));
+                    else if (searchType == SearchType.TAGS)
+                    {
+                        List<String> tags = search.Split(", ").ToList();
+                        posts = posts.Where(post => !String.IsNullOrEmpty(post.Tags));
+                        var filteredPosts = posts.ToList()
+                                                 .Where(post => tags.Any(tag => post.Tags.ToLower().Contains(tag.ToLower())))
+                                                 .AsQueryable()
+                                                 .Select(post => post.Id)
+                                                 .ToList();
+                        posts = posts.Where(post => filteredPosts.Contains(post.Id));
+                    }
                 }
             }
+            else
+            {
+                posts = locationManager.GetAllAroundPosts(new GeoCoordinate(latitude, longitude), posts.ToList(), distance).AsQueryable(); 
+            }
 
-            posts = posts.Include(post => post.User)
-                         .Include(post => post.Dislikes)
-                         .Include(post => post.Likes)
-                         .Include(post => post.Comments);
             return SortListByCriteria(posts, sortType);
         }
 

@@ -245,15 +245,17 @@ namespace PyxisKapriBack.Services
             return response;
         }
 
-        public Response GetPostsBySearch(String search, SearchType searchType = SearchType.LOCATION, SortType sortType = SortType.DATE, int countOfResult = Constants.Constants.TAKE_ELEMENT, bool friendsOnly = false)
+        public Response GetPostsBySearch(SearchDTO searchDTO)
         {
             var response = new Response();
 
             try
             {
-                if (countOfResult == 0)
-                    countOfResult = Constants.Constants.TAKE_ELEMENT; 
-                response.Data = postDAL.GetPostsBySearch(userService.GetLoggedUser(), search, searchType, sortType, friendsOnly).Take(countOfResult).Cast<object>().ToList(); 
+                if (searchDTO.CountOfResult == 0)
+                    searchDTO.CountOfResult = Constants.Constants.TAKE_ELEMENT; 
+                response.Data = postDAL.GetPostsBySearch(userService.GetLoggedUser(), searchDTO.Search, searchDTO.SearchType, searchDTO.Latitude,
+                                                         searchDTO.Longitude, searchDTO.Distance, searchDTO.SortType, searchDTO.FriendsOnly)
+                                       .Take(searchDTO.CountOfResult).Cast<object>().ToList();
                 response.Message = "Found posts";
                 response.StatusCode = StatusCodes.Status200OK;
             }
