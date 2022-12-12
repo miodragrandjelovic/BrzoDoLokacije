@@ -229,8 +229,10 @@ namespace PyxisKapriBack.UI
                     CoverImagePath = Path.Combine(Constants.Constants.ROOT_FOLDER, post.User.Username, post.PostPath, post.CoverImageName),
                     Latitude = post.Latitude,
                     Longitude = post.Longitude,
-                    numberOfLikes = Math.Round((double)(post.Likes.Count > 0 ? post.Likes.Sum(post => post.Grade)*1.0 / post.Likes.Count() : 0), 2)
-                }) ;
+                    numberOfLikes = Math.Round((double)(post.Likes.Count > 0 ? post.Likes.Sum(post => post.Grade) * 1.0 / post.Likes.Count() : 0), 2),
+                    Username = post.User.Username,
+                    ProfileImagePath = Path.Combine(post.User.FolderPath, post.User.FileName)
+                });
             }
 
             return postsDTO; 
