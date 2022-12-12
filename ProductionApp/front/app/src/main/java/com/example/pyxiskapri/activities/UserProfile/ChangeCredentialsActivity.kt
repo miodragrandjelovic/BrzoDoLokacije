@@ -227,6 +227,7 @@ class ChangeCredentialsActivity : AppCompatActivity() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
         dialog.setContentView(R.layout.modal_change_pass)
+        dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
         dialog.show()
         dialog.btn_save_new_pass.setOnClickListener(){

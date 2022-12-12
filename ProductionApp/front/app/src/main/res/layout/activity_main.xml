@@ -113,7 +113,7 @@
 
         android:layout_width="350dp"
         android:layout_height="70dp"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/red"
 
         android:fontFamily="@font/montserrat_regular"
         android:text="Get Started"

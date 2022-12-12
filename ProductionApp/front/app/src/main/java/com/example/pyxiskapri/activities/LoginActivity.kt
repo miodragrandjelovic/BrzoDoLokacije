@@ -59,13 +59,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setupSignInButton(){
         btn_login.setOnClickListener {
-            val patern= Regex("^[^0-9][a-zA-Z0-9_]+\$")
             if(et_usernameOrEmail.text.toString() != "" && et_password.text.toString() != "")
                 if(et_usernameOrEmail.length()>5 && et_password.length()>5)
-                    if(et_password.text.contains(patern))
-                        login()
-                    else
-                        Toast.makeText(this, "Sifra ne moze zapoceti karakterom!", Toast.LENGTH_SHORT).show()
+                    login()
                 else
                     Toast.makeText(this, "Username i sifra moraju imati vise od 6 karaktera!", Toast.LENGTH_SHORT).show()
             else

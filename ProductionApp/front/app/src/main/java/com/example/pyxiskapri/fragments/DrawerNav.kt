@@ -51,7 +51,6 @@ class DrawerNav : Fragment() {
             btn_signOut.setOnClickListener {
                 SessionManager(requireContext()).clearToken()
                 val intent = Intent(requireContext(), MainActivity::class.java)
-                ActivityTransferStorage.flag=false
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 activity?.finishAffinity()
                 startActivity(intent)
@@ -59,7 +58,6 @@ class DrawerNav : Fragment() {
 
             btn_UserProfile.setOnClickListener {
                 val intent = Intent (requireContext(), NewUserProfileActivity::class.java)
-                ActivityTransferStorage.flag=false
                 startActivity(intent);
             }
 

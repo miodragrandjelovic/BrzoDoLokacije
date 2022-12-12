@@ -20,6 +20,8 @@ import kotlinx.android.synthetic.main.activity_home.navMenuView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeActivity : AppCompatActivity() {
 
@@ -35,6 +37,8 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        Locale.setDefault(Locale("en_us"))
 
         sessionManager = SessionManager(this)
         apiClient = ApiClient()

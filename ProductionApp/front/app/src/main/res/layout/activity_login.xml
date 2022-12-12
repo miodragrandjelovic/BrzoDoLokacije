@@ -102,7 +102,7 @@
             android:background="@drawable/inputborder"
             android:fontFamily="@font/montserrat_regular"
             android:hint="Email or Username"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:paddingStart="10dp"
             android:paddingTop="5dp"
             android:paddingEnd="10dp"

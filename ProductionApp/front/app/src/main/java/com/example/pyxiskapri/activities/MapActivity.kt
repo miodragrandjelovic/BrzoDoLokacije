@@ -29,7 +29,6 @@ import com.example.pyxiskapri.dtos.response.CustomMarkerResponse
 import com.example.pyxiskapri.dtos.response.LocationResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.fragments.MultiButtonSelector
-import com.example.pyxiskapri.models.MarkerModel
 import com.example.pyxiskapri.utility.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -37,10 +36,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_chat_main.*
 import kotlinx.android.synthetic.main.activity_map.*
-import kotlinx.android.synthetic.main.activity_map.navMenuView
-import kotlinx.android.synthetic.main.dialog_location_search.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -57,10 +53,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var multiButtonFragment: MultiButtonSelector
 
-    private lateinit var fromPostLocation: MarkerModel
-
     private lateinit var markerImage: ImageView
     var mapFlag=0
+
+    private var markersList: ArrayList<CustomMarkerResponse> = arrayListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,8 +72,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         setupPrioritizedSelection()
         handleOptionsClick()
 
-        if(ActivityTransferStorage.flag)
-            fromPostLocation = ActivityTransferStorage.openPostToMap
+        if(ActivityTransferStorage.openPostToMapSet)
+            markersList.add(ActivityTransferStorage.openPostToMap)
 
         navMenuView.setIndicator(Constants.NavIndicators.DISCOVER)
     }
@@ -89,6 +85,17 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
 
+
+    private fun setCameraForNewMarkers(animateCamera: Boolean = false){
+        val latitude = markersList.sumOf { it.latitude } / markersList.size
+        val longitude = markersList.sumOf { it.longitude } / markersList.size
+
+        if(animateCamera)
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 6f))
+        else
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 6f))
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
@@ -98,14 +105,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         setMapTypeChangeButton()
 
         map.setOnMarkerClickListener{marker ->
-
             var context = this
 
             var tag= marker.tag as? Int
             apiClient.getPostService(context).GetOnePostById(tag!!).enqueue(object : Callback<PostResponse>{
-                override fun onResponse(
-                    call: Call<PostResponse>,
-                    response: Response<PostResponse>
+                override fun onResponse(call: Call<PostResponse>, response: Response<PostResponse>
                 ) {
                     val intent = Intent(context, OpenPostActivity::class.java)
                     ActivityTransferStorage.postItemToOpenPost = response.body()!!
@@ -127,12 +131,17 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         mMarkerImageView = mCustomMarkerView.findViewById(R.id.cover_image)
 
 
-        if(ActivityTransferStorage.flag)
-            setupFromUserPostMap(true)
+        if(ActivityTransferStorage.openPostToMapSet) {
+            setPostMarkers(markersList)
+            ActivityTransferStorage.openPostToMapSet = false
+            setCameraForNewMarkers()
+        }
+
         setupPostSearching()
 
         cameraListener()
 
+        oldMapZoom = map.cameraPosition.zoom
     }
 
     private var satelliteTypeMap: Boolean = true
@@ -150,96 +159,40 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private var oldMapZoom: Float = 10.0f
     private fun cameraListener() {
         map.setOnCameraMoveListener {
             val cameraPosition = map.cameraPosition
 
-            if(ActivityTransferStorage.flag)
+            if (cameraPosition.zoom > 9.0 && oldMapZoom < 9.0f) {
+
+                var layoutParams = ConstraintLayout.LayoutParams(248, 340)
+                markerImage.layoutParams = layoutParams
+
+                layoutParams = ConstraintLayout.LayoutParams(248, 248)
+                mMarkerImageView.layoutParams = layoutParams
+
+                map.clear()
+
+                setPostMarkers(markersList)
+            }
+            else if(cameraPosition.zoom < 9.0 && oldMapZoom >= 9.0f)
             {
-                if (cameraPosition.zoom > 9.0 && mapFlag==0) {
+                var layoutParams = ConstraintLayout.LayoutParams(138, 193)
+                markerImage.layoutParams = layoutParams
 
-                    var layoutParams = ConstraintLayout.LayoutParams(248, 340)
-                    markerImage.layoutParams = layoutParams
+                layoutParams = ConstraintLayout.LayoutParams(138, 138)
+                mMarkerImageView.layoutParams = layoutParams
 
-                    layoutParams = ConstraintLayout.LayoutParams(248, 248)
-                    mMarkerImageView.layoutParams = layoutParams
+                map.clear()
 
-
-                    map.clear()
-
-                    setupFromUserPostMap(false)
-
-
-                    mapFlag=1
-                }
-                else if(cameraPosition.zoom < 9.0 && mapFlag==1)
-                {
-                    var layoutParams = ConstraintLayout.LayoutParams(138, 193)
-                    markerImage.layoutParams = layoutParams
-
-                    layoutParams = ConstraintLayout.LayoutParams(138, 138)
-                    mMarkerImageView.layoutParams = layoutParams
-
-
-                    map.clear()
-
-                    setupFromUserPostMap(false)
-
-
-                    mapFlag=0
-                }
+                setPostMarkers(markersList)
             }
 
-
+            oldMapZoom = cameraPosition.zoom
 
         }
     }
-
-    private fun setupFromUserPostMap(pom: Boolean){
-
-
-        var marker:Marker?
-
-        Picasso.get().load(UtilityFunctions.getFullImagePath(fromPostLocation.coverImage))
-            .into(object : com.squareup.picasso.Target {
-                override fun onBitmapLoaded(
-                    bitmap: Bitmap?,
-                    from: Picasso.LoadedFrom?
-                ) {
-
-                    marker=map.addMarker(
-                        MarkerOptions().position(LatLng(fromPostLocation.latitude,fromPostLocation.longitude))
-                            .icon(
-                                BitmapDescriptorFactory.fromBitmap(
-                                    getMarkerBitmapFromView(
-                                        mCustomMarkerView,
-                                        bitmap
-                                    )!!
-                                )
-                            )
-                    )
-
-                    if(pom)
-                        map.moveCamera(CameraUpdateFactory.newLatLng(marker!!.position))
-
-                }
-
-                override fun onBitmapFailed(
-                    e: Exception?,
-                    errorDrawable: Drawable?
-                ) {
-
-                }
-
-                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-
-                }
-
-            })
-
-    }
-
-
 
 
     // PRIORITIZE BUTTONS
@@ -362,7 +315,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-
     private fun requestPostsFromSearch(locationId: Int, locationName: String){
         var searchRequest = MapSearchRequest(
             search = locationName,
@@ -380,8 +332,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             .enqueue(object : Callback<ArrayList<CustomMarkerResponse>> {
                 override fun onResponse(call: Call<ArrayList<CustomMarkerResponse>>, response: Response<ArrayList<CustomMarkerResponse>>) {
                     if(response.isSuccessful)
-                        if(response.body() != null && response.body()?.size != 0)
-                            setPostMarkers(response.body()!!)
+                        if(response.body() != null && response.body()?.size != 0) {
+                            markersList.clear()
+                            markersList.addAll(response.body()!!)
+                            setCameraForNewMarkers(animateCamera = true)
+                            setPostMarkers(markersList)
+                        }
                 }
                 override fun onFailure(call: Call<ArrayList<CustomMarkerResponse>>, t: Throwable) {
                     Log.d("TEST", "TEST")
@@ -415,11 +371,11 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                     override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
                 }
             )
-
-
-
         }
     }
+
+
+
 
     private fun getMarkerBitmapFromView(view: View, bitmap: Bitmap?): Bitmap? {
 
@@ -439,6 +395,5 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         view.draw(canvas)
         return returnedBitmap
     }
-
 
 }

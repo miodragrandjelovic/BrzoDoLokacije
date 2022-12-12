@@ -98,6 +98,8 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_post)
 
+
+
         sessionManager = SessionManager(this)
         apiClient = ApiClient()
 
@@ -380,17 +382,20 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             dialog.btn_searchLocations.setOnClickListener{
                 locationTextListAdapter.clear()
 
-                if(editText.text.toString() != "") {
-                    fetchedAddresses = geocoder.getFromLocationName(editText.text.toString(), 8)!!
-                    if (fetchedAddresses.size != 0) {
-                        for (address in fetchedAddresses) {
-                            locationTextListAdapter.add(address.getAddressLine(0))
-                        }
+                if(editText.text.toString() != "")
+                    Thread {
+                        fetchedAddresses = geocoder.getFromLocationName(editText.text.toString(), 8)!!
 
-                        locationTextListAdapter.notifyDataSetChanged()
-                    } else
-                        Toast.makeText(this, "No locations found!", Toast.LENGTH_LONG).show()
-                }
+                        runOnUiThread {
+                            if (fetchedAddresses.size != 0) {
+                                for (address in fetchedAddresses)
+                                    locationTextListAdapter.add(address.getAddressLine(0))
+                                locationTextListAdapter.notifyDataSetChanged()
+                            }
+                            else
+                                Toast.makeText(this, "No locations found!", Toast.LENGTH_LONG).show()
+                        }
+                    }.start()
 
             }
 
@@ -402,6 +407,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
         }
     }
+
 
 
 
@@ -538,6 +544,8 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
             partImagesList[0] = pomItem
 
             val context: Context = this
+
+            var test = tagsAdapter.tagsList.joinToString(separator = ", ")
             // Images Upload
             apiClient.getPostService(this).addPost(
                 Images = partImagesList,

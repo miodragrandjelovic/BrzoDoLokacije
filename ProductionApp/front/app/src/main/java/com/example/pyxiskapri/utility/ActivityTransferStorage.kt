@@ -1,5 +1,6 @@
 package com.example.pyxiskapri.utility
 
+import com.example.pyxiskapri.dtos.response.CustomMarkerResponse
 import com.example.pyxiskapri.dtos.response.FriendResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
 import com.example.pyxiskapri.models.ChangeCredentialsInformation
@@ -11,13 +12,12 @@ interface ActivityTransferStorage {
 
     companion object {
         @JvmStatic
+        var openPostToMapSet: Boolean = false
+        @JvmStatic
         lateinit var postItemToOpenPost: PostResponse
 
         @JvmStatic
-        lateinit var openPostToMap: MarkerModel
-
-        @JvmStatic
-        var flag:Boolean = false
+        lateinit var openPostToMap: CustomMarkerResponse
 
         @JvmStatic
         lateinit var chatToChatting: FriendResponse

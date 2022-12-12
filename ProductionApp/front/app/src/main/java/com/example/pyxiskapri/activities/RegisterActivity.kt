@@ -59,15 +59,11 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun setupRegisterButton(){
         btn_goToRegister.setOnClickListener {
-            val patern= Regex("^[^0-9][a-zA-Z0-9_]+\$")
             if( et_firstName.text.toString().trim() != "" && et_lastName.text.toString().trim() != "" && et_username.text.toString().trim() != "" && et_email.text.toString().trim() != "" && et_password.text.toString().trim() != "")
                 if(android.util.Patterns.EMAIL_ADDRESS.matcher(et_email.text.toString()).matches())
                     if(et_username.length()>5)
                         if(et_password.length()>5)
-                            if(et_password.text.contains(patern))
-                                register()
-                            else
-                                Toast.makeText(this, "Password can't begin with a digit!", Toast.LENGTH_SHORT).show()
+                            register()
                         else
                             Toast.makeText(this, "Password must contain at least 6 characters!", Toast.LENGTH_SHORT).show()
                     else

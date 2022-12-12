@@ -85,29 +85,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/montserrat_regular"
-                        android:text="Username"
                         android:textAlignment="textStart"
                         android:textColor="@color/white"
                         android:textSize="16sp"
-                        app:layout_constraintBottom_toTopOf="@+id/tv_ownerStatus"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/cv_ownerAvatar"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed" />
-
-
-                    <TextView
-                        android:id="@+id/tv_ownerStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.75"
-                        android:fontFamily="@font/montserrat_regular"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/tv_ownerUsername"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_ownerUsername"
-                        tools:text="\@Username" />
+                        app:layout_constraintVertical_chainStyle="packed"
+                        tools:text="Username" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -144,7 +129,7 @@
                     android:alpha="0.5"
                     android:fontFamily="@font/montserrat_regular"
                     android:gravity="right|center_vertical"
-                    android:text="dd/mm/yyyy"
+                    tools:text="dd/mm/yyyy"
                     android:textColor="@color/white"
                     android:textSize="11sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -165,14 +150,14 @@
 
                 <TextView
                     android:id="@+id/tv_postDescription"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:alpha="0.75"
                     android:fontFamily="@font/montserrat_regular"
-                    android:lineSpacingExtra="-2dp"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis quam tincidunt, aliquam elit eget, mollis tortor. Etiam in venenatis turpis. Donec vel molestie massa. Maecenas vel magna turpis. Suspendisse justo elit, sodales et sapien a, feugiat dui."
+                    tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis quam tincidunt, aliquam elit eget, mollis tortor. Etiam in venenatis turpis. Donec vel molestie massa. Maecenas vel magna turpis. Suspendisse justo elit, sodales et sapien a, feugiat dui."
                     android:textColor="@color/white"
                     android:textSize="12sp"
+                    android:gravity="left"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_descriptionLabel" />

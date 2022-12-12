@@ -18,10 +18,7 @@ import com.example.pyxiskapri.adapters.CommentAdapter
 import com.example.pyxiskapri.adapters.PostImagesAdapter
 import com.example.pyxiskapri.adapters.TagsDisplayAdapter
 import com.example.pyxiskapri.dtos.request.NewCommentRequest
-import com.example.pyxiskapri.dtos.response.CommentResponse
-import com.example.pyxiskapri.dtos.response.MessageResponse
-import com.example.pyxiskapri.dtos.response.PostAdditionalData
-import com.example.pyxiskapri.dtos.response.PostResponse
+import com.example.pyxiskapri.dtos.response.*
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.MarkerModel
 import com.example.pyxiskapri.utility.*
@@ -194,15 +191,15 @@ class OpenPostActivity : AppCompatActivity() {
     private fun setupOpenMapButton(){
         btn_openMap.setOnClickListener {
             val intent = Intent (this, MapActivity::class.java);
-            ActivityTransferStorage.flag=true
-            ActivityTransferStorage.openPostToMap = MarkerModel(postLocation.latitude, postLocation.longitude,postData.coverImage)
+            ActivityTransferStorage.openPostToMapSet = true
+            ActivityTransferStorage.openPostToMap = CustomMarkerResponse(postData.id, postData.coverImage, postLocation.longitude, postLocation.latitude, 0.0)
             startActivity(intent);
         }
 
         iv_mapIcon.setOnClickListener(){
             val intent = Intent (this, MapActivity::class.java);
-            ActivityTransferStorage.flag=true
-            ActivityTransferStorage.openPostToMap = MarkerModel(postLocation.latitude, postLocation.longitude,postData.coverImage)
+            ActivityTransferStorage.openPostToMapSet = true
+            ActivityTransferStorage.openPostToMap = CustomMarkerResponse(postData.id, postData.coverImage, postLocation.longitude, postLocation.latitude, 0.0)
             startActivity(intent);
         }
     }
