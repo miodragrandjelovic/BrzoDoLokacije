@@ -1,5 +1,6 @@
 package com.example.pyxiskapri.activities.UserProfile
 
+import android.app.FragmentTransaction
 import android.content.Context
 import android.content.Intent
 import android.graphics.*
@@ -13,11 +14,14 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.activities.*
 import com.example.pyxiskapri.dtos.response.CustomMarkerResponse
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
+import com.example.pyxiskapri.dtos.response.StatisticsResponse
 import com.example.pyxiskapri.fragments.DrawerNav
 import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.utility.ActivityTransferStorage
@@ -34,6 +38,9 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_map_user_post.*
+import kotlinx.android.synthetic.main.activity_map_user_post.cl_statistics
+import kotlinx.android.synthetic.main.activity_map_user_post.ll_posts
+import kotlinx.android.synthetic.main.activity_new_user_profile.*
 import kotlinx.android.synthetic.main.activity_new_user_profile.menu_btn
 import kotlinx.android.synthetic.main.popup_menu.view.*
 import retrofit2.Call
@@ -56,7 +63,7 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var markerImage: ImageView
 
-
+    var averageGrade:Double = 0.0
 
 
     /////////////////////////////////
@@ -84,6 +91,9 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
         setupGetUser()
 
+        val bundle = intent.extras
+        averageGrade = bundle?.getDouble("averageGrade")!!
+
         /////////////////
 
 
@@ -107,12 +117,121 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
         setupGetFollowers()
         setupGetFollowing()
 
+
+        setupSetStatistics()
+
+    }
+
+    private fun setupSetStatistics() {
+
+        ll_map_n.setOnClickListener(){
+
+            tv_statistics_m.setTextColor(Color.WHITE)
+            tv_map.setTextColor(Color.parseColor("#CC2045"))
+
+            sv_statistics.isGone=true
+            user_post_map.requireView().visibility = View.VISIBLE;
+
+
+        }
+
+        ll_statistics_m.setOnClickListener(){
+
+
+            tv_statistics_m.setTextColor(Color.parseColor("#CC2045"))
+            tv_map.setTextColor(Color.WHITE)
+
+            sv_statistics.isGone=false
+            user_post_map.requireView().visibility = View.GONE;
+
+
+            average_grade_m.text=averageGrade.toString()
+            post_number_statistics_m.text=post_number_um.text.toString()+ " posts"
+
+            if(averageGrade == 0.00)
+                emoji_m.setImageResource(R.drawable.emoji_unset)
+            else if(averageGrade < 1.5)
+                emoji_m.setImageResource(R.drawable.emoji_crying)
+            else if(averageGrade < 2.5)
+                emoji_m.setImageResource(R.drawable.emoji_sad)
+            else if(averageGrade < 3.5)
+                emoji_m.setImageResource(R.drawable.emoji_neutral)
+            else if(averageGrade < 4.5)
+                emoji_m.setImageResource(R.drawable.emoji_happy)
+            else if(averageGrade <= 5.0)
+                emoji_m.setImageResource(R.drawable.emoji_amazed)
+
+
+            var username = SessionManager(this).fetchUserData()?.username
+            apiClient.getPostService(this).getUserTopPosts(username!!).enqueue(object : Callback<ArrayList<StatisticsResponse>>{
+                override fun onResponse(
+                    call: Call<ArrayList<StatisticsResponse>>,
+                    response: Response<ArrayList<StatisticsResponse>>
+                ) {
+
+                    var size = response.body()!!.size
+
+                    if(size>0)
+                    {
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(iv_coverImage_prvi_m)
+                        gradeDisplay_followed_prvi_m.setupForFollowed()
+                        gradeDisplay_followed_prvi_m.setGradeDisplay(response.body()!![0].averageGrade,response.body()!![0].gradesCount)
+
+                    }
+                    else
+                    {
+                        ll_prvi_grade_m.isGone=true
+                        tv_no_post_prvi_m.isVisible=true
+                    }
+
+                    //drugi
+                    if(size>1)
+                    {
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![1].coverImage)).into(iv_coverImage_drugi_m)
+                        gradeDisplay_followed_drugi_m.setupForFollowed()
+                        gradeDisplay_followed_drugi_m.setGradeDisplay(response.body()!![1].averageGrade,response.body()!![1].gradesCount)
+                    }
+                    else
+                    {
+                        ll_drugi_grade_m.isGone=true
+                        tv_no_post_drugi_m.isVisible=true
+                    }
+
+                    //treci
+
+                    if(size>2)
+                    {
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![2].coverImage)).into(iv_coverImage_treci_m)
+                        gradeDisplay_followed_treci_m.setupForFollowed()
+                        gradeDisplay_followed_treci_m.setGradeDisplay(response.body()!![2].averageGrade,response.body()!![2].gradesCount)
+
+                    }
+                    else
+                    {
+                        ll_treci_grade_m.isGone=true
+                        tv_no_post_treci_m.isVisible=true
+                    }
+
+
+
+                }
+
+                override fun onFailure(call: Call<ArrayList<StatisticsResponse>>, t: Throwable) {
+
+                }
+
+            })
+
+        }
+
+
     }
 
 
     private fun setupMap(){
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.user_post_map) as SupportMapFragment
+        var mapFragment = supportFragmentManager.findFragmentById(R.id.user_post_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
 
     }
 

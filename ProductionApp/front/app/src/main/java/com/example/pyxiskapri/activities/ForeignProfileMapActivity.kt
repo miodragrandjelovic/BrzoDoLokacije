@@ -16,13 +16,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.dtos.request.AddFollowRequest
-import com.example.pyxiskapri.dtos.response.CustomMarkerResponse
-import com.example.pyxiskapri.dtos.response.GetUserResponse
-import com.example.pyxiskapri.dtos.response.MessageResponse
-import com.example.pyxiskapri.dtos.response.PostResponse
-import com.example.pyxiskapri.fragments.DrawerNav
+import com.example.pyxiskapri.dtos.response.*
 import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
@@ -38,6 +35,7 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_foreign_profile_map.*
+import kotlinx.android.synthetic.main.activity_map_user_post.*
 import kotlinx.android.synthetic.main.modal_confirm_follow.*
 import kotlinx.android.synthetic.main.modal_confirm_unfollow.*
 import retrofit2.Call
@@ -60,6 +58,8 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var geocoder: Geocoder
 
+    var averageGrade:Double = 0.0
+
     var flag = 0
 
     override fun onRestart() {
@@ -80,6 +80,7 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val bundle = intent.extras
         username = bundle?.getString("username")!!
+        averageGrade = bundle.getDouble("averageGrade")
 
 
         apiClient= ApiClient()
@@ -108,6 +109,111 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         setupGetFollowers()
         setupGetFollowing()
+
+        setupSetStatistics()
+
+    }
+
+    private fun setupSetStatistics() {
+
+        ll_map_fm.setOnClickListener(){
+
+            tv_statistics_fm.setTextColor(Color.WHITE)
+            tv_map_fm.setTextColor(Color.parseColor("#CC2045"))
+
+            sv_statistics_fm.isGone=true
+            map_fm.requireView().visibility = View.VISIBLE;
+
+
+        }
+
+        ll_statistics_fm.setOnClickListener(){
+
+
+            tv_statistics_fm.setTextColor(Color.parseColor("#CC2045"))
+            tv_map_fm.setTextColor(Color.WHITE)
+
+            sv_statistics_fm.isGone=false
+            map_fm.requireView().visibility = View.GONE;
+
+
+            average_grade_fm.text=averageGrade.toString()
+            post_number_statistics_fm.text=post_number_fm.text.toString()+ " posts"
+
+            if(averageGrade == 0.00)
+                emoji_fm.setImageResource(R.drawable.emoji_unset)
+            else if(averageGrade < 1.5)
+                emoji_fm.setImageResource(R.drawable.emoji_crying)
+            else if(averageGrade < 2.5)
+                emoji_fm.setImageResource(R.drawable.emoji_sad)
+            else if(averageGrade < 3.5)
+                emoji_fm.setImageResource(R.drawable.emoji_neutral)
+            else if(averageGrade < 4.5)
+                emoji_fm.setImageResource(R.drawable.emoji_happy)
+            else if(averageGrade <= 5.0)
+                emoji_fm.setImageResource(R.drawable.emoji_amazed)
+
+
+            apiClient.getPostService(this).getUserTopPosts(username).enqueue(object : Callback<ArrayList<StatisticsResponse>>{
+                override fun onResponse(
+                    call: Call<ArrayList<StatisticsResponse>>,
+                    response: Response<ArrayList<StatisticsResponse>>
+                ) {
+
+                    var size = response.body()!!.size
+
+                    if(size>0)
+                    {
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(iv_coverImage_prvi_fm)
+                        gradeDisplay_followed_prvi_fm.setupForFollowed()
+                        gradeDisplay_followed_prvi_fm.setGradeDisplay(response.body()!![0].averageGrade,response.body()!![0].gradesCount)
+
+                    }
+                    else
+                    {
+                        ll_prvi_grade_fm.isGone=true
+                        tv_no_post_prvi_fm.isVisible=true
+                    }
+
+                    //drugi
+                    if(size>1)
+                    {
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![1].coverImage)).into(iv_coverImage_drugi_fm)
+                        gradeDisplay_followed_drugi_fm.setupForFollowed()
+                        gradeDisplay_followed_drugi_fm.setGradeDisplay(response.body()!![1].averageGrade,response.body()!![1].gradesCount)
+                    }
+                    else
+                    {
+                        ll_drugi_grade_fm.isGone=true
+                        tv_no_post_drugi_fm.isVisible=true
+                    }
+
+                    //treci
+
+                    if(size>2)
+                    {
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![2].coverImage)).into(iv_coverImage_treci_fm)
+                        gradeDisplay_followed_treci_fm.setupForFollowed()
+                        gradeDisplay_followed_treci_fm.setGradeDisplay(response.body()!![2].averageGrade,response.body()!![2].gradesCount)
+
+                    }
+                    else
+                    {
+                        ll_treci_grade_fm.isGone=true
+                        tv_no_post_treci_fm.isVisible=true
+                    }
+
+
+
+                }
+
+                override fun onFailure(call: Call<ArrayList<StatisticsResponse>>, t: Throwable) {
+
+                }
+
+            })
+
+        }
 
     }
 

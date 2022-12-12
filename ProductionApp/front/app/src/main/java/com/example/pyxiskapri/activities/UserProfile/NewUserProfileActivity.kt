@@ -92,6 +92,15 @@ class NewUserProfileActivity : AppCompatActivity(){
 
     private fun setupSetStatistics() {
 
+        ll_posts.setOnClickListener(){
+
+            tv_statistics.setTextColor(Color.WHITE)
+            tv_posts.setTextColor(Color.parseColor("#CC2045"))
+
+            gv_n_user_posts.isGone=false
+            cl_statistics.isGone=true
+
+        }
 
         ll_statistics.setOnClickListener(){
 
@@ -309,6 +318,7 @@ class NewUserProfileActivity : AppCompatActivity(){
 
             val intent = Intent (this, MapUserPostActivity::class.java);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            intent.putExtra("averageGrade",averageGrade)
             startActivity(intent);
 
         }
