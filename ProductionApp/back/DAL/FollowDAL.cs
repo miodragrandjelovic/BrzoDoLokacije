@@ -143,7 +143,9 @@ namespace PyxisKapriBack.DAL
             if (String.IsNullOrEmpty(search))
                 return GetFollowers(username);
 
-            List<User> followers = GetFollowers(username).FindAll(user => user.Username.ToLower().Contains(search.ToLower()));
+            List<User> followers = GetFollowers(username).FindAll(user => (user.Username.ToLower().Contains(search.ToLower())) ||
+                                                                          (user.LastName.ToLower().Contains(search.ToLower())) ||
+                                                                          (user.FirstName.ToLower().Contains(search.ToLower())));
             return followers; 
         }
         public List<User> SearchFollowing(string username, string search)
