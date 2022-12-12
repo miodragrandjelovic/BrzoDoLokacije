@@ -95,7 +95,8 @@ namespace PyxisKapriBack.DAL
                 return 0;
             if (count == 0)
                 return 0;
-            return sum / count;
+
+            return Math.Round((sum*1.0) / count,2);
         }
 
         public int GetDifferentLocations(string username)
