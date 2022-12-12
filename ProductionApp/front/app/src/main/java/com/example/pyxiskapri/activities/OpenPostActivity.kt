@@ -192,14 +192,14 @@ class OpenPostActivity : AppCompatActivity() {
         btn_openMap.setOnClickListener {
             val intent = Intent (this, MapActivity::class.java);
             ActivityTransferStorage.openPostToMapSet = true
-            ActivityTransferStorage.openPostToMap = CustomMarkerResponse(postData.id, postData.coverImage, postLocation.longitude, postLocation.latitude, 0.0)
+            ActivityTransferStorage.openPostToMap = CustomMarkerResponse(postData.id, postData.ownerUsername, postData.ownerImage, postData.coverImage, postLocation.longitude, postLocation.latitude, 0.0)
             startActivity(intent);
         }
 
         iv_mapIcon.setOnClickListener(){
             val intent = Intent (this, MapActivity::class.java);
             ActivityTransferStorage.openPostToMapSet = true
-            ActivityTransferStorage.openPostToMap = CustomMarkerResponse(postData.id, postData.coverImage, postLocation.longitude, postLocation.latitude, 0.0)
+            ActivityTransferStorage.openPostToMap = CustomMarkerResponse(postData.id, postData.ownerUsername, postData.ownerImage, postData.coverImage, postLocation.longitude, postLocation.latitude, 0.0)
             startActivity(intent);
         }
     }

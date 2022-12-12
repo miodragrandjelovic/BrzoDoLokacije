@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName
 data class CustomMarkerResponse(
     @SerializedName("id")
     var postId: Int,
+    @SerializedName("username")
+    var ownerUsername: String,
+    @SerializedName("profileImagePath")
+    var profileImagePath: String,
     @SerializedName("coverImagePath")
     var coverImage: String,
     @SerializedName("longitude")
@@ -13,5 +17,4 @@ data class CustomMarkerResponse(
     var latitude: Double,
     @SerializedName("numberOfLikes")
     var numberOfLikes: Double
-
 )

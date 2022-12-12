@@ -1,6 +1,8 @@
 package com.example.pyxiskapri.activities
 
 import android.animation.ObjectAnimator
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
@@ -11,19 +13,19 @@ import android.graphics.drawable.Drawable
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.animation.doOnEnd
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.marginTop
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.LocationListAdapter
+import com.example.pyxiskapri.adapters.PostsOnSameLocationAdapter
 import com.example.pyxiskapri.dtos.request.MapSearchRequest
 import com.example.pyxiskapri.dtos.response.CustomMarkerResponse
 import com.example.pyxiskapri.dtos.response.LocationResponse
@@ -37,10 +39,15 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_map.*
+import kotlinx.android.synthetic.main.dialog_full_image.*
+import kotlinx.android.synthetic.main.dialog_post_on_same_location.*
+import kotlinx.android.synthetic.main.view_custom_marker.*
+import kotlinx.android.synthetic.main.view_custom_marker.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -56,7 +63,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var markerImage: ImageView
     var mapFlag=0
 
-    private var markersList: ArrayList<CustomMarkerResponse> = arrayListOf()
+    private var markersList: ArrayList<ArrayList<CustomMarkerResponse>> = arrayListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,23 +79,36 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         setupPrioritizedSelection()
         handleOptionsClick()
 
-        if(ActivityTransferStorage.openPostToMapSet)
-            markersList.add(ActivityTransferStorage.openPostToMap)
+
+        switch_friendsOnly.setOnCheckedChangeListener { _, isChecked ->
+            searchFriends = isChecked
+            Log.d("SEARCH FRIENDS", searchFriends.toString())
+        }
+
+        switch_searchTags.setOnCheckedChangeListener { _, isChecked ->
+            searchTags = isChecked
+            Log.d("SEARCH TAGS", searchTags.toString())
+        }
 
         navMenuView.setIndicator(Constants.NavIndicators.DISCOVER)
     }
+
+
+
 
     private fun setupMapAndAutocomplete(){
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
+    private var searchFriends: Boolean = false
+    private var searchTags: Boolean = false
 
 
 
     private fun setCameraForNewMarkers(animateCamera: Boolean = false){
-        val latitude = markersList.sumOf { it.latitude } / markersList.size
-        val longitude = markersList.sumOf { it.longitude } / markersList.size
+        val latitude = markersList.sumOf { it[0].latitude } / markersList.size
+        val longitude = markersList.sumOf { it[0].longitude } / markersList.size
 
         if(animateCamera)
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 6f))
@@ -104,22 +124,28 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         setMapTypeChangeButton()
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         map.setOnMarkerClickListener{marker ->
-            var context = this
+            var groupId = marker.tag as Int
 
-            var tag= marker.tag as? Int
-            apiClient.getPostService(context).GetOnePostById(tag!!).enqueue(object : Callback<PostResponse>{
-                override fun onResponse(call: Call<PostResponse>, response: Response<PostResponse>
-                ) {
-                    val intent = Intent(context, OpenPostActivity::class.java)
-                    ActivityTransferStorage.postItemToOpenPost = response.body()!!
-                    context.startActivity(intent)
-                }
-
-                override fun onFailure(call: Call<PostResponse>, t: Throwable) {
-                    Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
-                }
-            })
+            if(markersList[groupId].size == 1)
+                openSinglePost(markersList[groupId][0].postId)
+            else
+                showAllPosts(markersList[groupId])
 
             true
         }
@@ -132,7 +158,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         if(ActivityTransferStorage.openPostToMapSet) {
-            setPostMarkers(markersList)
+            markersList = arrayListOf(arrayListOf(ActivityTransferStorage.openPostToMap))
+            setPostMarkers()
             ActivityTransferStorage.openPostToMapSet = false
             setCameraForNewMarkers()
         }
@@ -143,6 +170,58 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         oldMapZoom = map.cameraPosition.zoom
     }
+
+
+    private fun openSinglePost(postId: Int){
+        val context: Context = this
+        apiClient.getPostService(context).GetOnePostById(postId).enqueue(object : Callback<PostResponse>{
+            override fun onResponse(call: Call<PostResponse>, response: Response<PostResponse>) {
+                val intent = Intent(context, OpenPostActivity::class.java)
+                ActivityTransferStorage.postItemToOpenPost = response.body()!!
+                context.startActivity(intent)
+            }
+
+            override fun onFailure(call: Call<PostResponse>, t: Throwable) {
+                Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
+            }
+        })
+    }
+
+    private var pslAdapter: PostsOnSameLocationAdapter = PostsOnSameLocationAdapter(arrayListOf(), this)
+
+    private fun showAllPosts(posts: ArrayList<CustomMarkerResponse>){
+        val dialog = Dialog(this)
+
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(dialog.window?.attributes)
+        layoutParams.width = 1000
+        layoutParams.height = 1400
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_post_on_same_location)
+        dialog.window?.attributes = layoutParams
+
+        dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
+
+        dialog.gv_postsOnSameLocation.adapter = pslAdapter
+        pslAdapter.setPostList(posts)
+
+        dialog.show()
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private var satelliteTypeMap: Boolean = true
     private fun setMapTypeChangeButton(){
@@ -174,7 +253,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 map.clear()
 
-                setPostMarkers(markersList)
+                setPostMarkers()
             }
             else if(cameraPosition.zoom < 9.0 && oldMapZoom >= 9.0f)
             {
@@ -186,7 +265,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 map.clear()
 
-                setPostMarkers(markersList)
+                setPostMarkers()
             }
 
             oldMapZoom = cameraPosition.zoom
@@ -267,8 +346,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var locationListAdapter: LocationListAdapter
 
     private fun setupPostSearching(){
-        val context = this
-
         locationListAdapter = LocationListAdapter(arrayListOf(), ::requestPostsFromSearch)
         rv_locations.adapter = locationListAdapter
 
@@ -279,7 +356,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         et_search.setOnKeyListener(object : View.OnKeyListener {
             override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
                 if (event?.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                    requestLocationsByText()
+                    if(!searchTags)
+                        requestLocationsByText()
+                    else {
+                        requestPostsFromSearch(0, et_search.text.toString().trim(), 2)
+                        et_search.text.clear()
+                    }
+
                     return true
                 }
                 return false
@@ -312,14 +395,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    private fun requestPostsFromSearch(locationId: Int, locationName: String){
+    private fun requestPostsFromSearch(locationId: Int, searchText: String, searchTypeT: Int = 0){
         var searchRequest = MapSearchRequest(
-            search = locationName,
+            search = searchText,
             sortType =  Constants.SearchType.LOCATION.ordinal,
             countOfResults = multiButtonFragment.value,
-            friendsOnly = switch_friendsOnly.isActivated,
+            friendsOnly = searchFriends,
             name = "",
-            searchType = 0,
+            searchType = searchTypeT,
             0.0,
             0.0,
             0.0
@@ -330,10 +413,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 override fun onResponse(call: Call<ArrayList<CustomMarkerResponse>>, response: Response<ArrayList<CustomMarkerResponse>>) {
                     if(response.isSuccessful)
                         if(response.body() != null && response.body()?.size != 0) {
-                            markersList.clear()
-                            markersList.addAll(response.body()!!)
+                            markersList = listToGroupedList(response.body()!!)
                             setCameraForNewMarkers(animateCamera = true)
-                            setPostMarkers(markersList)
+                            setPostMarkers()
                         }
                 }
                 override fun onFailure(call: Call<ArrayList<CustomMarkerResponse>>, t: Throwable) {
@@ -342,23 +424,34 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             })
     }
 
+    private fun listToGroupedList(markerList: ArrayList<CustomMarkerResponse>): ArrayList<ArrayList<CustomMarkerResponse>>{
+        var groupedList = markerList.groupBy { it.latitude to it.longitude }
+        var returnList: ArrayList<ArrayList<CustomMarkerResponse>> = arrayListOf()
+        for(group in groupedList)
+            returnList.add(group.component2() as ArrayList<CustomMarkerResponse>)
+        return returnList
+    }
+
+
     lateinit var mCustomMarkerView:View
     lateinit var mMarkerImageView: ImageView
 
-    private fun setPostMarkers(postMarkers: ArrayList<CustomMarkerResponse>) {
+    private fun setPostMarkers() {
         map.clear()
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        for (postMarker in postMarkers) {
-            Picasso.get().load(UtilityFunctions.getFullImagePath(postMarker.coverImage)).into(
+        var groupId = 0
+        for (group in markersList) {
+
+            Picasso.get().load(UtilityFunctions.getFullImagePath(group[0].coverImage)).into(
                 object : com.squareup.picasso.Target {
                     override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
 
                         var marker = map.addMarker(
-                            MarkerOptions().position(LatLng(postMarker.latitude, postMarker.longitude))
-                            .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(mCustomMarkerView, bitmap)!!))
+                            MarkerOptions().position(LatLng(group[0].latitude, group[0].longitude))
+                            .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(mCustomMarkerView, bitmap, group.size)!!))
                         )
-                        marker?.tag = postMarker.postId
+                        marker?.tag = groupId++
 
                     }
                     override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?)
@@ -368,11 +461,27 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                     override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
                 }
             )
+
+
+
+
         }
     }
 
 
-    private fun getMarkerBitmapFromView(view: View, bitmap: Bitmap?): Bitmap? {
+    private fun getMarkerBitmapFromView(view: View, bitmap: Bitmap?, postCount: Int): Bitmap? {
+
+        var textView = view.findViewById<TextView>(R.id.tv_postCount)
+
+        if(postCount == 1){
+            textView.visibility = View.INVISIBLE
+            view.cover_image.alpha = 1f
+        }
+        else{
+            textView.visibility = View.VISIBLE
+            view.cover_image.alpha = 0.5f
+            textView.text = StringBuilder().append(postCount).append("+")
+        }
 
         mMarkerImageView?.setImageBitmap(bitmap)
 

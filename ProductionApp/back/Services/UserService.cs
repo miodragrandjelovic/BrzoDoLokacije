@@ -185,7 +185,8 @@ namespace PyxisKapriBack.Services
                 }*/
                 fileService.UpdateFile(folderPath, loggedUser.FileName, userImage.ProfileImage, out newProfileImageName);
                 loggedUser.FileName = newProfileImageName;
-                if (userDAL.UpdateUser(loggedUser)) 
+                var test = userDAL.UpdateUser(loggedUser);
+                if (test) 
                     response.Message = jwtManager.GenerateToken(loggedUser);
 
                 //File.Delete(tempFilePath);
@@ -196,7 +197,8 @@ namespace PyxisKapriBack.Services
             {
                 loggedUser.FolderPath = folderPath;
                 loggedUser.FileName = userImage.ProfileImage.FileName;
-                if (userDAL.UpdateUser(loggedUser)) 
+                var test = userDAL.UpdateUser(loggedUser);
+                if (test) 
                     response.Message = jwtManager.GenerateToken(loggedUser);
                 //response.Message = jwtManager.GenerateToken(loggedUser);
                 return response;

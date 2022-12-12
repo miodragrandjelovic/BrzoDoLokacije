@@ -350,11 +350,11 @@
                 android:id="@+id/cl_statistics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:visibility="gone"
-                >
+                tools:visibility="visible">
 
                 <ImageView
                     android:id="@+id/mini_header"
@@ -397,10 +397,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="70dp"
-                    android:background="@drawable/emoji_amazed"
                     app:layout_constraintEnd_toEndOf="@+id/statistics_star"
                     app:layout_constraintStart_toStartOf="@+id/statistics_star"
-                    app:layout_constraintTop_toBottomOf="@+id/mini_header" />
+                    app:layout_constraintTop_toBottomOf="@+id/mini_header"
+                    tools:srcCompat="@drawable/emoji_amazed" />
 
                 <TextView
                     android:id="@+id/average_grade"
@@ -453,8 +453,7 @@
                     android:textSize="16dp"
                     app:layout_constraintEnd_toEndOf="@+id/mini_header"
                     app:layout_constraintStart_toStartOf="@+id/mini_header"
-                    app:layout_constraintTop_toBottomOf="@+id/statistics_star"
-                    />
+                    app:layout_constraintTop_toBottomOf="@+id/statistics_star" />
 
 
                 <LinearLayout
@@ -467,15 +466,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/tv_highest_rated_posts">
 
 
-
                     <!--DRUGO MESTO-->
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="420dp"
-                        android:layout_weight="1"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
 
@@ -501,49 +499,47 @@
                                 android:layout_width="125dp"
                                 android:layout_height="130dp"
                                 android:background="@drawable/bar1"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent" />
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
 
 
                             <LinearLayout
                                 android:id="@+id/ll_drugi"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/rounded_post_black"
                                 android:layout_marginBottom="70dp"
+                                android:background="@drawable/rounded_post_black"
                                 android:orientation="vertical"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                >
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent">
+
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="match_parent"
                                     android:layout_height="145dp"
+                                    android:background="#0D0D0F"
+                                    app:cardCornerRadius="15dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    android:background="#0D0D0F"
-                                    app:cardCornerRadius="15dp">
+                                    app:layout_constraintStart_toStartOf="parent">
 
                                     <ImageView
                                         android:id="@+id/iv_coverImage_drugi"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:scaleType="centerCrop"
-                                        android:background="#0D0D0F">
-                                    </ImageView>
+                                        android:background="#0D0D0F"
+                                        android:scaleType="centerCrop"></ImageView>
 
                                     <TextView
                                         android:id="@+id/tv_no_post_drugi"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:gravity="center"
                                         android:fontFamily="@font/montserrat_medium"
+                                        android:gravity="center"
                                         android:text="No post"
                                         android:textColor="@color/light_gray"
                                         android:textSize="15dp"
-                                        android:visibility="invisible"
-                                        />
+                                        android:visibility="invisible" />
 
                                 </androidx.cardview.widget.CardView>
 
@@ -551,32 +547,27 @@
                                     android:id="@+id/ll_drugi_grade"
                                     android:layout_width="match_parent"
                                     android:layout_height="35dp"
+                                    android:layout_marginLeft="-4dp"
                                     android:layout_marginTop="5dp"
                                     android:layout_marginBottom="5dp"
-                                    android:layout_marginLeft="-4dp"
                                     android:background="@drawable/rounded_post_black"
                                     android:gravity="center"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    >
+                                    app:layout_constraintStart_toStartOf="parent">
 
 
                                     <com.example.pyxiskapri.custom_view_models.GradeDisplayView
                                         android:id="@+id/gradeDisplay_followed_drugi"
                                         android:layout_width="wrap_content"
                                         android:layout_height="30dp"
-                                        android:elevation="10dp"
-                                        />
-
-
+                                        android:elevation="10dp" />
 
 
                                 </LinearLayout>
 
 
                             </LinearLayout>
-
 
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -588,8 +579,8 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="420dp"
-                        android:layout_weight="1"
                         android:layout_marginRight="20dp"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
 
@@ -615,50 +606,48 @@
                                 android:layout_width="125dp"
                                 android:layout_height="130dp"
                                 android:background="@drawable/bar1"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent" />
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
 
 
                             <LinearLayout
                                 android:id="@+id/ll_prvi"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/rounded_post_black"
                                 android:layout_marginBottom="120dp"
+                                android:background="@drawable/rounded_post_black"
                                 android:orientation="vertical"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                >
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent">
+
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="match_parent"
                                     android:layout_height="145dp"
+                                    android:background="#0D0D0F"
+                                    app:cardCornerRadius="15dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    android:background="#0D0D0F"
-                                    app:cardCornerRadius="15dp">
+                                    app:layout_constraintStart_toStartOf="parent">
 
 
                                     <ImageView
                                         android:id="@+id/iv_coverImage_prvi"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:scaleType="centerCrop"
-                                        android:background="#0D0D0F">
-                                    </ImageView>
+                                        android:background="#0D0D0F"
+                                        android:scaleType="centerCrop"></ImageView>
 
                                     <TextView
                                         android:id="@+id/tv_no_post_prvi"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:gravity="center"
                                         android:fontFamily="@font/montserrat_medium"
+                                        android:gravity="center"
                                         android:text="No post"
                                         android:textColor="@color/light_gray"
                                         android:textSize="15dp"
-                                        android:visibility="invisible"
-                                        />
+                                        android:visibility="invisible" />
 
                                 </androidx.cardview.widget.CardView>
 
@@ -666,25 +655,21 @@
                                     android:id="@+id/ll_prvi_grade"
                                     android:layout_width="match_parent"
                                     android:layout_height="35dp"
+                                    android:layout_marginLeft="-4dp"
                                     android:layout_marginTop="5dp"
                                     android:layout_marginBottom="5dp"
-                                    android:layout_marginLeft="-4dp"
                                     android:background="@drawable/rounded_post_black"
                                     android:gravity="center"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    >
+                                    app:layout_constraintStart_toStartOf="parent">
 
 
                                     <com.example.pyxiskapri.custom_view_models.GradeDisplayView
                                         android:id="@+id/gradeDisplay_followed_prvi"
                                         android:layout_width="wrap_content"
                                         android:layout_height="30dp"
-                                        android:elevation="10dp"
-                                        />
-
-
+                                        android:elevation="10dp" />
 
 
                                 </LinearLayout>
@@ -693,20 +678,17 @@
                             </LinearLayout>
 
 
-
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                     </LinearLayout>
 
 
-
-
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="420dp"
-                        android:layout_weight="1"
                         android:layout_marginRight="20dp"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
 
@@ -732,49 +714,47 @@
                                 android:layout_width="125dp"
                                 android:layout_height="130dp"
                                 android:background="@drawable/bar1"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent" />
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
 
 
                             <LinearLayout
                                 android:id="@+id/ll_treci"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@drawable/rounded_post_black"
                                 android:layout_marginBottom="50dp"
+                                android:background="@drawable/rounded_post_black"
                                 android:orientation="vertical"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                >
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent">
+
                                 <androidx.cardview.widget.CardView
                                     android:layout_width="match_parent"
                                     android:layout_height="145dp"
+                                    android:background="#0D0D0F"
+                                    app:cardCornerRadius="15dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    android:background="#0D0D0F"
-                                    app:cardCornerRadius="15dp">
+                                    app:layout_constraintStart_toStartOf="parent">
 
                                     <ImageView
                                         android:id="@+id/iv_coverImage_treci"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:scaleType="centerCrop"
-                                        android:background="#0D0D0F">
-                                    </ImageView>
+                                        android:background="#0D0D0F"
+                                        android:scaleType="centerCrop"></ImageView>
 
                                     <TextView
                                         android:id="@+id/tv_no_post_treci"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:gravity="center"
                                         android:fontFamily="@font/montserrat_medium"
+                                        android:gravity="center"
                                         android:text="No post"
                                         android:textColor="@color/light_gray"
                                         android:textSize="15dp"
-                                        android:visibility="invisible"
-                                        />
+                                        android:visibility="invisible" />
 
                                 </androidx.cardview.widget.CardView>
 
@@ -782,32 +762,27 @@
                                     android:id="@+id/ll_treci_grade"
                                     android:layout_width="match_parent"
                                     android:layout_height="35dp"
+                                    android:layout_marginLeft="-4dp"
                                     android:layout_marginTop="5dp"
                                     android:layout_marginBottom="5dp"
-                                    android:layout_marginLeft="-4dp"
                                     android:background="@drawable/rounded_post_black"
                                     android:gravity="center"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    >
+                                    app:layout_constraintStart_toStartOf="parent">
 
 
                                     <com.example.pyxiskapri.custom_view_models.GradeDisplayView
                                         android:id="@+id/gradeDisplay_followed_treci"
                                         android:layout_width="wrap_content"
                                         android:layout_height="30dp"
-                                        android:elevation="10dp"
-                                        />
-
-
+                                        android:elevation="10dp" />
 
 
                                 </LinearLayout>
 
 
                             </LinearLayout>
-
 
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
