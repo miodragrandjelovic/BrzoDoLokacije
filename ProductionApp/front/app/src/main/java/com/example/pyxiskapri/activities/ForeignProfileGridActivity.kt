@@ -228,12 +228,18 @@ class ForeignProfileGridActivity : AppCompatActivity() {
                         ib_follow.isGone=true
                         ib_following.isGone=false
                         tv_follow_ing.text="Following"
+
+                        var number = followers_count_fg.text.toString().toInt()
+                        number += 1
+                        followers_count_fg.text=number.toString()
+
                     }
                     else
                     {
                         Toast.makeText(context,"Something went wrong, try again.", Toast.LENGTH_LONG).show()
 
                     }
+
 
                     dialog.dismiss()
 
@@ -286,6 +292,11 @@ class ForeignProfileGridActivity : AppCompatActivity() {
                         ib_follow.isGone=false
                         ib_following.isGone=true
                         tv_follow_ing.text="Follow"
+
+                        var number = followers_count_fg.text.toString().toInt()
+                        number -= 1
+                        followers_count_fg.text=number.toString()
+
                     }
 
                     else
