@@ -6,17 +6,18 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.view.Window
 import android.widget.Toast
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.example.pyxiskapri.R
 import com.example.pyxiskapri.adapters.gvForeignPostAdapter
 import com.example.pyxiskapri.dtos.request.AddFollowRequest
 import com.example.pyxiskapri.dtos.response.GetUserResponse
 import com.example.pyxiskapri.dtos.response.MessageResponse
 import com.example.pyxiskapri.dtos.response.PostResponse
+import com.example.pyxiskapri.dtos.response.StatisticsResponse
 import com.example.pyxiskapri.models.FollowList
 import com.example.pyxiskapri.utility.ActivityTransferStorage
 import com.example.pyxiskapri.utility.ApiClient
@@ -24,6 +25,7 @@ import com.example.pyxiskapri.utility.SessionManager
 import com.example.pyxiskapri.utility.UtilityFunctions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_foreign_profile_grid.*
+import kotlinx.android.synthetic.main.activity_new_user_profile.*
 import kotlinx.android.synthetic.main.modal_confirm_follow.*
 import kotlinx.android.synthetic.main.modal_confirm_unfollow.*
 import retrofit2.Call
@@ -39,6 +41,10 @@ class ForeignProfileGridActivity : AppCompatActivity() {
 
     lateinit var gvForeignPostAdapter: gvForeignPostAdapter
 
+
+    var averageGrade: Double=0.0
+    var numberOfPosts: Int = 0
+
     override fun onRestart() {
         super.onRestart()
         getForeignUser()
@@ -52,6 +58,7 @@ class ForeignProfileGridActivity : AppCompatActivity() {
         ll_map_f.setOnClickListener(){
             val intent = Intent (this, ForeignProfileMapActivity::class.java);
             intent.putExtra("username", username)
+            intent.putExtra("averageGrade", averageGrade)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent);
         }
@@ -81,6 +88,107 @@ class ForeignProfileGridActivity : AppCompatActivity() {
         setupGetFollowing()
         setupGetFollowers()
 
+        setupSetStatistics()
+
+    }
+
+    private fun setupSetStatistics() {
+        ll_posts_f.setOnClickListener(){
+
+            tv_statistics_f.setTextColor(Color.WHITE)
+            tv_posts_f.setTextColor(Color.parseColor("#CC2045"))
+
+            gv_fg_user_posts.isGone=false
+            cl_statistics_f.isGone=true
+
+        }
+
+        ll_statistics_f.setOnClickListener(){
+
+
+            tv_statistics_f.setTextColor(Color.parseColor("#CC2045"))
+            tv_posts_f.setTextColor(Color.WHITE)
+
+            gv_fg_user_posts.isGone=true
+            cl_statistics_f.isGone=false
+
+            average_grade_f.text=averageGrade.toString()
+            post_number_statistics_f.text=numberOfPosts.toString() + " posts"
+
+            if(averageGrade == 0.00)
+                emoji_f.setImageResource(R.drawable.emoji_unset)
+            else if(averageGrade < 1.5)
+                emoji_f.setImageResource(R.drawable.emoji_crying)
+            else if(averageGrade < 2.5)
+                emoji_f.setImageResource(R.drawable.emoji_sad)
+            else if(averageGrade < 3.5)
+                emoji_f.setImageResource(R.drawable.emoji_neutral)
+            else if(averageGrade < 4.5)
+                emoji_f.setImageResource(R.drawable.emoji_happy)
+            else if(averageGrade <= 5.0)
+                emoji_f.setImageResource(R.drawable.emoji_amazed)
+
+
+            apiClient.getPostService(this).getUserTopPosts(username).enqueue(object : Callback<ArrayList<StatisticsResponse>>{
+                override fun onResponse(
+                    call: Call<ArrayList<StatisticsResponse>>,
+                    response: Response<ArrayList<StatisticsResponse>>
+                ) {
+
+                    var size = response.body()!!.size
+
+                    if(size>0)
+                    {
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(iv_coverImage_prvi_f)
+                        gradeDisplay_followed_prvi_f.setupForFollowed()
+                        gradeDisplay_followed_prvi_f.setGradeDisplay(response.body()!![0].averageGrade,response.body()!![0].gradesCount)
+
+                    }
+                    else
+                    {
+                        ll_prvi_grade_f.isGone=true
+                        tv_no_post_prvi_f.isVisible=true
+                    }
+
+                    //drugi
+                    if(size>1)
+                    {
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![1].coverImage)).into(iv_coverImage_drugi_f)
+                        gradeDisplay_followed_drugi_f.setupForFollowed()
+                        gradeDisplay_followed_drugi_f.setGradeDisplay(response.body()!![1].averageGrade,response.body()!![1].gradesCount)
+                    }
+                    else
+                    {
+                        ll_drugi_grade_f.isGone=true
+                        tv_no_post_drugi_f.isVisible=true
+                    }
+
+                    //treci
+
+                    if(size>2)
+                    {
+                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![2].coverImage)).into(iv_coverImage_treci_f)
+                        gradeDisplay_followed_treci_f.setupForFollowed()
+                        gradeDisplay_followed_treci_f.setGradeDisplay(response.body()!![2].averageGrade,response.body()!![2].gradesCount)
+
+                    }
+                    else
+                    {
+                        ll_treci_grade_f.isGone=true
+                        tv_no_post_treci_f.isVisible=true
+                    }
+
+
+
+                }
+
+                override fun onFailure(call: Call<ArrayList<StatisticsResponse>>, t: Throwable) {
+
+                }
+
+            })
+
+        }
     }
 
     private fun followProfile() {
@@ -120,12 +228,18 @@ class ForeignProfileGridActivity : AppCompatActivity() {
                         ib_follow.isGone=true
                         ib_following.isGone=false
                         tv_follow_ing.text="Following"
+
+                        var number = followers_count_fg.text.toString().toInt()
+                        number += 1
+                        followers_count_fg.text=number.toString()
+
                     }
                     else
                     {
                         Toast.makeText(context,"Something went wrong, try again.", Toast.LENGTH_LONG).show()
 
                     }
+
 
                     dialog.dismiss()
 
@@ -178,6 +292,11 @@ class ForeignProfileGridActivity : AppCompatActivity() {
                         ib_follow.isGone=false
                         ib_following.isGone=true
                         tv_follow_ing.text="Follow"
+
+                        var number = followers_count_fg.text.toString().toInt()
+                        number -= 1
+                        followers_count_fg.text=number.toString()
+
                     }
 
                     else
@@ -218,6 +337,7 @@ class ForeignProfileGridActivity : AppCompatActivity() {
                     followers_count_fg.text = response.body()!!.followingCount.toString()
                     following_count_fg.text = response.body()!!.followersCount.toString()
 
+                    averageGrade= response.body()!!.averageGrade
 
 
                     val picture=response.body()!!.profileImage
@@ -291,6 +411,8 @@ class ForeignProfileGridActivity : AppCompatActivity() {
                     if(response.isSuccessful) {
 
                         post_number_fg.text=response.body()!!.size.toString()
+
+                        numberOfPosts=response.body()!!.size
 
                         if(response.body()?.size == 0)
                             return
