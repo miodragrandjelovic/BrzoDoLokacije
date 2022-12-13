@@ -75,6 +75,24 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginBottom="3dp"
+            android:layout_weight="1"
+            android:background="@drawable/background_panel"
+            android:fontFamily="@font/montserrat_regular"
+            android:paddingLeft="8dp"
+            android:paddingTop="2dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="2dp"
+            android:text="Owner"
+            android:visibility="gone"
+            android:textColor="@color/red"
+            android:textSize="10sp" />
+
+        <TextView
             android:id="@+id/tv_commentText"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

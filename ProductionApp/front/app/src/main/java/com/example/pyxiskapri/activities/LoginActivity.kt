@@ -63,9 +63,9 @@ class LoginActivity : AppCompatActivity() {
                 if(et_usernameOrEmail.length()>5 && et_password.length()>5)
                     login()
                 else
-                    Toast.makeText(this, "Username i sifra moraju imati vise od 6 karaktera!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Invalid username or password!", Toast.LENGTH_SHORT).show()
             else
-                Toast.makeText(this, "Morate popuniti sva polja!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "You need to fill in all fields!", Toast.LENGTH_SHORT).show()
         }
     }
 

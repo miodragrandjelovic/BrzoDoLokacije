@@ -155,52 +155,50 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
             apiClient.getPostService(this).getUserTopPosts(username).enqueue(object : Callback<ArrayList<StatisticsResponse>>{
-                override fun onResponse(
-                    call: Call<ArrayList<StatisticsResponse>>,
-                    response: Response<ArrayList<StatisticsResponse>>
-                ) {
+                override fun onResponse(call: Call<ArrayList<StatisticsResponse>>, response: Response<ArrayList<StatisticsResponse>>) {
+                    if(response.isSuccessful && response.body() != null){
+                        var size = response.body()!!.size
 
-                    var size = response.body()!!.size
+                        if(size>0)
+                        {
+                            Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(iv_coverImage_prvi_fm)
+                            gradeDisplay_followed_prvi_fm.setupForFollowed()
+                            gradeDisplay_followed_prvi_fm.setGradeDisplay(response.body()!![0].averageGrade,response.body()!![0].gradesCount)
 
-                    if(size>0)
-                    {
-                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(iv_coverImage_prvi_fm)
-                        gradeDisplay_followed_prvi_fm.setupForFollowed()
-                        gradeDisplay_followed_prvi_fm.setGradeDisplay(response.body()!![0].averageGrade,response.body()!![0].gradesCount)
+                        }
+                        else
+                        {
+                            ll_prvi_grade_fm.isGone=true
+                            tv_no_post_prvi_fm.isVisible=true
+                        }
 
-                    }
-                    else
-                    {
-                        ll_prvi_grade_fm.isGone=true
-                        tv_no_post_prvi_fm.isVisible=true
-                    }
+                        //drugi
+                        if(size>1)
+                        {
+                            Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![1].coverImage)).into(iv_coverImage_drugi_fm)
+                            gradeDisplay_followed_drugi_fm.setupForFollowed()
+                            gradeDisplay_followed_drugi_fm.setGradeDisplay(response.body()!![1].averageGrade,response.body()!![1].gradesCount)
+                        }
+                        else
+                        {
+                            ll_drugi_grade_fm.isGone=true
+                            tv_no_post_drugi_fm.isVisible=true
+                        }
 
-                    //drugi
-                    if(size>1)
-                    {
-                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![1].coverImage)).into(iv_coverImage_drugi_fm)
-                        gradeDisplay_followed_drugi_fm.setupForFollowed()
-                        gradeDisplay_followed_drugi_fm.setGradeDisplay(response.body()!![1].averageGrade,response.body()!![1].gradesCount)
-                    }
-                    else
-                    {
-                        ll_drugi_grade_fm.isGone=true
-                        tv_no_post_drugi_fm.isVisible=true
-                    }
+                        //treci
 
-                    //treci
+                        if(size>2)
+                        {
+                            Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![2].coverImage)).into(iv_coverImage_treci_fm)
+                            gradeDisplay_followed_treci_fm.setupForFollowed()
+                            gradeDisplay_followed_treci_fm.setGradeDisplay(response.body()!![2].averageGrade,response.body()!![2].gradesCount)
 
-                    if(size>2)
-                    {
-                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![2].coverImage)).into(iv_coverImage_treci_fm)
-                        gradeDisplay_followed_treci_fm.setupForFollowed()
-                        gradeDisplay_followed_treci_fm.setGradeDisplay(response.body()!![2].averageGrade,response.body()!![2].gradesCount)
-
-                    }
-                    else
-                    {
-                        ll_treci_grade_fm.isGone=true
-                        tv_no_post_treci_fm.isVisible=true
+                        }
+                        else
+                        {
+                            ll_treci_grade_fm.isGone=true
+                            tv_no_post_treci_fm.isVisible=true
+                        }
                     }
 
 
@@ -226,6 +224,8 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
         map = googleMap
 
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_dark_style))
+
+        map.mapType = GoogleMap.MAP_TYPE_HYBRID
 
         geocoder = Geocoder(this, Locale.getDefault())
         addCustomMarkerFromURL(true);

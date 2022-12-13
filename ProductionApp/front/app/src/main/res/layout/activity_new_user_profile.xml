@@ -327,7 +327,6 @@
             android:layout_height="wrap_content">
 
 
-
             <com.example.pyxiskapri.custom_view_models.WrapGridView
                 android:id="@+id/gv_n_user_posts"
                 android:layout_width="wrap_content"
@@ -343,8 +342,7 @@
                 android:verticalSpacing="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_statistics"

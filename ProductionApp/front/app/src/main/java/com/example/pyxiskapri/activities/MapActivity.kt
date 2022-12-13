@@ -121,6 +121,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnMapClickListener 
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 8f))
     }
 
+    private var markerSet: Boolean = false
+
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
@@ -154,6 +156,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnMapClickListener 
             tv_latitude.text = StringBuilder().append("Lat: ").append(String.format("%.8f", it.latitude))
             tv_longitude.text = StringBuilder().append("Long: ").append(String.format("%.8f", it.longitude))
             searchLocation = it
+            markerSet = true
         }
 
         geocoder = Geocoder(this, Locale.getDefault())
@@ -192,10 +195,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnMapClickListener 
             dialog.show()
 
             dialog.btn_sendSearchRequest.setOnClickListener{
-                requestPostsFromCoordinates(searchLocation, targetDistance = dialog.et_distance.text.toString().toDouble())
+                if(markerSet) {
+                    if(dialog.et_distance.text.trim().isNotEmpty())
+                        requestPostsFromCoordinates(searchLocation, targetDistance = dialog.et_distance.text.toString().toDouble())
+                    else
+                        requestPostsFromCoordinates(searchLocation, targetDistance = 1500.0)
+                }
+
                 dialog.dismiss()
             }
-
 
         }
 
@@ -225,8 +233,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnMapClickListener 
 
         val layoutParams = WindowManager.LayoutParams()
         layoutParams.copyFrom(dialog.window?.attributes)
-        layoutParams.width = 1000
-        layoutParams.height = 1400
+        layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(true)
@@ -404,6 +412,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnMapClickListener 
     private val LOCATION_LIST_RESULT_COUNT = 8
 
     private fun requestLocationsByText(){
+        rv_locations.visibility = View.VISIBLE
+
         if(et_search.text.toString().trim() == "")
             return
 

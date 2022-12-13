@@ -234,6 +234,10 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
                 newReplyDialog(comment.id, groupPosition)
             }
 
+            if(SessionManager(context).fetchUserData()?.username == comment.commenterUsername)
+                tv_owner.visibility = View.VISIBLE
+            else
+                tv_owner.visibility = View.GONE
         }
 
         return view!!
@@ -341,6 +345,11 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
                 dislikeComment(reply.id)
                 notifyDataSetChanged()
             }
+
+            if(SessionManager(context).fetchUserData()?.username == reply.commenterUsername)
+                tv_ownerReply.visibility = View.VISIBLE
+            else
+                tv_ownerReply.visibility = View.GONE
 
         }
 

@@ -164,54 +164,51 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
             var username = SessionManager(this).fetchUserData()?.username
             apiClient.getPostService(this).getUserTopPosts(username!!).enqueue(object : Callback<ArrayList<StatisticsResponse>>{
-                override fun onResponse(
-                    call: Call<ArrayList<StatisticsResponse>>,
-                    response: Response<ArrayList<StatisticsResponse>>
-                ) {
+                override fun onResponse(call: Call<ArrayList<StatisticsResponse>>, response: Response<ArrayList<StatisticsResponse>>) {
+                    if(response.isSuccessful && response.body() != null){
+                        var size = response.body()!!.size
 
-                    var size = response.body()!!.size
+                        if(size>0)
+                        {
+                            Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(iv_coverImage_prvi_m)
+                            gradeDisplay_followed_prvi_m.setupForFollowed()
+                            gradeDisplay_followed_prvi_m.setGradeDisplay(response.body()!![0].averageGrade,response.body()!![0].gradesCount)
 
-                    if(size>0)
-                    {
-                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(iv_coverImage_prvi_m)
-                        gradeDisplay_followed_prvi_m.setupForFollowed()
-                        gradeDisplay_followed_prvi_m.setGradeDisplay(response.body()!![0].averageGrade,response.body()!![0].gradesCount)
+                        }
+                        else
+                        {
+                            ll_prvi_grade_m.isGone=true
+                            tv_no_post_prvi_m.isVisible=true
+                        }
 
+                        //drugi
+                        if(size>1)
+                        {
+                            Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![1].coverImage)).into(iv_coverImage_drugi_m)
+                            gradeDisplay_followed_drugi_m.setupForFollowed()
+                            gradeDisplay_followed_drugi_m.setGradeDisplay(response.body()!![1].averageGrade,response.body()!![1].gradesCount)
+                        }
+                        else
+                        {
+                            ll_drugi_grade_m.isGone=true
+                            tv_no_post_drugi_m.isVisible=true
+                        }
+
+                        //treci
+
+                        if(size>2)
+                        {
+                            Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![2].coverImage)).into(iv_coverImage_treci_m)
+                            gradeDisplay_followed_treci_m.setupForFollowed()
+                            gradeDisplay_followed_treci_m.setGradeDisplay(response.body()!![2].averageGrade,response.body()!![2].gradesCount)
+
+                        }
+                        else
+                        {
+                            ll_treci_grade_m.isGone=true
+                            tv_no_post_treci_m.isVisible=true
+                        }
                     }
-                    else
-                    {
-                        ll_prvi_grade_m.isGone=true
-                        tv_no_post_prvi_m.isVisible=true
-                    }
-
-                    //drugi
-                    if(size>1)
-                    {
-                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![1].coverImage)).into(iv_coverImage_drugi_m)
-                        gradeDisplay_followed_drugi_m.setupForFollowed()
-                        gradeDisplay_followed_drugi_m.setGradeDisplay(response.body()!![1].averageGrade,response.body()!![1].gradesCount)
-                    }
-                    else
-                    {
-                        ll_drugi_grade_m.isGone=true
-                        tv_no_post_drugi_m.isVisible=true
-                    }
-
-                    //treci
-
-                    if(size>2)
-                    {
-                        Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![2].coverImage)).into(iv_coverImage_treci_m)
-                        gradeDisplay_followed_treci_m.setupForFollowed()
-                        gradeDisplay_followed_treci_m.setGradeDisplay(response.body()!![2].averageGrade,response.body()!![2].gradesCount)
-
-                    }
-                    else
-                    {
-                        ll_treci_grade_m.isGone=true
-                        tv_no_post_treci_m.isVisible=true
-                    }
-
 
 
                 }
@@ -239,6 +236,8 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
         map = googleMap
 
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_dark_style))
+
+        map.mapType = GoogleMap.MAP_TYPE_HYBRID
 
         geocoder = Geocoder(this, Locale.getDefault())
 
@@ -348,6 +347,7 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
                     if(response.body() != null && response.body()?.size != 0){
 
                         if(pom) {
+
 
                             post_number_um.text = response.body()!!.size.toString()
 
@@ -532,5 +532,9 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
             flag*=-1
         }
     }
+
+
+
+    
 
 }

@@ -98,7 +98,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_post)
 
-
+        Locale.setDefault(Locale("en_us"))
 
         sessionManager = SessionManager(this)
         apiClient = ApiClient()
@@ -308,6 +308,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
+        map.mapType = GoogleMap.MAP_TYPE_HYBRID
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_dark_style))
 
         geocoder = Geocoder(this, Locale.getDefault())
@@ -574,6 +575,7 @@ class NewPostActivity : AppCompatActivity(), OnMapReadyCallback{
 
                     override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
                         dialog.dismiss()
+                        Log.d("TEST", t.toString())
                         Toast.makeText(context, "Adding new post failed!", Toast.LENGTH_SHORT).show()
                     }
                 }
