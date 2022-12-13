@@ -207,7 +207,7 @@ class OpenPostActivity : AppCompatActivity() {
 
 
     private fun setupComments(){
-        commentsAdapter = CommentAdapter(arrayListOf(), postData.id, this)
+        commentsAdapter = CommentAdapter(arrayListOf(), postData.id, postData.ownerUsername, this)
         elv_comments.setAdapter(commentsAdapter)
 
         requestComments()

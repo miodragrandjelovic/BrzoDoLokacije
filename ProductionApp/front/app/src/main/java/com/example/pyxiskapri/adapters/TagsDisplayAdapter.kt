@@ -1,11 +1,15 @@
 package com.example.pyxiskapri.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.activities.MapActivity
+import com.example.pyxiskapri.utility.ActivityTransferStorage
 import kotlinx.android.synthetic.main.item_tag.view.*
 
 class TagsDisplayAdapter(var tagsList: ArrayList<String> = arrayListOf(), var context: Context) : RecyclerView.Adapter<TagsDisplayAdapter.TagViewHolder>() {
@@ -20,7 +24,10 @@ class TagsDisplayAdapter(var tagsList: ArrayList<String> = arrayListOf(), var co
             tv_tagName.text = tagsList[position]
 
             this.setOnClickListener{
-                // NEKA PRETRAGA PREKO TAGA
+                val intent = Intent (context, MapActivity::class.java);
+                ActivityTransferStorage.openTagSearch = true
+                ActivityTransferStorage.tag = tagsList[position]
+                context.startActivity(intent)
             }
         }
     }

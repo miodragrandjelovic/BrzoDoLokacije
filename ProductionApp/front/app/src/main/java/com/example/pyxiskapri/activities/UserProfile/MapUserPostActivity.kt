@@ -347,6 +347,8 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
                         setCameraForNewMarkers(animateCamera = true)
                         setPostMarkers()
 
+                        post_number_um.text = response.body()?.size.toString()
+
                         changeCredentialsInformation.postsNumber=response.body()!!.size.toString()
                         changeCredentialsInformation.coverImage=response.body()!![0].coverImage
                     }
@@ -392,7 +394,6 @@ class MapUserPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         followers_count_m.text = response.body()!!.followingCount.toString()
                         following_count_m.text = response.body()!!.followersCount.toString()
-
 
                         val picture=response.body()!!.profileImage
                         if(picture!=null)

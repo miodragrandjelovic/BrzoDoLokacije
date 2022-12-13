@@ -233,43 +233,39 @@ class ChangeCredentialsActivity : AppCompatActivity() {
         dialog.show()
         dialog.btn_save_new_pass.setOnClickListener(){
 
-            if(dialog.et_new_pass.text.toString()!=dialog.et_confirm_new_pass.text.toString())
-                Toast.makeText(this,"New password and confirmed password are not the same!",Toast.LENGTH_LONG).show()
-
-            else
-            {
-                var changepassreq= ChangePasswordRequest(
-                    oldPassword = dialog.et_old_pass.text.toString(),
-                    newPassword = dialog.et_new_pass.text.toString()
-                )
-
-                Log.d("",changepassreq.toString())
-
-                val context: Context = this
-                apiClient.getUserService(context).changePassword(changepassreq).enqueue(object:Callback<MessageResponse>{
-                    override fun onResponse(
-                        call: Call<MessageResponse>,
-                        response: Response<MessageResponse>
-                    ) {
-                        if(response.isSuccessful)
-                        {
-                            Toast.makeText(context,"Password changed successfully!",Toast.LENGTH_LONG).show()
-                            dialog.dismiss()
-                        }
-
-                        else
-                            Toast.makeText(context,"Wrong password, try again!",Toast.LENGTH_LONG).show()
-
-                    }
-
-                    override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
-                        Toast.makeText(context,"Something went wrong, try again.",Toast.LENGTH_LONG).show()
-                    }
-
-                })
-
+            if(dialog.et_new_pass.text.toString()!=dialog.et_confirm_new_pass.text.toString()) {
+                Toast.makeText(this, "New password and confirmed password are not the same!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
             }
 
+            if(!dialog.et_new_pass.text.contains(Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$"))) {
+                Toast.makeText(this, "New password is not a valid password!", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            var changepassreq= ChangePasswordRequest(
+                oldPassword = dialog.et_old_pass.text.toString(),
+                newPassword = dialog.et_new_pass.text.toString()
+            )
+
+            Log.d("",changepassreq.toString())
+
+            val context: Context = this
+            apiClient.getUserService(context).changePassword(changepassreq).enqueue(object:Callback<MessageResponse>{
+                override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
+                    if(response.isSuccessful) {
+                        Toast.makeText(context,"Password changed successfully!",Toast.LENGTH_LONG).show()
+                        dialog.dismiss()
+                    }
+                    else
+                        Toast.makeText(context,"Wrong password, try again!",Toast.LENGTH_LONG).show()
+                }
+
+                override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                    Toast.makeText(context,"Something went wrong, try again.",Toast.LENGTH_LONG).show()
+                }
+
+            })
 
         }
 

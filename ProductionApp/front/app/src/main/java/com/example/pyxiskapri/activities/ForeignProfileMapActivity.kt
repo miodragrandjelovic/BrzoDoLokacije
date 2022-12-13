@@ -356,6 +356,9 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
                 if(response.isSuccessful)
                     if(response.body() != null && response.body()?.size != 0) {
                         markersList = listToGroupedList(response.body()!!)
+
+                        post_number_fm.text = response.body()?.size.toString()
+
                         setCameraForNewMarkers(animateCamera = true)
                         setPostMarkers()
                     }

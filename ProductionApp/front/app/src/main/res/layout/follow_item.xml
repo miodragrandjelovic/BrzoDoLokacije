@@ -19,10 +19,13 @@
         android:background="@color/red" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/btn_openProfile"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_marginStart="10dp"
         android:layout_weight="0"
+        android:clickable="false"
+        android:focusable="true"
         app:cardCornerRadius="100dp">
 
         <ImageView
@@ -30,8 +33,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
+            android:clickable="false"
+            android:scaleType="centerCrop"
             tools:srcCompat="@tools:sample/avatars" />
 
     </androidx.cardview.widget.CardView>
@@ -41,6 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
+        android:clickable="false"
         android:gravity="left|center_vertical"
         android:orientation="vertical">
 
@@ -49,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:fontFamily="@font/montserrat_medium"
+            android:fontFamily="@font/montserrat_regular"
             android:gravity="left|center_vertical"
             android:text="First and last name"
             android:textColor="@color/white"
@@ -62,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:alpha=".8"
-            android:fontFamily="@font/montserrat_medium"
+            android:fontFamily="@font/montserrat_regular"
             android:text="username..."
             android:textColor="@color/white"
             android:textSize="12sp" />

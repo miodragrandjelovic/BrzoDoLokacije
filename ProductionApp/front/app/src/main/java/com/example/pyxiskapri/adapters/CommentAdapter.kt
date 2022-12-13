@@ -33,7 +33,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var postId: Int, var context: Context) : BaseExpandableListAdapter(), OnGroupClickListener {
+class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var postId: Int, var postOwner: String, var context: Context) : BaseExpandableListAdapter(), OnGroupClickListener {
 
     private val apiClient: ApiClient = ApiClient()
     var layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -234,7 +234,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
                 newReplyDialog(comment.id, groupPosition)
             }
 
-            if(SessionManager(context).fetchUserData()?.username == comment.commenterUsername)
+            if(postOwner == comment.commenterUsername)
                 tv_owner.visibility = View.VISIBLE
             else
                 tv_owner.visibility = View.GONE
@@ -346,7 +346,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
                 notifyDataSetChanged()
             }
 
-            if(SessionManager(context).fetchUserData()?.username == reply.commenterUsername)
+            if(postOwner == reply.commenterUsername)
                 tv_ownerReply.visibility = View.VISIBLE
             else
                 tv_ownerReply.visibility = View.GONE
@@ -375,6 +375,7 @@ class CommentAdapter(var commentList: ArrayList<CommentExpandableListItem>, var 
         val dialogPostReplyButton: ConstraintLayout = replyDialog.findViewById(R.id.btn_addTag)
 
         // SET USER IMAGE
+        Picasso.get().load(UtilityFunctions.getFullImagePath(SessionManager(context).fetchUserData()!!.profileImagePath)).into(dialogUserAvatar)
 
         if(replyToUsername != "") {
             dialogReplyText.setText(

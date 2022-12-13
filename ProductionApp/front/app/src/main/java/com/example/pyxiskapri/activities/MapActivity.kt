@@ -60,13 +60,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var multiButtonFragment: MultiButtonSelector
 
     private lateinit var markerImage: ImageView
-    var mapFlag=0
 
     private var markersList: ArrayList<ArrayList<CustomMarkerResponse>> = arrayListOf()
 
     private lateinit var searchLocation: LatLng
-
-    public var searchDistance: Double = 100.0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,10 +80,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         handleOptionsClick()
 
 
-        switch_friendsOnly.setOnCheckedChangeListener { _, isChecked ->
+        /*switch_friendsOnly.setOnCheckedChangeListener { _, isChecked ->
             searchFriends = isChecked
             Log.d("SEARCH FRIENDS", searchFriends.toString())
-        }
+        }*/
 
         switch_searchTags.setOnCheckedChangeListener { _, isChecked ->
             searchTags = isChecked
@@ -164,6 +161,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         mCustomMarkerView = (getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.view_custom_marker, null)
         markerImage = mCustomMarkerView.findViewById(R.id.marker_image)
         mMarkerImageView = mCustomMarkerView.findViewById(R.id.cover_image)
+
+
+        if(ActivityTransferStorage.openTagSearch){
+            requestPostsFromTag(ActivityTransferStorage.tag)
+            ActivityTransferStorage.openTagSearch = false
+        }
 
 
         if(ActivityTransferStorage.openPostToMapSet) {
@@ -251,7 +254,38 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
 
+    private fun requestPostsFromTag(tag: String){
+        var searchRequest = MapSearchRequest(
+            search = tag,
+            sortType =  Constants.SearchType.LOCATION.ordinal,
+            countOfResults = multiButtonFragment.value,
+            friendsOnly = false,
+            name = "",
+            searchType = 2,
+            0.0,
+            0.0,
+            0.0
+        )
 
+        var context = this
+
+        apiClient.getPostService(this).getPostsBySearch(searchRequest)
+            .enqueue(object : Callback<ArrayList<CustomMarkerResponse>> {
+                override fun onResponse(call: Call<ArrayList<CustomMarkerResponse>>, response: Response<ArrayList<CustomMarkerResponse>>) {
+                    if(response.isSuccessful)
+                        if(response.body() != null && response.body()?.size != 0) {
+                            markersList = listToGroupedList(response.body()!!)
+                            setCameraForNewMarkers(animateCamera = true)
+                            setPostMarkers()
+                        }
+                        else
+                            Toast.makeText(context, "No posts found!", Toast.LENGTH_SHORT).show()
+                }
+                override fun onFailure(call: Call<ArrayList<CustomMarkerResponse>>, t: Throwable) {
+                    Log.d("TEST", "TEST")
+                }
+            })
+    }
 
 
 

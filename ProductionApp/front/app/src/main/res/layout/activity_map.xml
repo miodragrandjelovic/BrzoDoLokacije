@@ -108,35 +108,6 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/tv_friendsOnly"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="5dp"
-                                android:fontFamily="@font/montserrat_regular"
-                                android:text="Friends only"
-                                android:textColor="@color/white"
-                                android:textSize="14sp" />
-
-                            <androidx.appcompat.widget.SwitchCompat
-                                android:id="@+id/switch_friendsOnly"
-                                android:layout_width="wrap_content"
-                                android:layout_height="25dp"
-                                android:layout_gravity="left"
-                                android:thumb="@drawable/switch_thumb"
-                                app:track="@drawable/background_panel"
-                                app:trackTint="#252529" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="30dp"
-                            android:layout_weight="1"
-                            android:gravity="left"
-                            android:orientation="vertical">
-
-                            <TextView
                                 android:id="@+id/tv_searchTags"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -191,7 +162,6 @@
                                 android:id="@+id/btn_prioritizePopular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
                                 android:layout_weight="0"
                                 android:background="@drawable/et_rounded"
                                 android:backgroundTint="@color/red"

@@ -130,8 +130,7 @@ class FollowUserAdapter (private val users: MutableList<FollowUserItem>) : Recyc
             }
 
 
-            follow_item.setOnClickListener(){
-
+            /*btn_openProfile.setOnClickListener{
                 if(currentPost.username== SessionManager(context).fetchUserData()?.username)
                 {
                     val intent = Intent(context, NewUserProfileActivity::class.java)
@@ -143,7 +142,20 @@ class FollowUserAdapter (private val users: MutableList<FollowUserItem>) : Recyc
                     intent.putExtra("username", currentPost.username)
                     context.startActivity(intent)
                 }
+            }*/
 
+            follow_item.setOnClickListener{
+                if(currentPost.username== SessionManager(context).fetchUserData()?.username)
+                {
+                    val intent = Intent(context, NewUserProfileActivity::class.java)
+                    context.startActivity(intent)
+                }
+                else
+                {
+                    val intent = Intent(context, ForeignProfileGridActivity::class.java)
+                    intent.putExtra("username", currentPost.username)
+                    context.startActivity(intent)
+                }
             }
 
         }

@@ -198,10 +198,7 @@ class NewUserProfileActivity : AppCompatActivity(){
 
         apiClient.getUserService(context).getUser()
             .enqueue(object : Callback<GetUserResponse> {
-                override fun onResponse(
-                    call: Call<GetUserResponse>,
-                    response: Response<GetUserResponse>
-                ) {
+                override fun onResponse(call: Call<GetUserResponse>, response: Response<GetUserResponse>) {
                     if(response.isSuccessful)
                     {
                         tv_name1.text=response.body()!!.firstName

@@ -11,6 +11,12 @@ import com.google.android.gms.maps.model.LatLng
 interface ActivityTransferStorage {
 
     companion object {
+
+        @JvmStatic
+        var openTagSearch: Boolean = false
+        @JvmStatic
+        lateinit var tag: String
+
         @JvmStatic
         var openPostToMapSet: Boolean = false
         @JvmStatic
