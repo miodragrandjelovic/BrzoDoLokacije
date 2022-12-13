@@ -7,10 +7,13 @@ import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
+import android.view.WindowManager
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -18,6 +21,7 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.example.pyxiskapri.R
+import com.example.pyxiskapri.adapters.PostsOnSameLocationAdapter
 import com.example.pyxiskapri.dtos.request.AddFollowRequest
 import com.example.pyxiskapri.dtos.response.*
 import com.example.pyxiskapri.models.FollowList
@@ -36,8 +40,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_foreign_profile_map.*
 import kotlinx.android.synthetic.main.activity_map_user_post.*
+import kotlinx.android.synthetic.main.dialog_post_on_same_location.*
 import kotlinx.android.synthetic.main.modal_confirm_follow.*
 import kotlinx.android.synthetic.main.modal_confirm_unfollow.*
+import kotlinx.android.synthetic.main.view_custom_marker.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -59,6 +65,8 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var geocoder: Geocoder
 
     var averageGrade:Double = 0.0
+
+    private var markersList: ArrayList<ArrayList<CustomMarkerResponse>> = arrayListOf()
 
     var flag = 0
 
@@ -230,36 +238,31 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
         geocoder = Geocoder(this, Locale.getDefault())
         addCustomMarkerFromURL(true);
 
+        cameraListener()
+
         map.setOnMarkerClickListener{marker ->
+            var groupId = marker.tag as? Int
 
-            var context = this
-
-            var tag= marker.tag as? Int
-            apiClient.getPostService(context).GetOnePostById(tag!!).enqueue(object : Callback<PostResponse>{
-                override fun onResponse(
-                    call: Call<PostResponse>,
-                    response: Response<PostResponse>
-                ) {
-                    val intent = Intent(context, OpenPostActivity::class.java)
-                    ActivityTransferStorage.postItemToOpenPost = response.body()!!
-                    context.startActivity(intent)
-
-                }
-
-                override fun onFailure(call: Call<PostResponse>, t: Throwable) {
-                    Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
-                }
-            })
+            if(groupId != null) {
+                if (markersList[groupId].size == 1)
+                    openSinglePost(markersList[groupId][0].postId)
+                else
+                    showAllPosts(markersList[groupId])
+            }
 
             true
         }
 
+        oldMapZoom = map.cameraPosition.zoom
 
+    }
+
+    private var oldMapZoom: Float = 10.0f
+    private fun cameraListener() {
         map.setOnCameraMoveListener {
-            val cameraPosition = googleMap.cameraPosition
+            val cameraPosition = map.cameraPosition
 
-
-            if (cameraPosition.zoom > 9.0 && flag==0) {
+            if (cameraPosition.zoom > 9.0 && oldMapZoom < 9.0f) {
 
                 var layoutParams = ConstraintLayout.LayoutParams(248, 340)
                 markerImage.layoutParams = layoutParams
@@ -267,15 +270,11 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
                 layoutParams = ConstraintLayout.LayoutParams(248, 248)
                 mMarkerImageView.layoutParams = layoutParams
 
-
                 map.clear()
 
-                addCustomMarkerFromURL(false)
-
-
-                flag=1
+                setPostMarkers()
             }
-            else if(cameraPosition.zoom < 9.0 && flag==1)
+            else if(cameraPosition.zoom < 9.0 && oldMapZoom >= 9.0f)
             {
                 var layoutParams = ConstraintLayout.LayoutParams(138, 193)
                 markerImage.layoutParams = layoutParams
@@ -283,39 +282,67 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
                 layoutParams = ConstraintLayout.LayoutParams(138, 138)
                 mMarkerImageView.layoutParams = layoutParams
 
-
                 map.clear()
 
-                addCustomMarkerFromURL(false)
-
-
-                flag=0
+                setPostMarkers()
             }
 
+            oldMapZoom = cameraPosition.zoom
 
         }
-
-
     }
 
-    private fun getMarkerBitmapFromView(view: View, bitmap: Bitmap?): Bitmap? {
 
-        mMarkerImageView.setImageBitmap(bitmap)
+    private fun openSinglePost(postId: Int){
+        val context: Context = this
+        apiClient.getPostService(context).GetOnePostById(postId).enqueue(object : Callback<PostResponse>{
+            override fun onResponse(call: Call<PostResponse>, response: Response<PostResponse>) {
+                val intent = Intent(context, OpenPostActivity::class.java)
+                ActivityTransferStorage.postItemToOpenPost = response.body()!!
+                context.startActivity(intent)
+            }
 
-        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
-        view.buildDrawingCache()
-        val returnedBitmap = Bitmap.createBitmap(
-            view.measuredWidth, view.measuredHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(returnedBitmap)
-        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN)
-        val drawable = view.background
-        drawable?.draw(canvas)
-        view.draw(canvas)
-        return returnedBitmap
+            override fun onFailure(call: Call<PostResponse>, t: Throwable) {
+                Toast.makeText(context,"Failure, try again.", Toast.LENGTH_LONG).show()
+            }
+        })
     }
+
+    private var pslAdapter: PostsOnSameLocationAdapter = PostsOnSameLocationAdapter(arrayListOf(), this)
+
+    private fun showAllPosts(posts: ArrayList<CustomMarkerResponse>){
+        val dialog = Dialog(this)
+
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(dialog.window?.attributes)
+        layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_post_on_same_location)
+        dialog.window?.attributes = layoutParams
+
+        dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
+
+        dialog.gv_postsOnSameLocation.adapter = pslAdapter
+        pslAdapter.setPostList(posts)
+
+        dialog.show()
+    }
+
+    private fun setCameraForNewMarkers(animateCamera: Boolean = false){
+        val latitude = markersList[0][0].latitude
+        val longitude = markersList[0][0].longitude
+
+        if(animateCamera)
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 8f))
+        else
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 8f))
+    }
+
+
+
 
     private fun addCustomMarkerFromURL(pom: Boolean) {
         if (map == null) {
@@ -325,53 +352,15 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
         var context:Context = this
 
         apiClient.getPostService(context).PostOnMap(username).enqueue(object : Callback<ArrayList<CustomMarkerResponse>>{
-            override fun onResponse(
-                call: Call<ArrayList<CustomMarkerResponse>>,
-                response: Response<ArrayList<CustomMarkerResponse>>
-            ) {
-
-                if(pom) {
-
-                    post_number_fm.text = response.body()!!.size.toString()
-
-                    var cameraLocation: LatLng =
-                        LatLng(response.body()!![0].latitude, response.body()!![0].longitude)
-
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraLocation, 3f))
-
-                    Picasso.get().load(UtilityFunctions.getFullImagePath(response.body()!![0].coverImage)).into(coverImage_fm)
-
-                }
-
-                for(post: CustomMarkerResponse in response.body()!!)
-                {
-                    var location: LatLng = LatLng(post.latitude,post.longitude)
-
-
-                    Picasso.get().load(UtilityFunctions.getFullImagePath(post.coverImage)).into(object : com.squareup.picasso.Target{
-                        override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
-
-                            var marker = map.addMarker( MarkerOptions().position(location)
-                                .icon( BitmapDescriptorFactory.fromBitmap(
-                                    getMarkerBitmapFromView(mCustomMarkerView, bitmap)!!)))
-
-                            marker?.tag=post.postId
-
-                        }
-
-                        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-
-                        }
-
-                        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-
-                        }
-
-                    })
-
-
-                }
-
+            override fun onResponse(call: Call<ArrayList<CustomMarkerResponse>>, response: Response<ArrayList<CustomMarkerResponse>>) {
+                if(response.isSuccessful)
+                    if(response.body() != null && response.body()?.size != 0) {
+                        markersList = listToGroupedList(response.body()!!)
+                        setCameraForNewMarkers(animateCamera = true)
+                        setPostMarkers()
+                    }
+                    else
+                        Toast.makeText(context, "No posts found!", Toast.LENGTH_SHORT).show()
             }
 
             override fun onFailure(call: Call<ArrayList<CustomMarkerResponse>>, t: Throwable) {
@@ -612,5 +601,77 @@ class ForeignProfileMapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
     }
+
+
+
+    private fun listToGroupedList(markerList: ArrayList<CustomMarkerResponse>): ArrayList<ArrayList<CustomMarkerResponse>>{
+        var groupedList = markerList.groupBy { it.latitude to it.longitude }
+        var returnList: ArrayList<ArrayList<CustomMarkerResponse>> = arrayListOf()
+        for(group in groupedList)
+            returnList.add(group.component2() as ArrayList<CustomMarkerResponse>)
+        return returnList
+    }
+
+    private fun setPostMarkers() {
+        map.clear()
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        var groupId = 0
+        for (group in markersList) {
+
+            Picasso.get().load(UtilityFunctions.getFullImagePath(group[0].coverImage)).into(
+                object : com.squareup.picasso.Target {
+                    override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+
+                        var marker = map.addMarker(
+                            MarkerOptions().position(LatLng(group[0].latitude, group[0].longitude))
+                                .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(mCustomMarkerView, bitmap, group.size)!!))
+                        )
+                        marker?.tag = groupId++
+
+                    }
+                    override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?)
+                    {
+                        Log.d("BITMAP FAIL", "BITMAP FAIL")
+                    }
+                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
+                }
+            )
+
+        }
+    }
+
+
+    private fun getMarkerBitmapFromView(view: View, bitmap: Bitmap?, postCount: Int): Bitmap? {
+
+        var textView = view.findViewById<TextView>(R.id.tv_postCount)
+
+        if(postCount == 1){
+            textView.visibility = View.INVISIBLE
+            view.cover_image.alpha = 1f
+        }
+        else{
+            textView.visibility = View.VISIBLE
+            view.cover_image.alpha = 0.5f
+            textView.text = StringBuilder().append(postCount).append("+")
+        }
+
+        mMarkerImageView?.setImageBitmap(bitmap)
+
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+        view.buildDrawingCache()
+        val returnedBitmap = Bitmap.createBitmap(
+            view.measuredWidth, view.measuredHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(returnedBitmap)
+        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN)
+        val drawable = view.background
+        drawable?.draw(canvas)
+        view.draw(canvas)
+        return returnedBitmap
+    }
+
 
 }

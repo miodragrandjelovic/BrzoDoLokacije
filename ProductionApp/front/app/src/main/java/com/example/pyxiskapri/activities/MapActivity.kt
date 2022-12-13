@@ -49,7 +49,7 @@ import retrofit2.Response
 import java.util.*
 
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnMapClickListener {
+class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var sessionManager: SessionManager
     private lateinit var apiClient: ApiClient
@@ -182,8 +182,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnMapClickListener 
 
             val layoutParams = WindowManager.LayoutParams()
             layoutParams.copyFrom(dialog.window?.attributes)
-            layoutParams.width = 800
-            layoutParams.height = 500
+            layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT
+            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
 
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setCancelable(true)
@@ -539,9 +539,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnMapClickListener 
                 }
             )
 
-
-
-
         }
     }
 
@@ -575,10 +572,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnMapClickListener 
         drawable?.draw(canvas)
         view.draw(canvas)
         return returnedBitmap
-    }
-
-    override fun onMapClick(p0: LatLng) {
-        TODO("Not yet implemented")
     }
 
 
