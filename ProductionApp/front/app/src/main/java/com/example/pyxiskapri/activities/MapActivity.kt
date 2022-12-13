@@ -34,23 +34,22 @@ import com.example.pyxiskapri.fragments.MultiButtonSelector
 import com.example.pyxiskapri.utility.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_map.*
-import kotlinx.android.synthetic.main.dialog_full_image.*
+import kotlinx.android.synthetic.main.dialog_finish_marker_search.*
 import kotlinx.android.synthetic.main.dialog_post_on_same_location.*
-import kotlinx.android.synthetic.main.view_custom_marker.*
 import kotlinx.android.synthetic.main.view_custom_marker.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.collections.ArrayList
 
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapActivity : AppCompatActivity(), OnMapReadyCallback, OnMapClickListener {
 
     private lateinit var sessionManager: SessionManager
     private lateinit var apiClient: ApiClient
@@ -64,6 +63,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     var mapFlag=0
 
     private var markersList: ArrayList<ArrayList<CustomMarkerResponse>> = arrayListOf()
+
+    private lateinit var searchLocation: LatLng
+
+    public var searchDistance: Double = 100.0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,6 +99,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
 
+
+
     private fun setupMapAndAutocomplete(){
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -107,13 +112,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
     private fun setCameraForNewMarkers(animateCamera: Boolean = false){
-        val latitude = markersList.sumOf { it[0].latitude } / markersList.size
-        val longitude = markersList.sumOf { it[0].longitude } / markersList.size
+        val latitude = markersList[0][0].latitude
+        val longitude = markersList[0][0].longitude
 
         if(animateCamera)
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 6f))
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 8f))
         else
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 6f))
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 8f))
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -124,30 +129,31 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         setMapTypeChangeButton()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         map.setOnMarkerClickListener{marker ->
-            var groupId = marker.tag as Int
+            var groupId = marker.tag as? Int
 
-            if(markersList[groupId].size == 1)
-                openSinglePost(markersList[groupId][0].postId)
-            else
-                showAllPosts(markersList[groupId])
+            if(groupId != null) {
+                if (markersList[groupId].size == 1)
+                    openSinglePost(markersList[groupId][0].postId)
+                else
+                    showAllPosts(markersList[groupId])
+            }
 
             true
+        }
+
+        map.setOnMapClickListener {
+            rv_locations.visibility = View.GONE
+        }
+
+        map.setOnMapLongClickListener {
+            rv_locations.visibility = View.GONE
+            map.clear()
+            setPostMarkers()
+            map.addMarker(MarkerOptions().position(it))
+            tv_latitude.text = StringBuilder().append("Lat: ").append(String.format("%.8f", it.latitude))
+            tv_longitude.text = StringBuilder().append("Long: ").append(String.format("%.8f", it.longitude))
+            searchLocation = it
         }
 
         geocoder = Geocoder(this, Locale.getDefault())
@@ -167,6 +173,31 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         setupPostSearching()
 
         cameraListener()
+
+        btn_searchMarker.setOnClickListener{
+            val dialog = Dialog(this)
+
+            val layoutParams = WindowManager.LayoutParams()
+            layoutParams.copyFrom(dialog.window?.attributes)
+            layoutParams.width = 800
+            layoutParams.height = 500
+
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.setContentView(R.layout.dialog_finish_marker_search)
+            dialog.window?.attributes = layoutParams
+
+            dialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
+
+            dialog.show()
+
+            dialog.btn_sendSearchRequest.setOnClickListener{
+                requestPostsFromCoordinates(searchLocation, targetDistance = dialog.et_distance.text.toString().toDouble())
+                dialog.dismiss()
+            }
+
+
+        }
 
         oldMapZoom = map.cameraPosition.zoom
     }
@@ -350,7 +381,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         rv_locations.adapter = locationListAdapter
 
         et_search.setOnClickListener{ it.visibility = View.VISIBLE }
-        map.setOnMapClickListener { rv_locations.visibility = View.GONE }
 
         // ON ENTER IN INPUT PRESS
         et_search.setOnKeyListener(object : View.OnKeyListener {
@@ -395,6 +425,39 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+    private fun requestPostsFromCoordinates(searchLocation: LatLng, targetDistance: Double){
+        var searchRequest = MapSearchRequest(
+            search = "",
+            sortType =  Constants.SearchType.LOCATION.ordinal,
+            countOfResults = multiButtonFragment.value,
+            friendsOnly = searchFriends,
+            name = "",
+            searchType = 1,
+            searchLocation.longitude,
+            searchLocation.latitude,
+            targetDistance
+        )
+
+        var context = this
+
+        apiClient.getPostService(this).getPostsBySearch(searchRequest)
+            .enqueue(object : Callback<ArrayList<CustomMarkerResponse>> {
+                override fun onResponse(call: Call<ArrayList<CustomMarkerResponse>>, response: Response<ArrayList<CustomMarkerResponse>>) {
+                    if(response.isSuccessful)
+                        if(response.body() != null && response.body()?.size != 0) {
+                            markersList = listToGroupedList(response.body()!!)
+                            setCameraForNewMarkers(animateCamera = true)
+                            setPostMarkers()
+                        }
+                        else
+                            Toast.makeText(context, "No posts found!", Toast.LENGTH_SHORT).show()
+                }
+                override fun onFailure(call: Call<ArrayList<CustomMarkerResponse>>, t: Throwable) {
+                    Log.d("TEST", "TEST")
+                }
+            })
+    }
+
     private fun requestPostsFromSearch(locationId: Int, searchText: String, searchTypeT: Int = 0){
         var searchRequest = MapSearchRequest(
             search = searchText,
@@ -408,6 +471,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             0.0
         )
 
+        var context = this
+
         apiClient.getPostService(this).getPostsBySearch(searchRequest)
             .enqueue(object : Callback<ArrayList<CustomMarkerResponse>> {
                 override fun onResponse(call: Call<ArrayList<CustomMarkerResponse>>, response: Response<ArrayList<CustomMarkerResponse>>) {
@@ -417,6 +482,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                             setCameraForNewMarkers(animateCamera = true)
                             setPostMarkers()
                         }
+                        else
+                            Toast.makeText(context, "No posts found!", Toast.LENGTH_SHORT).show()
                 }
                 override fun onFailure(call: Call<ArrayList<CustomMarkerResponse>>, t: Throwable) {
                     Log.d("TEST", "TEST")
@@ -500,6 +567,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         return returnedBitmap
     }
 
+    override fun onMapClick(p0: LatLng) {
+        TODO("Not yet implemented")
+    }
 
 
 }
