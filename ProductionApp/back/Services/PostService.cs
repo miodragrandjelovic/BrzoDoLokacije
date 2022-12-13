@@ -252,7 +252,11 @@ namespace PyxisKapriBack.Services
             try
             {
                 if (searchDTO.CountOfResult == 0)
-                    searchDTO.CountOfResult = Constants.Constants.TAKE_ELEMENT; 
+                    searchDTO.CountOfResult = Constants.Constants.TAKE_ELEMENT;
+
+                if ((searchDTO.Distance == null) || (searchDTO.Distance > 0))
+                    searchDTO.Distance = Constants.Constants.DISTANCE;
+
                 response.Data = postDAL.GetPostsBySearch(userService.GetLoggedUser(), searchDTO.Search, searchDTO.SearchType, searchDTO.Latitude,
                                                          searchDTO.Longitude, searchDTO.Distance, searchDTO.SortType, searchDTO.FriendsOnly)
                                        .Take(searchDTO.CountOfResult).Cast<object>().ToList();
